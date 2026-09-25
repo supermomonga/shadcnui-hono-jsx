@@ -627,6 +627,46 @@
       }
     },
     {
+      "name": "hover-card",
+      "type": "registry:item",
+      "title": "Hover Card",
+      "description": "Hono JSX port of the shadcn/ui base-nova hover-card component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/hover-card.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/hover-card.tsx"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "public/shadcn/hover.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/hover.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/hover.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "hover-card",
+          "style": "base-nova",
+          "contentSha256": "3560a395f3c6fcf87f5d2293295f722b92ef3efaf0e97f611a7207c01e41ab67",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "input",
       "type": "registry:item",
       "title": "Input",
@@ -1358,6 +1398,46 @@
           "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
         },
         "classification": "native-adapter",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:item",
+      "title": "Tooltip",
+      "description": "Hono JSX port of the shadcn/ui base-nova tooltip component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/tooltip.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/tooltip.tsx"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "public/shadcn/hover.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/hover.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/hover.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "tooltip",
+          "style": "base-nova",
+          "contentSha256": "999f24433b0bb597cedfdef3a5de7f6dbfa5e819672ae66d581c0780e275766b",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
         "mode": "generated"
       }
     }

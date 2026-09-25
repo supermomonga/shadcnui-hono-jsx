@@ -58,6 +58,11 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./.upstream/dropdown-menu"
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "./.upstream/hover-card"
 import { Input } from "./.upstream/input"
 import { Label } from "./.upstream/label"
 import {
@@ -104,6 +109,12 @@ import {
   SheetTrigger,
 } from "./.upstream/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./.upstream/tabs"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./.upstream/tooltip"
 
 function DialogDemo() {
   return (
@@ -443,6 +454,39 @@ function MenubarDemo() {
   )
 }
 
+function HoverDemo() {
+  return (
+    <main className="flex items-center gap-24 p-24 pl-48">
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger
+            render={<Button variant="outline" className="w-28" />}
+          >
+            Hover
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Add to library</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <HoverCard>
+        <HoverCardTrigger render={<Button variant="link" className="w-24" />}>
+          @nextjs
+        </HoverCardTrigger>
+        <HoverCardContent className="w-80">
+          <p className="text-sm font-semibold">@nextjs</p>
+          <p className="text-sm">
+            The React Framework created and maintained by @vercel.
+          </p>
+        </HoverCardContent>
+      </HoverCard>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children: ReactNode }) {
   return (
     <main className="flex items-center gap-4 p-8">
@@ -474,6 +518,7 @@ const DEMOS: Record<string, () => ReactNode> = {
     </main>
   ),
   select: () => <SelectDemo />,
+  hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,
   "dropdown-menu": () => <DropdownMenuDemo />,

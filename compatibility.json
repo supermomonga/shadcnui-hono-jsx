@@ -675,21 +675,27 @@
     },
     {
       "name": "hover-card",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/hover-card.json",
         "contentSha256": "3560a395f3c6fcf87f5d2293295f722b92ef3efaf0e97f611a7207c01e41ab67",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "Opening on hover or keyboard focus needs the client script `/shadcn/hover.js` (`<script type=\"module\" src=\"/shadcn/hover.js\">`); without it the card does not open and the trigger works as a plain link. The card is a native popover placed with CSS anchor positioning.",
+        "Controlled state (`open`, `onOpenChange`) is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/preview-card#PreviewCard"
+        "base-ui-primitive-mapped:@base-ui/react/preview-card#PreviewCard",
+        "classname-to-class",
+        "use-client-directive"
       ]
     },
     {
@@ -1227,11 +1233,8 @@
         "react-hook:useState",
         "react-runtime-api:React.useEffect",
         "react-runtime-api:React.useState",
-        "registry-dependency:tooltip",
         "registry-dependency:use-mobile",
         "registry-import:@/registry/base-nova/hooks/use-mobile",
-        "registry-import:@/registry/base-nova/ui/tooltip",
-        "render-prop:TooltipTrigger",
         "use-render-noncanonical"
       ]
     },
@@ -1486,20 +1489,28 @@
     },
     {
       "name": "tooltip",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/tooltip.json",
         "contentSha256": "999f24433b0bb597cedfdef3a5de7f6dbfa5e819672ae66d581c0780e275766b",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/tooltip#Tooltip"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "Opening on hover or keyboard focus needs the client script `/shadcn/hover.js` (`<script type=\"module\" src=\"/shadcn/hover.js\">`); without it the tooltip does not open, but the trigger's `aria-describedby` still exposes its text. The popup is a native popover placed with CSS anchor positioning.",
+        "Unlike Base UI, the popup has `role=\"tooltip\"` and describes the trigger. Controlled state (`open`, `onOpenChange`) is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/tooltip#Tooltip",
+        "classname-to-class",
+        "use-client-directive"
+      ]
     }
   ]
 }

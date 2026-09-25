@@ -56,6 +56,11 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu"
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../../components/ui/hover-card"
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 import {
@@ -107,6 +112,12 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../components/ui/tooltip"
 
 function DialogDemo() {
   return (
@@ -435,6 +446,37 @@ function MenubarDemo() {
   )
 }
 
+function HoverDemo() {
+  return (
+    <main class="flex items-center gap-24 p-24 pl-48">
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger render={<Button variant="outline" class="w-28" />}>
+            Hover
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Add to library</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <HoverCard>
+        <HoverCardTrigger render={<Button variant="link" class="w-24" />}>
+          @nextjs
+        </HoverCardTrigger>
+        <HoverCardContent class="w-80">
+          <p class="text-sm font-semibold">@nextjs</p>
+          <p class="text-sm">
+            The React Framework created and maintained by @vercel.
+          </p>
+        </HoverCardContent>
+      </HoverCard>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children?: unknown }) {
   return (
     <main class="flex items-center gap-4 p-8">
@@ -466,6 +508,7 @@ export const DEMOS = {
     </main>
   ),
   select: () => <SelectDemo />,
+  hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,
   "dropdown-menu": () => <DropdownMenuDemo />,
@@ -482,6 +525,7 @@ export const DEMOS = {
 export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
   "context-menu": ["menu"],
   "dropdown-menu": ["menu"],
+  hover: ["hover"],
   menubar: ["menu"],
   tabs: ["tabs"],
 }

@@ -501,7 +501,12 @@ function anchorPlacementStyle(
     "position-area": [p.side, span].filter(Boolean).join(" "),
     "position-try-fallbacks": block ? "flip-block" : "flip-inline",
     [toward]: `${p.sideOffset}px`,
-    ...(p.alignOffset === 0 ? {} : { [across]: `${p.alignOffset}px` }),
+    // A centered popup shifts as a whole (a one-sided margin would move it half as far).
+    ...(p.alignOffset === 0
+      ? {}
+      : p.align === "center"
+        ? { translate: block ? `${p.alignOffset}px 0` : `0 ${p.alignOffset}px` }
+        : { [across]: `${p.alignOffset}px` }),
     "--transform-origin": origin,
     // Base UI's size variables for popup classes (`w-(--anchor-width)`, ...).
     "--anchor-width": "anchor-size(width)",

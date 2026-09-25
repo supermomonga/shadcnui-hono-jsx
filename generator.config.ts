@@ -27,6 +27,7 @@ export const config: GeneratorConfig = {
     "dropdown-menu",
     "empty",
     "field",
+    "hover-card",
     "input",
     "item",
     "kbd",
@@ -50,5 +51,6 @@ export const config: GeneratorConfig = {
     "textarea",
     "toggle",
     "toggle-group",
+    "tooltip",
   ],
 }

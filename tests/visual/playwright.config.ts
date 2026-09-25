@@ -12,6 +12,7 @@ export default defineConfig({
     "select.spec.ts",
     "tabs.spec.ts",
     "menu.spec.ts",
+    "hover.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

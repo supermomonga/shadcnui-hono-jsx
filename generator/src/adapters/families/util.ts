@@ -386,7 +386,8 @@ export function insertReferencedHelpers(ctx: TransformContext): void {
   insertHelpers(ctx, texts.join("\n\n"))
   const inserted = texts.join("\n")
   for (const value of HONO_VALUES) {
-    if (new RegExp(`\\b${value}\\(`).test(inserted)) ctx.honoValues.add(value)
+    if (new RegExp(`\\b${value}\\s*[<(]`).test(inserted))
+      ctx.honoValues.add(value)
   }
   for (const type of HONO_TYPES) {
     if (new RegExp(`\\b${type}\\b`).test(inserted)) ctx.honoTypes.add(type)

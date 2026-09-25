@@ -109,8 +109,8 @@ export { Tag }`
 
   test.each([
     [
-      `import { Tooltip as P } from "@base-ui/react/tooltip"\nexport function D() { return <P.Root /> }`,
-      "base-ui-primitive-unmapped:@base-ui/react/tooltip#Tooltip",
+      `import { Toast as P } from "@base-ui/react/toast"\nexport function D() { return <P.Root /> }`,
+      "base-ui-primitive-unmapped:@base-ui/react/toast#Toast",
     ],
     [
       `export { DirectionProvider } from "@base-ui/react/direction-provider"`,
@@ -230,7 +230,14 @@ describe("classification of the committed upstream snapshot", () => {
   ])
 
   // Built with an optional client script (script families, docs/adr/0025).
-  const SCRIPTED = new Set(["context-menu", "dropdown-menu", "menubar", "tabs"])
+  const SCRIPTED = new Set([
+    "context-menu",
+    "dropdown-menu",
+    "hover-card",
+    "menubar",
+    "tabs",
+    "tooltip",
+  ])
 
   test.each([...config.components])(
     "%s (generation target) is direct, natively adapted or scripted",
@@ -245,7 +252,7 @@ describe("classification of the committed upstream snapshot", () => {
     }
   )
 
-  test.each(["tooltip", "hover-card", "combobox", "form"])(
+  test.each(["slider", "toast", "combobox", "form"])(
     "%s is unsupported",
     (name) => {
       expect(kindOf(name)).toBe("unsupported")

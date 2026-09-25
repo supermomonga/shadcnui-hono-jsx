@@ -8,6 +8,7 @@ import {
 } from "./controls"
 import { accordionFamily, collapsibleFamily } from "./details"
 import { alertDialogFamily, dialogFamily } from "./dialog"
+import { previewCardFamily, tooltipFamily } from "./hover"
 import { contextMenuFamily, menubarFamily, menuFamily } from "./menu"
 import { popoverFamily } from "./popover"
 import { progressFamily } from "./progress"
@@ -28,6 +29,7 @@ export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   menubarFamily,
   menuFamily,
   popoverFamily,
+  previewCardFamily,
   progressFamily,
   radioFamily,
   radioGroupFamily,
@@ -36,6 +38,7 @@ export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   tabsFamily,
   toggleFamily,
   toggleGroupFamily,
+  tooltipFamily,
 ]
 
 export function findFamilyRule(
