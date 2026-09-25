@@ -11,3 +11,4 @@
 * [11. Dispatch CI for upstream sync pull requests instead of using a bot token](0011-dispatch-ci-for-upstream-sync-pull-requests-instead-of-using-a-bot-token.md)
 * [12. Keep TypeScript 6 until HonoX supports TypeScript 7](0012-keep-typescript-6-until-honox-supports-typescript-7.md)
 * [13. Ship a reviewed license notice with every registry item and gate upstream license changes](0013-ship-a-reviewed-license-notice-with-every-registry-item-and-gate-upstream-license-changes.md)
+* [14. Verify visual parity against upstream React renders in an isolated test package](0014-verify-visual-parity-against-upstream-react-renders-in-an-isolated-test-package.md)

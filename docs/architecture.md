@@ -220,10 +220,13 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Registry validation | `shadcn registry validate` | `bun run verify`, CI |
 | Registry install into a clean Hono project | `tests/registry/` | `bun run test:registry`, CI |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
+| Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
 
-Browser (Playwright) and visual regression tests are deferred until interactive
-primitives exist; the current components were checked visually in both
-examples in light and dark mode.
+`tests/visual` renders the same case data with the generated components and
+with the upstream React sources from the snapshot, shares one Tailwind build,
+and fails when screenshots differ by more than 0.1% of pixels. React is only
+installed in that package
+([ADR 0014](./adr/0014-verify-visual-parity-against-upstream-react-renders-in-an-isolated-test-package.md)).
 
 ## Licensing
 

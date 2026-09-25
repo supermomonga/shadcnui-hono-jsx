@@ -15,6 +15,17 @@ updates:
       # See docs/adr/0012-keep-typescript-6-until-honox-supports-typescript-7.md.
       - dependency-name: typescript
         update-types: ["version-update:semver-major"]
+  - package-ecosystem: bun
+    directory: /tests/visual
+    schedule:
+      interval: weekly
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # See docs/adr/0012-keep-typescript-6-until-honox-supports-typescript-7.md.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
