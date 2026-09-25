@@ -134,28 +134,32 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | Component | Status | Conversion | Visual parity | Known differences |
 | --- | --- | --- | --- | --- |
 | alert | experimental | generated | unverified | Accepts `class` instead of `className`. |
+| aspect-ratio | experimental | generated | unverified | Accepts `class` instead of `className`. |
 | badge | experimental | generated | unverified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
+| bubble | experimental | generated | unverified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
 | button | experimental | generated | unverified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` and `focusableWhenDisabled` are not supported. Accepts `class` instead of `className`. |
 | card | experimental | generated | unverified | Accepts `class` instead of `className`. |
+| empty | experimental | generated | unverified | Accepts `class` instead of `className`. |
 | input | experimental | generated | unverified | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
+| kbd | experimental | generated | unverified | Accepts `class` instead of `className`. |
 | label | experimental | generated | unverified | Accepts `class` instead of `className`. |
+| marker | experimental | generated | unverified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
+| message | experimental | generated | unverified | Accepts `class` instead of `className`. |
 | separator | experimental | generated | unverified | Accepts `class` instead of `className`. |
 | skeleton | experimental | generated | unverified | Accepts `class` instead of `className`. |
 | table | experimental | generated | unverified | Accepts `class` instead of `className`. |
 | textarea | experimental | generated | unverified | Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (53 upstream components)</summary>
+<summary>Not yet available (47 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
 | accordion | unsupported | `base-ui-primitive-unmapped:@base-ui/react/accordion#Accordion`, `icon-placeholder` |
 | alert-dialog | unsupported | `base-ui-primitive-unmapped:@base-ui/react/alert-dialog#AlertDialog`, `registry-dependency:button`, `registry-import:@/registry/base-nova/ui/button` |
-| aspect-ratio | direct | not generated yet |
 | attachment | unsupported | `registry-dependency:button`, `registry-import:@/registry/base-nova/ui/button` |
 | avatar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/avatar#Avatar` |
 | breadcrumb | unsupported | `icon-placeholder` |
-| bubble | direct | not generated yet |
 | button-group | unsupported | `registry-dependency:separator`, `registry-import:@/registry/base-nova/ui/separator` |
 | calendar | unsupported | `icon-placeholder`, `react-hook:useEffect`, `react-hook:useRef`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useRef`, `registry-dependency:button`, `registry-import:@/registry/base-nova/ui/button`, `unknown-import:react-day-picker` |
 | carousel | unsupported | `event-handler:onClick`, `event-handler:onKeyDownCapture`, `icon-placeholder`, `react-hook:useCallback`, `react-hook:useCarousel`, `react-hook:useContext`, `react-hook:useEffect`, `react-hook:useEmblaCarousel`, `react-hook:useState`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useCallback`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `react-type-unmapped:React.KeyboardEvent`, `registry-dependency:button`, `registry-import:@/registry/base-nova/ui/button`, `unknown-import:embla-carousel-react` |
@@ -169,17 +173,13 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | direction | unsupported | `base-ui-primitive-unmapped:@base-ui/react/direction-provider#DirectionProvider`, `base-ui-primitive-unmapped:@base-ui/react/direction-provider#useDirection` |
 | drawer | unsupported | `base-ui-primitive-unmapped:@base-ui/react/drawer#Drawer`, `react-hook:useContext`, `react-hook:useDrawer`, `react-hook:useMemo`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useMemo` |
 | dropdown-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menu#Menu`, `icon-placeholder` |
-| empty | direct | not generated yet |
 | field | unsupported | `react-hook:useMemo`, `react-runtime-api:useMemo`, `registry-dependency:label`, `registry-dependency:separator`, `registry-import:@/registry/base-nova/ui/label`, `registry-import:@/registry/base-nova/ui/separator` |
 | form | unsupported | `no-files` |
 | hover-card | unsupported | `base-ui-primitive-unmapped:@base-ui/react/preview-card#PreviewCard` |
 | input-group | unsupported | `event-handler:onClick`, `registry-dependency:button`, `registry-dependency:input`, `registry-dependency:textarea`, `registry-import:@/registry/base-nova/ui/button`, `registry-import:@/registry/base-nova/ui/input`, `registry-import:@/registry/base-nova/ui/textarea` |
 | input-otp | unsupported | `icon-placeholder`, `react-hook:useContext`, `react-runtime-api:React.useContext`, `unknown-import:input-otp` |
 | item | unsupported | `registry-dependency:separator`, `registry-import:@/registry/base-nova/ui/separator` |
-| kbd | direct | not generated yet |
-| marker | direct | not generated yet |
 | menubar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menu#Menu`, `base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar`, `icon-placeholder`, `registry-dependency:dropdown-menu`, `registry-import:@/registry/base-nova/ui/dropdown-menu` |
-| message | direct | not generated yet |
 | message-scroller | unsupported | `icon-placeholder`, `registry-dependency:button`, `registry-import:@/registry/base-nova/ui/button`, `unknown-import:@shadcn/react/message-scroller` |
 | native-select | unsupported | `icon-placeholder` |
 | navigation-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu`, `icon-placeholder`, `react-type-unmapped:React.ComponentPropsWithRef` |

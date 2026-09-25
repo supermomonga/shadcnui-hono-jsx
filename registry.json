@@ -67,6 +67,36 @@
       }
     },
     {
+      "name": "aspect-ratio",
+      "type": "registry:item",
+      "title": "Aspect Ratio",
+      "description": "Hono JSX port of the shadcn/ui base-nova aspect-ratio component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/aspect-ratio.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/aspect-ratio.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "aspect-ratio",
+          "style": "base-nova",
+          "contentSha256": "3d25d73f77dedf7c11f1e089114b9c1ed142f2aa44c9c3398c06f7d046809ea9",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "badge",
       "type": "registry:item",
       "title": "Badge",
@@ -90,6 +120,36 @@
           "name": "badge",
           "style": "base-nova",
           "contentSha256": "448725bcf39981b25aa06f804eb8dc46c07923976f973a4ad19a4c51b82130e9",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "bubble",
+      "type": "registry:item",
+      "title": "Bubble",
+      "description": "Hono JSX port of the shadcn/ui base-nova bubble component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/bubble.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/bubble.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "bubble",
+          "style": "base-nova",
+          "contentSha256": "a21e25e29a040e39a72764312229ea8f294131e6b6a23f4520108d5904de405e",
           "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
         },
         "classification": "direct",
@@ -157,6 +217,36 @@
       }
     },
     {
+      "name": "empty",
+      "type": "registry:item",
+      "title": "Empty",
+      "description": "Hono JSX port of the shadcn/ui base-nova empty component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/empty.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/empty.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "empty",
+          "style": "base-nova",
+          "contentSha256": "16a341dcd4e1fa3c690e67bbef1e2649834efc9b2f3057a4a0f7e2faee1a06d1",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "input",
       "type": "registry:item",
       "title": "Input",
@@ -187,6 +277,36 @@
       }
     },
     {
+      "name": "kbd",
+      "type": "registry:item",
+      "title": "Kbd",
+      "description": "Hono JSX port of the shadcn/ui base-nova kbd component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/kbd.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/kbd.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "kbd",
+          "style": "base-nova",
+          "contentSha256": "241804b8d92bd456214f6b56bb87f9e0a05a56fe13c64cfb383653e360202702",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "label",
       "type": "registry:item",
       "title": "Label",
@@ -210,6 +330,66 @@
           "name": "label",
           "style": "base-nova",
           "contentSha256": "0c8c72d16df2e090ca419abf4f8378c6cf77fb67c8ac67d424997ae1199342b0",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "marker",
+      "type": "registry:item",
+      "title": "Marker",
+      "description": "Hono JSX port of the shadcn/ui base-nova marker component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/marker.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/marker.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "marker",
+          "style": "base-nova",
+          "contentSha256": "cf39a4e633750a9bc57bab7bb3658cfa4ed1b1f9ed79769acd48a2ef8100c140",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "message",
+      "type": "registry:item",
+      "title": "Message",
+      "description": "Hono JSX port of the shadcn/ui base-nova message component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/message.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/message.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "message",
+          "style": "base-nova",
+          "contentSha256": "553a3189896b3b89cfee6837bd8d4cb8ec5c354104951cadcf69ba8085bd9547",
           "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
         },
         "classification": "direct",

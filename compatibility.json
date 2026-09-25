@@ -65,20 +65,24 @@
     },
     {
       "name": "aspect-ratio",
-      "status": "unsupported",
-      "conversion": null,
+      "status": "experimental",
+      "conversion": "generated",
       "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/aspect-ratio.json",
         "contentSha256": "3d25d73f77dedf7c11f1e089114b9c1ed142f2aa44c9c3398c06f7d046809ea9",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": ["Convertible, but not generated yet."],
-      "reasons": []
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps",
+        "react-type-rewrite:React.CSSProperties"
+      ]
     },
     {
       "name": "attachment",
@@ -156,20 +160,27 @@
     },
     {
       "name": "bubble",
-      "status": "unsupported",
-      "conversion": null,
+      "status": "experimental",
+      "conversion": "generated",
       "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/bubble.json",
         "contentSha256": "a21e25e29a040e39a72764312229ea8f294131e6b6a23f4520108d5904de405e",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": ["Convertible, but not generated yet."],
-      "reasons": []
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "`render` (element replacement) is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-use-render",
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps"
+      ]
     },
     {
       "name": "button",
@@ -526,20 +537,24 @@
     },
     {
       "name": "empty",
-      "status": "unsupported",
-      "conversion": null,
+      "status": "experimental",
+      "conversion": "generated",
       "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/empty.json",
         "contentSha256": "16a341dcd4e1fa3c690e67bbef1e2649834efc9b2f3057a4a0f7e2faee1a06d1",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": ["Convertible, but not generated yet."],
-      "reasons": []
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "cn-marker:cn-font-heading",
+        "react-type-rewrite:React.ComponentProps"
+      ]
     },
     {
       "name": "field",
@@ -694,20 +709,23 @@
     },
     {
       "name": "kbd",
-      "status": "unsupported",
-      "conversion": null,
+      "status": "experimental",
+      "conversion": "generated",
       "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/kbd.json",
         "contentSha256": "241804b8d92bd456214f6b56bb87f9e0a05a56fe13c64cfb383653e360202702",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": ["Convertible, but not generated yet."],
-      "reasons": []
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps"
+      ]
     },
     {
       "name": "label",
@@ -732,20 +750,27 @@
     },
     {
       "name": "marker",
-      "status": "unsupported",
-      "conversion": null,
+      "status": "experimental",
+      "conversion": "generated",
       "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/marker.json",
         "contentSha256": "cf39a4e633750a9bc57bab7bb3658cfa4ed1b1f9ed79769acd48a2ef8100c140",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": ["Convertible, but not generated yet."],
-      "reasons": []
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "`render` (element replacement) is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-use-render",
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps"
+      ]
     },
     {
       "name": "menubar",
@@ -772,20 +797,23 @@
     },
     {
       "name": "message",
-      "status": "unsupported",
-      "conversion": null,
+      "status": "experimental",
+      "conversion": "generated",
       "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/message.json",
         "contentSha256": "553a3189896b3b89cfee6837bd8d4cb8ec5c354104951cadcf69ba8085bd9547",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": ["Convertible, but not generated yet."],
-      "reasons": []
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps"
+      ]
     },
     {
       "name": "message-scroller",
