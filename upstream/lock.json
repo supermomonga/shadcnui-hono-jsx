@@ -16,11 +16,20 @@
     "lastModified": null,
     "fetchedAt": "2026-09-25T11:42:51.028Z"
   },
+  "license": {
+    "url": "https://raw.githubusercontent.com/shadcn-ui/ui/main/LICENSE.md",
+    "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f",
+    "etag": "W/\"33fd8de22ac0df0676ff0e23a1567085ff0602ea23e0e53108a5dbcf5efe7591\"",
+    "lastModified": null,
+    "fetchedAt": "2026-09-25T12:47:28.920Z"
+  },
   "tailwindCss": {
     "package": "shadcn",
     "version": "4.21.0",
     "file": "dist/tailwind.css",
-    "sha256": "bc7d83425702955b4cb67cb14ede9d603f9d912376d57a2d81d661094d2a782a"
+    "sha256": "bc7d83425702955b4cb67cb14ede9d603f9d912376d57a2d81d661094d2a782a",
+    "license": "MIT",
+    "licenseSha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
   },
   "items": {
     "accordion": {

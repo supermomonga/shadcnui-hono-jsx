@@ -18,6 +18,10 @@ export interface VendoredSource {
   version: string
   file: string
   text: string
+  /** `license` field of the package's package.json. */
+  license: string | null
+  /** The package's LICENSE.md, if present. */
+  licenseText: string | null
 }
 
 export interface SyncOptions {
@@ -55,6 +59,12 @@ export interface SyncResult {
   /** Vendored tailwind.css before/after (with package versions), when it changed. */
   tailwindCss:
     | (TextChange & { fromVersion: string | null; toVersion: string })
+    | null
+  /** Upstream repository LICENSE.md before/after, when it changed. */
+  license: TextChange | null
+  /** Vendored package licensing before/after, when it changed. */
+  packageLicense:
+    | (TextChange & { fromLicense: string | null; toLicense: string | null })
     | null
   lockChanged: boolean
 }
@@ -211,6 +221,30 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     }
   }
 
+  // Upstream repository license: snapshotted for review, never redistributed.
+  let licenseChange: TextChange | null = null
+  const licenseResult = await fetchText(config.licenseUrl, {
+    etag: etagFor(lock.license, store.licenseFile),
+    fetchImpl,
+  })
+  if (licenseResult.status === 200) {
+    const hash = sha256(licenseResult.text)
+    if (lock.license?.sha256 !== hash || !existsSync(store.licenseFile)) {
+      licenseChange = {
+        before: store.readOptional(store.licenseFile),
+        after: licenseResult.text,
+      }
+      store.writeText(store.licenseFile, licenseResult.text)
+      lock.license = {
+        url: config.licenseUrl,
+        sha256: hash,
+        etag: licenseResult.etag,
+        lastModified: licenseResult.lastModified,
+        fetchedAt: now,
+      }
+    }
+  }
+
   // Vendored shadcn/tailwind.css from the pinned `shadcn` package.
   const css = options.tailwindCss
   const cssHash = sha256(css.text)
@@ -230,13 +264,34 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
       toVersion: css.version,
     }
     store.writeText(store.tailwindCssFile, css.text)
+    tailwindCssChanged = true
+  }
+  const packageLicenseText = css.licenseText ?? ""
+  const packageLicenseSha =
+    css.licenseText === null ? null : sha256(css.licenseText)
+  let packageLicenseChange: SyncResult["packageLicense"] = null
+  if (
+    lock.tailwindCss?.license !== css.license ||
+    lock.tailwindCss?.licenseSha256 !== packageLicenseSha ||
+    !existsSync(store.packageLicenseFile)
+  ) {
+    packageLicenseChange = {
+      before: store.readOptional(store.packageLicenseFile),
+      after: packageLicenseText,
+      fromLicense: lock.tailwindCss?.license ?? null,
+      toLicense: css.license,
+    }
+    store.writeText(store.packageLicenseFile, packageLicenseText)
+  }
+  if (tailwindCssChanged || packageLicenseChange) {
     lock.tailwindCss = {
       package: css.package,
       version: css.version,
       file: css.file,
       sha256: cssHash,
+      license: css.license,
+      licenseSha256: packageLicenseSha,
     }
-    tailwindCssChanged = true
   }
 
   const lockChanged = store.writeLock(lock)
@@ -250,6 +305,8 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     tailwindCssChanged,
     theme: themeChange,
     tailwindCss: tailwindCssChange,
+    license: licenseChange,
+    packageLicense: packageLicenseChange,
     lockChanged,
   }
 }

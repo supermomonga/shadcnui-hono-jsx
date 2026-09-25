@@ -7,6 +7,8 @@ export interface GeneratorConfig {
   registryBaseUrl: string
   /** URL of the upstream theme (`registry:base`) item for the style. */
   themeUrl: string
+  /** URL of the upstream repository's license, snapshotted for review (never redistributed as-is). */
+  licenseUrl: string
   /** Upstream item types that are snapshotted and classified. */
   trackedTypes: readonly string[]
   /** Upstream item names that are translated into Hono JSX components. */

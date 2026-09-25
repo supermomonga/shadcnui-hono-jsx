@@ -23,6 +23,10 @@ export interface VendoredLock {
   version: string
   file: string
   sha256: string
+  /** `license` field of the package's package.json. */
+  license: string | null
+  /** sha256 of the package's LICENSE.md. */
+  licenseSha256: string | null
 }
 
 export interface UpstreamLock {
@@ -31,6 +35,8 @@ export interface UpstreamLock {
   registryBaseUrl: string
   index: ResourceLock | null
   theme: ResourceLock | null
+  /** Upstream repository license (monitored, see generator/src/licenses.ts). */
+  license: ResourceLock | null
   tailwindCss: VendoredLock | null
   items: Record<string, ItemLock>
 }
@@ -45,6 +51,7 @@ export function emptyLock(
     registryBaseUrl,
     index: null,
     theme: null,
+    license: null,
     tailwindCss: null,
     items: {},
   }
@@ -82,7 +89,17 @@ export function serializeLock(lock: UpstreamLock): string {
     registryBaseUrl: lock.registryBaseUrl,
     index: lock.index,
     theme: lock.theme,
-    tailwindCss: lock.tailwindCss,
+    license: lock.license ?? null,
+    tailwindCss: lock.tailwindCss
+      ? {
+          package: lock.tailwindCss.package,
+          version: lock.tailwindCss.version,
+          file: lock.tailwindCss.file,
+          sha256: lock.tailwindCss.sha256,
+          license: lock.tailwindCss.license ?? null,
+          licenseSha256: lock.tailwindCss.licenseSha256 ?? null,
+        }
+      : null,
     items,
   })
 }

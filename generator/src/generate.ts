@@ -63,7 +63,6 @@ export function generateComponent(
     contentSha256: lockEntry.contentSha256,
     upstreamCommit: lockEntry.upstreamCommit,
     mode,
-    repository: deps.config.repository,
   })
   const path = componentPath(name)
   return {

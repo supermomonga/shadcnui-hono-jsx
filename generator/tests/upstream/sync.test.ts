@@ -10,6 +10,8 @@ import { syncUpstream, type VendoredSource } from "../../src/upstream/sync"
 
 const BASE = "https://registry.test/r"
 const THEME_URL = "https://registry.test/init"
+const LICENSE_URL = "https://registry.test/LICENSE.md"
+const MIT_TEXT = "MIT License\n\nCopyright (c) 2023 shadcn\n"
 const HEAD = "a".repeat(40)
 
 const config: GeneratorConfig = {
@@ -17,6 +19,7 @@ const config: GeneratorConfig = {
   style: "test-style",
   registryBaseUrl: BASE,
   themeUrl: THEME_URL,
+  licenseUrl: LICENSE_URL,
   trackedTypes: ["registry:ui"],
   components: ["button"],
 }
@@ -26,6 +29,8 @@ const tailwindCss: VendoredSource = {
   version: "1.0.0",
   file: "dist/tailwind.css",
   text: "@custom-variant data-open (&[data-open]);\n",
+  license: "MIT",
+  licenseText: MIT_TEXT,
 }
 
 function item(name: string, content: string) {
@@ -65,7 +70,11 @@ function fakeRegistry(
       "last-modified": "Mon, 21 Sep 2026 10:00:00 GMT",
     }
     if (resource.etag) headers.etag = resource.etag
-    return new Response(JSON.stringify(resource.body), { headers })
+    const body =
+      typeof resource.body === "string"
+        ? resource.body
+        : JSON.stringify(resource.body)
+    return new Response(body, { headers })
   }
   return { fetchImpl, requests }
 }
@@ -89,6 +98,7 @@ function registry(items: Record<string, { content: string; etag?: string }>) {
       etag,
     })
   }
+  resources.set(LICENSE_URL, { body: MIT_TEXT, etag: '"license"' })
   resources.set(THEME_URL, {
     body: {
       name: "test-style",
@@ -158,7 +168,12 @@ describe("syncUpstream", () => {
       version: "1.0.0",
       file: "dist/tailwind.css",
       sha256: sha256(tailwindCss.text),
+      license: "MIT",
+      licenseSha256: sha256(MIT_TEXT),
     })
+    expect(lock?.license?.sha256).toBe(sha256(MIT_TEXT))
+    expect(store.readOptional(store.licenseFile)).toBe(MIT_TEXT)
+    expect(store.readOptional(store.packageLicenseFile)).toBe(MIT_TEXT)
   })
 
   test("is idempotent: a second run without upstream changes writes nothing", async () => {
@@ -256,5 +271,32 @@ describe("syncUpstream", () => {
     await expect(run(fakeRegistry(resources).fetchImpl)).rejects.toThrow(
       /missing type/
     )
+  })
+
+  test("snapshots upstream license changes for review", async () => {
+    await run(fakeRegistry(registry({ button: { content: "v1" } })).fetchImpl)
+    const resources = registry({ button: { content: "v1" } })
+    resources.set(LICENSE_URL, { body: "Business Source License\n" })
+    const result = await syncUpstream({
+      config,
+      store,
+      tailwindCss: {
+        ...tailwindCss,
+        license: "BUSL-1.1",
+        licenseText: "BUSL\n",
+      },
+      fetchImpl: fakeRegistry(resources).fetchImpl,
+    })
+    expect(result.license).toEqual({
+      before: MIT_TEXT,
+      after: "Business Source License\n",
+    })
+    expect(result.packageLicense).toMatchObject({
+      before: MIT_TEXT,
+      after: "BUSL\n",
+      fromLicense: "MIT",
+      toLicense: "BUSL-1.1",
+    })
+    expect(store.readLock()?.tailwindCss?.license).toBe("BUSL-1.1")
   })
 })

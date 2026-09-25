@@ -1,6 +1,7 @@
 import type { Classification } from "../analyzer/classify"
 import type { GeneratorConfig } from "../config"
 import type { OutputFile } from "../emit/write"
+import { LICENSE_NOTICE_PATH } from "../licenses"
 import {
   ALLOWED_REGISTRY_DEPENDENCIES,
   findImports,
@@ -98,6 +99,7 @@ export function buildRegistry(deps: {
     files: [
       universalFile(`${STYLES_DIR}/theme.css`),
       universalFile(`${STYLES_DIR}/tailwind.css`),
+      universalFile(LICENSE_NOTICE_PATH),
     ],
     docs: `Import the theme after Tailwind CSS in your stylesheet: @import "tailwindcss"; @import "<relative path>/styles/shadcn/theme.css"; and make sure Tailwind scans components/ui (add @source if it is outside your source root).`,
     meta: {
@@ -121,7 +123,10 @@ export function buildRegistry(deps: {
         title: title(component.name),
         description: `Hono JSX port of the shadcn/ui ${config.style} ${component.name} component.`,
         dependencies: collectDependencies(component.file),
-        files: [universalFile(component.file.path)],
+        files: [
+          universalFile(component.file.path),
+          universalFile(LICENSE_NOTICE_PATH),
+        ],
         docs: `Requires hono >= ${MIN_HONO_VERSION} with "jsxImportSource": "hono/jsx", and the ${config.repository}/${THEME_ITEM} item for styles.`,
         meta: {
           upstream: {

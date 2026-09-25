@@ -11,6 +11,11 @@ import {
   generateComponent,
 } from "../generate"
 import {
+  buildLicenseNotice,
+  checkUpstreamLicenses,
+  LICENSE_NOTICE_PATH,
+} from "../licenses"
+import {
   buildManifest,
   renderCompatibilityTable,
   replaceReadmeRegion,
@@ -37,6 +42,23 @@ const lock = store.readLock()
 if (!lock?.theme || !lock.tailwindCss) {
   console.error(
     "upstream/lock.json is incomplete; run `bun run upstream:sync` first."
+  )
+  process.exit(1)
+}
+
+// Upstream licensing must match the reviewed record before anything derived
+// from upstream is (re)generated; a change needs a human decision.
+const licenseProblems = checkUpstreamLicenses(lock, {
+  repository: store.readOptional(store.licenseFile),
+  package: store.readOptional(store.packageLicenseFile),
+})
+if (licenseProblems.length > 0) {
+  console.error(
+    "Upstream licensing changed and needs review before generating:"
+  )
+  for (const problem of licenseProblems) console.error(`  - ${problem}`)
+  console.error(
+    "Review upstream/licenses/ and, if redistribution is still permitted, update ACCEPTED_UPSTREAM_LICENSE and the notice in generator/src/licenses.ts (see docs/adr/0013)."
   )
   process.exit(1)
 }
@@ -75,15 +97,15 @@ files.push({
   text: buildThemeCss(store.readTheme(), {
     url: lock.theme.url,
     sha256: lock.theme.sha256,
-    repository: config.repository,
   }),
 })
 files.push({
   path: `${STYLES_DIR}/tailwind.css`,
-  text: buildVendoredTailwindCss(store.readTailwindCss(), {
-    ...lock.tailwindCss,
-    repository: config.repository,
-  }),
+  text: buildVendoredTailwindCss(store.readTailwindCss(), lock.tailwindCss),
+})
+files.push({
+  path: LICENSE_NOTICE_PATH,
+  text: buildLicenseNotice(config.repository),
 })
 files.push(json(buildRegistry({ config, lock, components }), "registry.json"))
 const manifest = buildManifest({ config, store, lock })

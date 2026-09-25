@@ -1,9 +1,10 @@
-import { writeFileSync } from "node:fs"
+import { appendFileSync, writeFileSync } from "node:fs"
 import { parseArgs } from "node:util"
 import { config } from "../../../generator.config"
 import { COMPONENT_ADAPTERS } from "../adapters/components"
 import { type ClassificationKind, classify } from "../analyzer/classify"
 import { collectFacts } from "../analyzer/facts"
+import { checkUpstreamLicenses } from "../licenses"
 import { ROOT } from "../paths"
 import { type ClassificationChange, renderSyncReport } from "../upstream/report"
 import { UpstreamStore } from "../upstream/store"
@@ -61,6 +62,25 @@ console.log(
     : "upstream snapshot is up to date"
 )
 
+const licenseProblems = checkUpstreamLicenses(
+  store.readLock() ?? emptyLockError(),
+  {
+    repository: store.readOptional(store.licenseFile),
+    package: store.readOptional(store.packageLicenseFile),
+  }
+)
+if (licenseProblems.length > 0) {
+  console.warn("Upstream licensing differs from the reviewed record:")
+  for (const problem of licenseProblems) console.warn(`  - ${problem}`)
+}
+// Lets the upstream-check workflow label the PR for license review.
+if (process.env.GITHUB_OUTPUT) {
+  appendFileSync(
+    process.env.GITHUB_OUTPUT,
+    `license_review=${licenseProblems.length > 0 ? "true" : "false"}\n`
+  )
+}
+
 if (values.report) {
   const names = [...new Set([...before.keys(), ...after.keys()])].sort()
   const classifications: ClassificationChange[] = names.map((name) => ({
@@ -75,7 +95,12 @@ if (values.report) {
       result,
       classifications,
       generated: config.components,
+      licenseProblems,
     })
   )
   console.log(`report written to ${values.report}`)
+}
+
+function emptyLockError(): never {
+  throw new Error("upstream/lock.json was not written")
 }

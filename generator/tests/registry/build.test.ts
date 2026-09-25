@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test"
 import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { config } from "../../../generator.config"
+import { LICENSE_NOTICE_PATH } from "../../src/licenses"
 import { ROOT } from "../../src/paths"
 import { ALLOWED_REGISTRY_DEPENDENCIES } from "../../src/policy"
 import { collectDependencies, type Registry } from "../../src/registry/build"
@@ -26,6 +27,7 @@ describe("registry.json", () => {
         expect(file.target).toBe(`~/${file.path}`)
         expect(existsSync(path.join(ROOT, file.path))).toBe(true)
       }
+      expect(item.files.map((file) => file.path)).toContain(LICENSE_NOTICE_PATH)
       expect(item).not.toHaveProperty("registryDependencies")
       for (const dependency of item.dependencies ?? []) {
         expect(ALLOWED_REGISTRY_DEPENDENCIES).toContain(dependency)

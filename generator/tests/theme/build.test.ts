@@ -60,7 +60,6 @@ describe("buildThemeCss", () => {
   const css = buildThemeCss(theme, {
     url: "https://x/init",
     sha256: "abc",
-    repository: "o/r",
   })
 
   test("orders imports, dark variant, variables, theme mappings and base layer", () => {
@@ -80,6 +79,10 @@ describe("buildThemeCss", () => {
   test("does not import tailwindcss itself and records provenance", () => {
     expect(css).not.toMatch(/^@import "tailwindcss"/m)
     expect(css).toContain("upstream-revision: sha256:abc")
+    expect(css).toContain(" * SPDX-License-Identifier: MIT\n")
+    expect(css).toContain(
+      " * Full license: LICENSE-shadcnui-hono-jsx.txt at the project root.\n"
+    )
     expect(css.endsWith("}\n")).toBe(true)
   })
 })

@@ -15,6 +15,8 @@ export interface ReportInput {
   classifications: ClassificationChange[]
   /** Items translated by the generator, highlighted in the report. */
   generated: readonly string[]
+  /** Differences from the reviewed upstream licensing (see generator/src/licenses.ts). */
+  licenseProblems?: readonly string[]
 }
 
 /** GitHub rejects PR bodies above 65,536 characters. */
@@ -71,9 +73,20 @@ export function renderSyncReport(input: ReportInput): string {
     .map((c) => c.name)
     .filter((name) => generated.includes(name))
 
-  const lines = [
-    `## Upstream sync: shadcn/ui ${input.style}`,
-    "",
+  const licenseProblems = input.licenseProblems ?? []
+  const lines = [`## Upstream sync: shadcn/ui ${input.style}`, ""]
+  if (licenseProblems.length > 0) {
+    lines.push(
+      "> [!CAUTION]",
+      "> **Upstream licensing changed. Do not merge until a maintainer has reviewed whether and how the code may still be redistributed.**",
+      ">",
+      ...licenseProblems.map((problem) => `> - ${problem}`),
+      ">",
+      "> Generation stays blocked until `ACCEPTED_UPSTREAM_LICENSE` and the notice in `generator/src/licenses.ts` are updated after review (docs/adr/0013). The license diffs are listed first below.",
+      ""
+    )
+  }
+  lines.push(
     `- Added: ${names(result.added)}`,
     `- Changed: ${names(result.changed)}`,
     `- Removed: ${names(result.removed)}`,
@@ -84,9 +97,10 @@ export function renderSyncReport(input: ReportInput): string {
         ? `${result.tailwindCss.fromVersion ?? "none"} -> ${result.tailwindCss.toVersion}`
         : "unchanged"
     }`,
+    `- Upstream license: ${result.license || result.packageLicense ? "changed" : "unchanged"}`,
     "",
-    "Review the diffs below. Upstream changes can alter behavior; this PR is never merged automatically.",
-  ]
+    "Review the diffs below. Upstream changes can alter behavior; this PR is never merged automatically."
+  )
 
   const reclassified = input.classifications.filter((c) => c.before !== c.after)
   if (reclassified.length > 0) {
@@ -103,6 +117,17 @@ export function renderSyncReport(input: ReportInput): string {
   }
 
   const sections = [
+    ...(result.license
+      ? [textSection("LICENSE.md (shadcn-ui/ui)", result.license)]
+      : []),
+    ...(result.packageLicense
+      ? [
+          textSection(
+            `LICENSE.md (shadcn package; license field ${result.packageLicense.fromLicense ?? "none"} -> ${result.packageLicense.toLicense ?? "none"})`,
+            result.packageLicense
+          ),
+        ]
+      : []),
     ...[...result.changed, ...result.added, ...result.removed]
       .sort(
         (a, b) =>

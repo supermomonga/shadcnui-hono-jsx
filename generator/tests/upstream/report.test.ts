@@ -19,6 +19,8 @@ const empty: SyncResult = {
   tailwindCssChanged: false,
   theme: null,
   tailwindCss: null,
+  license: null,
+  packageLicense: null,
   lockChanged: false,
 }
 
@@ -94,5 +96,47 @@ describe("renderSyncReport", () => {
     })
     expect(report.length).toBeLessThanOrEqual(MAX_REPORT_LENGTH + 200)
     expect(report).toMatch(/diff section\(s\) omitted for length/)
+  })
+
+  test("puts license changes first with a caution to block merging", () => {
+    const report = renderSyncReport({
+      style: "base-nova",
+      generated: [],
+      classifications: [],
+      licenseProblems: [
+        "upstream shadcn-ui/ui LICENSE.md differs from the reviewed text",
+      ],
+      result: {
+        ...empty,
+        changed: [
+          {
+            name: "kbd",
+            before: item("kbd", "a\n"),
+            after: item("kbd", "b\n"),
+          },
+        ],
+        license: { before: "MIT License\n", after: "Apache License\n" },
+      },
+    })
+    expect(report).toContain("> [!CAUTION]")
+    expect(report).toContain(
+      "> - upstream shadcn-ui/ui LICENSE.md differs from the reviewed text"
+    )
+    expect(report).toContain("- Upstream license: changed")
+    expect(report.indexOf("LICENSE.md (shadcn-ui/ui)")).toBeLessThan(
+      report.indexOf("<summary>kbd")
+    )
+    expect(report).toContain("+Apache License")
+  })
+
+  test("has no caution when licensing is unchanged", () => {
+    const report = renderSyncReport({
+      style: "s",
+      generated: [],
+      classifications: [],
+      result: empty,
+    })
+    expect(report).not.toContain("[!CAUTION]")
+    expect(report).toContain("- Upstream license: unchanged")
   })
 })

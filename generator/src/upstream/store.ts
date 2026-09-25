@@ -47,6 +47,20 @@ export class UpstreamStore {
     return path.join(this.styleDir, "shadcn-tailwind.css")
   }
 
+  /** Upstream repository LICENSE.md (monitored only). */
+  get licenseFile(): string {
+    return path.join(this.dir, "licenses", "shadcn-ui.LICENSE.md")
+  }
+
+  /** LICENSE.md of the vendored npm package (monitored only). */
+  get packageLicenseFile(): string {
+    return path.join(this.dir, "licenses", "shadcn-package.LICENSE.md")
+  }
+
+  readOptional(file: string): string | null {
+    return existsSync(file) ? readFileSync(file, "utf8") : null
+  }
+
   itemFile(name: string): string {
     return path.join(this.styleDir, "items", `${name}.json`)
   }
