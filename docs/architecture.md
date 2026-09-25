@@ -144,14 +144,16 @@ rewrite each part in place, so every upstream component on the same primitive
 The boundary is behavior: anything that needs client state or event handlers
 is either mapped onto a browser primitive (native family: `<dialog>` with
 Invoker Commands, `<details>`/`<summary>` for Accordion and Collapsible,
-[ADR 0020](./adr/0020-implement-accordion-and-collapsible-on-native-details-and-summary.md),
+[ADR 0020](./adr/0020-implement-accordion-and-collapsible-on-native-details-and-summary.md)
+(a Collapsible whose trigger is not its first child is toggled by a script instead,
+[ADR 0026](./adr/0026-toggle-a-collapsible-with-a-script-when-its-trigger-is-not-the-first-child.md)),
 native inputs for form controls,
 [ADR 0022](./adr/0022-implement-form-controls-on-native-inputs.md), the
 `popover` attribute and CSS anchor positioning for Popover,
 [ADR 0023](./adr/0023-build-popover-on-the-native-popover-attribute-and-css-anchor-positioning.md),
 and the customizable `<select>` for Select,
 [ADR 0024](./adr/0024-build-select-on-the-customizable-native-select-element.md))
-or given an optional client script (script family: Tabs, Menu, ContextMenu, Menubar, Tooltip, PreviewCard, Slider, Combobox, NavigationMenu, Avatar, ScrollArea,
+or given an optional client script (script family: Tabs, Menu, ContextMenu, Menubar, Tooltip, PreviewCard, Slider, Combobox, NavigationMenu, Avatar, ScrollArea, Collapsible,
 [ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)).
 See [ADR 0005](./adr/0005-translate-components-with-ts-morph-steps-a-declarative-base-ui-primitive-table-and-adapters.md)
 and [ADR 0007](./adr/0007-preserve-the-upstream-dom-contract-and-omit-render-aschild-and-refs.md).
@@ -198,8 +200,8 @@ facts (imports, React type/value usage, hooks, JSX attributes, `cn-*` markers):
 | Kind | Meaning |
 | --- | --- |
 | `direct` | Plain HTML/Tailwind/variants, possibly via a stateless Base UI primitive mapped in `generator/src/adapters/primitives/base-ui.ts`, an `intrinsic` family (Progress) or the canonical `useRender` pattern |
-| `native-adapter` | Maps onto a browser primitive with behavior through a `native` family or component adapter (Dialog, AlertDialog, Sheet: `<dialog>` with Invoker Commands, [ADR 0017](./adr/0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md), [ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md); Accordion, Collapsible: `<details>`/`<summary>`, [ADR 0020](./adr/0020-implement-accordion-and-collapsible-on-native-details-and-summary.md)) |
-| `script-adapter` | Behavior from an optional client script in `public/shadcn/`, through a `script` family (Tabs, DropdownMenu, ContextMenu, Menubar, Tooltip, HoverCard, Slider, Combobox, NavigationMenu, Avatar, ScrollArea) or a `script` component adapter that moves an upstream event handler into a script (InputGroup: focusing the input from an addon), [ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)) |
+| `native-adapter` | Maps onto a browser primitive with behavior through a `native` family or component adapter (Dialog, AlertDialog, Sheet: `<dialog>` with Invoker Commands, [ADR 0017](./adr/0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md), [ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md); Accordion: `<details>`/`<summary>`, [ADR 0020](./adr/0020-implement-accordion-and-collapsible-on-native-details-and-summary.md)) |
+| `script-adapter` | Behavior from an optional client script in `public/shadcn/`, through a `script` family (Tabs, DropdownMenu, ContextMenu, Menubar, Tooltip, HoverCard, Slider, Combobox, NavigationMenu, Avatar, ScrollArea; Collapsible, which is native `<details>` when its trigger is its first child, [ADR 0026](./adr/0026-toggle-a-collapsible-with-a-script-when-its-trigger-is-not-the-first-child.md)) or a `script` component adapter that moves an upstream event handler into a script (InputGroup: focusing the input from an addon), [ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)) |
 | `custom-adapter` | Blocking reasons all resolved by an adapter in `generator/src/adapters/components/` |
 | `unsupported` | At least one blocking reason (unmapped Base UI primitive, React hooks/runtime APIs, event handlers, icon placeholder, registry imports, unknown packages, ...) |
 

@@ -404,7 +404,7 @@
       "name": "collapsible",
       "status": "experimental",
       "conversion": "generated",
-      "classification": "native-adapter",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/collapsible.json",
         "contentSha256": "3b60084afb5667cb11a4f7b40bbe66585cdc70f2cb26d698e551f055cda91a4d",
@@ -413,10 +413,11 @@
       "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "verified",
-      "clientJs": "none",
+      "clientJs": "required",
       "knownDifferences": [
-        "Built on native `<details>`/`<summary>`: no JavaScript. `CollapsibleTrigger` must be the first child of `Collapsible` (rendering throws otherwise), and every other child is hidden while closed, not only `CollapsibleContent`.",
-        "`CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants).",
+        "When `CollapsibleTrigger` is the first child of `Collapsible`, it is built on native `<details>`/`<summary>`: no JavaScript, but every other child is hidden while closed, not only `CollapsibleContent`, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants).",
+        "With the trigger anywhere else, the trigger is a `<button>` and the content is hidden while closed, like Base UI; toggling needs the client script `/shadcn/collapsible.js` (`<script type=\"module\" src=\"/shadcn/collapsible.js\">`), and Base UI's state attributes are rendered.",
+        "`CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported.",
         "Accepts `class` instead of `className`."
       ],
       "reasons": [

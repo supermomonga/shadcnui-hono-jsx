@@ -266,9 +266,21 @@ function collapsibleHelpers(root: string, trigger: string): string {
   defaultOpen?: boolean | undefined
 }
 
+interface CollapsibleState {
+  id: string
+  open: boolean
+  /** Whether the trigger is the first child, so the root is a native \`<details>\`. */
+  native: boolean
+}
+
+const CollapsibleContext = createContext<CollapsibleState | null>(null)
+
 /**
- * A native \`<details>\`: \`<${trigger}>\` must be its first child (the
- * \`<summary>\`), and every other child is hidden while it is closed.
+ * A native \`<details>\` when \`<${trigger}>\` is its first child (its
+ * \`<summary>\`; no JavaScript, and every other child is hidden while closed).
+ * With the trigger elsewhere, the trigger is a button and the panel is
+ * hidden while closed, toggled by the client script
+ * \`/shadcn/collapsible.js\`, like Base UI.
  */
 function CollapsibleRootElement({
   defaultOpen = false,
@@ -279,20 +291,62 @@ function CollapsibleRootElement({
   const [first] = [children]
     .flat(Number.POSITIVE_INFINITY)
     .filter((child) => child !== null && child !== undefined && child !== false && child !== "")
-  if (!isValidElement(first) || (first as JSXNode).tag !== ${trigger}) {
-    throw new Error("<${trigger}> must be the first child of <${root}>")
-  }
+  const native = isValidElement(first) && (first as JSXNode).tag === ${trigger}
+  const isOpen = open ?? defaultOpen
+  const id = \`collapsible\${useId().replaceAll(":", "-")}\`
   return (
-    <details open={(open ?? defaultOpen) || undefined} {...props}>
-      {children}
-    </details>
+    <CollapsibleContext.Provider value={{ id, open: isOpen, native }}>
+      {native ? (
+        <details open={isOpen || undefined} {...props}>
+          {children}
+        </details>
+      ) : (
+        <div
+          data-collapsible=""
+          data-open={isOpen ? "" : undefined}
+          data-closed={isOpen ? undefined : ""}
+          {...props}
+        >
+          {children}
+        </div>
+      )}
+    </CollapsibleContext.Provider>
   )
 }
 
-function CollapsibleTriggerElement({ class: className, ...props }: ComponentProps<"summary">) {
+function CollapsibleTriggerElement({ class: className, ...props }: ComponentProps<"button">) {
+  const state = useContext(CollapsibleContext)
+  if (!state || state.native) {
+    return (
+      <summary
+        class={className ? \`${SUMMARY_RESET} \${className}\` : "${SUMMARY_RESET}"}
+        {...props}
+      />
+    )
+  }
   return (
-    <summary
-      class={className ? \`${SUMMARY_RESET} \${className}\` : "${SUMMARY_RESET}"}
+    <button
+      type="button"
+      aria-expanded={state.open ? "true" : "false"}
+      aria-controls={state.open ? \`\${state.id}-panel\` : undefined}
+      data-panel-open={state.open ? "" : undefined}
+      data-collapsible-trigger=""
+      class={className}
+      {...props}
+    />
+  )
+}
+
+function CollapsiblePanelElement(props: ComponentProps<"div">) {
+  const state = useContext(CollapsibleContext)
+  if (!state || state.native) return <div {...props} />
+  return (
+    <div
+      id={\`\${state.id}-panel\`}
+      hidden={!state.open}
+      data-open={state.open ? "" : undefined}
+      data-closed={state.open ? undefined : ""}
+      data-collapsible-panel=""
       {...props}
     />
   )
@@ -304,19 +358,21 @@ const COLLAPSIBLE_PARTS = ["Root", "Trigger", "Panel"]
 export const collapsibleFamily: FamilyRule = {
   module: "@base-ui/react/collapsible",
   exportName: "Collapsible",
-  kind: "native",
+  kind: "script",
+  behaviors: ["collapsible"],
   domParity: "native-structure",
   reference:
     "https://github.com/mui/base-ui/tree/master/packages/react/src/collapsible",
   notes: [
-    "Built on native `<details>`/`<summary>`: no JavaScript. `CollapsibleTrigger` must be the first child of `Collapsible` (rendering throws otherwise), and every other child is hidden while closed, not only `CollapsibleContent`.",
-    "`CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants).",
+    "When `CollapsibleTrigger` is the first child of `Collapsible`, it is built on native `<details>`/`<summary>`: no JavaScript, but every other child is hidden while closed, not only `CollapsibleContent`, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants).",
+    'With the trigger anywhere else, the trigger is a `<button>` and the content is hidden while closed, like Base UI; toggling needs the client script `/shadcn/collapsible.js` (`<script type="module" src="/shadcn/collapsible.js">`), and Base UI\'s state attributes are rendered.',
+    "`CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported.",
   ],
   transform(ctx, local) {
     const step = "family:Collapsible"
     replacePartTypes(ctx, step, local, {
       Root: "CollapsibleRootProps",
-      Trigger: 'ComponentProps<"summary">',
+      Trigger: 'ComponentProps<"button">',
       Panel: 'ComponentProps<"div">',
     })
     let root: string | undefined
@@ -327,8 +383,7 @@ export const collapsibleFamily: FamilyRule = {
       }
       if (element.part === "Root") root = element.component
       if (element.part === "Trigger") trigger = element.component
-      const tag =
-        element.part === "Panel" ? "div" : `Collapsible${element.part}Element`
+      const tag = `Collapsible${element.part}Element`
       const attrs = element.attributes().join(" ")
       element.replace(
         element.children
@@ -343,8 +398,15 @@ export const collapsibleFamily: FamilyRule = {
     }
     insertHelpers(ctx, collapsibleHelpers(root, trigger))
     ctx.needsComponentProps = true
-    ctx.honoValues.add("isValidElement")
+    for (const value of [
+      "createContext",
+      "useContext",
+      "useId",
+      "isValidElement",
+    ]) {
+      ctx.honoValues.add(value)
+    }
     ctx.honoTypes.add("JSXNode")
-    ctx.log.push(`${step}: ${local} on native <details>`)
+    ctx.log.push(`${step}: ${local} on native <details> or with a script`)
   },
 }

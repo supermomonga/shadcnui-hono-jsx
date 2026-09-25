@@ -464,12 +464,22 @@
           "target": "~/components/ui/collapsible.tsx"
         },
         {
+          "path": "public/shadcn/collapsible.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/collapsible.js"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
           "path": "LICENSE-shadcnui-hono-jsx.txt",
           "type": "registry:file",
           "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
-      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/collapsible.js\"> on pages that use it.",
       "meta": {
         "upstream": {
           "name": "collapsible",
@@ -477,7 +487,7 @@
           "contentSha256": "3b60084afb5667cb11a4f7b40bbe66585cdc70f2cb26d698e551f055cda91a4d",
           "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
         },
-        "classification": "native-adapter",
+        "classification": "script-adapter",
         "mode": "generated"
       }
     },

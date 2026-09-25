@@ -1,9 +1,10 @@
-import { expect, type Locator, test } from "@playwright/test"
+import { expect, type Locator, type Page, test } from "@playwright/test"
 import { pageUrl } from "./server-url"
 
 /**
  * Behavior and accessibility of the generated Accordion and Collapsible
- * (native <details>/<summary>, no JavaScript), using the visual cases page.
+ * (native <details>/<summary>, no JavaScript), using the visual cases page,
+ * and of a Collapsible whose trigger is not its first child (with its script).
  * Their appearance is compared with upstream in parity.spec.ts. Run
  * `bun render.ts` first.
  */
@@ -106,5 +107,62 @@ test.describe("generated Collapsible", () => {
     await open.locator("summary").focus()
     await page.keyboard.press("Enter")
     await expect(open.getByText("Shipped on September 12")).toBeHidden()
+  })
+})
+
+/**
+ * With the trigger elsewhere than first, the client script
+ * (public/shadcn/collapsible.js) toggles the panel like upstream Base UI.
+ */
+test.describe("generated Collapsible with the trigger in a header", () => {
+  const collapsibleState = (page: Page) =>
+    page.evaluate(() => {
+      const root = document.querySelector('[data-slot="collapsible"]')
+      const trigger = document.querySelector(
+        '[data-slot="collapsible-trigger"]'
+      )
+      const panel = document.querySelector('[data-slot="collapsible-content"]')
+      return {
+        open: root?.hasAttribute("data-open"),
+        closed: root?.hasAttribute("data-closed"),
+        expanded: trigger?.getAttribute("aria-expanded"),
+        panelOpen: trigger?.hasAttribute("data-panel-open"),
+        controls:
+          trigger?.getAttribute("aria-controls") === (panel?.id ?? null) ||
+          trigger?.getAttribute("aria-controls") === null,
+        visible: panel instanceof HTMLElement ? panel.checkVisibility() : false,
+        focused:
+          document.activeElement === document.body
+            ? "body"
+            : document.activeElement?.textContent?.trim(),
+      }
+    })
+
+  const STEPS: [string, (page: Page) => Promise<void>][] = [
+    ["initial", async () => {}],
+    [
+      "a click opens",
+      (page) => page.getByRole("button", { name: "Toggle" }).click(),
+    ],
+    ["Enter closes", (page) => page.keyboard.press("Enter")],
+    ["Space opens", (page) => page.keyboard.press(" ")],
+  ]
+
+  test("toggles like upstream Base UI", async ({ browser }) => {
+    const context = await browser.newContext()
+    const hono = await context.newPage()
+    const react = await context.newPage()
+    await hono.goto(pageUrl("collapsible-hono.html"))
+    await react.goto(pageUrl("collapsible-react.html"))
+    await react.locator('[data-slot="collapsible"]').waitFor()
+    for (const [description, act] of STEPS) {
+      await act(hono)
+      await act(react)
+      await test.step(description, async () => {
+        await expect
+          .poll(() => collapsibleState(react))
+          .toEqual(await collapsibleState(hono))
+      })
+    }
   })
 })

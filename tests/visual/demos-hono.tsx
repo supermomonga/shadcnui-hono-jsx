@@ -16,7 +16,12 @@ import {
   AlertDialogTrigger,
 } from "../../components/ui/alert-dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar"
-import { Button } from "../../components/ui/button"
+import { Button, buttonVariants } from "../../components/ui/button"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../../components/ui/collapsible"
 import {
   Combobox,
   ComboboxChip,
@@ -689,6 +694,27 @@ function ScrollAreaDemo() {
   )
 }
 
+function CollapsibleDemo() {
+  return (
+    <main class="p-8">
+      <Collapsible class="flex w-80 flex-col gap-2">
+        <div class="flex items-center justify-between gap-4 px-4">
+          <h4 class="text-sm font-semibold">Order #4189</h4>
+          <CollapsibleTrigger
+            class={buttonVariants({ variant: "ghost", size: "sm" })}
+          >
+            Toggle
+          </CollapsibleTrigger>
+        </div>
+        <div class="rounded-md border px-4 py-2 text-sm">Always visible</div>
+        <CollapsibleContent class="rounded-md border px-4 py-2 text-sm">
+          Shipped on September 12
+        </CollapsibleContent>
+      </Collapsible>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main class="flex w-96 flex-col gap-6 p-8">
@@ -782,6 +808,7 @@ export const DEMOS = {
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
+  collapsible: () => <CollapsibleDemo />,
   "scroll-area": () => <ScrollAreaDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
@@ -805,6 +832,7 @@ export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
   combobox: ["combobox", "input-group"],
   "navigation-menu": ["navigation-menu"],
   avatar: ["avatar"],
+  collapsible: ["collapsible"],
   "scroll-area": ["scroll-area"],
   menubar: ["menu"],
   slider: ["slider"],

@@ -23,3 +23,4 @@
 * [23. Build Popover on the native popover attribute and CSS anchor positioning](0023-build-popover-on-the-native-popover-attribute-and-css-anchor-positioning.md)
 * [24. Build Select on the customizable native select element](0024-build-select-on-the-customizable-native-select-element.md)
 * [25. Ship optional client scripts for behavior the browser does not provide](0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)
+* [26. Toggle a Collapsible with a script when its trigger is not the first child](0026-toggle-a-collapsible-with-a-script-when-its-trigger-is-not-the-first-child.md)

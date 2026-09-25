@@ -18,7 +18,12 @@ import {
   AlertDialogTrigger,
 } from "./.upstream/alert-dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "./.upstream/avatar"
-import { Button } from "./.upstream/button"
+import { Button, buttonVariants } from "./.upstream/button"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "./.upstream/collapsible"
 import {
   Combobox,
   ComboboxChip,
@@ -709,6 +714,29 @@ function ScrollAreaDemo() {
   )
 }
 
+function CollapsibleDemo() {
+  return (
+    <main className="p-8">
+      <Collapsible className="flex w-80 flex-col gap-2">
+        <div className="flex items-center justify-between gap-4 px-4">
+          <h4 className="text-sm font-semibold">Order #4189</h4>
+          <CollapsibleTrigger
+            className={buttonVariants({ variant: "ghost", size: "sm" })}
+          >
+            Toggle
+          </CollapsibleTrigger>
+        </div>
+        <div className="rounded-md border px-4 py-2 text-sm">
+          Always visible
+        </div>
+        <CollapsibleContent className="rounded-md border px-4 py-2 text-sm">
+          Shipped on September 12
+        </CollapsibleContent>
+      </Collapsible>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main className="flex w-96 flex-col gap-6 p-8">
@@ -807,6 +835,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
+  collapsible: () => <CollapsibleDemo />,
   "scroll-area": () => <ScrollAreaDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,

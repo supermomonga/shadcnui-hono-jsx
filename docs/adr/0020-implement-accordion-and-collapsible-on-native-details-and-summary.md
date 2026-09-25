@@ -6,6 +6,8 @@ date: 2026-09-26
 links:
 - target: 19
   kind: amends
+- target: 26
+  kind: amendedby
 ---
 
 # Implement Accordion and Collapsible on native details and summary

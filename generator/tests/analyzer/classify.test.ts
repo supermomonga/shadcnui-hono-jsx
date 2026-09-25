@@ -220,7 +220,6 @@ describe("classification of the committed upstream snapshot", () => {
     "accordion",
     "alert-dialog",
     "checkbox",
-    "collapsible",
     "dialog",
     "popover",
     "radio-group",
@@ -234,6 +233,7 @@ describe("classification of the committed upstream snapshot", () => {
   // Built with an optional client script (script families, docs/adr/0025).
   const SCRIPTED = new Set([
     "avatar",
+    "collapsible",
     "combobox",
     "context-menu",
     "dropdown-menu",
