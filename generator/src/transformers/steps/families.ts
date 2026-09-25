@@ -1,5 +1,6 @@
 import { SyntaxKind } from "ts-morph"
 import { findFamilyRule } from "../../adapters/families"
+import { insertReferencedHelpers } from "../../adapters/families/util"
 import type { TransformContext, TransformStep } from "../context"
 
 /** Applies family rules (compound Base UI primitives) imported by the file. */
@@ -21,7 +22,10 @@ export const families: TransformStep = {
         }
       }
     }
-    if (applied) pruneUnusedIcons(ctx)
+    if (applied) {
+      insertReferencedHelpers(ctx)
+      pruneUnusedIcons(ctx)
+    }
   },
 }
 

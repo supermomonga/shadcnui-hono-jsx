@@ -59,6 +59,21 @@ import {
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 import {
+  Menubar,
+  MenubarCheckboxItem,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarTrigger,
+} from "../../components/ui/menubar"
+import {
   Popover,
   PopoverContent,
   PopoverDescription,
@@ -369,6 +384,57 @@ function ContextMenuDemo() {
   )
 }
 
+function MenubarDemo() {
+  return (
+    <main class="flex flex-col items-start gap-8 p-8">
+      <Menubar>
+        <MenubarMenu>
+          <MenubarTrigger>File</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem>
+              New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem disabled>New Incognito Window</MenubarItem>
+            <MenubarSeparator />
+            <MenubarSub>
+              <MenubarSubTrigger>Share</MenubarSubTrigger>
+              <MenubarSubContent>
+                <MenubarItem>Email link</MenubarItem>
+                <MenubarItem>Messages</MenubarItem>
+              </MenubarSubContent>
+            </MenubarSub>
+            <MenubarSeparator />
+            <MenubarItem>Print</MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>View</MenubarTrigger>
+          <MenubarContent>
+            <MenubarCheckboxItem defaultChecked>
+              Always Show Bookmarks Bar
+            </MenubarCheckboxItem>
+            <MenubarCheckboxItem>Always Show Full URLs</MenubarCheckboxItem>
+            <MenubarSeparator />
+            <MenubarItem inset>Reload</MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>Profiles</MenubarTrigger>
+          <MenubarContent>
+            <MenubarRadioGroup defaultValue="benoit">
+              <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
+              <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
+            </MenubarRadioGroup>
+          </MenubarContent>
+        </MenubarMenu>
+      </Menubar>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children?: unknown }) {
   return (
     <main class="flex items-center gap-4 p-8">
@@ -400,6 +466,7 @@ export const DEMOS = {
     </main>
   ),
   select: () => <SelectDemo />,
+  menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,
   "dropdown-menu": () => <DropdownMenuDemo />,
   tabs: () => <TabsDemo />,
@@ -415,5 +482,6 @@ export const DEMOS = {
 export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
   "context-menu": ["menu"],
   "dropdown-menu": ["menu"],
+  menubar: ["menu"],
   tabs: ["tabs"],
 }

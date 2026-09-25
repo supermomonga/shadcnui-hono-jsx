@@ -21,7 +21,7 @@ describe("buildManifest", () => {
   })
 
   // Components whose behavior needs a client script (docs/adr/0025).
-  const SCRIPTED = new Set(["context-menu", "dropdown-menu", "tabs"])
+  const SCRIPTED = new Set(["context-menu", "dropdown-menu", "menubar", "tabs"])
 
   test.each([...config.components])(
     "%s is generated and experimental",

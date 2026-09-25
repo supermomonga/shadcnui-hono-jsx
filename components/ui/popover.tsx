@@ -85,6 +85,7 @@ type AnchorSide =
   | "right"
   | "inline-start"
   | "inline-end"
+
 type AnchorAlign = "start" | "center" | "end"
 
 interface AnchorPlacement {
@@ -172,6 +173,11 @@ function anchorPlacementStyle(
     [toward]: `${p.sideOffset}px`,
     ...(p.alignOffset === 0 ? {} : { [across]: `${p.alignOffset}px` }),
     "--transform-origin": origin,
+    // Base UI's size variables for popup classes (`w-(--anchor-width)`, ...).
+    "--anchor-width": "anchor-size(width)",
+    "--anchor-height": "anchor-size(height)",
+    "--available-width": "100%",
+    "--available-height": "100%",
   }
 }
 

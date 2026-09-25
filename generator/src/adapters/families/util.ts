@@ -5,6 +5,7 @@ import {
   type ParameterDeclaration,
   SyntaxKind,
 } from "ts-morph"
+import { parseSource } from "../../analyzer/source"
 import {
   type TransformContext,
   TransformError,
@@ -308,4 +309,87 @@ export function insertHelpers(ctx: TransformContext, text: string): void {
   const imports = ctx.sf.getImportDeclarations()
   const last = imports[imports.length - 1]
   ctx.sf.insertStatements(last ? last.getChildIndex() + 1 : 0, text)
+}
+
+/** A named file-local helper (type, function or constant) a family may need. */
+export interface HelperEntry {
+  id: string
+  text: string
+}
+
+/**
+ * Splits helper source into one entry per top-level declaration (with its
+ * leading comment), named after the declaration.
+ */
+export function helperEntries(text: string): HelperEntry[] {
+  return parseSource(text, "helpers.tsx")
+    .getStatements()
+    .map((statement) => {
+      const name = Node.isVariableStatement(statement)
+        ? statement.getDeclarations()[0]?.getName()
+        : Node.isFunctionDeclaration(statement) ||
+            Node.isInterfaceDeclaration(statement) ||
+            Node.isTypeAliasDeclaration(statement)
+          ? statement.getName()
+          : undefined
+      if (!name)
+        throw new Error(`helper without a name: ${statement.getText()}`)
+      return { id: name, text: statement.getFullText().trim() }
+    })
+}
+
+/** Offers helpers to the file; `insertReferencedHelpers` adds those it uses. */
+export function registerHelpers(
+  ctx: TransformContext,
+  entries: readonly HelperEntry[]
+): void {
+  ctx.helperEntries ??= []
+  for (const entry of entries) {
+    if (!ctx.helperEntries.some((e) => e.id === entry.id)) {
+      ctx.helperEntries.push(entry)
+    }
+  }
+}
+
+/** \`hono/jsx\` exports helpers may use. */
+const HONO_VALUES = [
+  "createContext",
+  "useContext",
+  "useId",
+  "isValidElement",
+  "cloneElement",
+]
+const HONO_TYPES = ["Child", "JSX", "JSXNode", "Context"] as const
+
+/**
+ * Inserts the registered helpers the file references, transitively, in
+ * registration order, and the \`hono/jsx\` imports they need. Unused helpers
+ * are left out, so generated files have no unused declarations.
+ */
+export function insertReferencedHelpers(ctx: TransformContext): void {
+  const entries = ctx.helperEntries ?? []
+  const refers = (text: string, id: string) =>
+    new RegExp(`(^|[^\\w$])${id.replace(/\$/g, "\\$")}([^\\w$]|$)`).test(text)
+  const included = new Set<string>()
+  let corpus = ctx.sf.getFullText()
+  for (let changed = true; changed; ) {
+    changed = false
+    for (const entry of entries) {
+      if (included.has(entry.id) || !refers(corpus, entry.id)) continue
+      included.add(entry.id)
+      corpus += `\n${entry.text}`
+      changed = true
+    }
+  }
+  const texts = entries.filter((e) => included.has(e.id)).map((e) => e.text)
+  if (texts.length === 0) return
+  insertHelpers(ctx, texts.join("\n\n"))
+  const inserted = texts.join("\n")
+  for (const value of HONO_VALUES) {
+    if (new RegExp(`\\b${value}\\(`).test(inserted)) ctx.honoValues.add(value)
+  }
+  for (const type of HONO_TYPES) {
+    if (new RegExp(`\\b${type}\\b`).test(inserted)) ctx.honoTypes.add(type)
+  }
+  ctx.helperEntries = []
 }

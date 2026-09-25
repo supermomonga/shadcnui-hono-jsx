@@ -40,7 +40,7 @@ function applyInstallMarkers(source: string): string {
   return source
     .split("\n")
     .map((line) =>
-      line.startsWith("import ")
+      line.startsWith("import ") || line.startsWith("} from ")
         ? line
             .replace(/"@\/registry\/[^/]+\/ui\/([a-z0-9-]+)"/, '"./$1"')
             .replace(

@@ -10,7 +10,7 @@
 // Icons: lucide@1.48.0 (check, chevron-right). Copyright (c) 2026 Lucide Icons and Contributors. ISC License (see LICENSE-shadcnui-hono-jsx.txt).
 
 import { cn } from "cn"
-import type { Child, JSX, JSXNode } from "hono/jsx"
+import type { Child, Context, JSX, JSXNode } from "hono/jsx"
 import {
   cloneElement,
   createContext,
@@ -82,114 +82,6 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null
 }
 
-type AnchorSide =
-  | "top"
-  | "bottom"
-  | "left"
-  | "right"
-  | "inline-start"
-  | "inline-end"
-type AnchorAlign = "start" | "center" | "end"
-
-interface AnchorPlacement {
-  side: AnchorSide
-  align: AnchorAlign
-  sideOffset: number
-  alignOffset: number
-}
-
-type AnchorPositionerProps = {
-  side?: AnchorSide | undefined
-  align?: AnchorAlign | undefined
-  sideOffset?: number | undefined
-  alignOffset?: number | undefined
-  class?: string | undefined
-  children?: Child
-}
-
-const AnchorPlacementContext = createContext<AnchorPlacement>({
-  side: "bottom",
-  align: "center",
-  sideOffset: 0,
-  alignOffset: 0,
-})
-
-/** Placement for the popup inside; the popup itself is positioned with CSS. */
-function AnchorPositioner({
-  side = "bottom",
-  align = "center",
-  sideOffset = 0,
-  alignOffset = 0,
-  children,
-}: AnchorPositionerProps) {
-  return (
-    <AnchorPlacementContext.Provider
-      value={{ side, align, sideOffset, alignOffset }}
-    >
-      {children}
-    </AnchorPlacementContext.Provider>
-  )
-}
-
-/** Inline styles that anchor a popup to `anchor` like Base UI's positioner. */
-function anchorPlacementStyle(
-  anchor: string,
-  p: AnchorPlacement
-): Record<string, string> {
-  const block = p.side === "top" || p.side === "bottom"
-  const logical = p.side === "inline-start" || p.side === "inline-end"
-  const span = block
-    ? { start: "span-x-end", center: "", end: "span-x-start" }[p.align]
-    : logical
-      ? { start: "span-block-end", center: "", end: "span-block-start" }[
-          p.align
-        ]
-      : { start: "span-y-end", center: "", end: "span-y-start" }[p.align]
-  const toward = {
-    top: "margin-bottom",
-    bottom: "margin-top",
-    left: "margin-right",
-    right: "margin-left",
-    "inline-start": "margin-inline-end",
-    "inline-end": "margin-inline-start",
-  }[p.side]
-  const across = block
-    ? p.align === "end"
-      ? "margin-inline-end"
-      : "margin-inline-start"
-    : p.align === "end"
-      ? "margin-block-end"
-      : "margin-block-start"
-  const edge = { start: "0%", center: "50%", end: "100%" }[p.align]
-  const origin = {
-    top: `${edge} 100%`,
-    bottom: `${edge} 0%`,
-    left: `100% ${edge}`,
-    right: `0% ${edge}`,
-    "inline-start": `100% ${edge}`,
-    "inline-end": `0% ${edge}`,
-  }[p.side]
-  return {
-    "position-anchor": anchor,
-    "position-area": [p.side, span].filter(Boolean).join(" "),
-    "position-try-fallbacks": block ? "flip-block" : "flip-inline",
-    [toward]: `${p.sideOffset}px`,
-    ...(p.alignOffset === 0 ? {} : { [across]: `${p.alignOffset}px` }),
-    "--transform-origin": origin,
-  }
-}
-
-/** Adds `extra` declarations to a string or object `style` prop (the prop wins). */
-function withStyle(
-  style: string | JSX.CSSProperties | undefined,
-  extra: Record<string, string>
-): string | JSX.CSSProperties {
-  if (typeof style === "string") {
-    const css = Object.entries(extra).map(([key, value]) => `${key}:${value}`)
-    return [...css, style].join(";")
-  }
-  return { ...extra, ...style }
-}
 type MenuRootProps = {
   id?: string | undefined
   /** Wrap focus from the last item to the first with the arrow keys. */
@@ -224,7 +116,22 @@ interface MenuContextValue {
   loopFocus: boolean
 }
 
-const MenuContext = createContext<MenuContextValue | null>(null)
+/**
+ * A context shared by every generated file (the same key gives the same
+ * context), so parts rendered by sibling files connect: a menubar in
+ * menubar.tsx and the menus of dropdown-menu.tsx inside it.
+ */
+function sharedContext<T>(key: string, fallback: T): Context<T> {
+  const registry = globalThis as unknown as Record<
+    symbol,
+    Context<T> | undefined
+  >
+  const symbol = Symbol.for(`shadcnui-hono-jsx:${key}`)
+  registry[symbol] ??= createContext(fallback)
+  return registry[symbol]
+}
+
+const MenuContext = sharedContext<MenuContextValue | null>("menu", null)
 
 function useMenuContext(): MenuContextValue {
   const context = useContext(MenuContext)
@@ -247,10 +154,10 @@ function menuContextValue(
 }
 
 /** Labels groups (and radio groups) by their label element. */
-const MenuGroupContext = createContext<{
+const MenuGroupContext = sharedContext<{
   labelId: string
   value?: string | undefined
-} | null>(null)
+} | null>("menu-group", null)
 
 /** Attributes every item renders, like Base UI's. */
 function menuItemAttributes(
@@ -480,6 +387,121 @@ function MenuSeparatorElement(props: ComponentProps<"div">) {
       {...props}
     />
   )
+}
+
+type AnchorSide =
+  | "top"
+  | "bottom"
+  | "left"
+  | "right"
+  | "inline-start"
+  | "inline-end"
+
+type AnchorAlign = "start" | "center" | "end"
+
+interface AnchorPlacement {
+  side: AnchorSide
+  align: AnchorAlign
+  sideOffset: number
+  alignOffset: number
+}
+
+type AnchorPositionerProps = {
+  side?: AnchorSide | undefined
+  align?: AnchorAlign | undefined
+  sideOffset?: number | undefined
+  alignOffset?: number | undefined
+  class?: string | undefined
+  children?: Child
+}
+
+const AnchorPlacementContext = createContext<AnchorPlacement>({
+  side: "bottom",
+  align: "center",
+  sideOffset: 0,
+  alignOffset: 0,
+})
+
+/** Placement for the popup inside; the popup itself is positioned with CSS. */
+function AnchorPositioner({
+  side = "bottom",
+  align = "center",
+  sideOffset = 0,
+  alignOffset = 0,
+  children,
+}: AnchorPositionerProps) {
+  return (
+    <AnchorPlacementContext.Provider
+      value={{ side, align, sideOffset, alignOffset }}
+    >
+      {children}
+    </AnchorPlacementContext.Provider>
+  )
+}
+
+/** Inline styles that anchor a popup to `anchor` like Base UI's positioner. */
+function anchorPlacementStyle(
+  anchor: string,
+  p: AnchorPlacement
+): Record<string, string> {
+  const block = p.side === "top" || p.side === "bottom"
+  const logical = p.side === "inline-start" || p.side === "inline-end"
+  const span = block
+    ? { start: "span-x-end", center: "", end: "span-x-start" }[p.align]
+    : logical
+      ? { start: "span-block-end", center: "", end: "span-block-start" }[
+          p.align
+        ]
+      : { start: "span-y-end", center: "", end: "span-y-start" }[p.align]
+  const toward = {
+    top: "margin-bottom",
+    bottom: "margin-top",
+    left: "margin-right",
+    right: "margin-left",
+    "inline-start": "margin-inline-end",
+    "inline-end": "margin-inline-start",
+  }[p.side]
+  const across = block
+    ? p.align === "end"
+      ? "margin-inline-end"
+      : "margin-inline-start"
+    : p.align === "end"
+      ? "margin-block-end"
+      : "margin-block-start"
+  const edge = { start: "0%", center: "50%", end: "100%" }[p.align]
+  const origin = {
+    top: `${edge} 100%`,
+    bottom: `${edge} 0%`,
+    left: `100% ${edge}`,
+    right: `0% ${edge}`,
+    "inline-start": `100% ${edge}`,
+    "inline-end": `0% ${edge}`,
+  }[p.side]
+  return {
+    "position-anchor": anchor,
+    "position-area": [p.side, span].filter(Boolean).join(" "),
+    "position-try-fallbacks": block ? "flip-block" : "flip-inline",
+    [toward]: `${p.sideOffset}px`,
+    ...(p.alignOffset === 0 ? {} : { [across]: `${p.alignOffset}px` }),
+    "--transform-origin": origin,
+    // Base UI's size variables for popup classes (`w-(--anchor-width)`, ...).
+    "--anchor-width": "anchor-size(width)",
+    "--anchor-height": "anchor-size(height)",
+    "--available-width": "100%",
+    "--available-height": "100%",
+  }
+}
+
+/** Adds `extra` declarations to a string or object `style` prop (the prop wins). */
+function withStyle(
+  style: string | JSX.CSSProperties | undefined,
+  extra: Record<string, string>
+): string | JSX.CSSProperties {
+  if (typeof style === "string") {
+    const css = Object.entries(extra).map(([key, value]) => `${key}:${value}`)
+    return [...css, style].join(";")
+  }
+  return { ...extra, ...style }
 }
 
 function ContextMenu({ ...props }: MenuRootProps) {

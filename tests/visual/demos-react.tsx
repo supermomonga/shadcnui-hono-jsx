@@ -61,6 +61,21 @@ import {
 import { Input } from "./.upstream/input"
 import { Label } from "./.upstream/label"
 import {
+  Menubar,
+  MenubarCheckboxItem,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarTrigger,
+} from "./.upstream/menubar"
+import {
   Popover,
   PopoverContent,
   PopoverDescription,
@@ -377,6 +392,57 @@ function ContextMenuDemo() {
   )
 }
 
+function MenubarDemo() {
+  return (
+    <main className="flex flex-col items-start gap-8 p-8">
+      <Menubar>
+        <MenubarMenu>
+          <MenubarTrigger>File</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem>
+              New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem disabled>New Incognito Window</MenubarItem>
+            <MenubarSeparator />
+            <MenubarSub>
+              <MenubarSubTrigger>Share</MenubarSubTrigger>
+              <MenubarSubContent>
+                <MenubarItem>Email link</MenubarItem>
+                <MenubarItem>Messages</MenubarItem>
+              </MenubarSubContent>
+            </MenubarSub>
+            <MenubarSeparator />
+            <MenubarItem>Print</MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>View</MenubarTrigger>
+          <MenubarContent>
+            <MenubarCheckboxItem defaultChecked>
+              Always Show Bookmarks Bar
+            </MenubarCheckboxItem>
+            <MenubarCheckboxItem>Always Show Full URLs</MenubarCheckboxItem>
+            <MenubarSeparator />
+            <MenubarItem inset>Reload</MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>Profiles</MenubarTrigger>
+          <MenubarContent>
+            <MenubarRadioGroup defaultValue="benoit">
+              <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
+              <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
+            </MenubarRadioGroup>
+          </MenubarContent>
+        </MenubarMenu>
+      </Menubar>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children: ReactNode }) {
   return (
     <main className="flex items-center gap-4 p-8">
@@ -408,6 +474,7 @@ const DEMOS: Record<string, () => ReactNode> = {
     </main>
   ),
   select: () => <SelectDemo />,
+  menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,
   "dropdown-menu": () => <DropdownMenuDemo />,
   tabs: () => <TabsDemo />,

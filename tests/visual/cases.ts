@@ -17,6 +17,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   collapsible: "disclosure.spec.ts",
   "context-menu": "menu.spec.ts",
   "dropdown-menu": "menu.spec.ts",
+  menubar: "menu.spec.ts",
   popover: "popover.spec.ts",
   "radio-group": "controls.spec.ts",
   select: "select.spec.ts",

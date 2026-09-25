@@ -30,9 +30,14 @@ const state = (page: Page) =>
             .join(", ")
         ),
       focused: label(document.activeElement),
-      expanded: document
-        .querySelector('[data-slot="dropdown-menu-trigger"]')
-        ?.getAttribute("aria-expanded"),
+      triggers: [
+        ...document.querySelectorAll(
+          '[data-slot$="menu-trigger"], [data-slot="menubar-trigger"]'
+        ),
+      ].map(
+        (trigger) =>
+          `${trigger.textContent?.trim()} expanded=${trigger.getAttribute("aria-expanded")} tabindex=${(trigger as HTMLElement).tabIndex}`
+      ),
       checked: [...document.querySelectorAll('[aria-checked="true"]')]
         .filter(visible)
         .map((item) => item.textContent?.trim()),
@@ -250,6 +255,75 @@ test("context menu opens at the pointer like upstream shadcn/ui", async ({
     const page = await context.newPage()
     await page.goto(pageUrl(file))
     await rightClick(page)
+    await page.waitForTimeout(400)
+    shots.push(await page.screenshot({ animations: "disabled" }))
+  }
+  await compare(shots, testInfo)
+})
+
+const menubarTrigger = (page: Page, name: string) =>
+  page.getByRole("menuitem", { name, exact: true })
+
+const MENUBAR_STEPS: Step[] = [
+  ["initial", async () => {}],
+  ["a trigger opens its menu", (page) => menubarTrigger(page, "File").click()],
+  [
+    "ArrowRight opens the next menu",
+    (page) => page.keyboard.press("ArrowRight"),
+  ],
+  ["ArrowDown enters the menu", (page) => page.keyboard.press("ArrowDown")],
+  ["ArrowRight from an item", (page) => page.keyboard.press("ArrowRight")],
+  ["ArrowLeft goes back", (page) => page.keyboard.press("ArrowLeft")],
+  ["Escape closes", (page) => page.keyboard.press("Escape")],
+  ["arrows move between triggers", (page) => page.keyboard.press("ArrowRight")],
+  ["and back", (page) => page.keyboard.press("ArrowLeft")],
+  ["Enter opens the focused menu", (page) => page.keyboard.press("Enter")],
+  [
+    "hovering another trigger switches menus",
+    async (page) => {
+      await menubarTrigger(page, "File").hover()
+      await page.waitForTimeout(300)
+    },
+  ],
+  ["an outside click closes", (page) => page.mouse.click(700, 500)],
+]
+
+test("menubar behaves like upstream Base UI", async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 800, height: 600 },
+  })
+  const hono = await context.newPage()
+  const react = await context.newPage()
+  await hono.goto(pageUrl("menubar-hono.html"))
+  await react.goto(pageUrl("menubar-react.html"))
+  await menubarTrigger(react, "File").waitFor()
+  for (const [description, act] of MENUBAR_STEPS) {
+    await act(hono)
+    await act(react)
+    await test.step(description, async () => {
+      await hono.evaluate(() =>
+        Promise.allSettled(document.getAnimations().map((a) => a.finished))
+      )
+      await expect.poll(() => state(react)).toEqual(await state(hono))
+    })
+  }
+})
+
+test("open menubar menu matches upstream shadcn/ui", async ({
+  browser,
+}, testInfo) => {
+  const context = await browser.newContext({
+    viewport: { width: 800, height: 600 },
+    deviceScaleFactor: 1,
+    reducedMotion: "reduce",
+  })
+  const shots: Buffer[] = []
+  for (const file of ["menubar-hono.html", "menubar-react.html"]) {
+    const page = await context.newPage()
+    await page.goto(pageUrl(file))
+    await menubarTrigger(page, "View").click()
+    await expect(page.getByRole("menu")).toBeFocused()
+    await page.keyboard.press("ArrowDown")
     await page.waitForTimeout(400)
     shots.push(await page.screenshot({ animations: "disabled" }))
   }

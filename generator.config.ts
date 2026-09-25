@@ -32,6 +32,7 @@ export const config: GeneratorConfig = {
     "kbd",
     "label",
     "marker",
+    "menubar",
     "message",
     "native-select",
     "pagination",

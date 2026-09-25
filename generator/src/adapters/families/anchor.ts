@@ -5,7 +5,7 @@
  * `--transform-origin` on the popup. Inserted once per file.
  */
 import type { TransformContext } from "../../transformers/context"
-import { insertHelpers } from "./util"
+import { helperEntries, registerHelpers } from "./util"
 
 const ANCHOR_HELPERS = `type AnchorSide = "top" | "bottom" | "left" | "right" | "inline-start" | "inline-end"
 type AnchorAlign = "start" | "center" | "end"
@@ -84,6 +84,11 @@ function anchorPlacementStyle(anchor: string, p: AnchorPlacement): Record<string
     [toward]: \`\${p.sideOffset}px\`,
     ...(p.alignOffset === 0 ? {} : { [across]: \`\${p.alignOffset}px\` }),
     "--transform-origin": origin,
+    // Base UI's size variables for popup classes (\`w-(--anchor-width)\`, ...).
+    "--anchor-width": "anchor-size(width)",
+    "--anchor-height": "anchor-size(height)",
+    "--available-width": "100%",
+    "--available-height": "100%",
   }
 }
 
@@ -105,11 +110,9 @@ function withStyle(
  */
 export const ANCHORED_POPUP_RESET = "m-auto supports-[position-area:bottom]:m-0"
 
-/** Inserts the anchor helpers unless another family already did. */
+const ANCHOR_ENTRIES = helperEntries(ANCHOR_HELPERS)
+
+/** Offers the anchor helpers; those the file uses are inserted after the families step. */
 export function insertAnchorHelpers(ctx: TransformContext): void {
-  if (ctx.sf.getFunction("anchorPlacementStyle")) return
-  insertHelpers(ctx, ANCHOR_HELPERS)
-  ctx.honoTypes.add("Child")
-  ctx.honoTypes.add("JSX")
-  ctx.honoValues.add("createContext")
+  registerHelpers(ctx, ANCHOR_ENTRIES)
 }

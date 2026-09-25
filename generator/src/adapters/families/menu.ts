@@ -9,7 +9,12 @@
 import { ANCHORED_POPUP_RESET, insertAnchorHelpers } from "./anchor"
 import { mapPopupClasses } from "./dialog"
 import type { FamilyRule } from "./types"
-import { forEachPart, insertHelpers, replacePartTypes } from "./util"
+import {
+  forEachPart,
+  helperEntries,
+  registerHelpers,
+  replacePartTypes,
+} from "./util"
 
 const SHARED_HELPERS = `type MenuRootProps = {
   id?: string | undefined
@@ -45,7 +50,22 @@ interface MenuContextValue {
   loopFocus: boolean
 }
 
-const MenuContext = createContext<MenuContextValue | null>(null)
+/**
+ * A context shared by every generated file (the same key gives the same
+ * context), so parts rendered by sibling files connect: a menubar in
+ * menubar.tsx and the menus of dropdown-menu.tsx inside it.
+ */
+function sharedContext<T>(key: string, fallback: T): Context<T> {
+  const registry = globalThis as unknown as Record<symbol, Context<T> | undefined>
+  const symbol = Symbol.for(\`shadcnui-hono-jsx:\${key}\`)
+  registry[symbol] ??= createContext(fallback)
+  return registry[symbol]
+}
+
+const MenuContext = sharedContext<MenuContextValue | null>("menu", null)
+
+/** Set by a menubar: its menu triggers are menuitems, and the first one is tabbable. */
+const MenubarContext = sharedContext<{ claimed: boolean } | null>("menubar", null)
 
 function useMenuContext(): MenuContextValue {
   const context = useContext(MenuContext)
@@ -58,7 +78,10 @@ function menuContextValue(id: string, loopFocus: boolean, labelled = true): Menu
 }
 
 /** Labels groups (and radio groups) by their label element. */
-const MenuGroupContext = createContext<{ labelId: string; value?: string | undefined } | null>(null)
+const MenuGroupContext = sharedContext<{ labelId: string; value?: string | undefined } | null>(
+  "menu-group",
+  null
+)
 
 /** Attributes every item renders, like Base UI's. */
 function menuItemAttributes(role: string, disabled: boolean | undefined, closeOnClick: boolean | undefined) {
@@ -113,12 +136,18 @@ function MenuSubmenuRootElement({ loopFocus, children }: MenuRootProps) {
   ...props
 }: ComponentProps<"button", RenderProp>) {
   const menu = useMenuContext()
+  // In a menubar the triggers are menuitems with a roving tab stop, like Base UI.
+  const menubar = useContext(MenubarContext)
+  const first = menubar !== null && !menubar.claimed
+  if (menubar) menubar.claimed = true
   return renderElement(
     <button
       type={type}
       id={menu.triggerId}
       command="toggle-popover"
       commandfor={menu.id}
+      role={menubar ? "menuitem" : undefined}
+      tabindex={menubar ? (first ? 0 : -1) : undefined}
       aria-haspopup="menu"
       aria-expanded="false"
       style={withStyle(style, { "anchor-name": menu.anchor })}
@@ -316,7 +345,6 @@ function createMenuFamily(o: MenuFamilyOptions): FamilyRule {
     notes: o.notes,
     transform(ctx, local) {
       replacePartTypes(ctx, step, local, types)
-      const used = new Set<string>()
       forEachPart(ctx, local, (element) => {
         const part = ALIASES[element.part] ?? element.part
         if (!(part in partHelpers) && part !== "Positioner") {
@@ -324,7 +352,6 @@ function createMenuFamily(o: MenuFamilyOptions): FamilyRule {
             `[${ctx.name}] ${step}: unknown part ${local}.${element.part}`
           )
         }
-        used.add(part)
         if (part === "Popup") {
           element.mapClasses(mapPopupClasses, [ANCHORED_POPUP_RESET])
         }
@@ -341,19 +368,17 @@ function createMenuFamily(o: MenuFamilyOptions): FamilyRule {
             : `<${tag} ${attrs} />`
         )
       })
-      const parts = Object.entries(partHelpers)
-        .filter(([part]) => used.has(part))
-        .map(([, text]) => text)
       const labelled = `/** Whether the root's trigger labels its popup (a button, not a context menu area). */
 const LABELLED_BY_TRIGGER = ${!o.context}`
-      insertHelpers(ctx, [SHARED_HELPERS, labelled, ...parts].join("\n\n"))
+      registerHelpers(
+        ctx,
+        helperEntries(
+          [SHARED_HELPERS, labelled, ...Object.values(partHelpers)].join("\n\n")
+        )
+      )
       insertAnchorHelpers(ctx)
       ctx.needsComponentProps = true
       ctx.needsRender = true
-      ctx.honoTypes.add("Child")
-      for (const value of ["createContext", "useContext", "useId"]) {
-        ctx.honoValues.add(value)
-      }
       ctx.log.push(`${step}: ${local} on a native popover with the menu script`)
     },
   }
@@ -381,3 +406,60 @@ export const contextMenuFamily = createMenuFamily({
     ITEM_NOTES,
   ],
 })
+
+const MENUBAR_HELPERS = `type MenubarRootProps = ComponentProps<"div"> & {
+  orientation?: "horizontal" | "vertical" | undefined
+  /** Wrap focus from the last menu to the first with the arrow keys. */
+  loopFocus?: boolean | undefined
+}
+
+/** A bar of menus: their triggers are menuitems, moved between with the arrow keys. */
+function MenubarRootElement({ orientation = "horizontal", loopFocus, ...props }: MenubarRootProps) {
+  return (
+    <MenubarContext.Provider value={{ claimed: false }}>
+      <div
+        role="menubar"
+        aria-orientation={orientation}
+        data-orientation={orientation}
+        data-loop-focus={loopFocus === false ? "false" : undefined}
+        {...props}
+      />
+    </MenubarContext.Provider>
+  )
+}`
+
+export const menubarFamily: FamilyRule = {
+  module: "@base-ui/react/menubar",
+  exportName: "Menubar",
+  kind: "script",
+  behaviors: ["menu"],
+  domParity: "native-structure",
+  reference:
+    "https://github.com/mui/base-ui/tree/master/packages/react/src/menubar",
+  notes: [
+    'Moving between menus with the arrow keys and switching menus by hovering while one is open need the client script `/shadcn/menu.js` (`<script type="module" src="/shadcn/menu.js">`); without it each menu still opens with its trigger. `modal` is not supported.',
+  ],
+  transform(ctx, local) {
+    const step = "family:Menubar"
+    replacePartTypes(ctx, step, local, { "": "MenubarRootProps" })
+    forEachPart(ctx, local, (element) => {
+      if (element.part !== "") {
+        throw new Error(
+          `[${ctx.name}] ${step}: unknown part ${local}.${element.part}`
+        )
+      }
+      const attrs = element.attributes().join(" ")
+      element.replace(
+        element.children
+          ? `<MenubarRootElement ${attrs}>${element.children}</MenubarRootElement>`
+          : `<MenubarRootElement ${attrs} />`
+      )
+    })
+    registerHelpers(
+      ctx,
+      helperEntries([SHARED_HELPERS, MENUBAR_HELPERS].join("\n\n"))
+    )
+    ctx.needsComponentProps = true
+    ctx.log.push(`${step}: ${local} as a menubar`)
+  },
+}

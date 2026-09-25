@@ -782,6 +782,51 @@
       }
     },
     {
+      "name": "menubar",
+      "type": "registry:item",
+      "title": "Menubar",
+      "description": "Hono JSX port of the shadcn/ui base-nova menubar component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/menubar.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/menubar.tsx"
+        },
+        {
+          "path": "components/ui/dropdown-menu.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/dropdown-menu.tsx"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "public/shadcn/menu.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/menu.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/menu.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "menubar",
+          "style": "base-nova",
+          "contentSha256": "7e439524f877456cd33816428a52046b17d2a117bcd1efedcc31b7e5b6e2572a",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "message",
       "type": "registry:item",
       "title": "Message",

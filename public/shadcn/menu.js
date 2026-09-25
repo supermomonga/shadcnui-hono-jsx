@@ -14,7 +14,9 @@ import { delegate } from "./core.js"
 const MENU = '[role="menu"]'
 const ITEM =
   '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]'
-const SUBMENU_TRIGGER = '[role="menuitem"][aria-haspopup="menu"]'
+const SUBMENU_TRIGGER = '[role="menuitem"][aria-haspopup="menu"][aria-controls]'
+const TRIGGER = '[aria-haspopup="menu"][commandfor]'
+const MENUBAR = '[role="menubar"]'
 /** Base UI's delay before a hovered submenu trigger opens its submenu. */
 const SUBMENU_DELAY = 100
 
@@ -135,24 +137,73 @@ document.addEventListener(
   true
 )
 
-// Opening from the keyboard focuses the first item (the last for ArrowUp).
-delegate(
-  "keydown",
-  '[aria-haspopup="menu"]:not([role="menuitem"])',
-  (event, trigger) => {
-    const menu = document.getElementById(
-      trigger.getAttribute("commandfor") ?? ""
-    )
-    if (!menu) return
-    if (event.key === "Enter" || event.key === " ") {
-      // The native command opens the menu on the click that follows.
-      pendingFocus.set(menu, "first")
-    } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-      event.preventDefault()
-      open(menu, event.key === "ArrowDown" ? "first" : "last", trigger)
-    }
+/**
+ * The trigger of a menu, or of the menu next to it in a menubar.
+ *
+ * @param {Element} trigger
+ * @param {1 | -1} step
+ * @returns {HTMLElement | null}
+ */
+function menubarNeighbor(trigger, step) {
+  const bar = trigger.closest(MENUBAR)
+  if (!bar) return null
+  const triggers = [...bar.querySelectorAll(TRIGGER)].filter(
+    /** @returns {item is HTMLElement} */
+    (item) => item instanceof HTMLElement && item.closest(MENUBAR) === bar
+  )
+  const index = triggers.indexOf(/** @type {HTMLElement} */ (trigger))
+  const loop = bar.getAttribute("data-loop-focus") !== "false"
+  const next = index + step
+  if (next >= 0 && next < triggers.length) return triggers[next] ?? null
+  return loop ? (triggers.at(step === 1 ? 0 : -1) ?? null) : null
+}
+
+/**
+ * Moves the menubar's tab stop to `trigger`.
+ *
+ * @param {HTMLElement} trigger
+ */
+function rove(trigger) {
+  const bar = trigger.closest(MENUBAR)
+  for (const item of bar?.querySelectorAll(TRIGGER) ?? []) {
+    if (item instanceof HTMLElement) item.tabIndex = item === trigger ? 0 : -1
   }
-)
+  trigger.focus()
+}
+
+/** @param {HTMLElement} trigger */
+const menuOfTrigger = (trigger) =>
+  document.getElementById(trigger.getAttribute("commandfor") ?? "")
+
+// Opening from the keyboard focuses the first item (the last for ArrowUp);
+// in a menubar, the arrow keys move between the triggers.
+delegate("keydown", TRIGGER, (event, trigger) => {
+  const menu = menuOfTrigger(trigger)
+  if (!menu) return
+  const horizontal =
+    trigger.closest(MENUBAR)?.getAttribute("aria-orientation") !== "vertical"
+  const [previousKey, nextKey] = horizontal
+    ? ["ArrowLeft", "ArrowRight"]
+    : ["ArrowUp", "ArrowDown"]
+  if (
+    trigger.closest(MENUBAR) &&
+    (event.key === previousKey || event.key === nextKey)
+  ) {
+    const neighbor = menubarNeighbor(trigger, event.key === nextKey ? 1 : -1)
+    if (neighbor) {
+      event.preventDefault()
+      rove(neighbor)
+    }
+    return
+  }
+  if (event.key === "Enter" || event.key === " ") {
+    // The native command opens the menu on the click that follows.
+    pendingFocus.set(menu, "first")
+  } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    event.preventDefault()
+    open(menu, event.key === "ArrowDown" ? "first" : "last", trigger)
+  }
+})
 
 /** @type {{ text: string, time: number }} Typed characters for typeahead. */
 const typed = { text: "", time: 0 }
@@ -191,7 +242,9 @@ delegate("keydown", MENU, (event, menu) => {
           event.preventDefault()
           open(submenu, "first", current)
         }
+        return
       }
+      switchMenubarMenu(event, menu, 1)
       return
     }
     case "ArrowLeft": {
@@ -200,7 +253,9 @@ delegate("keydown", MENU, (event, menu) => {
         event.preventDefault()
         menu.hidePopover()
         trigger.focus()
+        return
       }
+      switchMenubarMenu(event, menu, -1)
       return
     }
     case "Enter":
@@ -268,6 +323,25 @@ delegate("click", ITEM, (event, item) => {
 })
 
 /**
+ * In a menubar, the left and right arrows move from a menu to the next one.
+ *
+ * @param {KeyboardEvent} event
+ * @param {HTMLElement} menu
+ * @param {1 | -1} step
+ */
+function switchMenubarMenu(event, menu, step) {
+  const root = rootMenu(menu)
+  const trigger = triggerOf(root)
+  const neighbor = trigger ? menubarNeighbor(trigger, step) : null
+  const next = neighbor ? menuOfTrigger(neighbor) : null
+  if (!neighbor || !next) return
+  event.preventDefault()
+  rove(neighbor)
+  // Like Base UI, the next menu itself takes focus.
+  open(next, "menu", neighbor)
+}
+
+/**
  * @param {Element} item
  * @param {boolean} checked
  */
@@ -326,4 +400,18 @@ delegate("contextmenu", "[data-context-menu]", (event, area) => {
       once: true,
     })
   }
+})
+
+// While a menubar menu is open, hovering another trigger opens its menu.
+delegate("pointermove", `${MENUBAR} ${TRIGGER}`, (event, trigger) => {
+  if (event.pointerType === "touch") return
+  const bar = trigger.closest(MENUBAR)
+  const menu = menuOfTrigger(trigger)
+  if (!bar || !menu || menu.matches(":popover-open")) return
+  const openMenu = [...bar.querySelectorAll(TRIGGER)]
+    .map((item) => (item instanceof HTMLElement ? menuOfTrigger(item) : null))
+    .find((other) => other?.matches(":popover-open"))
+  if (!openMenu) return
+  rove(trigger)
+  open(menu, "menu", trigger)
 })

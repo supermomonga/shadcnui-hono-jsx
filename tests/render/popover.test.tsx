@@ -39,7 +39,7 @@ describe("Popover (native popover, no JavaScript)", () => {
       "data-side": "top",
       "data-align": "end",
       style:
-        "position-anchor:--info;position-area:top span-x-start;position-try-fallbacks:flip-block;margin-bottom:6px;margin-inline-end:2px;--transform-origin:100% 100%",
+        "position-anchor:--info;position-area:top span-x-start;position-try-fallbacks:flip-block;margin-bottom:6px;margin-inline-end:2px;--transform-origin:100% 100%;--anchor-width:anchor-size(width);--anchor-height:anchor-size(height);--available-width:100%;--available-height:100%",
     })
     expect(popup?.classes).toEqual(
       expect.arrayContaining([

@@ -843,20 +843,37 @@
     },
     {
       "name": "menubar",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/menubar.json",
         "contentSha256": "7e439524f877456cd33816428a52046b17d2a117bcd1efedcc31b7e5b6e2572a",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "The menu is a native popover placed with CSS anchor positioning, so it opens without JavaScript (placement needs Chrome 135, Firefox 147 or Safari 26.2). The client script `/shadcn/menu.js` (`<script type=\"module\" src=\"/shadcn/menu.js\">`) adds the menu behavior: focus handling, arrow keys, typeahead, checkbox and radio items, submenus and closing after a choice.",
+        "Items have no `onClick` on the server: use `render` for links (`render={<a href=\"/settings\" />}`) or form buttons. Controlled state (`open`, `onOpenChange`, `checked`/`onCheckedChange`, `value`/`onValueChange`), `modal` (page scroll is not locked) and `openOnHover` on the root are not supported.",
+        "Moving between menus with the arrow keys and switching menus by hovering while one is open need the client script `/shadcn/menu.js` (`<script type=\"module\" src=\"/shadcn/menu.js\">`); without it each menu still opens with its trigger. `modal` is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/menu#Menu",
+        "base-ui-primitive-mapped:@base-ui/react/menubar#Menubar",
+        "classname-to-class",
+        "cn-marker:cn-menu-target",
+        "cn-marker:cn-menu-translucent",
+        "component-dependency:dropdown-menu",
+        "component-import:dropdown-menu",
+        "icon-placeholder",
+        "lucide-icon:CheckIcon",
+        "react-type-rewrite:React.ComponentProps",
+        "use-client-directive"
+      ]
     },
     {
       "name": "message",

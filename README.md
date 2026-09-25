@@ -208,6 +208,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | kbd | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | label | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | marker | experimental | generated | verified | none | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| menubar | experimental | generated | verified | `/shadcn/menu.js` | The menu is a native popover placed with CSS anchor positioning, so it opens without JavaScript (placement needs Chrome 135, Firefox 147 or Safari 26.2). The client script `/shadcn/menu.js` (`<script type="module" src="/shadcn/menu.js">`) adds the menu behavior: focus handling, arrow keys, typeahead, checkbox and radio items, submenus and closing after a choice. Items have no `onClick` on the server: use `render` for links (`render={<a href="/settings" />}`) or form buttons. Controlled state (`open`, `onOpenChange`, `checked`/`onCheckedChange`, `value`/`onValueChange`), `modal` (page scroll is not locked) and `openOnHover` on the root are not supported. Moving between menus with the arrow keys and switching menus by hovering while one is open need the client script `/shadcn/menu.js` (`<script type="module" src="/shadcn/menu.js">`); without it each menu still opens with its trigger. `modal` is not supported. Accepts `class` instead of `className`. |
 | message | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | native-select | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | pagination | experimental | generated | verified | none | Accepts `class` instead of `className`. |
@@ -227,7 +228,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | toggle-group | experimental | generated | verified | none | Items are native radios sharing a `name` (checkboxes with `multiple`): the pressed item of a single-selection group cannot be released by pressing it again, and arrow keys select as they move. `defaultValue` sets the pressed items; `value`/`onValueChange` are not supported. A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (23 upstream components)</summary>
+<summary>Not yet available (22 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -243,7 +244,6 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | hover-card | unsupported | `base-ui-primitive-unmapped:@base-ui/react/preview-card#PreviewCard` |
 | input-group | unsupported | `event-handler:onClick` |
 | input-otp | unsupported | `unknown-import:input-otp` |
-| menubar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar` |
 | message-scroller | unsupported | `render-prop:MessageScrollerPrimitive.Button`, `unknown-import:@shadcn/react/message-scroller` |
 | navigation-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu`, `react-type-unmapped:React.ComponentPropsWithRef` |
 | questionnaire | unsupported | `unknown-import:@shadcn/react/questionnaire` |
