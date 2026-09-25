@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -9,6 +9,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
@@ -118,6 +127,34 @@ export function Demo({ runtime }: { runtime: string }) {
           </Button>
         </CardFooter>
       </Card>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="font-medium">Dialog</h2>
+        <p class="text-sm text-muted-foreground">
+          A native <code>&lt;dialog&gt;</code> opened with Invoker Commands,
+          still without any JavaScript.
+        </p>
+        <Dialog id="edit-profile">
+          <DialogTrigger class={buttonVariants({ variant: "outline" })}>
+            Edit profile
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit profile</DialogTitle>
+              <DialogDescription>
+                Make changes to your profile here. Click save when you're done.
+              </DialogDescription>
+            </DialogHeader>
+            <div class="grid gap-3">
+              <Label for="profile-name">Name</Label>
+              <Input id="profile-name" value="Pedro Duarte" />
+            </div>
+            <DialogFooter showCloseButton>
+              <Button>Save changes</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </section>
 
       <Separator />
 

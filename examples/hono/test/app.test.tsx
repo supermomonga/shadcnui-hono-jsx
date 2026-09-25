@@ -15,10 +15,13 @@ describe("example-hono", () => {
       "label",
       "separator",
       "table",
+      "dialog-trigger",
+      "dialog-content",
     ]) {
       expect(html).toContain(`data-slot="${slot}"`)
     }
     expect(html).toContain('type="submit"')
+    expect(html).toContain('command="show-modal" commandfor="edit-profile"')
     expect(html).toContain('data-disabled=""')
   })
 
