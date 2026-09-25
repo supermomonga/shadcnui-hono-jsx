@@ -40,6 +40,8 @@ interface MenuContextValue {
   id: string
   anchor: string
   triggerId: string
+  /** Whether a trigger element labels the popup (not for context menus). */
+  labelled: boolean
   loopFocus: boolean
 }
 
@@ -51,8 +53,8 @@ function useMenuContext(): MenuContextValue {
   return context
 }
 
-function menuContextValue(id: string, loopFocus: boolean): MenuContextValue {
-  return { id, anchor: \`--\${id}\`, triggerId: \`\${id}-trigger\`, loopFocus }
+function menuContextValue(id: string, loopFocus: boolean, labelled = true): MenuContextValue {
+  return { id, anchor: \`--\${id}\`, triggerId: \`\${id}-trigger\`, labelled, loopFocus }
 }
 
 /** Labels groups (and radio groups) by their label element. */
@@ -85,7 +87,9 @@ const PART_HELPERS: Readonly<Record<string, string>> = {
 function MenuRootElement({ id, loopFocus = true, children }: MenuRootProps) {
   const generated = useId().replaceAll(":", "-")
   return (
-    <MenuContext.Provider value={menuContextValue(id ?? \`menu\${generated}\`, loopFocus)}>
+    <MenuContext.Provider
+      value={menuContextValue(id ?? \`menu\${generated}\`, loopFocus, LABELLED_BY_TRIGGER)}
+    >
       {children}
     </MenuContext.Provider>
   )
@@ -157,7 +161,7 @@ function MenuPortalElement({ children }: { children?: Child }) {
       popover="auto"
       role="menu"
       tabindex={-1}
-      aria-labelledby={menu.triggerId}
+      aria-labelledby={menu.labelled ? menu.triggerId : undefined}
       data-side={placement.side}
       data-align={placement.align}
       data-loop-focus={menu.loopFocus ? undefined : "false"}
@@ -262,58 +266,118 @@ const TYPES: Readonly<Record<string, string>> = {
   Separator: 'ComponentProps<"div">',
 }
 
-export const menuFamily: FamilyRule = {
+/**
+ * A context menu opens at the pointer on a right click (the script moves an
+ * invisible anchor there), so its trigger is an area, not a button, and no
+ * trigger labels the popup.
+ */
+const CONTEXT_TRIGGER = `/** The area that opens the menu on a right click, with the anchor the script moves to the pointer. */
+function MenuTriggerElement({ children, ...props }: ComponentProps<"div">) {
+  const menu = useMenuContext()
+  return (
+    <div data-context-menu={menu.id} {...props}>
+      {children}
+      <span
+        aria-hidden="true"
+        data-context-menu-anchor=""
+        style={\`position:fixed;inset:0 auto auto 0;width:0;height:0;anchor-name:\${menu.anchor}\`}
+      />
+    </div>
+  )
+}`
+
+interface MenuFamilyOptions {
+  module: string
+  exportName: string
+  context: boolean
+  notes: readonly string[]
+}
+
+function createMenuFamily(o: MenuFamilyOptions): FamilyRule {
+  const step = `family:${o.exportName}`
+  const partHelpers: Record<string, string> = {
+    ...PART_HELPERS,
+    ...(o.context ? { Trigger: CONTEXT_TRIGGER } : {}),
+  }
+  const types: Record<string, string> = {
+    ...TYPES,
+    ...(o.context ? { Trigger: 'ComponentProps<"div">' } : {}),
+  }
+  return {
+    module: o.module,
+    exportName: o.exportName,
+    kind: "script",
+    behaviors: ["menu"],
+    domParity: "native-structure",
+    renderableParts: o.context
+      ? ["Item", "CheckboxItem", "RadioItem"]
+      : ["Trigger", "Item", "CheckboxItem", "RadioItem"],
+    reference: `https://github.com/mui/base-ui/tree/master/packages/react/src/${o.module.split("/").pop()}`,
+    notes: o.notes,
+    transform(ctx, local) {
+      replacePartTypes(ctx, step, local, types)
+      const used = new Set<string>()
+      forEachPart(ctx, local, (element) => {
+        const part = ALIASES[element.part] ?? element.part
+        if (!(part in partHelpers) && part !== "Positioner") {
+          throw new Error(
+            `[${ctx.name}] ${step}: unknown part ${local}.${element.part}`
+          )
+        }
+        used.add(part)
+        if (part === "Popup") {
+          element.mapClasses(mapPopupClasses, [ANCHORED_POPUP_RESET])
+        }
+        const tag =
+          part === "Positioner"
+            ? "AnchorPositioner"
+            : part === "CheckboxItemIndicator"
+              ? "MenuItemIndicatorElement"
+              : `Menu${part}Element`
+        const attrs = element.attributes().join(" ")
+        element.replace(
+          element.children
+            ? `<${tag} ${attrs}>${element.children}</${tag}>`
+            : `<${tag} ${attrs} />`
+        )
+      })
+      const parts = Object.entries(partHelpers)
+        .filter(([part]) => used.has(part))
+        .map(([, text]) => text)
+      const labelled = `/** Whether the root's trigger labels its popup (a button, not a context menu area). */
+const LABELLED_BY_TRIGGER = ${!o.context}`
+      insertHelpers(ctx, [SHARED_HELPERS, labelled, ...parts].join("\n\n"))
+      insertAnchorHelpers(ctx)
+      ctx.needsComponentProps = true
+      ctx.needsRender = true
+      ctx.honoTypes.add("Child")
+      for (const value of ["createContext", "useContext", "useId"]) {
+        ctx.honoValues.add(value)
+      }
+      ctx.log.push(`${step}: ${local} on a native popover with the menu script`)
+    },
+  }
+}
+
+const ITEM_NOTES =
+  'Items have no `onClick` on the server: use `render` for links (`render={<a href="/settings" />}`) or form buttons. Controlled state (`open`, `onOpenChange`, `checked`/`onCheckedChange`, `value`/`onValueChange`), `modal` (page scroll is not locked) and `openOnHover` on the root are not supported.'
+
+export const menuFamily = createMenuFamily({
   module: "@base-ui/react/menu",
   exportName: "Menu",
-  kind: "script",
-  behaviors: ["menu"],
-  domParity: "native-structure",
-  renderableParts: ["Trigger", "Item", "CheckboxItem", "RadioItem"],
-  reference:
-    "https://github.com/mui/base-ui/tree/master/packages/react/src/menu",
+  context: false,
   notes: [
     'The menu is a native popover placed with CSS anchor positioning, so it opens without JavaScript (placement needs Chrome 135, Firefox 147 or Safari 26.2). The client script `/shadcn/menu.js` (`<script type="module" src="/shadcn/menu.js">`) adds the menu behavior: focus handling, arrow keys, typeahead, checkbox and radio items, submenus and closing after a choice.',
-    'Items have no `onClick` on the server: use `render` for links (`render={<a href="/settings" />}`) or form buttons. Controlled state (`open`, `onOpenChange`, `checked`/`onCheckedChange`, `value`/`onValueChange`), `modal` (page scroll is not locked) and `openOnHover` on the root are not supported.',
+    ITEM_NOTES,
   ],
-  transform(ctx, local) {
-    const step = "family:Menu"
-    replacePartTypes(ctx, step, local, TYPES)
-    const used = new Set<string>()
-    forEachPart(ctx, local, (element) => {
-      const part = ALIASES[element.part] ?? element.part
-      if (!(part in PART_HELPERS) && part !== "Positioner") {
-        throw new Error(
-          `[${ctx.name}] ${step}: unknown part ${local}.${element.part}`
-        )
-      }
-      used.add(part)
-      if (part === "Popup") {
-        element.mapClasses(mapPopupClasses, [ANCHORED_POPUP_RESET])
-      }
-      const tag =
-        part === "Positioner"
-          ? "AnchorPositioner"
-          : part === "CheckboxItemIndicator"
-            ? "MenuItemIndicatorElement"
-            : `Menu${part}Element`
-      const attrs = element.attributes().join(" ")
-      element.replace(
-        element.children
-          ? `<${tag} ${attrs}>${element.children}</${tag}>`
-          : `<${tag} ${attrs} />`
-      )
-    })
-    const parts = Object.entries(PART_HELPERS)
-      .filter(([part]) => used.has(part))
-      .map(([, text]) => text)
-    insertHelpers(ctx, [SHARED_HELPERS, ...parts].join("\n\n"))
-    insertAnchorHelpers(ctx)
-    ctx.needsComponentProps = true
-    ctx.needsRender = true
-    ctx.honoTypes.add("Child")
-    for (const value of ["createContext", "useContext", "useId"]) {
-      ctx.honoValues.add(value)
-    }
-    ctx.log.push(`${step}: ${local} on a native popover with the menu script`)
-  },
-}
+})
+
+export const contextMenuFamily = createMenuFamily({
+  module: "@base-ui/react/context-menu",
+  exportName: "ContextMenu",
+  context: true,
+  notes: [
+    'A right click on the trigger area opens the menu at the pointer; this needs the client script `/shadcn/menu.js` (`<script type="module" src="/shadcn/menu.js">`), without which the browser\'s own context menu appears. The menu is a native popover placed with CSS anchor positioning, and the script adds the menu behavior (focus, arrow keys, typeahead, checkbox and radio items, submenus). Long presses on touch screens do not open it.',
+    ITEM_NOTES,
+  ],
+})

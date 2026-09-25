@@ -19,6 +19,21 @@ import {
 } from "./.upstream/alert-dialog"
 import { Button } from "./.upstream/button"
 import {
+  ContextMenu,
+  ContextMenuCheckboxItem,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from "./.upstream/context-menu"
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -323,6 +338,45 @@ function DropdownMenuDemo() {
   )
 }
 
+function ContextMenuDemo() {
+  return (
+    <main className="flex items-start gap-8 p-8">
+      <ContextMenu>
+        <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
+          Right click here
+        </ContextMenuTrigger>
+        <ContextMenuContent className="w-52">
+          <ContextMenuItem>
+            Back
+            <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuItem disabled>Forward</ContextMenuItem>
+          <ContextMenuItem>Reload</ContextMenuItem>
+          <ContextMenuSub>
+            <ContextMenuSubTrigger>More tools</ContextMenuSubTrigger>
+            <ContextMenuSubContent className="w-44">
+              <ContextMenuItem>Save page</ContextMenuItem>
+              <ContextMenuItem>Developer tools</ContextMenuItem>
+            </ContextMenuSubContent>
+          </ContextMenuSub>
+          <ContextMenuSeparator />
+          <ContextMenuCheckboxItem defaultChecked>
+            Show bookmarks
+          </ContextMenuCheckboxItem>
+          <ContextMenuRadioGroup defaultValue="pedro">
+            <ContextMenuLabel inset>People</ContextMenuLabel>
+            <ContextMenuRadioItem value="pedro">Pedro</ContextMenuRadioItem>
+            <ContextMenuRadioItem value="colm">Colm</ContextMenuRadioItem>
+          </ContextMenuRadioGroup>
+        </ContextMenuContent>
+      </ContextMenu>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children: ReactNode }) {
   return (
     <main className="flex items-center gap-4 p-8">
@@ -354,6 +408,7 @@ const DEMOS: Record<string, () => ReactNode> = {
     </main>
   ),
   select: () => <SelectDemo />,
+  "context-menu": () => <ContextMenuDemo />,
   "dropdown-menu": () => <DropdownMenuDemo />,
   tabs: () => <TabsDemo />,
   sheet: () => (

@@ -22,6 +22,7 @@ export const config: GeneratorConfig = {
     "card",
     "checkbox",
     "collapsible",
+    "context-menu",
     "dialog",
     "dropdown-menu",
     "empty",

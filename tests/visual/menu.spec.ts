@@ -188,3 +188,70 @@ test("without the script, the menu opens and its items are reachable", async ({
   await page.keyboard.press("Tab")
   await expect(page.getByRole("menuitem", { name: /Profile/ })).toBeFocused()
 })
+
+const area = (page: Page) => page.getByText("Right click here")
+const rightClick = (page: Page, x = 120, y = 80) =>
+  area(page).click({ button: "right", position: { x, y } })
+
+const CONTEXT_STEPS: Step[] = [
+  ["initial", async () => {}],
+  ["a right click opens the menu at the pointer", (page) => rightClick(page)],
+  [
+    "ArrowDown focuses the first item",
+    (page) => page.keyboard.press("ArrowDown"),
+  ],
+  ["disabled items", (page) => page.keyboard.press("ArrowDown")],
+  ["Escape closes", (page) => page.keyboard.press("Escape")],
+  ["another right click", (page) => rightClick(page, 200, 40)],
+  ["choosing an item closes the menu", (page) => item(page, "Reload").click()],
+  ["reopen", (page) => rightClick(page)],
+  ["a checkbox item toggles", (page) => item(page, "Show bookmarks").click()],
+  [
+    "hovering a submenu trigger opens the submenu",
+    async (page) => {
+      await item(page, "More tools").hover()
+      await page.waitForTimeout(400)
+    },
+  ],
+  ["an outside click closes", (page) => page.mouse.click(700, 500)],
+]
+
+test("context menu behaves like upstream Base UI", async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 800, height: 600 },
+  })
+  const hono = await context.newPage()
+  const react = await context.newPage()
+  await hono.goto(pageUrl("context-menu-hono.html"))
+  await react.goto(pageUrl("context-menu-react.html"))
+  await area(react).waitFor()
+  for (const [description, act] of CONTEXT_STEPS) {
+    await act(hono)
+    await act(react)
+    await test.step(description, async () => {
+      await hono.evaluate(() =>
+        Promise.allSettled(document.getAnimations().map((a) => a.finished))
+      )
+      await expect.poll(() => state(react)).toEqual(await state(hono))
+    })
+  }
+})
+
+test("context menu opens at the pointer like upstream shadcn/ui", async ({
+  browser,
+}, testInfo) => {
+  const context = await browser.newContext({
+    viewport: { width: 800, height: 600 },
+    deviceScaleFactor: 1,
+    reducedMotion: "reduce",
+  })
+  const shots: Buffer[] = []
+  for (const file of ["context-menu-hono.html", "context-menu-react.html"]) {
+    const page = await context.newPage()
+    await page.goto(pageUrl(file))
+    await rightClick(page)
+    await page.waitForTimeout(400)
+    shots.push(await page.screenshot({ animations: "disabled" }))
+  }
+  await compare(shots, testInfo)
+})

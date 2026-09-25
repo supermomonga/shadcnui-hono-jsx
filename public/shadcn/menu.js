@@ -4,9 +4,10 @@
  * places and dismisses the menu; this script adds Base UI's menu behavior.
  * Opening moves focus into the menu, arrow keys, Home, End and typeahead move
  * between items, Enter and Space choose, choosing an item closes the menu,
- * checkbox and radio items toggle, and submenus open from their trigger by
- * pointer or keyboard. Without it, the menu still opens and its items are
- * reachable with Tab.
+ * checkbox and radio items toggle, submenus open from their trigger by pointer
+ * or keyboard, and context menus open at the pointer on a right click.
+ * Without it, dropdown menus still open and their items are reachable with
+ * Tab (context menus need it).
  */
 import { delegate } from "./core.js"
 
@@ -302,4 +303,27 @@ delegate("pointermove", ITEM, (event, item) => {
       }
     }
   }, SUBMENU_DELAY)
+})
+
+// Context menus open at the pointer: the invisible anchor inside the trigger
+// area moves there, and CSS anchor positioning places the menu next to it.
+delegate("contextmenu", "[data-context-menu]", (event, area) => {
+  const menu = document.getElementById(area.dataset.contextMenu ?? "")
+  const anchor = area.querySelector(":scope > [data-context-menu-anchor]")
+  if (!menu || !(anchor instanceof HTMLElement)) return
+  event.preventDefault()
+  anchor.style.left = `${event.clientX}px`
+  anchor.style.top = `${event.clientY}px`
+  const show = () => {
+    if (menu.matches(":popover-open")) menu.hidePopover()
+    open(menu, "menu", null)
+  }
+  // Where the menu event fires on pointer down, the release that follows
+  // would light-dismiss a popover opened now.
+  if (event.buttons === 0) show()
+  else {
+    document.addEventListener("pointerup", () => setTimeout(show), {
+      once: true,
+    })
+  }
 })

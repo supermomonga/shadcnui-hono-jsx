@@ -230,7 +230,7 @@ describe("classification of the committed upstream snapshot", () => {
   ])
 
   // Built with an optional client script (script families, docs/adr/0025).
-  const SCRIPTED = new Set(["dropdown-menu", "tabs"])
+  const SCRIPTED = new Set(["context-menu", "dropdown-menu", "tabs"])
 
   test.each([...config.components])(
     "%s (generation target) is direct, natively adapted or scripted",

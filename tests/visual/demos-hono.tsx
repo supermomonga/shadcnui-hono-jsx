@@ -17,6 +17,21 @@ import {
 } from "../../components/ui/alert-dialog"
 import { Button } from "../../components/ui/button"
 import {
+  ContextMenu,
+  ContextMenuCheckboxItem,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from "../../components/ui/context-menu"
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -315,6 +330,45 @@ function DropdownMenuDemo() {
   )
 }
 
+function ContextMenuDemo() {
+  return (
+    <main class="flex items-start gap-8 p-8">
+      <ContextMenu>
+        <ContextMenuTrigger class="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
+          Right click here
+        </ContextMenuTrigger>
+        <ContextMenuContent class="w-52">
+          <ContextMenuItem>
+            Back
+            <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuItem disabled>Forward</ContextMenuItem>
+          <ContextMenuItem>Reload</ContextMenuItem>
+          <ContextMenuSub>
+            <ContextMenuSubTrigger>More tools</ContextMenuSubTrigger>
+            <ContextMenuSubContent class="w-44">
+              <ContextMenuItem>Save page</ContextMenuItem>
+              <ContextMenuItem>Developer tools</ContextMenuItem>
+            </ContextMenuSubContent>
+          </ContextMenuSub>
+          <ContextMenuSeparator />
+          <ContextMenuCheckboxItem defaultChecked>
+            Show bookmarks
+          </ContextMenuCheckboxItem>
+          <ContextMenuRadioGroup defaultValue="pedro">
+            <ContextMenuLabel inset>People</ContextMenuLabel>
+            <ContextMenuRadioItem value="pedro">Pedro</ContextMenuRadioItem>
+            <ContextMenuRadioItem value="colm">Colm</ContextMenuRadioItem>
+          </ContextMenuRadioGroup>
+        </ContextMenuContent>
+      </ContextMenu>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children?: unknown }) {
   return (
     <main class="flex items-center gap-4 p-8">
@@ -346,6 +400,7 @@ export const DEMOS = {
     </main>
   ),
   select: () => <SelectDemo />,
+  "context-menu": () => <ContextMenuDemo />,
   "dropdown-menu": () => <DropdownMenuDemo />,
   tabs: () => <TabsDemo />,
   sheet: () => (
@@ -358,6 +413,7 @@ export const DEMOS = {
 
 /** Client scripts (public/shadcn/) each demo page loads. */
 export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
+  "context-menu": ["menu"],
   "dropdown-menu": ["menu"],
   tabs: ["tabs"],
 }
