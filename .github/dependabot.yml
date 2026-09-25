@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # Updated together with the vendored tailwind.css by the upstream-check workflow.
+      - dependency-name: shadcn
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
