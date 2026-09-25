@@ -45,3 +45,64 @@ Caveats from the CLI source: universal installs skip all transforms (imports are
 not rewritten), silently ignore `css`/`cssVars`, and `--dry-run`/`--diff`/`--view`
 fall back to the non-universal path. TypeScript 6 reports `baseUrl` as
 deprecated, so consumer `tsconfig.json` examples use `paths` only.
+
+### Which shadcn/ui interface is best for retrieving official registry items?
+
+The built style registry served by ui.shadcn.com, which is also what
+`shadcn add` consumes (see [ADR 0004](./adr/0004-snapshot-the-built-base-nova-registry-json-as-the-upstream-source.md)):
+
+- Items: `https://ui.shadcn.com/r/styles/base-nova/<name>.json`
+  (`{ name, type, dependencies, files: [{ path, type, content }] }`).
+- Index: `https://ui.shadcn.com/r/styles/base-nova/registry.json` (no content).
+- Theme: the CLI's preset endpoint
+  `https://ui.shadcn.com/init?base=base&style=nova&baseColor=neutral&...`
+  (`registry:base` with `cssVars` and `css`).
+- `shadcn/tailwind.css` (custom variants such as `data-horizontal`) from the
+  pinned `shadcn` npm package.
+
+The `shadcn-ui/ui` repository source is not used: it contains unresolved `cn-*`
+style tokens, and the built JSON is not tracked in git. The `shadcn/registry`
+programmatic API resolves the same URLs but defaults to the Radix
+`new-york-v4` style, so plain `fetch` of full URLs is simpler.
+
+Upstream item `dependencies` are incomplete (they list only `cn` even when
+`class-variance-authority` is imported), so registry dependencies are derived
+from the imports of the generated files.
+
+### Which upstream utility dependencies are framework-neutral?
+
+| Package | Used for | React dependency |
+| --- | --- | --- |
+| `cn` 0.4.x | class merging (`clsx` + `tailwind-merge` replacement); upstream components import `{ cn } from "cn"` | none |
+| `class-variance-authority` 0.7.x | variants (`cva`, `VariantProps`) | none (depends on `clsx` only) |
+| `tw-animate-css` 1.4.x | animation utilities imported by the theme | none |
+
+They are kept verbatim, so no `lib/utils` item is needed. Base UI
+(`@base-ui/react/*`), `lucide-react`, and the icon placeholder are React-only
+and never appear in generated output.
+
+### What minimum metadata tracks exact upstream revisions reproducibly?
+
+Per item, `upstream/lock.json` stores the item URL, the sha256 of the stored
+JSON, `contentSha256` (sha256 over file paths and contents), ETag,
+Last-Modified, fetch time, and a best-effort `shadcn-ui/ui` main commit. The
+minimum needed to reproduce a generated file is the style, the item URL, and
+`contentSha256` together with the committed snapshot; generated headers cite
+`contentSha256`, the best-effort commit, and the `shadcn` package version whose
+`tailwind.css` is vendored.
+
+## Classification
+
+`bun run analyze` classifies every snapshotted `registry:ui` item from parsed
+facts (imports, React type/value usage, hooks, JSX attributes, `cn-*` markers):
+
+| Kind | Meaning |
+| --- | --- |
+| `direct` | Plain HTML/Tailwind/variants, possibly via a stateless Base UI primitive mapped in `generator/src/adapters/primitives/base-ui.ts` or the canonical `useRender` pattern |
+| `native-adapter` | Maps onto a browser primitive with behavior (e.g. `<dialog>`); none yet |
+| `custom-adapter` | Blocking reasons all resolved by an adapter in `generator/src/adapters/components/` |
+| `unsupported` | At least one blocking reason (unmapped Base UI primitive, React hooks/runtime APIs, event handlers, icon placeholder, registry imports, unknown packages, ...) |
+
+Reasons are machine-readable (`code` or `code:detail`), sorted, and recorded in
+the compatibility manifest. Generation fails if a configured component is
+`unsupported`, which surfaces upstream changes that need a new rule.
