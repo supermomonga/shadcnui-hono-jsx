@@ -17,6 +17,9 @@ describe("example-hono", () => {
       "table",
       "dialog-trigger",
       "dialog-content",
+      "tabs",
+      "tabs-trigger",
+      "tabs-content",
     ]) {
       expect(html).toContain(`data-slot="${slot}"`)
     }
@@ -36,6 +39,17 @@ describe("example-hono", () => {
     ]) {
       expect(html).not.toContain(attribute)
     }
-    expect(html).not.toContain("<script")
+    // The only script is the optional client script for Tabs.
+    expect(html.match(/<script[^>]*>/g)).toEqual([
+      '<script type="module" src="/shadcn/tabs.js">',
+    ])
+  })
+
+  test("serves the client scripts from public/shadcn", async () => {
+    for (const file of ["tabs.js", "core.js"]) {
+      const response = await app.request(`/shadcn/${file}`)
+      expect(response.status).toBe(200)
+      expect(response.headers.get("content-type")).toContain("javascript")
+    }
   })
 })

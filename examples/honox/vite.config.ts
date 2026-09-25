@@ -21,4 +21,7 @@ export default defineConfig({
     alias: { "@/components": path.join(repositoryRoot, "components") },
   },
   server: { fs: { allow: [repositoryRoot] } },
+  // The registry installs client scripts into ./public/shadcn; this example
+  // serves the repository's copy.
+  publicDir: path.join(repositoryRoot, "public"),
 })

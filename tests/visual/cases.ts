@@ -18,6 +18,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   popover: "popover.spec.ts",
   "radio-group": "controls.spec.ts",
   select: "select.spec.ts",
+  tabs: "tabs.spec.ts",
   switch: "controls.spec.ts",
   toggle: "controls.spec.ts",
   "toggle-group": "controls.spec.ts",
@@ -704,6 +705,49 @@ export const VISUAL_CASES: VisualCase[] = [
         ]
       ),
     ],
+  },
+  {
+    id: "tabs/variants",
+    component: "tabs",
+    node: stack(
+      [
+        "Tabs",
+        { defaultValue: "password" },
+        [
+          "TabsList",
+          {},
+          ["TabsTrigger", { value: "account" }, "Account"],
+          ["TabsTrigger", { value: "password" }, "Password"],
+          ["TabsTrigger", { value: "billing", disabled: true }, "Billing"],
+        ],
+        ["TabsContent", { value: "account" }, "Account settings."],
+        ["TabsContent", { value: "password" }, "Change your password here."],
+      ],
+      [
+        "Tabs",
+        { defaultValue: "b" },
+        [
+          "TabsList",
+          { variant: "line" },
+          ["TabsTrigger", { value: "a" }, "Overview"],
+          ["TabsTrigger", { value: "b" }, "Analytics"],
+        ],
+        ["TabsContent", { value: "a" }, "Overview panel."],
+        ["TabsContent", { value: "b" }, "Analytics panel."],
+      ],
+      [
+        "Tabs",
+        { defaultValue: "x", orientation: "vertical" },
+        [
+          "TabsList",
+          {},
+          ["TabsTrigger", { value: "x" }, "General"],
+          ["TabsTrigger", { value: "y" }, "Security"],
+        ],
+        ["TabsContent", { value: "x" }, "General settings."],
+        ["TabsContent", { value: "y" }, "Security settings."],
+      ]
+    ),
   },
   {
     id: "switch/states",

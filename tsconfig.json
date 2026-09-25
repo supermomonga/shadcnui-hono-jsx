@@ -15,9 +15,11 @@
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": true
   },
-  "include": ["generator", "tests", "components", "*.ts"],
+  "include": ["generator", "tests", "components", "public/shadcn", "*.ts"],
   "exclude": [
     "examples",
     "node_modules",

@@ -1,16 +1,14 @@
-import path from "node:path"
-import { pathToFileURL } from "node:url"
 import { expect, type Locator, type Page, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { pageUrl } from "./server-url"
 
 /**
  * Behavior and placement of the generated Popover (native popover, Invoker
  * Commands and CSS anchor positioning, no JavaScript), and its open state
  * compared with upstream shadcn/ui (Base UI). Run `bun render.ts` first.
  */
-const OUT = path.join(import.meta.dirname, ".output")
-const url = (file: string) => pathToFileURL(path.join(OUT, file)).href
+const url = pageUrl
 
 async function open(page: Page, trigger: string) {
   await page.getByRole("button", { name: trigger }).click()

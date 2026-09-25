@@ -1,16 +1,14 @@
-import path from "node:path"
-import { pathToFileURL } from "node:url"
 import { expect, type Page, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { pageUrl } from "./server-url"
 
 /**
  * Behavior and accessibility of the generated modals (native <dialog> with
  * Invoker Commands, no JavaScript), and their open state compared with
  * upstream shadcn/ui (Base UI). Run `bun render.ts` first.
  */
-const OUT = path.join(import.meta.dirname, ".output")
-const url = (file: string) => pathToFileURL(path.join(OUT, file)).href
+const url = pageUrl
 
 interface Modal {
   /** Demo page name: `<page>-hono.html` and `<page>-react.html`. */

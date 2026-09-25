@@ -20,6 +20,10 @@ generator (transformer, adapter, or config) and regenerate.
 | `registry.json`, `compatibility.json` | `bun run generate` |
 | README compatibility table (between markers) | `bun run generate` |
 
+Client scripts in `public/shadcn/` are hand-written (Base UI's behavior is
+React code) and distributed as they are; see docs/adr/0025. Keep them
+dependency-free ES modules that find components by `data-slot`.
+
 ## Commands
 
 | Command | Purpose |

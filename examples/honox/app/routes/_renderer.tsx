@@ -10,6 +10,8 @@ export default jsxRenderer(({ children }) => {
         <title>shadcnui-hono-jsx on HonoX</title>
         <Link href="/app/style.css" rel="stylesheet" />
         <Script src="/app/client.ts" async />
+        {/* Optional client scripts for interactive components (public/shadcn/). */}
+        <script type="module" src="/shadcn/tabs.js" />
       </head>
       <body class="min-h-svh bg-background font-sans text-foreground antialiased">
         {children}

@@ -43,6 +43,7 @@ export const config: GeneratorConfig = {
     "spinner",
     "switch",
     "table",
+    "tabs",
     "textarea",
     "toggle",
     "toggle-group",

@@ -1102,6 +1102,46 @@
       }
     },
     {
+      "name": "tabs",
+      "type": "registry:item",
+      "title": "Tabs",
+      "description": "Hono JSX port of the shadcn/ui base-nova tabs component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/tabs.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/tabs.tsx"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "public/shadcn/tabs.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/tabs.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/tabs.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "tabs",
+          "style": "base-nova",
+          "contentSha256": "3f882d61007b43252ce03dd07caa699fcf6b783f06ee5a6d914fa4aacdc09273",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "textarea",
       "type": "registry:item",
       "title": "Textarea",

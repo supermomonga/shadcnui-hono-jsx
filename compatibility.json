@@ -1323,20 +1323,28 @@
     },
     {
       "name": "tabs",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/tabs.json",
         "contentSha256": "3f882d61007b43252ce03dd07caa699fcf6b783f06ee5a6d914fa4aacdc09273",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/tabs#Tabs"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "Switching tabs needs the client script `/shadcn/tabs.js` (`<script type=\"module\" src=\"/shadcn/tabs.js\">`); without it the selected panel is shown. Pointer, Enter, Space, arrow keys, Home and End work like Base UI.",
+        "Inactive panels are rendered with `hidden` (Base UI does not render them). Controlled state (`onValueChange`) and `render` are not supported; `value`/`defaultValue` set the selected tab.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/tabs#Tabs",
+        "classname-to-class",
+        "use-client-directive"
+      ]
     },
     {
       "name": "textarea",

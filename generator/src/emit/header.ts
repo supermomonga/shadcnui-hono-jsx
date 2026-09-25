@@ -9,6 +9,8 @@ export interface HeaderInput {
   mode: "generated" | "adapter"
   /** Canonical names of inlined Lucide icons, and the pinned lucide version. */
   icons?: { names: string[]; version: string }
+  /** Client scripts the component needs (docs/adr/0025). */
+  scripts?: string[]
 }
 
 /**
@@ -22,6 +24,11 @@ export function renderHeader(input: HeaderInput): string {
     `upstream: shadcn/ui ${input.style}/${input.name} (${input.url})`,
     `upstream-revision: sha256:${input.contentSha256}; shadcn-ui/ui@${input.upstreamCommit ?? "unknown"}`,
     `mode: ${input.mode}`,
+    ...(input.scripts && input.scripts.length > 0
+      ? [
+          `client: ${input.scripts.map((name) => `<script type="module" src="/shadcn/${name}.js">`).join(" ")} (public/shadcn/)`,
+        ]
+      : []),
     ...derivedNoticeLines(),
     ...(input.icons && input.icons.names.length > 0
       ? iconNoticeLines(input.icons.names, input.icons.version)

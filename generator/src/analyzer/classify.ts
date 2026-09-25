@@ -1,5 +1,5 @@
 import type { ComponentAdapter } from "../adapters/components"
-import { findFamilyRule } from "../adapters/families"
+import { type FamilyRule, findFamilyRule } from "../adapters/families"
 import {
   BASE_UI_RENDER_HELPERS,
   findPrimitiveRule,
@@ -14,6 +14,7 @@ import { type Reason, reason, reasonKey, sortReasons } from "./reasons"
 export type ClassificationKind =
   | "direct"
   | "native-adapter"
+  | "script-adapter"
   | "custom-adapter"
   | "unsupported"
 
@@ -45,7 +46,7 @@ export interface ClassifyOptions {
 
 function fileReasons(
   file: FileFacts,
-  primitives: { kind: PrimitiveRule["kind"] }[],
+  primitives: { kind: PrimitiveRule["kind"] | FamilyRule["kind"] }[],
   available: ReadonlySet<string>
 ): Reason[] {
   const reasons: Reason[] = []
@@ -191,7 +192,7 @@ export function classify(
 ): Classification {
   const available = options.available ?? new Set<string>()
   const reasons: Reason[] = []
-  const primitives: { kind: PrimitiveRule["kind"] }[] = []
+  const primitives: { kind: PrimitiveRule["kind"] | FamilyRule["kind"] }[] = []
 
   if (facts.files.length === 0) reasons.push(reason("no-files"))
   if (facts.files.length > 1) {
@@ -220,6 +221,10 @@ export function classify(
     }
     const kind = adapter.kind === "native" ? "native-adapter" : "custom-adapter"
     return { kind, reasons: sorted }
+  }
+  // A client script (docs/adr/0025) outranks browser primitives.
+  if (primitives.some((rule) => rule.kind === "script")) {
+    return { kind: "script-adapter", reasons: sorted }
   }
   if (primitives.some((rule) => rule.kind === "native")) {
     return { kind: "native-adapter", reasons: sorted }

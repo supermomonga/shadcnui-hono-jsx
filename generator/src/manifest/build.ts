@@ -1,6 +1,6 @@
 import { BROWSER_SPECS, VISUAL_CASES } from "../../../tests/visual/cases"
 import { COMPONENT_ADAPTERS } from "../adapters/components"
-import { PRIMITIVE_FAMILIES } from "../adapters/families"
+import { behaviorsOf, PRIMITIVE_FAMILIES } from "../adapters/families"
 import { BASE_UI_PRIMITIVES } from "../adapters/primitives/base-ui"
 import { type ClassificationKind, classify } from "../analyzer/classify"
 import { collectFacts } from "../analyzer/facts"
@@ -136,7 +136,7 @@ export function buildManifest(deps: {
       apiParity: "partial",
       // Interactive components are checked for keyboard, focus and ARIA in a browser.
       accessibility: name in BROWSER_SPECS ? "verified" : "static-markup",
-      clientJs: "none",
+      clientJs: behaviorsOf(reasons).length > 0 ? "required" : "none",
       knownDifferences: knownDifferences(
         reasons,
         COMPONENT_ADAPTERS[name]?.notes ?? []
@@ -162,13 +162,18 @@ export function renderCompatibilityTable(manifest: Manifest): string {
   const generated = manifest.components.filter((c) => c.conversion !== null)
   const others = manifest.components.filter((c) => c.conversion === null)
   const lines = [
-    `Generated from \`compatibility.json\` (upstream style \`${manifest.style}\`). Every component is server-rendered Hono JSX with no client JavaScript. "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the \`tests/visual\` CI job.`,
+    `Generated from \`compatibility.json\` (upstream style \`${manifest.style}\`). Every component is server-rendered Hono JSX; the "Client JS" column names the optional script a component needs for its behavior (see "Client scripts" above). "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the \`tests/visual\` CI job.`,
     "",
-    "| Component | Status | Conversion | Visual parity | Known differences |",
-    "| --- | --- | --- | --- | --- |",
+    "| Component | Status | Conversion | Visual parity | Client JS | Known differences |",
+    "| --- | --- | --- | --- | --- | --- |",
     ...generated.map(
       (c) =>
-        `| ${c.name} | ${c.status} | ${c.conversion} | ${c.visualParity} | ${cell(c.knownDifferences.join(" "))} |`
+        `| ${c.name} | ${c.status} | ${c.conversion} | ${c.visualParity} | ${
+          behaviorsOf(c.reasons)
+            .filter((name) => name !== "core")
+            .map((name) => `\`/shadcn/${name}.js\``)
+            .join(", ") || "none"
+        } | ${cell(c.knownDifferences.join(" "))} |`
     ),
     "",
     "<details>",

@@ -14,6 +14,8 @@ export function Layout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{title}</title>
         <link rel="stylesheet" href="/style.css" />
+        {/* Optional client scripts for interactive components (public/shadcn/). */}
+        <script type="module" src="/shadcn/tabs.js" />
       </head>
       <body class="min-h-svh bg-background font-sans text-foreground antialiased">
         {children}

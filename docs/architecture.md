@@ -21,6 +21,7 @@ ui.shadcn.com registry (base-nova)
 | --- | --- |
 | `generator/` | hand-written generator code |
 | `generator/src/adapters/` | hand-written translation rules (primitive table, primitive families, component adapters) |
+| `public/shadcn/` | hand-written optional client scripts, installed as they are ([ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)) |
 | `upstream/` | `upstream:sync` only |
 | `generator/src/licenses.ts` | hand-written, reviewed licensing record and notice text |
 | `components/ui/`, `styles/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `registry.json`, `compatibility.json` | `generate` only |
@@ -150,7 +151,8 @@ native inputs for form controls,
 [ADR 0023](./adr/0023-build-popover-on-the-native-popover-attribute-and-css-anchor-positioning.md),
 and the customizable `<select>` for Select,
 [ADR 0024](./adr/0024-build-select-on-the-customizable-native-select-element.md))
-or left unsupported.
+or given an optional client script (script family, Tabs,
+[ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)).
 See [ADR 0005](./adr/0005-translate-components-with-ts-morph-steps-a-declarative-base-ui-primitive-table-and-adapters.md)
 and [ADR 0007](./adr/0007-preserve-the-upstream-dom-contract-and-omit-render-aschild-and-refs.md).
 
@@ -197,6 +199,7 @@ facts (imports, React type/value usage, hooks, JSX attributes, `cn-*` markers):
 | --- | --- |
 | `direct` | Plain HTML/Tailwind/variants, possibly via a stateless Base UI primitive mapped in `generator/src/adapters/primitives/base-ui.ts`, an `intrinsic` family (Progress) or the canonical `useRender` pattern |
 | `native-adapter` | Maps onto a browser primitive with behavior through a `native` family or component adapter (Dialog, AlertDialog, Sheet: `<dialog>` with Invoker Commands, [ADR 0017](./adr/0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md), [ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md); Accordion, Collapsible: `<details>`/`<summary>`, [ADR 0020](./adr/0020-implement-accordion-and-collapsible-on-native-details-and-summary.md)) |
+| `script-adapter` | Behavior from an optional client script in `public/shadcn/` (Tabs, [ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)) |
 | `custom-adapter` | Blocking reasons all resolved by an adapter in `generator/src/adapters/components/` |
 | `unsupported` | At least one blocking reason (unmapped Base UI primitive, React hooks/runtime APIs, event handlers, icon placeholder, registry imports, unknown packages, ...) |
 
@@ -241,7 +244,7 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Registry install into a clean Hono project | `tests/registry/` | `bun run test:registry`, CI |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
-| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts` | `bun run test:visual`, CI `visual` |
+| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts`, `tests/visual/tabs.spec.ts` (step-by-step behavior against Base UI) | `bun run test:visual`, CI `visual` |
 
 `tests/visual` renders the same case data with the generated components and
 with the upstream React sources from the snapshot, shares one Tailwind build,

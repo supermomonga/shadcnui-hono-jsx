@@ -1,8 +1,13 @@
 import { Hono } from "hono"
+import { serveStatic } from "hono/bun"
 import { Demo } from "./demo"
 import { Layout } from "./layout"
 
 export const app = new Hono()
+
+// The registry installs client scripts into ./public/shadcn; this example
+// serves the repository's copy.
+app.use("/shadcn/*", serveStatic({ root: "../../public" }))
 
 app.get("/", (c) =>
   c.html(

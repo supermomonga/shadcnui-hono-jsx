@@ -1,12 +1,12 @@
 import { readFileSync } from "node:fs"
 import path from "node:path"
-import { pathToFileURL } from "node:url"
 import { expect, type Page, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
 import { PRIMITIVE_FAMILIES } from "../../generator/src/adapters/families"
 import { BASE_UI_PRIMITIVES } from "../../generator/src/adapters/primitives/base-ui"
 import { rewriteControlState } from "../../generator/src/transformers/steps/control-state"
+import { pageUrl } from "./server-url"
 
 /**
  * Compares screenshots of each case rendered by the generated Hono JSX
@@ -90,8 +90,8 @@ test.beforeAll(async ({ browser }) => {
   })
   hono = await context.newPage()
   react = await context.newPage()
-  await hono.goto(pathToFileURL(path.join(OUT, "hono.html")).href)
-  await react.goto(pathToFileURL(path.join(OUT, "react.html")).href)
+  await hono.goto(pageUrl("hono.html"))
+  await react.goto(pageUrl("react.html"))
 })
 
 for (const { id, compareDom } of cases) {

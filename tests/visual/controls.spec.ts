@@ -1,15 +1,12 @@
-import path from "node:path"
-import { pathToFileURL } from "node:url"
 import { expect, type Locator, type Page, test } from "@playwright/test"
+import { pageUrl } from "./server-url"
 
 /**
  * Behavior and accessibility of the generated form controls (native inputs,
  * no JavaScript), using the visual cases page. Their appearance is compared
  * with upstream in parity.spec.ts. Run `bun render.ts` first.
  */
-const HONO = pathToFileURL(
-  path.join(import.meta.dirname, ".output", "hono.html")
-).href
+const HONO = pageUrl("hono.html")
 
 const section = (page: Page, id: string) =>
   page.locator(`[data-case="${id}@light"]`)

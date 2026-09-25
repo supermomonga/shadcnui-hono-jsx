@@ -1,6 +1,5 @@
-import path from "node:path"
-import { pathToFileURL } from "node:url"
 import { expect, type Locator, test } from "@playwright/test"
+import { pageUrl } from "./server-url"
 
 /**
  * Behavior and accessibility of the generated Accordion and Collapsible
@@ -8,9 +7,7 @@ import { expect, type Locator, test } from "@playwright/test"
  * Their appearance is compared with upstream in parity.spec.ts. Run
  * `bun render.ts` first.
  */
-const HONO = pathToFileURL(
-  path.join(import.meta.dirname, ".output", "hono.html")
-).href
+const HONO = pageUrl("hono.html")
 
 const isOpen = (item: Locator) =>
   item.evaluate((details) => (details as HTMLDetailsElement).open)

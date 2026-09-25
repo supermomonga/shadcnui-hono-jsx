@@ -229,10 +229,19 @@ describe("classification of the committed upstream snapshot", () => {
     "toggle-group",
   ])
 
+  // Built with an optional client script (script families, docs/adr/0025).
+  const SCRIPTED = new Set(["tabs"])
+
   test.each([...config.components])(
-    "%s (generation target) is direct or natively adapted",
+    "%s (generation target) is direct, natively adapted or scripted",
     (name) => {
-      expect(kindOf(name)).toBe(NATIVE.has(name) ? "native-adapter" : "direct")
+      expect(kindOf(name)).toBe(
+        SCRIPTED.has(name)
+          ? "script-adapter"
+          : NATIVE.has(name)
+            ? "native-adapter"
+            : "direct"
+      )
     }
   )
 

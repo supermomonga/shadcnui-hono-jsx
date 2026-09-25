@@ -1,11 +1,9 @@
-/** @jsxImportSource react */
 /**
- * The overlay demos of overlays-hono.tsx with upstream shadcn/ui (Base UI)
- * components, rendered in the browser. Bundled by render.ts; the page picks a
- * demo with `<div id="root" data-demo="…">`.
+ * Interactive demos rendered on the server with the generated Hono JSX
+ * components, for the behavior specs (modals, popover, select, tabs).
+ * demos-react.tsx renders the same demos with upstream shadcn/ui. Pages load
+ * only the client scripts listed in DEMO_SCRIPTS.
  */
-import type { ReactNode } from "react"
-import { createRoot } from "react-dom/client"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,8 +14,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./.upstream/alert-dialog"
-import { Button } from "./.upstream/button"
+} from "../../components/ui/alert-dialog"
+import { Button } from "../../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -26,9 +24,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./.upstream/dialog"
-import { Input } from "./.upstream/input"
-import { Label } from "./.upstream/label"
+} from "../../components/ui/dialog"
+import { Input } from "../../components/ui/input"
+import { Label } from "../../components/ui/label"
 import {
   Popover,
   PopoverContent,
@@ -36,7 +34,7 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "./.upstream/popover"
+} from "../../components/ui/popover"
 import {
   Select,
   SelectContent,
@@ -46,7 +44,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "./.upstream/select"
+} from "../../components/ui/select"
 import {
   Sheet,
   SheetClose,
@@ -56,11 +54,17 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./.upstream/sheet"
+} from "../../components/ui/sheet"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../components/ui/tabs"
 
 function DialogDemo() {
   return (
-    <Dialog>
+    <Dialog id="edit-profile">
       <DialogTrigger render={<Button variant="outline" />}>
         Edit profile
       </DialogTrigger>
@@ -71,9 +75,9 @@ function DialogDemo() {
             Make changes to your profile here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-3">
-          <Label htmlFor="name">Name</Label>
-          <Input id="name" defaultValue="Pedro Duarte" />
+        <div class="grid gap-3">
+          <Label for="name">Name</Label>
+          <Input id="name" value="Pedro Duarte" />
         </div>
         <DialogFooter showCloseButton>
           <Button>Save changes</Button>
@@ -85,7 +89,7 @@ function DialogDemo() {
 
 function AlertDialogDemo() {
   return (
-    <AlertDialog>
+    <AlertDialog id="delete-account">
       <AlertDialogTrigger render={<Button variant="outline" />}>
         Delete account
       </AlertDialogTrigger>
@@ -108,7 +112,7 @@ function AlertDialogDemo() {
 
 function SheetDemo({ side }: { side: "right" | "bottom" }) {
   return (
-    <Sheet>
+    <Sheet id={`sheet-${side}`}>
       <SheetTrigger render={<Button variant="outline" />}>
         Open {side}
       </SheetTrigger>
@@ -119,10 +123,10 @@ function SheetDemo({ side }: { side: "right" | "bottom" }) {
             Make changes to your profile here. Click save when you're done.
           </SheetDescription>
         </SheetHeader>
-        <div className="grid flex-1 auto-rows-min gap-6 px-4">
-          <div className="grid gap-3">
-            <Label htmlFor={`name-${side}`}>Name</Label>
-            <Input id={`name-${side}`} defaultValue="Pedro Duarte" />
+        <div class="grid flex-1 auto-rows-min gap-6 px-4">
+          <div class="grid gap-3">
+            <Label for={`name-${side}`}>Name</Label>
+            <Input id={`name-${side}`} value="Pedro Duarte" />
           </div>
         </div>
         <SheetFooter>
@@ -137,24 +141,24 @@ function SheetDemo({ side }: { side: "right" | "bottom" }) {
 function PopoverDemo() {
   return (
     <>
-      <Popover>
-        <PopoverTrigger render={<Button variant="outline" className="w-32" />}>
+      <Popover id="dimensions">
+        <PopoverTrigger render={<Button variant="outline" class="w-32" />}>
           Dimensions
         </PopoverTrigger>
-        <PopoverContent className="w-80">
+        <PopoverContent class="w-80">
           <PopoverHeader>
             <PopoverTitle>Dimensions</PopoverTitle>
             <PopoverDescription>
               Set the dimensions for the layer.
             </PopoverDescription>
           </PopoverHeader>
-          <div className="grid grid-cols-3 items-center gap-4">
-            <Label htmlFor="width">Width</Label>
-            <Input id="width" defaultValue="100%" className="col-span-2 h-8" />
+          <div class="grid grid-cols-3 items-center gap-4">
+            <Label for="width">Width</Label>
+            <Input id="width" value="100%" class="col-span-2 h-8" />
           </div>
         </PopoverContent>
       </Popover>
-      <Popover>
+      <Popover id="details">
         <PopoverTrigger render={<Button variant="outline" />}>
           Details
         </PopoverTrigger>
@@ -169,20 +173,11 @@ function PopoverDemo() {
   )
 }
 
-const FRUITS = {
-  apple: "Apple",
-  banana: "Banana",
-  blueberry: "Blueberry",
-  carrot: "Carrot",
-  leek: "Leek",
-}
-const SIZES = { small: "Small", medium: "Medium", large: "Large" }
-
 function SelectDemo() {
   return (
-    <main className="flex items-start gap-8 p-8 pl-48">
-      <Select name="fruit" items={FRUITS}>
-        <SelectTrigger id="fruit" className="w-45">
+    <main class="flex items-start gap-8 p-8 pl-48">
+      <Select name="fruit">
+        <SelectTrigger id="fruit" class="w-45">
           <SelectValue placeholder="Select a fruit" />
         </SelectTrigger>
         <SelectContent alignItemWithTrigger={false}>
@@ -202,8 +197,8 @@ function SelectDemo() {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Select name="size" defaultValue="medium" items={SIZES}>
-        <SelectTrigger id="size" size="sm" className="w-32">
+      <Select name="size" defaultValue="medium">
+        <SelectTrigger id="size" size="sm" class="w-32">
           <SelectValue />
         </SelectTrigger>
         <SelectContent alignItemWithTrigger={false}>
@@ -219,9 +214,45 @@ function SelectDemo() {
   )
 }
 
-function Page({ children }: { children: ReactNode }) {
+function TabsDemo() {
   return (
-    <main className="flex items-center gap-4 p-8">
+    <main class="flex flex-col gap-10 p-8">
+      <Tabs defaultValue="account" class="w-96">
+        <TabsList>
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="password">Password</TabsTrigger>
+          <TabsTrigger value="billing" disabled>
+            Billing
+          </TabsTrigger>
+          <TabsTrigger value="team">Team</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          Make changes to your account here.
+        </TabsContent>
+        <TabsContent value="password">Change your password here.</TabsContent>
+        <TabsContent value="billing">Billing is disabled.</TabsContent>
+        <TabsContent value="team">Invite your team.</TabsContent>
+      </Tabs>
+      <Tabs defaultValue="overview" orientation="vertical" class="w-96">
+        <TabsList variant="line" activateOnFocus>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">Overview of your project.</TabsContent>
+        <TabsContent value="analytics">Traffic and conversions.</TabsContent>
+        <TabsContent value="reports">Monthly reports.</TabsContent>
+      </Tabs>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
+function Page({ children }: { children?: unknown }) {
+  return (
+    <main class="flex items-center gap-4 p-8">
       {children}
       <button type="button" id="after">
         After
@@ -230,7 +261,7 @@ function Page({ children }: { children: ReactNode }) {
   )
 }
 
-const DEMOS: Record<string, () => ReactNode> = {
+export const DEMOS = {
   dialog: () => (
     <Page>
       <DialogDemo />
@@ -242,7 +273,7 @@ const DEMOS: Record<string, () => ReactNode> = {
     </Page>
   ),
   popover: () => (
-    <main className="flex min-h-96 items-center gap-24 p-8 pl-48">
+    <main class="flex min-h-96 items-center gap-24 p-8 pl-48">
       <PopoverDemo />
       <button type="button" id="after">
         After
@@ -250,6 +281,7 @@ const DEMOS: Record<string, () => ReactNode> = {
     </main>
   ),
   select: () => <SelectDemo />,
+  tabs: () => <TabsDemo />,
   sheet: () => (
     <Page>
       <SheetDemo side="right" />
@@ -258,6 +290,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   ),
 }
 
-const root = document.getElementById("root")
-const demo = DEMOS[root?.dataset.demo ?? ""]
-if (root && demo) createRoot(root).render(demo())
+/** Client scripts (public/shadcn/) each demo page loads. */
+export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
+  tabs: ["tabs"],
+}

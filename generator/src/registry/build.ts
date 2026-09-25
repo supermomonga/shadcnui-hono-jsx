@@ -1,4 +1,6 @@
+import { BEHAVIORS_DIR, behaviorsOf } from "../adapters/families"
 import type { Classification } from "../analyzer/classify"
+import { reasonKey } from "../analyzer/reasons"
 import type { GeneratorConfig } from "../config"
 import type { OutputFile } from "../emit/write"
 import { LICENSE_NOTICE_PATH } from "../licenses"
@@ -147,6 +149,14 @@ export function buildRegistry(deps: {
         .sort()
         .map((name) => byName.get(name) as ComponentEntry)
       const files = [component, ...included]
+      const behaviors = [
+        ...new Set(
+          files.flatMap((c) =>
+            behaviorsOf(c.classification.reasons.map(reasonKey))
+          )
+        ),
+      ].sort()
+      const scripts = behaviors.filter((name) => name !== "core")
       return {
         name: component.name,
         type: "registry:item",
@@ -157,9 +167,19 @@ export function buildRegistry(deps: {
         ].sort(),
         files: [
           ...files.map((c) => universalFile(c.file.path)),
+          ...behaviors.map((name) =>
+            universalFile(`${BEHAVIORS_DIR}/${name}.js`)
+          ),
           universalFile(LICENSE_NOTICE_PATH),
         ],
-        docs: `Requires hono >= ${MIN_HONO_VERSION} with "jsxImportSource": "hono/jsx", and the ${config.repository}/${THEME_ITEM} item for styles.`,
+        docs: [
+          `Requires hono >= ${MIN_HONO_VERSION} with "jsxImportSource": "hono/jsx", and the ${config.repository}/${THEME_ITEM} item for styles.`,
+          ...(scripts.length > 0
+            ? [
+                `Serve ${BEHAVIORS_DIR}/ as static files and load ${scripts.map((name) => `<script type="module" src="/shadcn/${name}.js">`).join(" and ")} on pages that use it.`,
+              ]
+            : []),
+        ].join(" "),
         meta: {
           upstream: {
             name: component.name,

@@ -1,16 +1,14 @@
-import path from "node:path"
-import { pathToFileURL } from "node:url"
 import { expect, type Page, type TestInfo, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { pageUrl } from "./server-url"
 
 /**
  * Behavior of the generated Select (customizable native select, no
  * JavaScript), and its closed and open states compared with upstream
  * shadcn/ui (Base UI). Run `bun render.ts` first.
  */
-const OUT = path.join(import.meta.dirname, ".output")
-const url = (file: string) => pathToFileURL(path.join(OUT, file)).href
+const url = pageUrl
 
 const value = (page: Page, id: string) =>
   page

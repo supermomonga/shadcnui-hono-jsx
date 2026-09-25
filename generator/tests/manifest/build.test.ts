@@ -20,13 +20,16 @@ describe("buildManifest", () => {
     expect(manifest.components.map((c) => c.name)).toEqual(store.listItems())
   })
 
+  // Components whose behavior needs a client script (docs/adr/0025).
+  const SCRIPTED = new Set(["tabs"])
+
   test.each([...config.components])(
     "%s is generated and experimental",
     (name) => {
       expect(byName.get(name)).toMatchObject({
         status: "experimental",
         conversion: "generated",
-        clientJs: "none",
+        clientJs: SCRIPTED.has(name) ? "required" : "none",
         visualParity: "verified",
         upstream: { contentSha256: lock.items[name]?.contentSha256 },
       })

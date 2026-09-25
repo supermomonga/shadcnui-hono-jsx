@@ -30,7 +30,7 @@ Base UI, or Radix runtime in the generated components.
 - Tailwind CSS v4 and the shadcn/ui design tokens
 - Source-code ownership via a shadcn-compatible registry
 - Regenerated from upstream shadcn/ui instead of hand-maintained forks
-- JavaScript only where interactive behavior requires it (none so far, including Dialog, Sheet and Accordion)
+- JavaScript only where the browser lacks the behavior: most components (including Dialog, Popover, Select and Accordion) ship none, and the rest use small optional module scripts
 
 ## Requirements
 
@@ -112,6 +112,31 @@ export default function Page() {
 These are plain `hono/jsx` components: render them with `c.html(...)`,
 `jsxRenderer`, or HonoX routes.
 
+## Client scripts
+
+A few components need behavior the browser does not provide (for example
+keyboard navigation in Tabs). Their registry items also install small module
+scripts into `public/shadcn/` (no dependencies), and the "Client JS" column
+of the compatibility table names the script to load. Without it, the
+server-rendered state stays visible.
+
+Serve `public/shadcn/` at `/shadcn/` and load the scripts on pages that use
+the components:
+
+```tsx
+// Hono on Bun
+import { serveStatic } from "hono/bun"
+app.use("/shadcn/*", serveStatic({ root: "./public" }))
+
+// in your layout's <head>
+<script type="module" src="/shadcn/tabs.js" />
+```
+
+HonoX serves `public/` already; add the script tag to
+`app/routes/_renderer.tsx`. Scripts attach one delegated listener per event
+to the document, so content inserted later (for example by htmx) works
+without initialization.
+
 ## Differences from shadcn/ui
 
 - Components accept `class`, not `className` (Hono JSX renders `class`).
@@ -120,7 +145,8 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
   stay links (no `role="button"`). `asChild` is not supported and refs are not
   forwarded.
 - Everything is server-rendered. Client-side state attributes from Base UI (for
-  example `data-focused`) are not rendered.
+  example `data-focused`) are not rendered, except where a client script keeps
+  them up to date (Tabs).
 - `Button` renders `type="button"` by default, like Base UI; pass
   `type="submit"` inside forms.
 - The upstream preset font (Geist) is not installed; `font-heading` uses your
@@ -155,50 +181,51 @@ Per-component details are in the table below.
 ## Compatibility
 
 <!-- compatibility-table:start -->
-Generated from `compatibility.json` (upstream style `base-nova`). Every component is server-rendered Hono JSX with no client JavaScript. "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the `tests/visual` CI job.
+Generated from `compatibility.json` (upstream style `base-nova`). Every component is server-rendered Hono JSX; the "Client JS" column names the optional script a component needs for its behavior (see "Client scripts" above). "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the `tests/visual` CI job.
 
-| Component | Status | Conversion | Visual parity | Known differences |
-| --- | --- | --- | --- | --- |
-| accordion | experimental | generated | verified | Built on native `<details>`/`<summary>`: no JavaScript. Items share a `name` so only one is open unless `multiple` is set (Baseline 2024: Chrome 120, Firefox 130, Safari 17.2). Controlled state (`value`, `onValueChange`) is not supported; `defaultValue` opens items by their `value`. The trigger is the `<summary>` (no `h3` around it; browsers expose the expanded state without `aria-expanded`), and arrow keys do not move between items. Opening and closing are not animated. Closed panels stay in the page, so find-in-page can reveal them. Accepts `class` instead of `className`. |
-| alert | experimental | generated | verified | Accepts `class` instead of `className`. |
-| alert-dialog | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); like Base UI, outside clicks do not close it. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
-| aspect-ratio | experimental | generated | verified | Accepts `class` instead of `className`. |
-| attachment | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
-| badge | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
-| breadcrumb | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
-| bubble | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
-| button | experimental | generated | verified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` is supported on the server; a non-button target such as `render={<a href="/docs" />}` keeps its native role (no `role="button"` or `tabindex`), since the client-side button behavior Base UI adds is not shipped. `focusableWhenDisabled` is not supported. Accepts `class` instead of `className`. |
-| button-group | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
-| card | experimental | generated | verified | Accepts `class` instead of `className`. |
-| checkbox | experimental | generated | verified | Built on a native `<input type="checkbox">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual. `checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly`, `indeterminate` and `render` are not supported. Accepts `class` instead of `className`. |
-| collapsible | experimental | generated | verified | Built on native `<details>`/`<summary>`: no JavaScript. `CollapsibleTrigger` must be the first child of `Collapsible` (rendering throws otherwise), and every other child is hidden while closed, not only `CollapsibleContent`. `CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants). Accepts `class` instead of `className`. |
-| dialog | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
-| empty | experimental | generated | verified | Accepts `class` instead of `className`. |
-| field | experimental | generated | verified | Accepts `class` instead of `className`. Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls. |
-| input | experimental | generated | verified | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
-| item | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
-| kbd | experimental | generated | verified | Accepts `class` instead of `className`. |
-| label | experimental | generated | verified | Accepts `class` instead of `className`. |
-| marker | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
-| message | experimental | generated | verified | Accepts `class` instead of `className`. |
-| native-select | experimental | generated | verified | Accepts `class` instead of `className`. |
-| pagination | experimental | generated | verified | Accepts `class` instead of `className`. |
-| popover | experimental | generated | verified | Built on the native `popover` attribute with Invoker Commands and CSS anchor positioning: no JavaScript, but placement next to the trigger needs Chrome 135, Firefox 147 or Safari 26.2 (elsewhere the popover opens centered). Outside clicks and Escape close it. Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `openOnHover` are not supported. `side`, `align`, `sideOffset` and `alignOffset` place the popover; on collision it flips to the opposite side, but `data-side` keeps the requested side. Focus is not moved into the popover, and the positioner's classes are not rendered. Accepts `class` instead of `className`. |
-| progress | experimental | generated | verified | Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported. Accepts `class` instead of `className`. |
-| radio-group | experimental | generated | verified | `value`/`defaultValue` set the initial selection; `onValueChange` and `readOnly` are not supported. Built on native `<input type="radio">` elements sharing the group's `name` (generated unless given): no JavaScript, arrow keys move the selection, and the value is submitted with forms. `id`, `disabled` and `aria-*` go to the input. Accepts `class` instead of `className`. |
-| select | experimental | generated | verified | Built on a customizable native `<select>` (`appearance: base-select`): no JavaScript, keyboard selection and typeahead are the browser's (Space and the arrow keys open it, Enter does not), and `name`/`value` are submitted with forms. Chrome 135, Firefox 149 and Safari 27 or later show upstream's design; older browsers show a classic select with the trigger's styles. `SelectTrigger` renders the `<select>` (so `id` and `aria-*` given to it reach the form control), and `<SelectContent>` must be a direct child of `<Select>`. `value`/`defaultValue` set the initial selection; `onValueChange`, `multiple`, `items`, value render functions and aligning the selected item with the trigger (`alignItemWithTrigger`) are not supported: the list opens below the trigger. Classes given to `SelectContent` are not applied to the list. Accepts `class` instead of `className`. |
-| separator | experimental | generated | verified | Accepts `class` instead of `className`. |
-| sheet | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
-| skeleton | experimental | generated | verified | Accepts `class` instead of `className`. |
-| spinner | experimental | generated | verified | Accepts `class` instead of `className`. |
-| switch | experimental | generated | verified | Built on a native `<input type="checkbox" role="switch">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual. `checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly` and `render` are not supported. Accepts `class` instead of `className`. |
-| table | experimental | generated | verified | Accepts `class` instead of `className`. |
-| textarea | experimental | generated | verified | Accepts `class` instead of `className`. |
-| toggle | experimental | generated | verified | A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
-| toggle-group | experimental | generated | verified | Items are native radios sharing a `name` (checkboxes with `multiple`): the pressed item of a single-selection group cannot be released by pressing it again, and arrow keys select as they move. `defaultValue` sets the pressed items; `value`/`onValueChange` are not supported. A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
+| Component | Status | Conversion | Visual parity | Client JS | Known differences |
+| --- | --- | --- | --- | --- | --- |
+| accordion | experimental | generated | verified | none | Built on native `<details>`/`<summary>`: no JavaScript. Items share a `name` so only one is open unless `multiple` is set (Baseline 2024: Chrome 120, Firefox 130, Safari 17.2). Controlled state (`value`, `onValueChange`) is not supported; `defaultValue` opens items by their `value`. The trigger is the `<summary>` (no `h3` around it; browsers expose the expanded state without `aria-expanded`), and arrow keys do not move between items. Opening and closing are not animated. Closed panels stay in the page, so find-in-page can reveal them. Accepts `class` instead of `className`. |
+| alert | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| alert-dialog | experimental | generated | verified | none | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); like Base UI, outside clicks do not close it. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
+| aspect-ratio | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| attachment | experimental | generated | verified | none | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| badge | experimental | generated | verified | none | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| breadcrumb | experimental | generated | verified | none | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| bubble | experimental | generated | verified | none | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| button | experimental | generated | verified | none | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` is supported on the server; a non-button target such as `render={<a href="/docs" />}` keeps its native role (no `role="button"` or `tabindex`), since the client-side button behavior Base UI adds is not shipped. `focusableWhenDisabled` is not supported. Accepts `class` instead of `className`. |
+| button-group | experimental | generated | verified | none | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| card | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| checkbox | experimental | generated | verified | none | Built on a native `<input type="checkbox">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual. `checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly`, `indeterminate` and `render` are not supported. Accepts `class` instead of `className`. |
+| collapsible | experimental | generated | verified | none | Built on native `<details>`/`<summary>`: no JavaScript. `CollapsibleTrigger` must be the first child of `Collapsible` (rendering throws otherwise), and every other child is hidden while closed, not only `CollapsibleContent`. `CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants). Accepts `class` instead of `className`. |
+| dialog | experimental | generated | verified | none | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
+| empty | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| field | experimental | generated | verified | none | Accepts `class` instead of `className`. Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls. |
+| input | experimental | generated | verified | none | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
+| item | experimental | generated | verified | none | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| kbd | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| label | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| marker | experimental | generated | verified | none | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| message | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| native-select | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| pagination | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| popover | experimental | generated | verified | none | Built on the native `popover` attribute with Invoker Commands and CSS anchor positioning: no JavaScript, but placement next to the trigger needs Chrome 135, Firefox 147 or Safari 26.2 (elsewhere the popover opens centered). Outside clicks and Escape close it. Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `openOnHover` are not supported. `side`, `align`, `sideOffset` and `alignOffset` place the popover; on collision it flips to the opposite side, but `data-side` keeps the requested side. Focus is not moved into the popover, and the positioner's classes are not rendered. Accepts `class` instead of `className`. |
+| progress | experimental | generated | verified | none | Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported. Accepts `class` instead of `className`. |
+| radio-group | experimental | generated | verified | none | `value`/`defaultValue` set the initial selection; `onValueChange` and `readOnly` are not supported. Built on native `<input type="radio">` elements sharing the group's `name` (generated unless given): no JavaScript, arrow keys move the selection, and the value is submitted with forms. `id`, `disabled` and `aria-*` go to the input. Accepts `class` instead of `className`. |
+| select | experimental | generated | verified | none | Built on a customizable native `<select>` (`appearance: base-select`): no JavaScript, keyboard selection and typeahead are the browser's (Space and the arrow keys open it, Enter does not), and `name`/`value` are submitted with forms. Chrome 135, Firefox 149 and Safari 27 or later show upstream's design; older browsers show a classic select with the trigger's styles. `SelectTrigger` renders the `<select>` (so `id` and `aria-*` given to it reach the form control), and `<SelectContent>` must be a direct child of `<Select>`. `value`/`defaultValue` set the initial selection; `onValueChange`, `multiple`, `items`, value render functions and aligning the selected item with the trigger (`alignItemWithTrigger`) are not supported: the list opens below the trigger. Classes given to `SelectContent` are not applied to the list. Accepts `class` instead of `className`. |
+| separator | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| sheet | experimental | generated | verified | none | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
+| skeleton | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| spinner | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| switch | experimental | generated | verified | none | Built on a native `<input type="checkbox" role="switch">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual. `checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly` and `render` are not supported. Accepts `class` instead of `className`. |
+| table | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| tabs | experimental | generated | verified | `/shadcn/tabs.js` | Switching tabs needs the client script `/shadcn/tabs.js` (`<script type="module" src="/shadcn/tabs.js">`); without it the selected panel is shown. Pointer, Enter, Space, arrow keys, Home and End work like Base UI. Inactive panels are rendered with `hidden` (Base UI does not render them). Controlled state (`onValueChange`) and `render` are not supported; `value`/`defaultValue` set the selected tab. Accepts `class` instead of `className`. |
+| textarea | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| toggle | experimental | generated | verified | none | A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
+| toggle-group | experimental | generated | verified | none | Items are native radios sharing a `name` (checkboxes with `multiple`): the pressed item of a single-selection group cannot be released by pressing it again, and arrow keys select as they move. `defaultValue` sets the pressed items; `value`/`onValueChange` are not supported. A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (26 upstream components)</summary>
+<summary>Not yet available (25 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -225,7 +252,6 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | sidebar | unsupported | `event-handler:onClick`, `event-handler:onOpenChange`, `react-hook:useEffect`, `react-hook:useIsMobile`, `react-hook:useSidebar`, `react-hook:useState`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `registry-dependency:tooltip`, `registry-dependency:use-mobile`, `registry-import:@/registry/base-nova/hooks/use-mobile`, `registry-import:@/registry/base-nova/ui/tooltip`, `render-prop:TooltipTrigger`, `use-render-noncanonical` |
 | slider | unsupported | `base-ui-primitive-unmapped:@base-ui/react/slider#Slider` |
 | sonner | unsupported | `react-hook:useTheme`, `unknown-import:next-themes`, `unknown-import:sonner` |
-| tabs | unsupported | `base-ui-primitive-unmapped:@base-ui/react/tabs#Tabs` |
 | toast | unsupported | `base-ui-primitive-unmapped:@base-ui/react/toast#Toast`, `render-prop:ToastPrimitive.Action`, `render-prop:ToastPrimitive.Close` |
 | tooltip | unsupported | `base-ui-primitive-unmapped:@base-ui/react/tooltip#Tooltip` |
 

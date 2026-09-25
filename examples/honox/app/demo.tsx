@@ -30,6 +30,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const invoices = [
   { id: "INV001", status: "Paid", amount: "$250.00" },
@@ -154,6 +155,26 @@ export function Demo({ runtime }: { runtime: string }) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </section>
+
+      <Separator />
+
+      <section class="flex flex-col gap-3">
+        <h2 class="font-medium">Tabs</h2>
+        <p class="text-sm text-muted-foreground">
+          Switched by the optional client script <code>/shadcn/tabs.js</code>.
+          Without it, the selected panel is shown.
+        </p>
+        <Tabs defaultValue="account" class="max-w-sm">
+          <TabsList>
+            <TabsTrigger value="account">Account</TabsTrigger>
+            <TabsTrigger value="password">Password</TabsTrigger>
+          </TabsList>
+          <TabsContent value="account">
+            Make changes to your account here.
+          </TabsContent>
+          <TabsContent value="password">Change your password here.</TabsContent>
+        </Tabs>
       </section>
 
       <Separator />

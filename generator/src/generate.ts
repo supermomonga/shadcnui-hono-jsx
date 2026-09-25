@@ -1,4 +1,5 @@
 import { COMPONENT_ADAPTERS } from "./adapters/components"
+import { behaviorsOf } from "./adapters/families"
 import { type Classification, classify } from "./analyzer/classify"
 import { collectFacts } from "./analyzer/facts"
 import { reasonKey } from "./analyzer/reasons"
@@ -70,6 +71,9 @@ export function generateComponent(
     upstreamCommit: lockEntry.upstreamCommit,
     mode,
     icons: { names: output.icons, version: lucideVersion() },
+    scripts: behaviorsOf(classification.reasons.map(reasonKey)).filter(
+      (script) => script !== "core"
+    ),
   })
   const path = componentPath(name)
   return {
