@@ -108,8 +108,8 @@ export { Tag }`
       "react-runtime-api:React.createContext",
     ],
     [
-      `import { useMemo } from "react"\nexport function C() { return <div>{useMemo(() => 1, [])}</div> }`,
-      "react-runtime-api:useMemo",
+      `import { createContext } from "react"\nexport const Ctx = createContext(null)`,
+      "react-runtime-api:createContext",
     ],
     [
       `import * as React from "react"\nexport function C(p: { e: React.KeyboardEvent }) { return <div /> }`,

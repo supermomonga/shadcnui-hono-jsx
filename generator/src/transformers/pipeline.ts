@@ -12,6 +12,7 @@ import { guard } from "./steps/guard"
 import { helpers } from "./steps/helpers"
 import { icons } from "./steps/icons"
 import { imports } from "./steps/imports"
+import { memoHooks } from "./steps/memo-hooks"
 import { primitivesStep } from "./steps/primitives"
 import { reactTypes } from "./steps/react-types"
 import { styleValues } from "./steps/style-values"
@@ -24,6 +25,7 @@ export const STEPS: readonly TransformStep[] = [
   cnMarkers,
   icons,
   useRenderStep,
+  memoHooks,
   primitivesStep,
   reactTypes,
   styleValues,

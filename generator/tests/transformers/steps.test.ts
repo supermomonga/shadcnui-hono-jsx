@@ -299,6 +299,7 @@ export { Box, Button }
       "cn-markers",
       "icons",
       "use-render",
+      "memo-hooks",
       "primitives",
       "react-types",
       "style-values",

@@ -5,6 +5,7 @@ import {
   type PrimitiveRule,
 } from "../adapters/primitives/base-ui"
 import { resolveLucideIcon } from "../icons/lucide"
+import { MEMO_HOOKS } from "../transformers/steps/memo-hooks"
 import type { ComponentFacts, FileFacts } from "./facts"
 import { type Reason, reason, reasonKey, sortReasons } from "./reasons"
 
@@ -58,7 +59,7 @@ function fileReasons(
     const { module } = imp
     if (module === "react") {
       for (const named of imp.named) {
-        if (!(imp.typeOnly || named.typeOnly)) {
+        if (!(imp.typeOnly || named.typeOnly) && !MEMO_HOOKS.has(named.name)) {
           reasons.push(reason("react-runtime-api", named.name))
         }
       }
@@ -98,6 +99,7 @@ function fileReasons(
   }
 
   for (const ref of file.reactValueRefs) {
+    if (MEMO_HOOKS.has(ref.replace(/^React\./, ""))) continue
     reasons.push(reason("react-runtime-api", ref))
   }
   for (const ref of file.reactTypeRefs) {
@@ -108,7 +110,11 @@ function fileReasons(
     )
   }
   for (const hook of file.hookCalls) {
-    reasons.push(reason("react-hook", hook))
+    reasons.push(
+      MEMO_HOOKS.has(hook)
+        ? reason("memo-hook", hook)
+        : reason("react-hook", hook)
+    )
   }
   if (file.useRender === "canonical") reasons.push(reason("base-ui-use-render"))
   if (file.useRender === "other")
