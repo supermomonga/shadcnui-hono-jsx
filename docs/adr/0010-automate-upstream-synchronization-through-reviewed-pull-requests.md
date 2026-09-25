@@ -6,6 +6,8 @@ date: 2026-09-25
 links:
 - target: 11
   kind: amendedby
+- target: 13
+  kind: amendedby
 ---
 
 # Automate upstream synchronization through reviewed pull requests

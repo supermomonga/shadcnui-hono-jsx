@@ -16,6 +16,7 @@ generator (transformer, adapter, or config) and regenerate.
 | `upstream/**` | `bun run upstream:sync` |
 | `components/ui/**` | `bun run generate` |
 | `styles/shadcn/**` | `bun run generate` |
+| `LICENSE-shadcnui-hono-jsx.txt` | `bun run generate` (text lives in `generator/src/licenses.ts`) |
 | `registry.json`, `compatibility.json` | `bun run generate` |
 | README compatibility table (between markers) | `bun run generate` |
 
@@ -43,6 +44,14 @@ transformer step, or a component adapter (`generator/src/adapters/components/`).
   (`adrs new --no-edit "<title>"`, then fill in the MADR sections,
   `adrs status <n> accepted`, `adrs generate toc > docs/adr/README.md`).
 - See `docs/architecture.md` for the pipeline and its invariants.
+
+## Upstream licensing
+
+`bun run generate` refuses to run when the snapshotted upstream licenses
+(`upstream/licenses/`) differ from `ACCEPTED_UPSTREAM_LICENSE` in
+`generator/src/licenses.ts`. Never update that record or the notice text
+mechanically to make generation pass: a maintainer must first decide whether
+the new terms still allow redistribution and how. See docs/adr/0013.
 
 ## Dependency policy
 

@@ -10,6 +10,13 @@ and the upstream snapshot in `upstream/` are derived from
 [shadcn/ui](https://github.com/shadcn-ui/ui) (including the `shadcn` package's
 `tailwind.css`). They are translated to Hono JSX by this project's generator.
 
+Every registry item also installs `LICENSE-shadcnui-hono-jsx.txt`, which
+carries this notice (and this project's MIT notice for its own additions and
+modifications) into the receiving project. `upstream/licenses/` holds snapshots
+of the upstream license texts; they are monitored for changes and are not used
+to build that notice (see
+[ADR 0013](./docs/adr/0013-ship-a-reviewed-license-notice-with-every-registry-item-and-gate-upstream-license-changes.md)).
+
 ```
 MIT License
 

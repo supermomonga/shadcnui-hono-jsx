@@ -46,8 +46,9 @@ Base UI, or Radix runtime in the generated components.
 Components are installed as source files from the GitHub registry at
 `supermomonga/shadcnui-hono-jsx`. No `components.json` is required.
 
-1. Install the theme once. It adds `styles/shadcn/theme.css` and
-   `styles/shadcn/tailwind.css` and the `tw-animate-css` package:
+1. Install the theme once. It adds `styles/shadcn/theme.css`,
+   `styles/shadcn/tailwind.css`, the license notice
+   `LICENSE-shadcnui-hono-jsx.txt`, and the `tw-animate-css` package:
 
    ```sh
    bunx shadcn@latest add supermomonga/shadcnui-hono-jsx/theme
@@ -81,6 +82,11 @@ Components are installed as source files from the GitHub registry at
 
 4. Import them with a path alias (`"paths": { "@/*": ["./*"] }`) or a relative
    path.
+
+Every item installs the same `LICENSE-shadcnui-hono-jsx.txt` at your project
+root; later installs skip it because it is identical. It carries the MIT notices
+for the installed sources, so keep it with them when you copy or redistribute
+the files.
 
 ## Usage
 
@@ -247,5 +253,11 @@ Generated files are never edited by hand. See
 
 [MIT](./LICENSE). Derived from [shadcn/ui](https://github.com/shadcn-ui/ui)
 (MIT, Copyright (c) 2023 shadcn); see
-[THIRD_PARTY_LICENSES.md](./THIRD_PARTY_LICENSES.md). This is an unofficial
-community project and is not affiliated with or endorsed by shadcn.
+[THIRD_PARTY_LICENSES.md](./THIRD_PARTY_LICENSES.md). Installed files point to
+`LICENSE-shadcnui-hono-jsx.txt`, which is installed with every registry item.
+This is an unofficial community project and is not affiliated with or endorsed
+by shadcn.
+
+If upstream shadcn/ui changes its license, generation stops until a maintainer
+has reviewed the new terms; see
+[ADR 0013](./docs/adr/0013-ship-a-reviewed-license-notice-with-every-registry-item-and-gate-upstream-license-changes.md).

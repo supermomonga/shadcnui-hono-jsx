@@ -22,7 +22,8 @@ ui.shadcn.com registry (base-nova)
 | `generator/` | hand-written generator code |
 | `generator/src/adapters/` | hand-written translation rules (primitive table, component adapters) |
 | `upstream/` | `upstream:sync` only |
-| `components/ui/`, `styles/shadcn/`, `registry.json`, `compatibility.json` | `generate` only |
+| `generator/src/licenses.ts` | hand-written, reviewed licensing record and notice text |
+| `components/ui/`, `styles/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `registry.json`, `compatibility.json` | `generate` only |
 | `examples/` | hand-written demo apps |
 
 ## Investigation results
@@ -223,6 +224,24 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 Browser (Playwright) and visual regression tests are deferred until interactive
 primitives exist; the current components were checked visually in both
 examples in light and dark mode.
+
+## Licensing
+
+- Every registry item lists `LICENSE-shadcnui-hono-jsx.txt` (target
+  `~/LICENSE-shadcnui-hono-jsx.txt`), a fixed notice built from
+  `generator/src/licenses.ts`: scope, unofficial-project statement, the shadcn
+  and supermomonga copyright notices, and the full MIT text. Generated headers
+  stay short and point to it.
+- `upstream:sync` snapshots the upstream repository license and the `shadcn`
+  package's license (`upstream/licenses/`, `upstream/lock.json`) for review
+  only.
+- `generate` fails unless those snapshots match `ACCEPTED_UPSTREAM_LICENSE`. A
+  license change therefore blocks regeneration, and the upstream-check pull
+  request becomes a draft labelled `license-review` with the license diff
+  first. A maintainer decides whether redistribution is still allowed and, if
+  so, updates the accepted record and the notice together.
+
+See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-item-and-gate-upstream-license-changes.md).
 
 ## Known limitations
 

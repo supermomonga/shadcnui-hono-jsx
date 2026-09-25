@@ -30,6 +30,7 @@ jobs:
         run: bun add --dev --exact shadcn@latest
 
       - name: Sync upstream snapshot
+        id: sync
         run: bun run upstream:sync --report "$RUNNER_TEMP/report.md"
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -44,18 +45,39 @@ jobs:
         continue-on-error: true
         run: bun run verify
 
+      # A change in upstream licensing blocks generation (docs/adr/0013) and
+      # needs a human decision, so it gets its own label instead of needs-adapter.
       - name: Summarize
+        id: summary
         env:
           GENERATE: ${{ steps.generate.outcome }}
           VERIFY: ${{ steps.verify.outcome }}
+          LICENSE_REVIEW: ${{ steps.sync.outputs.license_review }}
         run: |
+          labels="upstream"
+          draft="false"
+          if [ "$LICENSE_REVIEW" = "true" ]; then
+            labels="$labels,license-review"
+            draft="true"
+          fi
+          if [ "$GENERATE" != "success" ] || [ "$VERIFY" != "success" ]; then
+            draft="true"
+            if [ "$LICENSE_REVIEW" != "true" ]; then
+              labels="$labels,needs-adapter"
+            fi
+          fi
+          echo "labels=$labels" >> "$GITHUB_OUTPUT"
+          echo "draft=$draft" >> "$GITHUB_OUTPUT"
           {
             echo
             echo "### Checks"
             echo
             echo "- \`bun run generate\`: $GENERATE"
             echo "- \`bun run verify\`: $VERIFY"
-            if [ "$GENERATE" != "success" ] || [ "$VERIFY" != "success" ]; then
+            if [ "$LICENSE_REVIEW" = "true" ]; then
+              echo
+              echo "Generation is blocked by the upstream license check; see the caution at the top."
+            elif [ "$GENERATE" != "success" ] || [ "$VERIFY" != "success" ]; then
               echo
               echo "Generation or verification failed. Add or update a transformer, adapter, or config rule before merging; see the workflow logs."
             fi
@@ -72,8 +94,8 @@ jobs:
           commit-message: "chore(upstream): sync shadcn/ui base-nova"
           title: "chore(upstream): sync shadcn/ui base-nova"
           body-path: ${{ runner.temp }}/report.md
-          labels: ${{ (steps.generate.outcome == 'success' && steps.verify.outcome == 'success') && 'upstream' || 'upstream,needs-adapter' }}
-          draft: ${{ steps.generate.outcome != 'success' || steps.verify.outcome != 'success' }}
+          labels: ${{ steps.summary.outputs.labels }}
+          draft: ${{ steps.summary.outputs.draft == 'true' }}
 
       # pull_request runs for PRs opened with GITHUB_TOKEN wait for manual
       # approval, but workflow_dispatch always runs, so start CI on the PR branch
