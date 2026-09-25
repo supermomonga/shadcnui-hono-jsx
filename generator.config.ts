@@ -20,6 +20,7 @@ export const config: GeneratorConfig = {
     "card",
     "dialog",
     "empty",
+    "field",
     "input",
     "item",
     "kbd",

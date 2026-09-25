@@ -310,14 +310,12 @@
       "reasons": [
         "event-handler:onClick",
         "event-handler:onKeyDownCapture",
-        "react-hook:useCallback",
         "react-hook:useCarousel",
         "react-hook:useContext",
         "react-hook:useEffect",
         "react-hook:useEmblaCarousel",
         "react-hook:useState",
         "react-runtime-api:React.createContext",
-        "react-runtime-api:React.useCallback",
         "react-runtime-api:React.useContext",
         "react-runtime-api:React.useEffect",
         "react-runtime-api:React.useState",
@@ -344,11 +342,9 @@
         "react-hook:useChart",
         "react-hook:useContext",
         "react-hook:useId",
-        "react-hook:useMemo",
         "react-runtime-api:React.createContext",
         "react-runtime-api:React.useContext",
         "react-runtime-api:React.useId",
-        "react-runtime-api:React.useMemo",
         "react-type-unmapped:React.ComponentType",
         "unknown-import:recharts"
       ]
@@ -531,10 +527,8 @@
         "base-ui-primitive-unmapped:@base-ui/react/drawer#Drawer",
         "react-hook:useContext",
         "react-hook:useDrawer",
-        "react-hook:useMemo",
         "react-runtime-api:React.createContext",
-        "react-runtime-api:React.useContext",
-        "react-runtime-api:React.useMemo"
+        "react-runtime-api:React.useContext"
       ]
     },
     {
@@ -577,20 +571,30 @@
     },
     {
       "name": "field",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/field.json",
         "contentSha256": "bea69a05de39ce4358d1ae459a5e3ab74ebcc51df9ea3ecb0e22b21d442a84fc",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["react-hook:useMemo", "react-runtime-api:useMemo"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "component-dependency:label",
+        "component-dependency:separator",
+        "component-import:label",
+        "component-import:separator",
+        "memo-hook:useMemo",
+        "react-type-rewrite:React.ComponentProps",
+        "react-type-rewrite:React.ReactNode",
+        "use-client-directive"
+      ]
     },
     {
       "name": "form",
@@ -1100,18 +1104,14 @@
       "reasons": [
         "event-handler:onClick",
         "event-handler:onOpenChange",
-        "react-hook:useCallback",
         "react-hook:useContext",
         "react-hook:useEffect",
         "react-hook:useIsMobile",
-        "react-hook:useMemo",
         "react-hook:useSidebar",
         "react-hook:useState",
         "react-runtime-api:React.createContext",
-        "react-runtime-api:React.useCallback",
         "react-runtime-api:React.useContext",
         "react-runtime-api:React.useEffect",
-        "react-runtime-api:React.useMemo",
         "react-runtime-api:React.useState",
         "registry-dependency:sheet",
         "registry-dependency:tooltip",

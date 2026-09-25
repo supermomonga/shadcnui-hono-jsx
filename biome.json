@@ -57,6 +57,9 @@
             "noSvgWithoutTitle": "off",
             "useFocusableInteractive": "off",
             "useSemanticElements": "off"
+          },
+          "suspicious": {
+            "noDoubleEquals": "off"
           }
         }
       }

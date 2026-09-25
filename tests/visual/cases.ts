@@ -559,4 +559,44 @@ export const VISUAL_CASES: VisualCase[] = [
       ],
     ],
   },
+  {
+    id: "field/form",
+    component: "field",
+    node: [
+      "FieldSet",
+      {},
+      ["FieldLegend", {}, "Profile"],
+      ["FieldDescription", {}, "This appears on your public page."],
+      [
+        "FieldGroup",
+        {},
+        [
+          "Field",
+          {},
+          ["FieldLabel", { for: "field-name" }, "Name"],
+          ["Input", { id: "field-name", placeholder: "Evil Rabbit" }],
+          ["FieldDescription", {}, "Your display name."],
+        ],
+        ["FieldSeparator", {}, "Or"],
+        [
+          "Field",
+          { "data-invalid": "true" },
+          ["FieldLabel", { for: "field-email" }, "Email"],
+          ["Input", { id: "field-email", "aria-invalid": "true" }],
+          ["FieldError", {}, "Enter a valid email address."],
+        ],
+        [
+          "Field",
+          { orientation: "horizontal" },
+          [
+            "FieldContent",
+            {},
+            ["FieldTitle", {}, "Newsletter"],
+            ["FieldDescription", {}, "Weekly updates."],
+          ],
+          ["Button", { size: "sm", variant: "outline" }, "Subscribe"],
+        ],
+      ],
+    ],
+  },
 ]

@@ -382,6 +382,46 @@
       }
     },
     {
+      "name": "field",
+      "type": "registry:item",
+      "title": "Field",
+      "description": "Hono JSX port of the shadcn/ui base-nova field component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/field.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/field.tsx"
+        },
+        {
+          "path": "components/ui/label.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/label.tsx"
+        },
+        {
+          "path": "components/ui/separator.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/separator.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "field",
+          "style": "base-nova",
+          "contentSha256": "bea69a05de39ce4358d1ae459a5e3ab74ebcc51df9ea3ecb0e22b21d442a84fc",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "input",
       "type": "registry:item",
       "title": "Input",
