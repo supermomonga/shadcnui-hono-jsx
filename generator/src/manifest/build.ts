@@ -1,3 +1,4 @@
+import { VISUAL_CASES } from "../../../tests/visual/cases"
 import { COMPONENT_ADAPTERS } from "../adapters/components"
 import { BASE_UI_PRIMITIVES } from "../adapters/primitives/base-ui"
 import { type ClassificationKind, classify } from "../analyzer/classify"
@@ -115,7 +116,10 @@ export function buildManifest(deps: {
           : "generated",
       classification: classification.kind,
       upstream,
-      visualParity: "unverified",
+      // Checked against upstream React by tests/visual (CI `visual` job).
+      visualParity: VISUAL_CASES.some((c) => c.component === name)
+        ? "verified"
+        : "unverified",
       apiParity: "partial",
       accessibility: "static-markup",
       clientJs: "none",
@@ -144,7 +148,7 @@ export function renderCompatibilityTable(manifest: Manifest): string {
   const generated = manifest.components.filter((c) => c.conversion !== null)
   const others = manifest.components.filter((c) => c.conversion === null)
   const lines = [
-    `Generated from \`compatibility.json\` (upstream style \`${manifest.style}\`). Every component is server-rendered Hono JSX with no client JavaScript.`,
+    `Generated from \`compatibility.json\` (upstream style \`${manifest.style}\`). Every component is server-rendered Hono JSX with no client JavaScript. "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the \`tests/visual\` CI job.`,
     "",
     "| Component | Status | Conversion | Visual parity | Known differences |",
     "| --- | --- | --- | --- | --- |",

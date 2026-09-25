@@ -129,26 +129,26 @@ Per-component details are in the table below.
 ## Compatibility
 
 <!-- compatibility-table:start -->
-Generated from `compatibility.json` (upstream style `base-nova`). Every component is server-rendered Hono JSX with no client JavaScript.
+Generated from `compatibility.json` (upstream style `base-nova`). Every component is server-rendered Hono JSX with no client JavaScript. "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the `tests/visual` CI job.
 
 | Component | Status | Conversion | Visual parity | Known differences |
 | --- | --- | --- | --- | --- |
-| alert | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| aspect-ratio | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| badge | experimental | generated | unverified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
-| bubble | experimental | generated | unverified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
-| button | experimental | generated | unverified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` and `focusableWhenDisabled` are not supported. Accepts `class` instead of `className`. |
-| card | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| empty | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| input | experimental | generated | unverified | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
-| kbd | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| label | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| marker | experimental | generated | unverified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
-| message | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| separator | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| skeleton | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| table | experimental | generated | unverified | Accepts `class` instead of `className`. |
-| textarea | experimental | generated | unverified | Accepts `class` instead of `className`. |
+| alert | experimental | generated | verified | Accepts `class` instead of `className`. |
+| aspect-ratio | experimental | generated | verified | Accepts `class` instead of `className`. |
+| badge | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
+| bubble | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
+| button | experimental | generated | verified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` and `focusableWhenDisabled` are not supported. Accepts `class` instead of `className`. |
+| card | experimental | generated | verified | Accepts `class` instead of `className`. |
+| empty | experimental | generated | verified | Accepts `class` instead of `className`. |
+| input | experimental | generated | verified | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
+| kbd | experimental | generated | verified | Accepts `class` instead of `className`. |
+| label | experimental | generated | verified | Accepts `class` instead of `className`. |
+| marker | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
+| message | experimental | generated | verified | Accepts `class` instead of `className`. |
+| separator | experimental | generated | verified | Accepts `class` instead of `className`. |
+| skeleton | experimental | generated | verified | Accepts `class` instead of `className`. |
+| table | experimental | generated | verified | Accepts `class` instead of `className`. |
+| textarea | experimental | generated | verified | Accepts `class` instead of `className`. |
 
 <details>
 <summary>Not yet available (47 upstream components)</summary>
@@ -247,7 +247,8 @@ Generated files are never edited by hand. See
 | `bun run analyze [name...]` | Classify upstream components |
 | `bun run generate [name...] [--check]` | Regenerate components, theme, registry, manifest |
 | `bun run verify` | Lint, type-check, test, check generated files, validate the registry |
-| `bun run verify:full` | `verify` plus examples and the registry install test (network) |
+| `bun run test:visual` | Compare screenshots with upstream shadcn/ui (React, Playwright; separate package in `tests/visual`) |
+| `bun run verify:full` | `verify` plus examples, the registry install test (network) and visual parity |
 
 ## License
 

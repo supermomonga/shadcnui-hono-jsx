@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import { config } from "../../../generator.config"
+import { VISUAL_CASES } from "../../../tests/visual/cases"
 import {
   buildManifest,
   renderCompatibilityTable,
@@ -26,7 +27,7 @@ describe("buildManifest", () => {
         status: "experimental",
         conversion: "generated",
         clientJs: "none",
-        visualParity: "unverified",
+        visualParity: "verified",
         upstream: { contentSha256: lock.items[name]?.contentSha256 },
       })
       expect(byName.get(name)?.knownDifferences).toContain(
@@ -34,6 +35,11 @@ describe("buildManifest", () => {
       )
     }
   )
+
+  test("every generated component has a visual parity case", () => {
+    const covered = new Set(VISUAL_CASES.map((c) => c.component))
+    expect(config.components.filter((name) => !covered.has(name))).toEqual([])
+  })
 
   test("unsupported items list their blocking reasons", () => {
     const dialog = byName.get("dialog")

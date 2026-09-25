@@ -32,7 +32,7 @@
         "contentSha256": "56d4827f4beed9ce6796b00fa28612f5bb8b13830197f3157860d251b6134861",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -73,7 +73,7 @@
         "contentSha256": "3d25d73f77dedf7c11f1e089114b9c1ed142f2aa44c9c3398c06f7d046809ea9",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -131,7 +131,7 @@
         "contentSha256": "448725bcf39981b25aa06f804eb8dc46c07923976f973a4ad19a4c51b82130e9",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -168,7 +168,7 @@
         "contentSha256": "a21e25e29a040e39a72764312229ea8f294131e6b6a23f4520108d5904de405e",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -192,7 +192,7 @@
         "contentSha256": "23a5cfb0c42fa8e55e26e34fbba8b0d1d7ee8663dc2c8b308830d1b5be7d9949",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -262,7 +262,7 @@
         "contentSha256": "766d3bb130e4a7b7ff3db8720a523330b9a0a6637043eb39bbde43a8691e17ba",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -545,7 +545,7 @@
         "contentSha256": "16a341dcd4e1fa3c690e67bbef1e2649834efc9b2f3057a4a0f7e2faee1a06d1",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -626,7 +626,7 @@
         "contentSha256": "31a57ec736d9c75d16f81eb1486098944782f4f565c597f715b8a1334e28f5d0",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -717,7 +717,7 @@
         "contentSha256": "241804b8d92bd456214f6b56bb87f9e0a05a56fe13c64cfb383653e360202702",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -737,7 +737,7 @@
         "contentSha256": "0c8c72d16df2e090ca419abf4f8378c6cf77fb67c8ac67d424997ae1199342b0",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -758,7 +758,7 @@
         "contentSha256": "cf39a4e633750a9bc57bab7bb3658cfa4ed1b1f9ed79769acd48a2ef8100c140",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -805,7 +805,7 @@
         "contentSha256": "553a3189896b3b89cfee6837bd8d4cb8ec5c354104951cadcf69ba8085bd9547",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -1038,7 +1038,7 @@
         "contentSha256": "e331ea0c4e835484b0a3fcefa172a884864bdc0e1bfe39d12c119c66ad4e3195",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -1130,7 +1130,7 @@
         "contentSha256": "97a90c6788815d37eda6dad532aa207e5a878d22b4d5f9e91c16bb2f4bc2f341",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -1223,7 +1223,7 @@
         "contentSha256": "cd8a2a8c2e0855f6263a911655b41d1191b4f29e95c3c67e0ab602aa2b2642f1",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
@@ -1261,7 +1261,7 @@
         "contentSha256": "5487cbf83c25f2139ea649fa3574d0c3f9991f2bdd6208278882c39620f0d4ab",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "unverified",
+      "visualParity": "verified",
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
