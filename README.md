@@ -137,6 +137,10 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
   JavaScript and no open/close animation. `CollapsibleTrigger` must be the first
   child of `Collapsible` (everything else collapses) and is styled with
   `class` instead of `render`.
+- Checkbox, Switch, RadioGroup, Toggle and ToggleGroup are native inputs inside
+  upstream's styled elements: they work and submit with forms without
+  JavaScript, and `id`/`name`/`value`/`aria-*` go to the input. A Toggle is a
+  label around a checkbox, so Space presses it and Enter does not.
 
 Per-component details are in the table below.
 
@@ -158,10 +162,11 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | button | experimental | generated | verified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` is supported on the server; a non-button target such as `render={<a href="/docs" />}` keeps its native role (no `role="button"` or `tabindex`), since the client-side button behavior Base UI adds is not shipped. `focusableWhenDisabled` is not supported. Accepts `class` instead of `className`. |
 | button-group | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
 | card | experimental | generated | verified | Accepts `class` instead of `className`. |
+| checkbox | experimental | generated | verified | Built on a native `<input type="checkbox">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual. `checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly`, `indeterminate` and `render` are not supported. Accepts `class` instead of `className`. |
 | collapsible | experimental | generated | verified | Built on native `<details>`/`<summary>`: no JavaScript. `CollapsibleTrigger` must be the first child of `Collapsible` (rendering throws otherwise), and every other child is hidden while closed, not only `CollapsibleContent`. `CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants). Accepts `class` instead of `className`. |
 | dialog | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | empty | experimental | generated | verified | Accepts `class` instead of `className`. |
-| field | experimental | generated | verified | Accepts `class` instead of `className`. |
+| field | experimental | generated | verified | Accepts `class` instead of `className`. Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls. |
 | input | experimental | generated | verified | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
 | item | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
 | kbd | experimental | generated | verified | Accepts `class` instead of `className`. |
@@ -171,50 +176,49 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | native-select | experimental | generated | verified | Accepts `class` instead of `className`. |
 | pagination | experimental | generated | verified | Accepts `class` instead of `className`. |
 | progress | experimental | generated | verified | Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported. Accepts `class` instead of `className`. |
+| radio-group | experimental | generated | verified | `value`/`defaultValue` set the initial selection; `onValueChange` and `readOnly` are not supported. Built on native `<input type="radio">` elements sharing the group's `name` (generated unless given): no JavaScript, arrow keys move the selection, and the value is submitted with forms. `id`, `disabled` and `aria-*` go to the input. Accepts `class` instead of `className`. |
 | separator | experimental | generated | verified | Accepts `class` instead of `className`. |
 | sheet | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | skeleton | experimental | generated | verified | Accepts `class` instead of `className`. |
 | spinner | experimental | generated | verified | Accepts `class` instead of `className`. |
+| switch | experimental | generated | verified | Built on a native `<input type="checkbox" role="switch">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual. `checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly` and `render` are not supported. Accepts `class` instead of `className`. |
 | table | experimental | generated | verified | Accepts `class` instead of `className`. |
 | textarea | experimental | generated | verified | Accepts `class` instead of `className`. |
+| toggle | experimental | generated | verified | A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
+| toggle-group | experimental | generated | verified | Items are native radios sharing a `name` (checkboxes with `multiple`): the pressed item of a single-selection group cannot be released by pressing it again, and arrow keys select as they move. `defaultValue` sets the pressed items; `value`/`onValueChange` are not supported. A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (33 upstream components)</summary>
+<summary>Not yet available (28 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
 | avatar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/avatar#Avatar` |
 | calendar | unsupported | `react-hook:useEffect`, `react-hook:useRef`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useRef`, `unknown-import:react-day-picker` |
-| carousel | unsupported | `event-handler:onClick`, `event-handler:onKeyDownCapture`, `react-hook:useCarousel`, `react-hook:useContext`, `react-hook:useEffect`, `react-hook:useEmblaCarousel`, `react-hook:useState`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `react-type-unmapped:React.KeyboardEvent`, `unknown-import:embla-carousel-react` |
-| chart | unsupported | `react-hook:useChart`, `react-hook:useContext`, `react-hook:useId`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useId`, `react-type-unmapped:React.ComponentType`, `unknown-import:recharts` |
-| checkbox | unsupported | `base-ui-primitive-unmapped:@base-ui/react/checkbox#Checkbox` |
+| carousel | unsupported | `event-handler:onClick`, `event-handler:onKeyDownCapture`, `react-hook:useCarousel`, `react-hook:useEffect`, `react-hook:useEmblaCarousel`, `react-hook:useState`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `react-type-unmapped:React.KeyboardEvent`, `unknown-import:embla-carousel-react` |
+| chart | unsupported | `react-hook:useChart`, `react-hook:useId`, `react-runtime-api:React.useId`, `react-type-unmapped:React.ComponentType`, `unknown-import:recharts` |
 | combobox | unsupported | `base-ui-primitive-unmapped:@base-ui/react#Combobox`, `react-hook:useRef`, `react-runtime-api:React.useRef`, `react-type-unmapped:React.ComponentPropsWithRef`, `registry-dependency:input-group`, `registry-import:@/registry/base-nova/ui/input-group`, `render-prop:ComboboxPrimitive.ChipRemove`, `render-prop:ComboboxPrimitive.Clear`, `render-prop:ComboboxPrimitive.Input`, `render-prop:ComboboxPrimitive.ItemIndicator`, `render-prop:InputGroupButton` |
 | command | unsupported | `registry-dependency:input-group`, `registry-import:@/registry/base-nova/ui/input-group`, `unknown-import:cmdk` |
 | context-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/context-menu#ContextMenu` |
 | direction | unsupported | `base-ui-primitive-unmapped:@base-ui/react/direction-provider#DirectionProvider`, `base-ui-primitive-unmapped:@base-ui/react/direction-provider#useDirection` |
-| drawer | unsupported | `base-ui-primitive-unmapped:@base-ui/react/drawer#Drawer`, `react-hook:useContext`, `react-hook:useDrawer`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext` |
+| drawer | unsupported | `base-ui-primitive-unmapped:@base-ui/react/drawer#Drawer`, `react-hook:useDrawer` |
 | dropdown-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menu#Menu` |
 | form | unsupported | `no-files` |
 | hover-card | unsupported | `base-ui-primitive-unmapped:@base-ui/react/preview-card#PreviewCard` |
 | input-group | unsupported | `event-handler:onClick` |
-| input-otp | unsupported | `react-hook:useContext`, `react-runtime-api:React.useContext`, `unknown-import:input-otp` |
+| input-otp | unsupported | `unknown-import:input-otp` |
 | menubar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menu#Menu`, `base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar`, `registry-dependency:dropdown-menu`, `registry-import:@/registry/base-nova/ui/dropdown-menu` |
 | message-scroller | unsupported | `render-prop:MessageScrollerPrimitive.Button`, `unknown-import:@shadcn/react/message-scroller` |
 | navigation-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu`, `react-type-unmapped:React.ComponentPropsWithRef` |
 | popover | unsupported | `base-ui-primitive-unmapped:@base-ui/react/popover#Popover` |
 | questionnaire | unsupported | `unknown-import:@shadcn/react/questionnaire` |
-| radio-group | unsupported | `base-ui-primitive-unmapped:@base-ui/react/radio-group#RadioGroup`, `base-ui-primitive-unmapped:@base-ui/react/radio#Radio` |
 | resizable | unsupported | `unknown-import:react-resizable-panels` |
 | scroll-area | unsupported | `base-ui-primitive-unmapped:@base-ui/react/scroll-area#ScrollArea` |
 | select | unsupported | `base-ui-primitive-unmapped:@base-ui/react/select#Select`, `render-prop:SelectPrimitive.Icon`, `render-prop:SelectPrimitive.ItemIndicator` |
-| sidebar | unsupported | `event-handler:onClick`, `event-handler:onOpenChange`, `react-hook:useContext`, `react-hook:useEffect`, `react-hook:useIsMobile`, `react-hook:useSidebar`, `react-hook:useState`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `registry-dependency:tooltip`, `registry-dependency:use-mobile`, `registry-import:@/registry/base-nova/hooks/use-mobile`, `registry-import:@/registry/base-nova/ui/tooltip`, `render-prop:TooltipTrigger`, `use-render-noncanonical` |
+| sidebar | unsupported | `event-handler:onClick`, `event-handler:onOpenChange`, `react-hook:useEffect`, `react-hook:useIsMobile`, `react-hook:useSidebar`, `react-hook:useState`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `registry-dependency:tooltip`, `registry-dependency:use-mobile`, `registry-import:@/registry/base-nova/hooks/use-mobile`, `registry-import:@/registry/base-nova/ui/tooltip`, `render-prop:TooltipTrigger`, `use-render-noncanonical` |
 | slider | unsupported | `base-ui-primitive-unmapped:@base-ui/react/slider#Slider` |
 | sonner | unsupported | `react-hook:useTheme`, `unknown-import:next-themes`, `unknown-import:sonner` |
-| switch | unsupported | `base-ui-primitive-unmapped:@base-ui/react/switch#Switch` |
 | tabs | unsupported | `base-ui-primitive-unmapped:@base-ui/react/tabs#Tabs` |
 | toast | unsupported | `base-ui-primitive-unmapped:@base-ui/react/toast#Toast`, `render-prop:ToastPrimitive.Action`, `render-prop:ToastPrimitive.Close` |
-| toggle | unsupported | `base-ui-primitive-unmapped:@base-ui/react/toggle#Toggle` |
-| toggle-group | unsupported | `base-ui-primitive-unmapped:@base-ui/react/toggle-group#ToggleGroup`, `base-ui-primitive-unmapped:@base-ui/react/toggle#Toggle`, `react-hook:useContext`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `registry-dependency:toggle`, `registry-import:@/registry/base-nova/ui/toggle` |
 | tooltip | unsupported | `base-ui-primitive-unmapped:@base-ui/react/tooltip#Tooltip` |
 
 </details>

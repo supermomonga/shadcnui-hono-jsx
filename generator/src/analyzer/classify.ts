@@ -7,6 +7,7 @@ import {
 } from "../adapters/primitives/base-ui"
 import { resolveLucideIcon } from "../icons/lucide"
 import { MEMO_HOOKS } from "../transformers/steps/memo-hooks"
+import { CONTEXT_APIS } from "../transformers/steps/react-context"
 import type { ComponentFacts, FileFacts } from "./facts"
 import { type Reason, reason, reasonKey, sortReasons } from "./reasons"
 
@@ -62,7 +63,11 @@ function fileReasons(
     const { module } = imp
     if (module === "react") {
       for (const named of imp.named) {
-        if (!(imp.typeOnly || named.typeOnly) && !MEMO_HOOKS.has(named.name)) {
+        if (
+          !(imp.typeOnly || named.typeOnly) &&
+          !MEMO_HOOKS.has(named.name) &&
+          !CONTEXT_APIS.has(named.name)
+        ) {
           reasons.push(reason("react-runtime-api", named.name))
         }
       }
@@ -108,8 +113,13 @@ function fileReasons(
   }
 
   for (const ref of file.reactValueRefs) {
-    if (MEMO_HOOKS.has(ref.replace(/^React\./, ""))) continue
-    reasons.push(reason("react-runtime-api", ref))
+    const name = ref.replace(/^React\./, "")
+    if (MEMO_HOOKS.has(name)) continue
+    reasons.push(
+      CONTEXT_APIS.has(name)
+        ? reason("react-context", name)
+        : reason("react-runtime-api", ref)
+    )
   }
   for (const ref of file.reactTypeRefs) {
     reasons.push(
@@ -122,7 +132,9 @@ function fileReasons(
     reasons.push(
       MEMO_HOOKS.has(hook)
         ? reason("memo-hook", hook)
-        : reason("react-hook", hook)
+        : CONTEXT_APIS.has(hook)
+          ? reason("react-context", hook)
+          : reason("react-hook", hook)
     )
   }
   if (file.useRender === "canonical") reasons.push(reason("base-ui-use-render"))
@@ -158,6 +170,9 @@ function fileReasons(
         ? reason("lucide-icon", icon)
         : reason("icon-unresolved", icon || "(no lucide name)")
     )
+  }
+  for (const variant of file.controlStateVariants) {
+    reasons.push(reason("control-state-class", variant))
   }
   for (const marker of file.cnMarkers) {
     reasons.push(reason("cn-marker", marker))

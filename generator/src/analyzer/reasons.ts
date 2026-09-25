@@ -28,6 +28,8 @@ export const REWRITE_CODES = [
   "lucide-icon",
   "render-composition",
   "memo-hook",
+  "react-context",
+  "control-state-class",
 ] as const
 
 export type BlockingCode = (typeof BLOCKING_CODES)[number]

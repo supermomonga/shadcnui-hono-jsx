@@ -89,12 +89,29 @@ function writeUpstreamSources(): void {
   }
 }
 
+/** Export name → the component whose file defines it. */
+const OWNERS = new Map<string, string>()
+
 async function loadExports(dir: string): Promise<Exports> {
   const exports: Exports = {}
   for (const name of config.components) {
-    Object.assign(exports, await import(path.join(dir, `${name}.tsx`)))
+    const module = await import(path.join(dir, `${name}.tsx`))
+    for (const key of Object.keys(module)) {
+      if (!OWNERS.has(key)) OWNERS.set(key, name)
+    }
+    Object.assign(exports, module)
   }
   return exports
+}
+
+/** Whether any element of the case (including element props) comes from one of `components`. */
+function usesAny(node: CaseNode, components: ReadonlySet<string>): boolean {
+  if (typeof node === "string") return false
+  const [type, props, ...children] = node
+  if (components.has(OWNERS.get(type) ?? "")) return true
+  return [...Object.values(props).filter(isCaseElement), ...children].some(
+    (child) => usesAny(child, components)
+  )
 }
 
 function resolveType(type: string, exports: Exports): unknown {
@@ -227,7 +244,7 @@ async function main(): Promise<void> {
       const honoHtml = String(await toHono(visualCase.node, hono))
       ids.push({
         id: `${visualCase.id}@${mode}`,
-        compareDom: !nativeStructure.has(visualCase.component),
+        compareDom: !usesAny(visualCase.node, nativeStructure),
       })
       honoSections.push(section(visualCase.id, mode, width, honoHtml))
       reactSections.push(section(visualCase.id, mode, width, reactHtml))

@@ -13,7 +13,12 @@
  */
 export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   accordion: "disclosure.spec.ts",
+  checkbox: "controls.spec.ts",
   collapsible: "disclosure.spec.ts",
+  "radio-group": "controls.spec.ts",
+  switch: "controls.spec.ts",
+  toggle: "controls.spec.ts",
+  "toggle-group": "controls.spec.ts",
   "alert-dialog": "modals.spec.ts",
   dialog: "modals.spec.ts",
   sheet: "modals.spec.ts",
@@ -647,6 +652,136 @@ export const VISUAL_CASES: VisualCase[] = [
         { value: 7, max: 20 },
         ["ProgressLabel", {}, "Steps"],
         ["ProgressValue", {}],
+      ]
+    ),
+  },
+  {
+    id: "checkbox/states",
+    component: "checkbox",
+    node: stack(
+      row(
+        ["Checkbox", {}],
+        ["Checkbox", { defaultChecked: true }],
+        ["Checkbox", { disabled: true }],
+        ["Checkbox", { defaultChecked: true, disabled: true }],
+        ["Checkbox", { "aria-invalid": "true" }],
+        ["Checkbox", { defaultChecked: true, "aria-invalid": "true" }]
+      ),
+      [
+        "div",
+        { class: "flex items-center gap-2" },
+        ["Checkbox", { id: "terms", defaultChecked: true }],
+        ["Label", { for: "terms" }, "Accept terms and conditions"],
+      ]
+    ),
+  },
+  {
+    id: "field/choice-card",
+    component: "field",
+    node: [
+      "FieldGroup",
+      {},
+      ...[
+        ["notifications", "Enable notifications", true],
+        ["digest", "Weekly digest", false],
+      ].map(
+        ([id, title, on]): CaseElement => [
+          "FieldLabel",
+          { for: String(id) },
+          [
+            "Field",
+            { orientation: "horizontal" },
+            ["Checkbox", { id: String(id), defaultChecked: Boolean(on) }],
+            [
+              "FieldContent",
+              {},
+              ["FieldTitle", {}, String(title)],
+              ["FieldDescription", {}, "You can change this later."],
+            ],
+          ],
+        ]
+      ),
+    ],
+  },
+  {
+    id: "switch/states",
+    component: "switch",
+    node: row(
+      ["Switch", {}],
+      ["Switch", { defaultChecked: true }],
+      ["Switch", { size: "sm" }],
+      ["Switch", { size: "sm", defaultChecked: true }],
+      ["Switch", { disabled: true }],
+      ["Switch", { defaultChecked: true, disabled: true }],
+      ["Switch", { "aria-invalid": "true" }]
+    ),
+  },
+  {
+    id: "radio-group/default",
+    component: "radio-group",
+    node: [
+      "RadioGroup",
+      { defaultValue: "comfortable", class: "w-fit" },
+      ...["default", "comfortable", "compact"].map(
+        (value): CaseElement => [
+          "div",
+          { class: "flex items-center gap-3" },
+          ["RadioGroupItem", { value, id: `density-${value}` }],
+          ["Label", { for: `density-${value}` }, value],
+        ]
+      ),
+      [
+        "div",
+        { class: "flex items-center gap-3" },
+        [
+          "RadioGroupItem",
+          { value: "none", id: "density-none", disabled: true },
+        ],
+        ["Label", { for: "density-none" }, "none"],
+      ],
+    ],
+  },
+  {
+    id: "toggle/states",
+    component: "toggle",
+    node: row(
+      ["Toggle", { "aria-label": "Bold" }, "B"],
+      ["Toggle", { "aria-label": "Italic", defaultPressed: true }, "I"],
+      ["Toggle", { variant: "outline" }, "Outline"],
+      ["Toggle", { variant: "outline", defaultPressed: true }, "Pressed"],
+      ["Toggle", { size: "sm" }, "Small"],
+      ["Toggle", { size: "lg", defaultPressed: true }, "Large"],
+      ["Toggle", { disabled: true }, "Disabled"]
+    ),
+  },
+  {
+    id: "toggle-group/variants",
+    component: "toggle-group",
+    node: stack(
+      [
+        "ToggleGroup",
+        { variant: "outline", defaultValue: ["center"] },
+        ["ToggleGroupItem", { value: "left" }, "Left"],
+        ["ToggleGroupItem", { value: "center" }, "Center"],
+        ["ToggleGroupItem", { value: "right" }, "Right"],
+      ],
+      [
+        "ToggleGroup",
+        {
+          variant: "outline",
+          spacing: 0,
+          multiple: true,
+          defaultValue: ["b", "u"],
+        },
+        ["ToggleGroupItem", { value: "b" }, "B"],
+        ["ToggleGroupItem", { value: "i" }, "I"],
+        ["ToggleGroupItem", { value: "u" }, "U"],
+      ],
+      [
+        "ToggleGroup",
+        { size: "sm", orientation: "vertical", defaultValue: ["top"] },
+        ["ToggleGroupItem", { value: "top" }, "Top"],
+        ["ToggleGroupItem", { value: "bottom", disabled: true }, "Bottom"],
       ]
     ),
   },

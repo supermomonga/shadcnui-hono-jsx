@@ -1,3 +1,11 @@
+import {
+  checkboxFamily,
+  radioFamily,
+  radioGroupFamily,
+  switchFamily,
+  toggleFamily,
+  toggleGroupFamily,
+} from "./controls"
 import { accordionFamily, collapsibleFamily } from "./details"
 import { alertDialogFamily, dialogFamily } from "./dialog"
 import { progressFamily } from "./progress"
@@ -9,9 +17,15 @@ export type { FamilyRule } from "./types"
 export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   accordionFamily,
   alertDialogFamily,
+  checkboxFamily,
   collapsibleFamily,
   dialogFamily,
   progressFamily,
+  radioFamily,
+  radioGroupFamily,
+  switchFamily,
+  toggleFamily,
+  toggleGroupFamily,
 ]
 
 export function findFamilyRule(

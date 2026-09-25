@@ -6,6 +6,7 @@ import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
 import { PRIMITIVE_FAMILIES } from "../../generator/src/adapters/families"
 import { BASE_UI_PRIMITIVES } from "../../generator/src/adapters/primitives/base-ui"
+import { rewriteControlState } from "../../generator/src/transformers/steps/control-state"
 
 /**
  * Compares screenshots of each case rendered by the generated Hono JSX
@@ -57,6 +58,23 @@ const domTree = (page: Page, selector: string, omit: typeof OMITTED) =>
     return walk(root)
   }, omit)
 
+/**
+ * Applies the generator's declared class rewrites to the upstream tree:
+ * other components' reactions to Base UI control state read the native
+ * inputs' `:checked` instead (`has-data-checked:` becomes `has-checked:`).
+ */
+const rewriteClasses = (node: DomNode): DomNode => ({
+  ...node,
+  attributes:
+    node.attributes.class === undefined
+      ? node.attributes
+      : {
+          ...node.attributes,
+          class: rewriteControlState(node.attributes.class),
+        },
+  children: node.children.map(rewriteClasses),
+})
+
 /** Share of differing pixels tolerated per case (anti-aliasing noise only). */
 const MAX_DIFF_RATIO = 0.001
 
@@ -91,23 +109,26 @@ for (const { id, compareDom } of cases) {
       expect(
         await domTree(hono, selector, []),
         "DOM must match upstream"
-      ).toEqual(await domTree(react, selector, OMITTED))
+      ).toEqual(rewriteClasses(await domTree(react, selector, OMITTED)))
     }
 
-    // Icons must match lucide-react's SVG exactly (attributes and shapes);
-    // native-structure families map state variants in classes, so classes
-    // are left to the pixel comparison there.
+    // Icons must match lucide-react's SVG exactly (attributes and shapes).
+    // Native-structure families map state variants in classes and keep
+    // hidden parts in the page, so there only visible icons are compared,
+    // without classes (left to the pixel comparison).
     const svgs = (page: Page) =>
       page.locator(`${selector} svg`).evaluateAll(
-        (elements, withClass) =>
-          elements.map((svg) => ({
-            attributes: Object.fromEntries(
-              [...svg.attributes]
-                .filter((a) => withClass || a.name !== "class")
-                .map((a) => [a.name, a.value])
-            ),
-            content: svg.innerHTML,
-          })),
+        (elements, exact) =>
+          elements
+            .filter((svg) => exact || svg.checkVisibility())
+            .map((svg) => ({
+              attributes: Object.fromEntries(
+                [...svg.attributes]
+                  .filter((a) => exact || a.name !== "class")
+                  .map((a) => [a.name, a.value])
+              ),
+              content: svg.innerHTML,
+            })),
         compareDom
       )
     expect(

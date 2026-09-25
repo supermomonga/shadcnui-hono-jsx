@@ -332,12 +332,9 @@
         "event-handler:onClick",
         "event-handler:onKeyDownCapture",
         "react-hook:useCarousel",
-        "react-hook:useContext",
         "react-hook:useEffect",
         "react-hook:useEmblaCarousel",
         "react-hook:useState",
-        "react-runtime-api:React.createContext",
-        "react-runtime-api:React.useContext",
         "react-runtime-api:React.useEffect",
         "react-runtime-api:React.useState",
         "react-type-unmapped:React.KeyboardEvent",
@@ -361,10 +358,7 @@
       "knownDifferences": [],
       "reasons": [
         "react-hook:useChart",
-        "react-hook:useContext",
         "react-hook:useId",
-        "react-runtime-api:React.createContext",
-        "react-runtime-api:React.useContext",
         "react-runtime-api:React.useId",
         "react-type-unmapped:React.ComponentType",
         "unknown-import:recharts"
@@ -372,20 +366,30 @@
     },
     {
       "name": "checkbox",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/checkbox.json",
         "contentSha256": "ea4af0527f8c01513f17f785f93e71b0c8933f44be3fd74697fafc9ee4c9f03f",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/checkbox#Checkbox"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Built on a native `<input type=\"checkbox\">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual.",
+        "`checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly`, `indeterminate` and `render` are not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/checkbox#Checkbox",
+        "classname-to-class",
+        "icon-placeholder",
+        "lucide-icon:CheckIcon",
+        "use-client-directive"
+      ]
     },
     {
       "name": "collapsible",
@@ -552,10 +556,7 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/drawer#Drawer",
-        "react-hook:useContext",
-        "react-hook:useDrawer",
-        "react-runtime-api:React.createContext",
-        "react-runtime-api:React.useContext"
+        "react-hook:useDrawer"
       ]
     },
     {
@@ -610,13 +611,17 @@
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
-      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "knownDifferences": [
+        "Accepts `class` instead of `className`.",
+        "Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls."
+      ],
       "reasons": [
         "classname-to-class",
         "component-dependency:label",
         "component-dependency:separator",
         "component-import:label",
         "component-import:separator",
+        "control-state-class:has-data-checked",
         "memo-hook:useMemo",
         "react-type-rewrite:React.ComponentProps",
         "react-type-rewrite:React.ReactNode",
@@ -715,11 +720,7 @@
       "accessibility": "not-applicable",
       "clientJs": "not-applicable",
       "knownDifferences": [],
-      "reasons": [
-        "react-hook:useContext",
-        "react-runtime-api:React.useContext",
-        "unknown-import:input-otp"
-      ]
+      "reasons": ["unknown-import:input-otp"]
     },
     {
       "name": "item",
@@ -1004,22 +1005,28 @@
     },
     {
       "name": "radio-group",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/radio-group.json",
         "contentSha256": "d0309ee41e23acc7e22fd10e5fc361eeecba09fea337b0798a502fac59592ded",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "`value`/`defaultValue` set the initial selection; `onValueChange` and `readOnly` are not supported.",
+        "Built on native `<input type=\"radio\">` elements sharing the group's `name` (generated unless given): no JavaScript, arrow keys move the selection, and the value is submitted with forms. `id`, `disabled` and `aria-*` go to the input.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/radio-group#RadioGroup",
-        "base-ui-primitive-unmapped:@base-ui/react/radio#Radio"
+        "base-ui-primitive-mapped:@base-ui/react/radio-group#RadioGroup",
+        "base-ui-primitive-mapped:@base-ui/react/radio#Radio",
+        "classname-to-class",
+        "use-client-directive"
       ]
     },
     {
@@ -1152,13 +1159,10 @@
       "reasons": [
         "event-handler:onClick",
         "event-handler:onOpenChange",
-        "react-hook:useContext",
         "react-hook:useEffect",
         "react-hook:useIsMobile",
         "react-hook:useSidebar",
         "react-hook:useState",
-        "react-runtime-api:React.createContext",
-        "react-runtime-api:React.useContext",
         "react-runtime-api:React.useEffect",
         "react-runtime-api:React.useState",
         "registry-dependency:tooltip",
@@ -1251,20 +1255,28 @@
     },
     {
       "name": "switch",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/switch.json",
         "contentSha256": "525dae65e4ff6aed1394369a551d7b9dabd85f66506e84b3ce40390774eba398",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/switch#Switch"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Built on a native `<input type=\"checkbox\" role=\"switch\">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual.",
+        "`checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly` and `render` are not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/switch#Switch",
+        "classname-to-class",
+        "use-client-directive"
+      ]
     },
     {
       "name": "table",
@@ -1347,44 +1359,59 @@
     },
     {
       "name": "toggle",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/toggle.json",
         "contentSha256": "4ca92799f14308746c74b209c149ed934537bc10687719dba21429332b090502",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/toggle#Toggle"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream.",
+        "Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/toggle#Toggle",
+        "classname-to-class",
+        "use-client-directive"
+      ]
     },
     {
       "name": "toggle-group",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/toggle-group.json",
         "contentSha256": "09efc4edf7c75c96046af788d137af36d6bf2d386f9b9dbf5a6349c783ace321",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Items are native radios sharing a `name` (checkboxes with `multiple`): the pressed item of a single-selection group cannot be released by pressing it again, and arrow keys select as they move. `defaultValue` sets the pressed items; `value`/`onValueChange` are not supported.",
+        "A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream.",
+        "Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/toggle-group#ToggleGroup",
-        "base-ui-primitive-unmapped:@base-ui/react/toggle#Toggle",
-        "react-hook:useContext",
-        "react-runtime-api:React.createContext",
-        "react-runtime-api:React.useContext",
-        "registry-dependency:toggle",
-        "registry-import:@/registry/base-nova/ui/toggle"
+        "base-ui-primitive-mapped:@base-ui/react/toggle-group#ToggleGroup",
+        "base-ui-primitive-mapped:@base-ui/react/toggle#Toggle",
+        "classname-to-class",
+        "component-dependency:toggle",
+        "component-import:toggle",
+        "react-context:createContext",
+        "react-context:useContext",
+        "react-type-rewrite:React.CSSProperties",
+        "use-client-directive"
       ]
     },
     {

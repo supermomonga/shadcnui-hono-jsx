@@ -54,6 +54,11 @@ function knownDifferences(
   for (const key of reasons) {
     const common = COMMON_DIFFERENCES[key]
     if (common) notes.push(common)
+    if (key.startsWith("control-state-class:")) {
+      notes.push(
+        "Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls."
+      )
+    }
     if (key.startsWith("base-ui-primitive-mapped:")) {
       const [module, exportName] = key
         .slice("base-ui-primitive-mapped:".length)

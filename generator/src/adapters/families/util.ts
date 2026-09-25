@@ -98,8 +98,8 @@ export function partClasses(
 }
 
 /**
- * Rewrites every class string in the file: `className="..."` attributes and
- * string arguments of `cn(...)`.
+ * Rewrites every class string in the file: `className="..."` attributes,
+ * string arguments of `cn(...)`, and strings inside `cva(...)` definitions.
  */
 export function mapFileClasses(
   ctx: TransformContext,
@@ -112,10 +112,14 @@ export function mapFileClasses(
       if (Node.isJsxAttribute(parent)) {
         return parent.getNameNode().getText() === "className"
       }
-      return (
+      if (
         Node.isCallExpression(parent) &&
         parent.getExpression().getText() === "cn"
-      )
+      ) {
+        return true
+      }
+      const call = literal.getFirstAncestorByKind(SyntaxKind.CallExpression)
+      return call?.getExpression().getText() === "cva"
     })
   for (const literal of literals.reverse()) {
     literal.setLiteralValue(map(literal.getLiteralValue()))
@@ -132,8 +136,9 @@ export function forEachPart(
     [
       ...ctx.sf.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement),
       ...ctx.sf.getDescendantsOfKind(SyntaxKind.JsxOpeningElement),
-    ].find((e) => tagOf(e).startsWith(`${local}.`))
+    ].find((e) => tagOf(e) === local || tagOf(e).startsWith(`${local}.`))
   for (let element = find(); element; element = find()) {
+    // "" for the local itself (`<RadioGroup>`), else the part name.
     const part = tagOf(element).slice(local.length + 1)
     const node: Node = Node.isJsxOpeningElement(element)
       ? element.getParentIfKindOrThrow(SyntaxKind.JsxElement)
@@ -239,14 +244,18 @@ export function replacePartTypes(
   for (const ref of refs.reverse()) {
     const name = ref.getTypeName().getText()
     let part: string | undefined
-    if (name.startsWith(`${local}.`) && name.endsWith(".Props")) {
+    if (name === `${local}.Props`) {
+      part = ""
+    } else if (name.startsWith(`${local}.`) && name.endsWith(".Props")) {
       part = name.slice(local.length + 1, -".Props".length)
     } else if (name === "React.ComponentProps") {
       const [arg] = ref.getTypeArguments()
       const query = arg?.isKind(SyntaxKind.TypeQuery)
         ? arg.getExprName().getText()
         : ""
-      if (query.startsWith(`${local}.`)) part = query.slice(local.length + 1)
+      if (query === local) part = ""
+      else if (query.startsWith(`${local}.`))
+        part = query.slice(local.length + 1)
     }
     if (part === undefined) continue
     const type = types[part]

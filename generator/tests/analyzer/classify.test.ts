@@ -65,6 +65,20 @@ export { A }`
     )
   })
 
+  test("React context APIs are rewritten to hono/jsx", () => {
+    const source = `import * as React from "react"
+const Ctx = React.createContext(0)
+function C() { const value = React.useContext(Ctx); return <div>{value}</div> }
+export { C }`
+    expect(run(source)).toMatchObject({
+      kind: "direct",
+      rewrites: expect.arrayContaining([
+        "react-context:createContext",
+        "react-context:useContext",
+      ]),
+    })
+  })
+
   test("mapped Base UI primitives are direct", () => {
     const source = `import { Button as ButtonPrimitive } from "@base-ui/react/button"
 function Button(props: ButtonPrimitive.Props) { return <ButtonPrimitive {...props} /> }
@@ -107,12 +121,12 @@ export { Tag }`
       "react-hook:useState",
     ],
     [
-      `import * as React from "react"\nexport const Ctx = React.createContext(null)`,
-      "react-runtime-api:React.createContext",
+      `import * as React from "react"\nexport const Ctx = React.createElement("div")`,
+      "react-runtime-api:React.createElement",
     ],
     [
-      `import { createContext } from "react"\nexport const Ctx = createContext(null)`,
-      "react-runtime-api:createContext",
+      `import { forwardRef } from "react"\nexport const C = forwardRef(() => null)`,
+      "react-runtime-api:forwardRef",
     ],
     [
       `import * as React from "react"\nexport function C(p: { e: React.KeyboardEvent }) { return <div /> }`,
@@ -203,9 +217,14 @@ describe("classification of the committed upstream snapshot", () => {
   const NATIVE = new Set([
     "accordion",
     "alert-dialog",
+    "checkbox",
     "collapsible",
     "dialog",
+    "radio-group",
     "sheet",
+    "switch",
+    "toggle",
+    "toggle-group",
   ])
 
   test.each([...config.components])(

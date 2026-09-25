@@ -5,6 +5,7 @@ import type { TransformContext, TransformStep } from "./context"
 import { classAttr } from "./steps/class-attr"
 import { cnMarkers } from "./steps/cn-markers"
 import { componentImports } from "./steps/component-imports"
+import { controlState } from "./steps/control-state"
 import { removeDirectives } from "./steps/directives"
 import { domAttributes } from "./steps/dom-attributes"
 import { dropProps } from "./steps/drop-props"
@@ -15,6 +16,7 @@ import { icons } from "./steps/icons"
 import { imports } from "./steps/imports"
 import { memoHooks } from "./steps/memo-hooks"
 import { primitivesStep } from "./steps/primitives"
+import { reactContext } from "./steps/react-context"
 import { reactTypes } from "./steps/react-types"
 import { styleValues } from "./steps/style-values"
 import { useRenderStep } from "./steps/use-render"
@@ -27,8 +29,10 @@ export const STEPS: readonly TransformStep[] = [
   icons,
   useRenderStep,
   memoHooks,
+  reactContext,
   families,
   primitivesStep,
+  controlState,
   reactTypes,
   styleValues,
   classAttr,

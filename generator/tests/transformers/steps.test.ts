@@ -15,6 +15,7 @@ import { removeDirectives } from "../../src/transformers/steps/directives"
 import { domAttributes } from "../../src/transformers/steps/dom-attributes"
 import { dropProps } from "../../src/transformers/steps/drop-props"
 import { primitivesStep } from "../../src/transformers/steps/primitives"
+import { reactContext } from "../../src/transformers/steps/react-context"
 import { reactTypes } from "../../src/transformers/steps/react-types"
 import { styleValues } from "../../src/transformers/steps/style-values"
 import { useRenderStep } from "../../src/transformers/steps/use-render"
@@ -300,8 +301,10 @@ export { Box, Button }
       "icons",
       "use-render",
       "memo-hooks",
+      "react-context",
       "families",
       "primitives",
+      "control-state",
       "react-types",
       "style-values",
       "class-attr",
@@ -311,5 +314,20 @@ export { Box, Button }
       "imports",
       "guard",
     ])
+  })
+})
+
+describe("react-context", () => {
+  test("React context APIs become hono/jsx imports", () => {
+    const { text, ctx } = apply(
+      `import * as React from "react"
+const Ctx = React.createContext({ size: "sm" })
+function C() { return React.useContext(Ctx).size }`,
+      reactContext
+    )
+    expect(squash(text)).toContain(
+      'const Ctx = createContext({ size: "sm" }) function C() { return useContext(Ctx).size }'
+    )
+    expect([...ctx.honoValues].sort()).toEqual(["createContext", "useContext"])
   })
 })

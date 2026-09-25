@@ -382,6 +382,36 @@
       }
     },
     {
+      "name": "checkbox",
+      "type": "registry:item",
+      "title": "Checkbox",
+      "description": "Hono JSX port of the shadcn/ui base-nova checkbox component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/checkbox.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/checkbox.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "checkbox",
+          "style": "base-nova",
+          "contentSha256": "ea4af0527f8c01513f17f785f93e71b0c8933f44be3fd74697fafc9ee4c9f03f",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "collapsible",
       "type": "registry:item",
       "title": "Collapsible",
@@ -797,6 +827,36 @@
       }
     },
     {
+      "name": "radio-group",
+      "type": "registry:item",
+      "title": "Radio Group",
+      "description": "Hono JSX port of the shadcn/ui base-nova radio-group component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/radio-group.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/radio-group.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "radio-group",
+          "style": "base-nova",
+          "contentSha256": "d0309ee41e23acc7e22fd10e5fc361eeecba09fea337b0798a502fac59592ded",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "separator",
       "type": "registry:item",
       "title": "Separator",
@@ -922,6 +982,36 @@
       }
     },
     {
+      "name": "switch",
+      "type": "registry:item",
+      "title": "Switch",
+      "description": "Hono JSX port of the shadcn/ui base-nova switch component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/switch.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/switch.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "switch",
+          "style": "base-nova",
+          "contentSha256": "525dae65e4ff6aed1394369a551d7b9dabd85f66506e84b3ce40390774eba398",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "table",
       "type": "registry:item",
       "title": "Table",
@@ -978,6 +1068,71 @@
           "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
         },
         "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "toggle",
+      "type": "registry:item",
+      "title": "Toggle",
+      "description": "Hono JSX port of the shadcn/ui base-nova toggle component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/toggle.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/toggle.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "toggle",
+          "style": "base-nova",
+          "contentSha256": "4ca92799f14308746c74b209c149ed934537bc10687719dba21429332b090502",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:item",
+      "title": "Toggle Group",
+      "description": "Hono JSX port of the shadcn/ui base-nova toggle-group component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/toggle-group.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/toggle-group.tsx"
+        },
+        {
+          "path": "components/ui/toggle.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/toggle.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "toggle-group",
+          "style": "base-nova",
+          "contentSha256": "09efc4edf7c75c96046af788d137af36d6bf2d386f9b9dbf5a6349c783ace321",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
         "mode": "generated"
       }
     }
