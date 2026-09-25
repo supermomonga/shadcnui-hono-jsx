@@ -18,5 +18,9 @@ export default defineConfig({
     ...devices["Desktop Chrome"],
     viewport: { width: 1280, height: 900 },
     deviceScaleFactor: 1,
+    // Chromium on Linux draws LCD-antialiased text except in composited
+    // layers; Base UI positions popups with transforms, so text would differ
+    // from the same text in the top layer. Grayscale everywhere.
+    launchOptions: { args: ["--disable-lcd-text"] },
   },
 })
