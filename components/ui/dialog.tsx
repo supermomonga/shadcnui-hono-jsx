@@ -210,8 +210,8 @@ function DialogContent({
         data-slot="dialog-content"
         class={cn(
           "inset-auto h-auto max-h-none w-auto max-w-none overflow-visible",
-          "backdrop:bg-black/10 backdrop:duration-100 supports-backdrop-filter:backdrop:backdrop-blur-xs open:backdrop:animate-in open:backdrop:fade-in-0",
-          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm open:animate-in open:fade-in-0 open:zoom-in-95 not-open:hidden",
+          "backdrop:bg-black/10 backdrop:duration-100 supports-backdrop-filter:backdrop:backdrop-blur-xs open:backdrop:animate-in open:backdrop:fade-in-0 not-open:backdrop:animate-out not-open:backdrop:fade-out-0",
+          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm open:animate-in open:fade-in-0 open:zoom-in-95 not-open:animate-out not-open:fade-out-0 not-open:zoom-out-95 not-open:hidden transition-[display,overlay] transition-discrete",
           className
         )}
         {...props}

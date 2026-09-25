@@ -39,12 +39,16 @@ describe("Sheet (native <dialog>, no JavaScript)", () => {
       "data-side": "right",
     })
     expect(dialog?.attributes).not.toHaveProperty("role")
-    // Entry transitions use @starting-style; exit transitions are dropped.
+    // Entry transitions use @starting-style; exit transitions the closed state.
     expect(dialog?.classes).toEqual(
       expect.arrayContaining([
         "starting:opacity-0",
+        "not-open:opacity-0",
         "data-[side=right]:starting:translate-x-[2.5rem]",
+        "data-[side=right]:not-open:translate-x-[2.5rem]",
         "starting:backdrop:opacity-0",
+        "not-open:backdrop:opacity-0",
+        "transition-discrete",
         "inset-auto",
       ])
     )

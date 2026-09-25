@@ -146,6 +146,23 @@ for (const modal of MODALS) {
       ).toBeFocused()
     })
 
+    test("animates out before it is hidden", async ({ page }) => {
+      const dialog = await open(page, modal)
+      const closing = await dialog.evaluate((element) => {
+        const popup = element as HTMLDialogElement
+        popup.querySelector<HTMLButtonElement>('[command="close"]')?.click()
+        return {
+          open: popup.open,
+          display: getComputedStyle(popup).display,
+          animations: popup.getAnimations().length,
+        }
+      })
+      expect(closing.open).toBe(false)
+      expect(closing.display).not.toBe("none")
+      expect(closing.animations).toBeGreaterThan(0)
+      await expect(dialog).toBeHidden()
+    })
+
     test("closes from each close button", async ({ page }) => {
       for (const [index, name] of modal.closes.entries()) {
         const dialog = await open(page, modal)

@@ -54,6 +54,8 @@ describe("Dialog (native <dialog>, no JavaScript)", () => {
       expect.arrayContaining([
         "not-open:hidden",
         "open:animate-in",
+        "not-open:animate-out",
+        "transition-discrete",
         "backdrop:bg-black/10",
       ])
     )

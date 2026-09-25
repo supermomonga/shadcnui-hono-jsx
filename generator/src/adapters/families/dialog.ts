@@ -19,27 +19,55 @@ import {
 /**
  * Base UI marks open/closed state with `data-open`/`data-closed` and
  * transitions with `data-starting-style`/`data-ending-style`; the native
- * dialog uses the `open` attribute (Tailwind `open:`) and `@starting-style`
- * (`starting:`). Closing is immediate (the element becomes `display: none`),
- * so exit animations are dropped.
+ * dialog uses the `open` attribute (`open:`/`not-open:`) and
+ * `@starting-style` (`starting:`). Closed and ending styles both apply once
+ * `open` is removed, while the popup stays rendered for its exit transition.
  */
-function mapStateVariants(token: string): string[] | null {
+function mapStateVariants(token: string): string[] {
   const parts = splitVariants(token)
   const utility = parts.pop() as string
-  if (parts.includes("data-closed") || parts.includes("data-ending-style")) {
-    return null
-  }
-  const variants = parts.map((v) =>
-    v === "data-open" ? "open" : v === "data-starting-style" ? "starting" : v
-  )
+  const variants = parts.map((v) => STATE_VARIANTS[v] ?? v)
   return [...variants, utility]
 }
 
-/** Popup classes for the `<dialog>`; `not-open:hidden` restores hiding that `grid`/`flex` would override. */
+const STATE_VARIANTS: Readonly<Record<string, string>> = {
+  "data-open": "open",
+  "data-closed": "not-open",
+  "data-starting-style": "starting",
+  "data-ending-style": "not-open",
+}
+
+/**
+ * Keeps a closing popup rendered and in the top layer until its exit
+ * animation ends: `display` and `overlay` transition discretely over the
+ * popup's transition duration. Tailwind's `transition` already lists both;
+ * otherwise they are the only transitioned properties. `overlay` is
+ * Chromium-only, so elsewhere the popup animates out of the top layer.
+ */
+function exitTransition(tokens: readonly string[]): string[] {
+  const transitions = tokens.filter((t) => /^transition(-|$)/.test(t))
+  if (transitions.length === 0) {
+    return ["transition-[display,overlay]", "transition-discrete"]
+  }
+  if (transitions.every((t) => t === "transition")) {
+    return ["transition-discrete"]
+  }
+  throw new Error(
+    `dialog popup: cannot keep display/overlay transitions alongside ${transitions.join(" ")}`
+  )
+}
+
+/**
+ * Popup classes for the `<dialog>`: `not-open:hidden` restores hiding that
+ * `grid`/`flex` would override, and the exit transition delays it.
+ */
 export function mapPopupClasses(classes: string): string {
   const tokens = classes.split(/\s+/).filter(Boolean)
-  const mapped = tokens.map(mapStateVariants).filter((t) => t !== null)
-  return [...mapped.map((t) => t.join(":")), "not-open:hidden"].join(" ")
+  return [
+    ...tokens.map((t) => mapStateVariants(t).join(":")),
+    "not-open:hidden",
+    ...exitTransition(tokens),
+  ].join(" ")
 }
 
 const OVERLAY_POSITIONING = /^(fixed|absolute|inset-.*|isolate|z-.*)$/
@@ -50,7 +78,6 @@ export function mapBackdropClasses(classes: string): string {
   const mapped: string[] = []
   for (const token of tokens) {
     const parts = mapStateVariants(token)
-    if (!parts) continue
     const utility = parts.pop() as string
     if (parts.length === 0 && OVERLAY_POSITIONING.test(utility)) continue
     mapped.push([...parts, "backdrop", utility].join(":"))
@@ -196,7 +223,7 @@ function nativeDialogFamily(o: NativeDialogOptions): FamilyRule {
     notes: [
       "Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2).",
       'Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`.',
-      `The overlay is the dialog's \`::backdrop\` (the overlay component renders nothing); closing has no exit animation; ${o.dismissNote}`,
+      `The overlay is the dialog's \`::backdrop\` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); ${o.dismissNote}`,
       "Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup.",
     ],
     transform(ctx, local) {

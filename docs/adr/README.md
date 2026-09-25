@@ -18,3 +18,4 @@
 * [18. Support Base UI render props on the server and omit client-only button semantics](0018-support-base-ui-render-props-on-the-server-and-omit-client-only-button-semantics.md)
 * [19. Translate compound Base UI primitives as families rewritten in place](0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)
 * [20. Implement Accordion and Collapsible on native details and summary](0020-implement-accordion-and-collapsible-on-native-details-and-summary.md)
+* [21. Animate closing native dialogs with discrete display and overlay transitions](0021-animate-closing-native-dialogs-with-discrete-display-and-overlay-transitions.md)
