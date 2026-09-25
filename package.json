@@ -19,8 +19,11 @@
     "test": "bun test ./generator ./tests/render ./tests/deps",
     "test:registry": "bun test ./tests/registry",
     "registry:validate": "shadcn registry validate ./registry.json",
+    "examples:build": "bun run --filter './examples/*' build",
+    "examples:typecheck": "bun run --filter './examples/*' typecheck",
+    "examples:test": "bun run --filter example-hono test && bun run --filter example-honox smoke",
     "verify": "bun run lint && bun run typecheck && bun run test && bun run generate --check && bun run registry:validate",
-    "verify:full": "bun run verify && bun run test:registry"
+    "verify:full": "bun run verify && bun run examples:build && bun run examples:typecheck && bun run examples:test && bun run test:registry"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
