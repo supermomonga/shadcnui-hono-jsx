@@ -1,0 +1,76 @@
+name: Upstream check
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: upstream-check
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - run: bun install --frozen-lockfile
+
+      # The vendored tailwind.css comes from the pinned shadcn package, so the
+      # package and the snapshot are updated together here (Dependabot ignores it).
+      - name: Update the pinned shadcn package
+        run: bun add --dev --exact shadcn@latest
+
+      - name: Sync upstream snapshot
+        run: bun run upstream:sync --report "$RUNNER_TEMP/report.md"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Regenerate
+        id: generate
+        continue-on-error: true
+        run: bun run generate
+
+      - name: Verify
+        id: verify
+        continue-on-error: true
+        run: bun run verify
+
+      - name: Summarize
+        env:
+          GENERATE: ${{ steps.generate.outcome }}
+          VERIFY: ${{ steps.verify.outcome }}
+        run: |
+          {
+            echo
+            echo "### Checks"
+            echo
+            echo "- \`bun run generate\`: $GENERATE"
+            echo "- \`bun run verify\`: $VERIFY"
+            if [ "$GENERATE" != "success" ] || [ "$VERIFY" != "success" ]; then
+              echo
+              echo "Generation or verification failed. Add or update a transformer, adapter, or config rule before merging; see the workflow logs."
+            fi
+          } >> "$RUNNER_TEMP/report.md"
+          cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"
+
+      # Opens or updates a PR; never merges. PRs opened with GITHUB_TOKEN do not
+      # trigger other workflows, so set UPSTREAM_BOT_TOKEN (a GitHub App or
+      # fine-grained token) to run CI on the PR automatically.
+      - uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.UPSTREAM_BOT_TOKEN || github.token }}
+          branch: upstream/base-nova
+          delete-branch: true
+          commit-message: "chore(upstream): sync shadcn/ui base-nova"
+          title: "chore(upstream): sync shadcn/ui base-nova"
+          body-path: ${{ runner.temp }}/report.md
+          labels: ${{ (steps.generate.outcome == 'success' && steps.verify.outcome == 'success') && 'upstream' || 'upstream,needs-adapter' }}
+          draft: ${{ steps.generate.outcome != 'success' || steps.verify.outcome != 'success' }}
