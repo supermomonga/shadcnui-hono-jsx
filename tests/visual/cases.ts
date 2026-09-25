@@ -465,4 +465,54 @@ export const VISUAL_CASES: VisualCase[] = [
       ],
     ],
   },
+  {
+    id: "breadcrumb/trail",
+    component: "breadcrumb",
+    node: [
+      "Breadcrumb",
+      {},
+      [
+        "BreadcrumbList",
+        {},
+        ["BreadcrumbItem", {}, ["BreadcrumbLink", { href: "#" }, "Home"]],
+        ["BreadcrumbSeparator", {}],
+        ["BreadcrumbItem", {}, ["BreadcrumbEllipsis", {}]],
+        ["BreadcrumbSeparator", {}],
+        ["BreadcrumbItem", {}, ["BreadcrumbLink", { href: "#" }, "Components"]],
+        ["BreadcrumbSeparator", {}],
+        ["BreadcrumbItem", {}, ["BreadcrumbPage", {}, "Breadcrumb"]],
+      ],
+    ],
+  },
+  {
+    id: "native-select/states",
+    component: "native-select",
+    node: stack(
+      [
+        "NativeSelect",
+        {},
+        ["NativeSelectOption", { value: "" }, "Select a fruit"],
+        ["NativeSelectOption", { value: "apple" }, "Apple"],
+        [
+          "NativeSelectOptGroup",
+          { label: "Citrus" },
+          ["NativeSelectOption", { value: "orange" }, "Orange"],
+        ],
+      ],
+      [
+        "NativeSelect",
+        { size: "sm", disabled: true },
+        ["NativeSelectOption", {}, "Disabled"],
+      ]
+    ),
+  },
+  {
+    id: "spinner/sizes",
+    component: "spinner",
+    node: row(
+      ["Spinner", {}],
+      ["Spinner", { class: "size-6" }],
+      ["Spinner", { class: "size-8 text-muted-foreground" }]
+    ),
+  },
 ]

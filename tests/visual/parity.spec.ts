@@ -41,6 +41,21 @@ for (const id of ids) {
       hono.locator(selector).screenshot({ animations: "disabled" }),
       react.locator(selector).screenshot({ animations: "disabled" }),
     ])
+    // Icons must match lucide-react's SVG exactly (attributes and shapes).
+    const svgs = (page: Page) =>
+      page.locator(`${selector} svg`).evaluateAll((elements) =>
+        elements.map((svg) => ({
+          attributes: Object.fromEntries(
+            [...svg.attributes].map((a) => [a.name, a.value])
+          ),
+          content: svg.innerHTML,
+        }))
+      )
+    expect(
+      await svgs(hono),
+      "inline SVG icons must match lucide-react"
+    ).toEqual(await svgs(react))
+
     const actual = PNG.sync.read(a)
     const expected = PNG.sync.read(b)
     await testInfo.attach("hono.png", { body: a, contentType: "image/png" })

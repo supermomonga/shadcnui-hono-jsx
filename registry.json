@@ -162,6 +162,36 @@
       }
     },
     {
+      "name": "breadcrumb",
+      "type": "registry:item",
+      "title": "Breadcrumb",
+      "description": "Hono JSX port of the shadcn/ui base-nova breadcrumb component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/breadcrumb.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/breadcrumb.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "breadcrumb",
+          "style": "base-nova",
+          "contentSha256": "7281e8a42b945b15a0a0c31c7f1eeeb02fd1ec88f2a7c94d9c69c40878305902",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "bubble",
       "type": "registry:item",
       "title": "Bubble",
@@ -502,6 +532,36 @@
       }
     },
     {
+      "name": "native-select",
+      "type": "registry:item",
+      "title": "Native Select",
+      "description": "Hono JSX port of the shadcn/ui base-nova native-select component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/native-select.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/native-select.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "native-select",
+          "style": "base-nova",
+          "contentSha256": "63e23a8cd6a79ac00f942c6aa127436de544b33a85439bf56f8c85fd897576ce",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "separator",
       "type": "registry:item",
       "title": "Separator",
@@ -555,6 +615,36 @@
           "name": "skeleton",
           "style": "base-nova",
           "contentSha256": "97a90c6788815d37eda6dad532aa207e5a878d22b4d5f9e91c16bb2f4bc2f341",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "spinner",
+      "type": "registry:item",
+      "title": "Spinner",
+      "description": "Hono JSX port of the shadcn/ui base-nova spinner component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/spinner.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/spinner.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "spinner",
+          "style": "base-nova",
+          "contentSha256": "80661ef8f9b3688b09b45cafd17d4c0b9a9b2c2f79576654885a4b5f5f1f3ec1",
           "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
         },
         "classification": "direct",

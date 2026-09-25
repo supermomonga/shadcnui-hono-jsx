@@ -34,7 +34,12 @@ function applyInstallMarkers(source: string): string {
     .split("\n")
     .map((line) =>
       line.startsWith("import ")
-        ? line.replace(/"@\/registry\/[^/]+\/ui\/([a-z0-9-]+)"/, '"./$1"')
+        ? line
+            .replace(/"@\/registry\/[^/]+\/ui\/([a-z0-9-]+)"/, '"./$1"')
+            .replace(
+              /"@\/app\/\(create\)\/components\/icon-placeholder"/,
+              '"./icon-placeholder"'
+            )
         : line.replace(/\bcn-[a-z-]+\b/g, (m) =>
             m === "cn-font-heading" ? "font-heading" : ""
           )
@@ -42,10 +47,31 @@ function applyInstallMarkers(source: string): string {
     .join("\n")
 }
 
+/**
+ * What the shadcn CLI produces for `IconPlaceholder` with the default icon
+ * library: the named lucide-react icon with the remaining props.
+ */
+const ICON_PLACEHOLDER = `/** @jsxImportSource react */
+import * as icons from "lucide-react"
+
+const LIBRARIES = ["lucide", "tabler", "hugeicons", "phosphor", "remixicon"]
+
+export function IconPlaceholder(props: Record<string, unknown>) {
+  const Icon = (icons as Record<string, unknown>)[props.lucide as string] as (
+    p: Record<string, unknown>
+  ) => unknown
+  const rest = Object.fromEntries(
+    Object.entries(props).filter(([key]) => !LIBRARIES.includes(key))
+  )
+  return <Icon {...rest} />
+}
+`
+
 function writeUpstreamSources(): void {
   const store = new UpstreamStore(ROOT, config.style)
   rmSync(UPSTREAM, { recursive: true, force: true })
   mkdirSync(UPSTREAM, { recursive: true })
+  writeFileSync(path.join(UPSTREAM, "icon-placeholder.tsx"), ICON_PLACEHOLDER)
   for (const name of config.components) {
     const [file] = store.readItem(name).files ?? []
     if (!file) throw new Error(`${name} has no upstream file`)

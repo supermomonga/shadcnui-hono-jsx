@@ -18,8 +18,7 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/accordion#Accordion",
-        "icon-placeholder"
+        "base-ui-primitive-unmapped:@base-ui/react/accordion#Accordion"
       ]
     },
     {
@@ -58,7 +57,8 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/alert-dialog#AlertDialog"
+        "base-ui-primitive-unmapped:@base-ui/react/alert-dialog#AlertDialog",
+        "render-prop:AlertDialogPrimitive.Close"
       ]
     },
     {
@@ -147,20 +147,31 @@
     },
     {
       "name": "breadcrumb",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/breadcrumb.json",
         "contentSha256": "7281e8a42b945b15a0a0c31c7f1eeeb02fd1ec88f2a7c94d9c69c40878305902",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["icon-placeholder"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "`render` (element replacement) is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-use-render",
+        "classname-to-class",
+        "cn-marker:cn-rtl-flip",
+        "icon-placeholder",
+        "lucide-icon:ChevronRightIcon",
+        "lucide-icon:MoreHorizontalIcon",
+        "react-type-rewrite:React.ComponentProps"
+      ]
     },
     {
       "name": "bubble",
@@ -252,7 +263,6 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "icon-placeholder",
         "react-hook:useEffect",
         "react-hook:useRef",
         "react-runtime-api:React.useEffect",
@@ -299,7 +309,6 @@
       "reasons": [
         "event-handler:onClick",
         "event-handler:onKeyDownCapture",
-        "icon-placeholder",
         "react-hook:useCallback",
         "react-hook:useCarousel",
         "react-hook:useContext",
@@ -358,10 +367,7 @@
       "accessibility": "not-applicable",
       "clientJs": "not-applicable",
       "knownDifferences": [],
-      "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/checkbox#Checkbox",
-        "icon-placeholder"
-      ]
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/checkbox#Checkbox"]
     },
     {
       "name": "collapsible",
@@ -399,12 +405,16 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react#Combobox",
-        "icon-placeholder",
         "react-hook:useRef",
         "react-runtime-api:React.useRef",
         "react-type-unmapped:React.ComponentPropsWithRef",
         "registry-dependency:input-group",
-        "registry-import:@/registry/base-nova/ui/input-group"
+        "registry-import:@/registry/base-nova/ui/input-group",
+        "render-prop:ComboboxPrimitive.ChipRemove",
+        "render-prop:ComboboxPrimitive.Clear",
+        "render-prop:ComboboxPrimitive.Input",
+        "render-prop:ComboboxPrimitive.ItemIndicator",
+        "render-prop:InputGroupButton"
       ]
     },
     {
@@ -423,7 +433,6 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "icon-placeholder",
         "registry-dependency:dialog",
         "registry-dependency:input-group",
         "registry-import:@/registry/base-nova/ui/dialog",
@@ -447,8 +456,7 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/context-menu#ContextMenu",
-        "icon-placeholder"
+        "base-ui-primitive-unmapped:@base-ui/react/context-menu#ContextMenu"
       ]
     },
     {
@@ -468,7 +476,7 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog",
-        "icon-placeholder"
+        "render-prop:DialogPrimitive.Close"
       ]
     },
     {
@@ -531,10 +539,7 @@
       "accessibility": "not-applicable",
       "clientJs": "not-applicable",
       "knownDifferences": [],
-      "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/menu#Menu",
-        "icon-placeholder"
-      ]
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/menu#Menu"]
     },
     {
       "name": "empty",
@@ -667,7 +672,6 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "icon-placeholder",
         "react-hook:useContext",
         "react-runtime-api:React.useContext",
         "unknown-import:input-otp"
@@ -782,7 +786,6 @@
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/menu#Menu",
         "base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar",
-        "icon-placeholder",
         "registry-dependency:dropdown-menu",
         "registry-import:@/registry/base-nova/ui/dropdown-menu"
       ]
@@ -823,26 +826,31 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "icon-placeholder",
+        "render-prop:MessageScrollerPrimitive.Button",
         "unknown-import:@shadcn/react/message-scroller"
       ]
     },
     {
       "name": "native-select",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/native-select.json",
         "contentSha256": "63e23a8cd6a79ac00f942c6aa127436de544b33a85439bf56f8c85fd897576ce",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["icon-placeholder"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "icon-placeholder",
+        "lucide-icon:ChevronDownIcon",
+        "react-type-rewrite:React.ComponentProps"
+      ]
     },
     {
       "name": "navigation-menu",
@@ -861,7 +869,6 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu",
-        "icon-placeholder",
         "react-type-unmapped:React.ComponentPropsWithRef"
       ]
     },
@@ -880,7 +887,7 @@
       "accessibility": "not-applicable",
       "clientJs": "not-applicable",
       "knownDifferences": [],
-      "reasons": ["icon-placeholder"]
+      "reasons": ["render-prop:Button"]
     },
     {
       "name": "popover",
@@ -931,10 +938,7 @@
       "accessibility": "not-applicable",
       "clientJs": "not-applicable",
       "knownDifferences": [],
-      "reasons": [
-        "icon-placeholder",
-        "unknown-import:@shadcn/react/questionnaire"
-      ]
+      "reasons": ["unknown-import:@shadcn/react/questionnaire"]
     },
     {
       "name": "radio-group",
@@ -1009,7 +1013,8 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/select#Select",
-        "icon-placeholder"
+        "render-prop:SelectPrimitive.Icon",
+        "render-prop:SelectPrimitive.ItemIndicator"
       ]
     },
     {
@@ -1050,7 +1055,7 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog",
-        "icon-placeholder"
+        "render-prop:SheetPrimitive.Close"
       ]
     },
     {
@@ -1071,7 +1076,6 @@
       "reasons": [
         "event-handler:onClick",
         "event-handler:onOpenChange",
-        "icon-placeholder",
         "react-hook:useCallback",
         "react-hook:useContext",
         "react-hook:useEffect",
@@ -1091,6 +1095,7 @@
         "registry-import:@/registry/base-nova/hooks/use-mobile",
         "registry-import:@/registry/base-nova/ui/sheet",
         "registry-import:@/registry/base-nova/ui/tooltip",
+        "render-prop:TooltipTrigger",
         "use-render-noncanonical"
       ]
     },
@@ -1147,7 +1152,6 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "icon-placeholder",
         "react-hook:useTheme",
         "unknown-import:next-themes",
         "unknown-import:sonner"
@@ -1155,20 +1159,25 @@
     },
     {
       "name": "spinner",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/spinner.json",
         "contentSha256": "80661ef8f9b3688b09b45cafd17d4c0b9a9b2c2f79576654885a4b5f5f1f3ec1",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["icon-placeholder"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "icon-placeholder",
+        "lucide-icon:Loader2Icon",
+        "react-type-rewrite:React.ComponentProps"
+      ]
     },
     {
       "name": "switch",
@@ -1262,7 +1271,8 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/toast#Toast",
-        "icon-placeholder"
+        "render-prop:ToastPrimitive.Action",
+        "render-prop:ToastPrimitive.Close"
       ]
     },
     {
