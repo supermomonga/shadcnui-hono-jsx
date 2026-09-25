@@ -10,6 +10,11 @@ updates:
     ignore:
       # Updated together with the vendored tailwind.css by the upstream-check workflow.
       - dependency-name: shadcn
+      # TypeScript 7 no longer ships the JS compiler API that honox's
+      # @typescript-eslint/typescript-estree needs (peer typescript <6.1.0).
+      # See docs/adr/0012-keep-typescript-6-until-honox-supports-typescript-7.md.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:

@@ -3,6 +3,9 @@ number: 2
 title: Use Bun, TypeScript 6.0 and a hoisted workspace as the toolchain
 status: accepted
 date: 2026-09-25
+links:
+- target: 12
+  kind: amendedby
 ---
 
 # Use Bun, TypeScript 6.0 and a hoisted workspace as the toolchain
