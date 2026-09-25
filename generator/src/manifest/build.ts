@@ -1,4 +1,4 @@
-import { VISUAL_CASES } from "../../../tests/visual/cases"
+import { BROWSER_SPECS, VISUAL_CASES } from "../../../tests/visual/cases"
 import { COMPONENT_ADAPTERS } from "../adapters/components"
 import { BASE_UI_PRIMITIVES } from "../adapters/primitives/base-ui"
 import { type ClassificationKind, classify } from "../analyzer/classify"
@@ -112,17 +112,19 @@ export function buildManifest(deps: {
       name,
       status: "experimental",
       conversion:
-        classification.kind === "custom-adapter"
+        COMPONENT_ADAPTERS[name] !== undefined
           ? "generated-with-adapter"
           : "generated",
       classification: classification.kind,
       upstream,
       // Checked against upstream React by tests/visual (CI `visual` job).
-      visualParity: VISUAL_CASES.some((c) => c.component === name)
-        ? "verified"
-        : "unverified",
+      visualParity:
+        VISUAL_CASES.some((c) => c.component === name) || name in BROWSER_SPECS
+          ? "verified"
+          : "unverified",
       apiParity: "partial",
-      accessibility: "static-markup",
+      // Interactive components are checked for keyboard, focus and ARIA in a browser.
+      accessibility: name in BROWSER_SPECS ? "verified" : "static-markup",
       clientJs: "none",
       knownDifferences: knownDifferences(
         reasons,

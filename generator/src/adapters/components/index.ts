@@ -4,8 +4,14 @@
  * and document why it exists.
  */
 import type { TransformStep } from "../../transformers/context"
+import { dialogAdapter } from "./dialog"
 
 export interface ComponentAdapter {
+  /**
+   * `native`: maps the component onto a browser primitive with behavior
+   * (classified `native-adapter`); `custom`: any other hand-written rule.
+   */
+  kind: "native" | "custom"
   /** Blocking reason keys (`code` or `code:detail`) this adapter resolves. */
   resolves: readonly string[]
   /** User-visible differences introduced by the adapter. */
@@ -14,4 +20,6 @@ export interface ComponentAdapter {
   steps?: readonly { after: string; step: TransformStep }[]
 }
 
-export const COMPONENT_ADAPTERS: Readonly<Record<string, ComponentAdapter>> = {}
+export const COMPONENT_ADAPTERS: Readonly<Record<string, ComponentAdapter>> = {
+  dialog: dialogAdapter,
+}

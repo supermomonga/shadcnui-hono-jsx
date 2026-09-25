@@ -174,8 +174,10 @@ export function classify(
     const resolved = (r: Reason) =>
       adapter?.resolves.includes(reasonKey(r)) ||
       adapter?.resolves.includes(r.code)
-    const kind =
-      adapter && blocking.every(resolved) ? "custom-adapter" : "unsupported"
+    if (!adapter || !blocking.every(resolved)) {
+      return { kind: "unsupported", reasons: sorted }
+    }
+    const kind = adapter.kind === "native" ? "native-adapter" : "custom-adapter"
     return { kind, reasons: sorted }
   }
   if (primitives.some((rule) => rule.kind === "native")) {

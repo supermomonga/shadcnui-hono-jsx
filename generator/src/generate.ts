@@ -52,7 +52,10 @@ export function generateComponent(
     throw new GenerationError(`${name} is missing from upstream/lock.json`)
 
   const mode =
-    classification.kind === "custom-adapter" ? "adapter" : "generated"
+    classification.kind === "custom-adapter" ||
+    (classification.kind === "native-adapter" && adapter !== undefined)
+      ? "adapter"
+      : "generated"
   const output = transformSource({
     name,
     source: file.content,

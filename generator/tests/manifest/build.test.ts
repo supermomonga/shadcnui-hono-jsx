@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import { config } from "../../../generator.config"
-import { VISUAL_CASES } from "../../../tests/visual/cases"
+import { BROWSER_SPECS, VISUAL_CASES } from "../../../tests/visual/cases"
 import {
   buildManifest,
   renderCompatibilityTable,
@@ -25,7 +25,7 @@ describe("buildManifest", () => {
     (name) => {
       expect(byName.get(name)).toMatchObject({
         status: "experimental",
-        conversion: "generated",
+        conversion: name === "dialog" ? "generated-with-adapter" : "generated",
         clientJs: "none",
         visualParity: "verified",
         upstream: { contentSha256: lock.items[name]?.contentSha256 },
@@ -36,17 +36,20 @@ describe("buildManifest", () => {
     }
   )
 
-  test("every generated component has a visual parity case", () => {
-    const covered = new Set(VISUAL_CASES.map((c) => c.component))
+  test("every generated component has a visual parity case or browser spec", () => {
+    const covered = new Set([
+      ...VISUAL_CASES.map((c) => c.component),
+      ...Object.keys(BROWSER_SPECS),
+    ])
     expect(config.components.filter((name) => !covered.has(name))).toEqual([])
   })
 
   test("unsupported items list their blocking reasons", () => {
-    const dialog = byName.get("dialog")
-    expect(dialog?.status).toBe("unsupported")
-    expect(dialog?.conversion).toBeNull()
-    expect(dialog?.reasons).toContain(
-      "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog"
+    const select = byName.get("select")
+    expect(select?.status).toBe("unsupported")
+    expect(select?.conversion).toBeNull()
+    expect(select?.reasons).toContain(
+      "base-ui-primitive-unmapped:@base-ui/react/select#Select"
     )
   })
 
@@ -76,6 +79,6 @@ describe("README region", () => {
     expect(table.indexOf("| button | experimental | generated |")).toBeLessThan(
       table.indexOf("<details>")
     )
-    expect(table).toContain("| dialog | unsupported |")
+    expect(table).toContain("| select | unsupported |")
   })
 })

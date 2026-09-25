@@ -168,10 +168,24 @@ export function C() { return <Button render={<a href="/" />} /> }`
 
   test("an adapter that resolves every blocking reason yields custom-adapter", () => {
     const source = `export function C() { return <button onClick={() => {}} /> }`
-    const adapters = { fixture: { resolves: ["event-handler"], notes: [] } }
+    const adapters = {
+      fixture: {
+        kind: "custom" as const,
+        resolves: ["event-handler"],
+        notes: [],
+      },
+    }
     expect(run(source, {}, adapters).kind).toBe("custom-adapter")
-    const partial = { fixture: { resolves: ["icon-unresolved"], notes: [] } }
+    const partial = {
+      fixture: {
+        kind: "custom" as const,
+        resolves: ["icon-unresolved"],
+        notes: [],
+      },
+    }
     expect(run(source, {}, partial).kind).toBe("unsupported")
+    const native = { fixture: { ...adapters.fixture, kind: "native" as const } }
+    expect(run(source, {}, native).kind).toBe("native-adapter")
   })
 })
 
@@ -183,13 +197,15 @@ describe("classification of the committed upstream snapshot", () => {
     }).kind
 
   test.each([...config.components])(
-    "%s (generation target) is direct",
+    "%s (generation target) is direct or natively adapted",
     (name) => {
-      expect(kindOf(name)).toBe("direct")
+      expect(kindOf(name)).toBe(
+        COMPONENT_ADAPTERS[name] ? "native-adapter" : "direct"
+      )
     }
   )
 
-  test.each(["dialog", "select", "dropdown-menu", "combobox", "form"])(
+  test.each(["select", "dropdown-menu", "combobox", "form"])(
     "%s is unsupported",
     (name) => {
       expect(kindOf(name)).toBe("unsupported")

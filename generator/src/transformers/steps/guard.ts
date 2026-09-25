@@ -49,7 +49,9 @@ export const guard: TransformStep = {
       ...ctx.sf.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement),
     ]) {
       const tag = element.getTagNameNode().getText()
-      if (!/^[a-z]/.test(tag) && !declared.has(tag))
+      // `Context.Provider` resolves through its object (`Context`).
+      const root = tag.split(".")[0] ?? tag
+      if (!/^[a-z]/.test(tag) && !declared.has(root))
         fail(`unresolved JSX element <${tag}>`)
     }
     const exported = [...ctx.sf.getExportedDeclarations().keys()].sort()
