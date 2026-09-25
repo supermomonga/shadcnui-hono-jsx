@@ -3,11 +3,15 @@
  * that the generic transformers cannot translate. Keep every special case here
  * and document why it exists.
  */
+import type { TransformStep } from "../../transformers/context"
+
 export interface ComponentAdapter {
   /** Blocking reason keys (`code` or `code:detail`) this adapter resolves. */
   resolves: readonly string[]
   /** User-visible differences introduced by the adapter. */
   notes: readonly string[]
+  /** Extra transform steps, each inserted after the named pipeline step. */
+  steps?: readonly { after: string; step: TransformStep }[]
 }
 
 export const COMPONENT_ADAPTERS: Readonly<Record<string, ComponentAdapter>> = {}

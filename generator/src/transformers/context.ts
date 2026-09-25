@@ -1,0 +1,38 @@
+import type { SourceFile } from "ts-morph"
+import type { ComponentAdapter } from "../adapters/components"
+import type { PrimitiveRule } from "../adapters/primitives/base-ui"
+import type { FileFacts } from "../analyzer/facts"
+
+export type HonoTypeImport = "JSX" | "Child" | "CSSProperties"
+
+export interface TransformContext {
+  sf: SourceFile
+  /** Upstream item name, for error messages. */
+  name: string
+  facts: FileFacts
+  /** Base UI primitives imported by this file, keyed by local identifier. */
+  primitives: Map<string, PrimitiveRule>
+  adapter: ComponentAdapter | undefined
+  /** Types that must be imported from `hono/jsx`. */
+  honoTypes: Set<HonoTypeImport>
+  /** Whether the file-local `ComponentProps` helper type is needed. */
+  needsComponentProps: boolean
+  /** Human-readable record of applied rewrites (for debugging and tests). */
+  log: string[]
+}
+
+export class TransformError extends Error {
+  constructor(
+    ctx: Pick<TransformContext, "name">,
+    step: string,
+    message: string
+  ) {
+    super(`[${ctx.name}] ${step}: ${message}`)
+    this.name = "TransformError"
+  }
+}
+
+export interface TransformStep {
+  name: string
+  run(ctx: TransformContext): void
+}

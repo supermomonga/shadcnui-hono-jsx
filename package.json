@@ -12,11 +12,12 @@
   "scripts": {
     "upstream:sync": "bun generator/src/cli/sync.ts",
     "analyze": "bun generator/src/cli/analyze.ts",
+    "generate": "bun generator/src/cli/generate.ts",
     "format": "biome format --write .",
     "lint": "biome ci .",
-    "typecheck": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tests/types/tsconfig.json && tsc -p tests/types/tsconfig.strict.json",
     "test": "bun test",
-    "verify": "bun run lint && bun run typecheck && bun run test"
+    "verify": "bun run lint && bun run typecheck && bun run test && bun run generate --check"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
