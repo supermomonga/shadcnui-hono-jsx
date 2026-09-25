@@ -1,0 +1,6 @@
+* text=auto eol=lf
+upstream/** linguist-generated=true
+components/ui/** linguist-generated=true
+styles/shadcn/** linguist-generated=true
+registry.json linguist-generated=true
+compatibility.json linguist-generated=true
