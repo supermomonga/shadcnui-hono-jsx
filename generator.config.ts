@@ -44,6 +44,7 @@ export const config: GeneratorConfig = {
     "separator",
     "sheet",
     "skeleton",
+    "slider",
     "spinner",
     "switch",
     "table",

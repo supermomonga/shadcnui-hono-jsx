@@ -1260,20 +1260,27 @@
     },
     {
       "name": "slider",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/slider.json",
         "contentSha256": "1ecee0f7d7a1ccffdf65b527dce1ebd9ffa3edcb3db7056dedfaf19347f38f52",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/slider#Slider"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "Each thumb holds a native `<input type=\"range\">` (focusable, keyboard-operable and submitted with `name`). Pointer dragging, keeping range thumbs in order and moving the thumbs as values change need the client script `/shadcn/slider.js` (`<script type=\"module\" src=\"/shadcn/slider.js\">`); without it the initial values are shown and submitted.",
+        "Controlled state (`onValueChange`), `format`, `locale` and `largeStep` are not supported (Page Up and Page Down use the browser's step).",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/slider#Slider",
+        "classname-to-class"
+      ]
     },
     {
       "name": "sonner",

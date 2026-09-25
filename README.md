@@ -220,6 +220,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | separator | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | sheet | experimental | generated | verified | none | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | skeleton | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| slider | experimental | generated | verified | `/shadcn/slider.js` | Each thumb holds a native `<input type="range">` (focusable, keyboard-operable and submitted with `name`). Pointer dragging, keeping range thumbs in order and moving the thumbs as values change need the client script `/shadcn/slider.js` (`<script type="module" src="/shadcn/slider.js">`); without it the initial values are shown and submitted. Controlled state (`onValueChange`), `format`, `locale` and `largeStep` are not supported (Page Up and Page Down use the browser's step). Accepts `class` instead of `className`. |
 | spinner | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | switch | experimental | generated | verified | none | Built on a native `<input type="checkbox" role="switch">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual. `checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly` and `render` are not supported. Accepts `class` instead of `className`. |
 | table | experimental | generated | verified | none | Accepts `class` instead of `className`. |
@@ -230,7 +231,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | tooltip | experimental | generated | verified | `/shadcn/hover.js` | Opening on hover or keyboard focus needs the client script `/shadcn/hover.js` (`<script type="module" src="/shadcn/hover.js">`); without it the tooltip does not open, but the trigger's `aria-describedby` still exposes its text. The popup is a native popover placed with CSS anchor positioning. Unlike Base UI, the popup has `role="tooltip"` and describes the trigger. Controlled state (`open`, `onOpenChange`) is not supported. Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (20 upstream components)</summary>
+<summary>Not yet available (19 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -251,7 +252,6 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | resizable | unsupported | `unknown-import:react-resizable-panels` |
 | scroll-area | unsupported | `base-ui-primitive-unmapped:@base-ui/react/scroll-area#ScrollArea` |
 | sidebar | unsupported | `event-handler:onClick`, `event-handler:onOpenChange`, `react-hook:useEffect`, `react-hook:useIsMobile`, `react-hook:useSidebar`, `react-hook:useState`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `registry-dependency:use-mobile`, `registry-import:@/registry/base-nova/hooks/use-mobile`, `use-render-noncanonical` |
-| slider | unsupported | `base-ui-primitive-unmapped:@base-ui/react/slider#Slider` |
 | sonner | unsupported | `react-hook:useTheme`, `unknown-import:next-themes`, `unknown-import:sonner` |
 | toast | unsupported | `base-ui-primitive-unmapped:@base-ui/react/toast#Toast`, `render-prop:ToastPrimitive.Action`, `render-prop:ToastPrimitive.Close` |
 

@@ -108,6 +108,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./.upstream/sheet"
+import { Slider } from "./.upstream/slider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./.upstream/tabs"
 import {
   Tooltip,
@@ -489,6 +490,43 @@ function HoverDemo() {
   )
 }
 
+function SliderDemo() {
+  return (
+    <main className="flex flex-col gap-10 p-8 pl-24">
+      <Slider
+        defaultValue={[33]}
+        max={100}
+        step={1}
+        className="w-80"
+        aria-label="Volume"
+      />
+      <Slider
+        defaultValue={[25, 75]}
+        max={100}
+        step={5}
+        className="w-80"
+        aria-label="Price"
+      />
+      <Slider
+        defaultValue={[40]}
+        disabled
+        className="w-80"
+        aria-label="Disabled"
+      />
+      <div className="flex h-40 gap-8">
+        <Slider
+          defaultValue={[60]}
+          orientation="vertical"
+          aria-label="Vertical"
+        />
+      </div>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children: ReactNode }) {
   return (
     <main className="flex items-center gap-4 p-8">
@@ -520,6 +558,7 @@ const DEMOS: Record<string, () => ReactNode> = {
     </main>
   ),
   select: () => <SelectDemo />,
+  slider: () => <SliderDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,

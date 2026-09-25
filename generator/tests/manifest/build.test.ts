@@ -26,6 +26,7 @@ describe("buildManifest", () => {
     "dropdown-menu",
     "hover-card",
     "menubar",
+    "slider",
     "tabs",
     "tooltip",
   ])

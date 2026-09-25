@@ -22,6 +22,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   popover: "popover.spec.ts",
   "radio-group": "controls.spec.ts",
   select: "select.spec.ts",
+  slider: "slider.spec.ts",
   tabs: "tabs.spec.ts",
   tooltip: "hover.spec.ts",
   switch: "controls.spec.ts",

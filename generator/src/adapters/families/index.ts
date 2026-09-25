@@ -13,6 +13,7 @@ import { contextMenuFamily, menubarFamily, menuFamily } from "./menu"
 import { popoverFamily } from "./popover"
 import { progressFamily } from "./progress"
 import { selectFamily } from "./select"
+import { sliderFamily } from "./slider"
 import { tabsFamily } from "./tabs"
 import type { FamilyRule } from "./types"
 
@@ -34,6 +35,7 @@ export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   radioFamily,
   radioGroupFamily,
   selectFamily,
+  sliderFamily,
   switchFamily,
   tabsFamily,
   toggleFamily,

@@ -106,6 +106,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../../components/ui/sheet"
+import { Slider } from "../../components/ui/slider"
 import {
   Tabs,
   TabsContent,
@@ -477,6 +478,38 @@ function HoverDemo() {
   )
 }
 
+function SliderDemo() {
+  return (
+    <main class="flex flex-col gap-10 p-8 pl-24">
+      <Slider
+        defaultValue={[33]}
+        max={100}
+        step={1}
+        class="w-80"
+        aria-label="Volume"
+      />
+      <Slider
+        defaultValue={[25, 75]}
+        max={100}
+        step={5}
+        class="w-80"
+        aria-label="Price"
+      />
+      <Slider defaultValue={[40]} disabled class="w-80" aria-label="Disabled" />
+      <div class="flex h-40 gap-8">
+        <Slider
+          defaultValue={[60]}
+          orientation="vertical"
+          aria-label="Vertical"
+        />
+      </div>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children?: unknown }) {
   return (
     <main class="flex items-center gap-4 p-8">
@@ -508,6 +541,7 @@ export const DEMOS = {
     </main>
   ),
   select: () => <SelectDemo />,
+  slider: () => <SliderDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,
@@ -527,5 +561,6 @@ export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
   "dropdown-menu": ["menu"],
   hover: ["hover"],
   menubar: ["menu"],
+  slider: ["slider"],
   tabs: ["tabs"],
 }
