@@ -77,7 +77,7 @@ describe("README region", () => {
   test("renders generated components before the collapsed unsupported list", () => {
     const table = renderCompatibilityTable(manifest)
     expect(table.indexOf("| button | experimental | generated |")).toBeLessThan(
-      table.indexOf("<details>")
+      table.indexOf("\n<details>\n")
     )
     expect(table).toContain("| select | unsupported |")
   })

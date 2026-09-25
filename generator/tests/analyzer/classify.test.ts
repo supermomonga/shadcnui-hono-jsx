@@ -71,7 +71,10 @@ function Button(props: ButtonPrimitive.Props) { return <ButtonPrimitive {...prop
 export { Button }`
     expect(run(source)).toMatchObject({
       kind: "direct",
-      rewrites: ["base-ui-primitive-mapped:@base-ui/react/button#Button"],
+      rewrites: [
+        "base-ui-primitive-mapped:@base-ui/react/button#Button",
+        "classname-to-class",
+      ],
     })
   })
 
@@ -197,7 +200,13 @@ describe("classification of the committed upstream snapshot", () => {
     }).kind
 
   // Built on browser primitives with behavior (native families, docs/adr/0019).
-  const NATIVE = new Set(["alert-dialog", "dialog", "sheet"])
+  const NATIVE = new Set([
+    "accordion",
+    "alert-dialog",
+    "collapsible",
+    "dialog",
+    "sheet",
+  ])
 
   test.each([...config.components])(
     "%s (generation target) is direct or natively adapted",

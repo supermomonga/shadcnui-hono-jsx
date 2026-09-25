@@ -6,6 +6,8 @@ date: 2026-09-26
 links:
 - target: 17
   kind: amends
+- target: 20
+  kind: amendedby
 ---
 
 # Translate compound Base UI primitives as families rewritten in place

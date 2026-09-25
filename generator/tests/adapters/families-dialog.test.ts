@@ -2,8 +2,8 @@ import { describe, expect, test } from "bun:test"
 import {
   mapBackdropClasses,
   mapPopupClasses,
-  splitVariants,
 } from "../../src/adapters/families/dialog"
+import { splitVariants } from "../../src/adapters/families/util"
 
 describe("dialog family class mapping", () => {
   test("splitVariants ignores colons inside brackets", () => {

@@ -13,26 +13,8 @@ import {
   insertHelpers,
   partClasses,
   replacePartTypes,
+  splitVariants,
 } from "./util"
-
-/** Splits `a:b:[c:d]` into variants and utility, ignoring `:` inside brackets. */
-export function splitVariants(token: string): string[] {
-  const parts: string[] = []
-  let depth = 0
-  let current = ""
-  for (const char of token) {
-    if (char === "[" || char === "(") depth++
-    if (char === "]" || char === ")") depth--
-    if (char === ":" && depth === 0) {
-      parts.push(current)
-      current = ""
-    } else {
-      current += char
-    }
-  }
-  parts.push(current)
-  return parts
-}
 
 /**
  * Base UI marks open/closed state with `data-open`/`data-closed` and

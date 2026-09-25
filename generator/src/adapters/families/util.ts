@@ -18,14 +18,16 @@ export interface PartElement {
   attribute(name: string): string | null
   /** Text of the JSX children (empty for self-closing elements). */
   children: string
+  /** Text of the only child when it is a single element (ignoring whitespace), else null. */
+  soleElementChild: string | null
   /** Name of the enclosing function component. */
   component: string
   /** Replaces the whole element; non-JSX text is wrapped in `{}` among JSX children. */
   replace(text: string): void
-  /** First string literal passed to `cn(...)` in `className`, or null. */
+  /** The `className` string, or the first string passed to `cn(...)` in it; null if neither. */
   classes(): string | null
   /**
-   * Rewrites that first `cn(...)` string with \`map\` and inserts \`prepend\`
+   * Rewrites that string with \`map\` and, for \`cn(...)\`, inserts \`prepend\`
    * strings before it. Must be called before \`attributes()\`.
    */
   mapClasses(
@@ -42,6 +44,7 @@ function classCall(element: JsxOpeningElement | JsxSelfClosingElement) {
     )
   if (!attr || !Node.isJsxAttribute(attr)) return null
   const value = attr.getInitializer()
+  if (Node.isStringLiteral(value)) return { call: undefined, first: value }
   const call = Node.isJsxExpression(value) ? value.getExpression() : undefined
   if (
     !call ||
@@ -52,6 +55,25 @@ function classCall(element: JsxOpeningElement | JsxSelfClosingElement) {
   }
   const [first] = call.getArguments()
   return first && Node.isStringLiteral(first) ? { call, first } : null
+}
+
+/** Splits `a:b:[c:d]` into variants and utility, ignoring `:` inside brackets. */
+export function splitVariants(token: string): string[] {
+  const parts: string[] = []
+  let depth = 0
+  let current = ""
+  for (const char of token) {
+    if (char === "[" || char === "(") depth++
+    if (char === "]" || char === ")") depth--
+    if (char === ":" && depth === 0) {
+      parts.push(current)
+      current = ""
+    } else {
+      current += char
+    }
+  }
+  parts.push(current)
+  return parts
 }
 
 function tagOf(element: JsxOpeningElement | JsxSelfClosingElement): string {
@@ -73,6 +95,31 @@ export function partClasses(
     )
     .map((e) => classCall(e)?.first.getLiteralValue())
     .filter((c) => c !== undefined)
+}
+
+/**
+ * Rewrites every class string in the file: `className="..."` attributes and
+ * string arguments of `cn(...)`.
+ */
+export function mapFileClasses(
+  ctx: TransformContext,
+  map: (classes: string) => string
+): void {
+  const literals = ctx.sf
+    .getDescendantsOfKind(SyntaxKind.StringLiteral)
+    .filter((literal) => {
+      const parent = literal.getParent()
+      if (Node.isJsxAttribute(parent)) {
+        return parent.getNameNode().getText() === "className"
+      }
+      return (
+        Node.isCallExpression(parent) &&
+        parent.getExpression().getText() === "cn"
+      )
+    })
+  for (const literal of literals.reverse()) {
+    literal.setLiteralValue(map(literal.getLiteralValue()))
+  }
 }
 
 /** Visits `<local.Part>` elements one at a time (re-querying after each replacement). */
@@ -98,6 +145,20 @@ export function forEachPart(
           .map((c) => c.getText())
           .join("")
       : ""
+    const meaningful = Node.isJsxElement(node)
+      ? node
+          .getJsxChildren()
+          .filter(
+            (c) => !(Node.isJsxText(c) && c.containsOnlyTriviaWhiteSpaces())
+          )
+      : []
+    const [only] = meaningful
+    const soleElementChild =
+      meaningful.length === 1 &&
+      only &&
+      (Node.isJsxElement(only) || Node.isJsxSelfClosingElement(only))
+        ? only.getText()
+        : null
     const fn = node.getFirstAncestor(
       (a) => Node.isFunctionDeclaration(a) || Node.isArrowFunction(a)
     )
@@ -108,6 +169,7 @@ export function forEachPart(
     visit({
       part,
       children,
+      soleElementChild,
       component,
       attributes: (without = []) =>
         opening
@@ -136,15 +198,15 @@ export function forEachPart(
       classes: () => classCall(opening)?.first.getLiteralValue() ?? null,
       mapClasses: (map, prepend = []) => {
         const found = classCall(opening)
-        if (!found)
+        if (!found || (prepend.length > 0 && !found.call))
           throw new TransformError(
             ctx,
             "families",
-            `<${local}.${part}> has no cn("...") className`
+            `<${local}.${part}> has no ${prepend.length > 0 ? 'cn("...")' : "string"} className`
           )
         const index = found.first.getChildIndex()
         found.first.setLiteralValue(map(found.first.getLiteralValue()))
-        if (prepend.length > 0)
+        if (found.call && prepend.length > 0)
           found.call.insertArguments(
             index,
             prepend.map((p) => JSON.stringify(p))

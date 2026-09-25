@@ -17,3 +17,4 @@
 * [17. Implement Dialog on the native dialog element with Invoker Commands](0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md)
 * [18. Support Base UI render props on the server and omit client-only button semantics](0018-support-base-ui-render-props-on-the-server-and-omit-client-only-button-semantics.md)
 * [19. Translate compound Base UI primitives as families rewritten in place](0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)
+* [20. Implement Accordion and Collapsible on native details and summary](0020-implement-accordion-and-collapsible-on-native-details-and-summary.md)

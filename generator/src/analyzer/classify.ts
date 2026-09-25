@@ -80,7 +80,9 @@ function fileReasons(
         if (rule) {
           primitives.push(rule)
           reasons.push(
-            reason("base-ui-primitive-mapped", `${module}#${named.name}`)
+            reason("base-ui-primitive-mapped", `${module}#${named.name}`),
+            // Base UI parts take `className`; the generated ones take `class`.
+            reason("classname-to-class")
           )
         } else {
           reasons.push(
