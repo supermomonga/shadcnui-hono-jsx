@@ -7,16 +7,5 @@ export const config: GeneratorConfig = {
   themeUrl:
     "https://ui.shadcn.com/init?base=base&style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=geist&rtl=false&menuAccent=subtle&menuColor=default&radius=default",
   trackedTypes: ["registry:ui"],
-  components: [
-    "alert",
-    "badge",
-    "button",
-    "card",
-    "input",
-    "label",
-    "separator",
-    "skeleton",
-    "table",
-    "textarea",
-  ],
+  components: ["button"],
 }
