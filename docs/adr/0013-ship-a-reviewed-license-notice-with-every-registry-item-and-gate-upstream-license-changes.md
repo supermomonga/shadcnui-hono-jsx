@@ -8,6 +8,8 @@ links:
   kind: amends
 - target: 10
   kind: amends
+- target: 16
+  kind: amendedby
 ---
 
 # Ship a reviewed license notice with every registry item and gate upstream license changes

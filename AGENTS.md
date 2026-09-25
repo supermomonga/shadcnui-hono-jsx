@@ -59,6 +59,8 @@ the new terms still allow redistribution and how. See docs/adr/0013.
 
 - Generated components must never import `react`, `react-dom`, `@base-ui/*`,
   `@radix-ui/*`, `radix-ui`, or `lucide-react`. A test enforces this.
+- `lucide` is a generation-time devDependency only; icons are inlined into
+  generated files (docs/adr/0016). Its license is gated like upstream's.
 - React and Base UI may only be installed in `tests/visual`, which renders
   upstream for comparison. Never add them to the root or example packages.
 - Registry items may only depend on the allowlisted npm packages in

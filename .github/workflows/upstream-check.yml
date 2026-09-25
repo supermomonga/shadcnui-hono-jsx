@@ -29,6 +29,14 @@ jobs:
       - name: Update the pinned shadcn package
         run: bun add --dev --exact shadcn@latest
 
+      # Icons are inlined from the pinned lucide package; the visual tests
+      # compare against the lucide-react build of the same version.
+      - name: Update the pinned lucide packages
+        run: |
+          version="$(npm view lucide version)"
+          bun add --dev --exact "lucide@$version"
+          (cd tests/visual && bun add --exact "lucide-react@$version")
+
       - name: Sync upstream snapshot
         id: sync
         run: bun run upstream:sync --report "$RUNNER_TEMP/report.md"

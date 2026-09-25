@@ -13,3 +13,4 @@
 * [13. Ship a reviewed license notice with every registry item and gate upstream license changes](0013-ship-a-reviewed-license-notice-with-every-registry-item-and-gate-upstream-license-changes.md)
 * [14. Verify visual parity against upstream React renders in an isolated test package](0014-verify-visual-parity-against-upstream-react-renders-in-an-isolated-test-package.md)
 * [15. Ship imported sibling components inside each registry item](0015-ship-imported-sibling-components-inside-each-registry-item.md)
+* [16. Inline Lucide icons at generation time](0016-inline-lucide-icons-at-generation-time.md)

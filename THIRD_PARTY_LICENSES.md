@@ -41,6 +41,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## Lucide
+
+Generated components that show icons inline SVG from
+[Lucide](https://lucide.dev) (ISC; some icons derive from Feather, MIT). The
+generator reads them from the pinned `lucide` package at generation time; the
+full Lucide license is reproduced in `LICENSE-shadcnui-hono-jsx.txt`, which is
+installed with every registry item.
+
 ## Base UI
 
 [Base UI](https://github.com/mui/base-ui) (MIT) is used only as a behavioral

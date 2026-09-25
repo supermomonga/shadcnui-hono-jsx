@@ -152,6 +152,7 @@ with the pinned Biome (`biome check --write`, which also sorts imports):
 | `remove-directives` | drops `"use client"` |
 | `component-imports` | `@/registry/<style>/ui/<name>` to `./<name>` for generated sibling components ([ADR 0015](./adr/0015-ship-imported-sibling-components-inside-each-registry-item.md)) |
 | `cn-markers` | `cn-font-heading` to `font-heading`; other `cn-*` classes removed (as the shadcn CLI does at install time) |
+| `icons` | `IconPlaceholder` to a file-local component inlining the Lucide SVG exactly as lucide-react renders it ([ADR 0016](./adr/0016-inline-lucide-icons-at-generation-time.md)) |
 | `use-render` | canonical `useRender({ defaultTagName, props: mergeProps(...), state })` to an intrinsic element; `state` entries become `data-*` attributes |
 | `primitives` | mapped Base UI primitives to intrinsic elements with their SSR attributes |
 | `react-types` | `React.ComponentProps<"x">`, `useRender.ComponentProps<"x">` to `ComponentProps<"x">`; `React.ComponentProps<typeof X>` to `Parameters<typeof X>[0]`; `React.ReactNode` to `Child` |
@@ -245,6 +246,10 @@ installed in that package
   request becomes a draft labelled `license-review` with the license diff
   first. A maintainer decides whether redistribution is still allowed and, if
   so, updates the accepted record and the notice together.
+- Inlined Lucide icons are covered the same way: the notice reproduces the
+  reviewed Lucide license (ISC, with Feather's MIT notice), and
+  `ACCEPTED_ICON_LICENSE` gates generation on the pinned `lucide` package's
+  license.
 
 See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-item-and-gate-upstream-license-changes.md).
 
