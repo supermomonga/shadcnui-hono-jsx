@@ -1,0 +1,657 @@
+{
+  "schemaVersion": 1,
+  "style": "base-nova",
+  "registryBaseUrl": "https://ui.shadcn.com/r",
+  "index": {
+    "url": "https://ui.shadcn.com/r/styles/base-nova/registry.json",
+    "sha256": "2c4152e6e236a3bd6499492210867cc30b66b6dac02366872148052f04806b34",
+    "etag": "W/\"b6e80e97307ec8e051e7251dc948880f\"",
+    "lastModified": "Mon, 21 Sep 2026 10:52:44 GMT",
+    "fetchedAt": "2026-09-25T11:42:51.028Z"
+  },
+  "theme": {
+    "url": "https://ui.shadcn.com/init?base=base&style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=geist&rtl=false&menuAccent=subtle&menuColor=default&radius=default",
+    "sha256": "2fa48e8348e90bcacf263e237393057b761f943ceff6ff69aa783d7909259c9d",
+    "etag": null,
+    "lastModified": null,
+    "fetchedAt": "2026-09-25T11:42:51.028Z"
+  },
+  "tailwindCss": {
+    "package": "shadcn",
+    "version": "4.21.0",
+    "file": "dist/tailwind.css",
+    "sha256": "bc7d83425702955b4cb67cb14ede9d603f9d912376d57a2d81d661094d2a782a"
+  },
+  "items": {
+    "accordion": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/accordion.json",
+      "type": "registry:ui",
+      "sha256": "87b937a71803e826d1c5ad013b0799d0d2f0740522e1e01d4bab23a61f92c0fa",
+      "contentSha256": "47959c713d540b59f84dc9b5689b2bc531fa67314ba3133337e518bd7e54143a",
+      "etag": "W/\"0621c7e1be4718ace32775a1ef532d9c\"",
+      "lastModified": "Mon, 21 Sep 2026 09:14:10 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "alert": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/alert.json",
+      "type": "registry:ui",
+      "sha256": "982aa38fc1970bdc0a76b00f2e3c142c766171e8c4660b309a28b0559f81d019",
+      "contentSha256": "56d4827f4beed9ce6796b00fa28612f5bb8b13830197f3157860d251b6134861",
+      "etag": "W/\"02b40ce8c380bb7f26fd8b26abac1e22\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:33 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "alert-dialog": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/alert-dialog.json",
+      "type": "registry:ui",
+      "sha256": "89a9a3cef5a4512183a352ef88b02e4545bb824a6d08182210da26e0cad33f00",
+      "contentSha256": "421061e714648e07c617f119b51db94c799b56eebf37545290939b7a780c7b27",
+      "etag": "W/\"3cdcfd7b6a491c9605d0a21e712716eb\"",
+      "lastModified": "Mon, 21 Sep 2026 09:14:01 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "aspect-ratio": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/aspect-ratio.json",
+      "type": "registry:ui",
+      "sha256": "53ad8fcff1f1336c96feab1939eb1419391676e6700f38b90d424a3369a340ff",
+      "contentSha256": "3d25d73f77dedf7c11f1e089114b9c1ed142f2aa44c9c3398c06f7d046809ea9",
+      "etag": "\"4bf69147e578891794e454297539fc19\"",
+      "lastModified": "Tue, 22 Sep 2026 01:28:23 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "attachment": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/attachment.json",
+      "type": "registry:ui",
+      "sha256": "0975ca1797e21f1605eab792793fc0fbda1350360c82f81efdf8c06640b1dd65",
+      "contentSha256": "29a6055a78d5a4aaa31ed400f3671f6c80d93999537da927a5a6250d712172ed",
+      "etag": "W/\"e915ff557581b8a6244def4538a329a3\"",
+      "lastModified": "Fri, 25 Sep 2026 02:02:23 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "avatar": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/avatar.json",
+      "type": "registry:ui",
+      "sha256": "cb36fa446207b3682a5fb51472233749d0e6054f7300f14f559f860729ef662e",
+      "contentSha256": "5da016b137e57f173dfde63703eb96ea0b60fc45d0c9f1e423333430eeb853a7",
+      "etag": "W/\"f36ba1615d49505a3a4fa5f271ce6f9d\"",
+      "lastModified": "Mon, 21 Sep 2026 09:22:04 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "badge": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/badge.json",
+      "type": "registry:ui",
+      "sha256": "404e377f1f0c5a186d38e2cabde7e1f296969cacae389e2ce63f23b808d5a7c6",
+      "contentSha256": "448725bcf39981b25aa06f804eb8dc46c07923976f973a4ad19a4c51b82130e9",
+      "etag": "W/\"3665bee6c6b958b7bba6588df8c6b2e2\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:30 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "breadcrumb": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/breadcrumb.json",
+      "type": "registry:ui",
+      "sha256": "3985b7277c572f35ce94a1b725e5aae6231c5f62bcec4640a108a9883ee00acf",
+      "contentSha256": "7281e8a42b945b15a0a0c31c7f1eeeb02fd1ec88f2a7c94d9c69c40878305902",
+      "etag": "W/\"3c34792c88258b2a884883686d21ed4c\"",
+      "lastModified": "Fri, 25 Sep 2026 02:02:24 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "bubble": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/bubble.json",
+      "type": "registry:ui",
+      "sha256": "ba39f01d9173760693d631eb54c41eaa3265217299627b41ae0976eae330923d",
+      "contentSha256": "a21e25e29a040e39a72764312229ea8f294131e6b6a23f4520108d5904de405e",
+      "etag": "W/\"2a3ebabb028c9266e21fe101bc8640c2\"",
+      "lastModified": "Mon, 21 Sep 2026 09:57:23 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "button": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/button.json",
+      "type": "registry:ui",
+      "sha256": "19fecc4f76c237e1b654c7b127065ea3c4821a0f39ab25cbd3d23a2676f00cc0",
+      "contentSha256": "23a5cfb0c42fa8e55e26e34fbba8b0d1d7ee8663dc2c8b308830d1b5be7d9949",
+      "etag": "W/\"bdbca3ff5ac3c2e5b96b4cd5a74870b3\"",
+      "lastModified": "Fri, 25 Sep 2026 00:59:50 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "button-group": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/button-group.json",
+      "type": "registry:ui",
+      "sha256": "9a35cda300504f2c60efffa0352230b75dc9c39ec78113135c0b6be7b51031bf",
+      "contentSha256": "ae7f9d6fd8a6097fd95111dcda93bab0c9ba26ae5bc9af404886cb9717258d15",
+      "etag": "W/\"7c3f48500dedfab44c0c287820a8746a\"",
+      "lastModified": "Mon, 21 Sep 2026 13:47:52 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "calendar": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/calendar.json",
+      "type": "registry:ui",
+      "sha256": "5503352fef6c9e62e54db092a7d1267d3194e55fcde315cc36d15a1bc2ed1391",
+      "contentSha256": "71d0ae1a4beb00d5f0b5f6bc574e811a575f6654d727e49ad5b508867a4b1b98",
+      "etag": "W/\"23f443e2d8e8d826ddad1e0cbcfd1cc5\"",
+      "lastModified": "Fri, 25 Sep 2026 02:02:24 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "card": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/card.json",
+      "type": "registry:ui",
+      "sha256": "868ca5a2c551cbbdd427ba81dc97fade03ec1c438e4f49da10c4b4a3f4d2cd4e",
+      "contentSha256": "766d3bb130e4a7b7ff3db8720a523330b9a0a6637043eb39bbde43a8691e17ba",
+      "etag": "W/\"6366882c0e9154ea7f19dbcbe40b9226\"",
+      "lastModified": "Fri, 25 Sep 2026 00:32:36 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "carousel": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/carousel.json",
+      "type": "registry:ui",
+      "sha256": "b7d114952e7df3eb1b9a9c75903f15a858ec80bd17159499ecd4a667bdafdb4b",
+      "contentSha256": "eac184c483f37dbcf8d16a5e6e46669753bcedc0e2593ee65f514834ad8ad074",
+      "etag": "W/\"1b8484e8cddf46e7dfda9f5bd34f0bbd\"",
+      "lastModified": "Mon, 21 Sep 2026 13:55:16 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "chart": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/chart.json",
+      "type": "registry:ui",
+      "sha256": "6184895edb9f7141f760dbf86ea31c820a289b5a58f1b337cdd1d902cf7e1851",
+      "contentSha256": "650ca3a65e6780b505128cd44679c4ccfcd076f4c277fe20f5d4396333ea18e0",
+      "etag": "W/\"0f2deb91af37a7c911e32dc63b1eda9a\"",
+      "lastModified": "Fri, 25 Sep 2026 02:02:25 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "checkbox": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/checkbox.json",
+      "type": "registry:ui",
+      "sha256": "ba5510a392c9872a63842c930369d0194cb01726d1cd4f20a794a0f93d47d0bb",
+      "contentSha256": "ea4af0527f8c01513f17f785f93e71b0c8933f44be3fd74697fafc9ee4c9f03f",
+      "etag": "W/\"eb962e032301f0d5a7fb48f31f086689\"",
+      "lastModified": "Mon, 21 Sep 2026 09:46:05 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "collapsible": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/collapsible.json",
+      "type": "registry:ui",
+      "sha256": "bce936b20335ee04db66a0daab3ba5e0230ef91ae2da787a1dbe0ba2f5d1c1de",
+      "contentSha256": "3b60084afb5667cb11a4f7b40bbe66585cdc70f2cb26d698e551f055cda91a4d",
+      "etag": "W/\"7b65c884afe9e72f47704af68a7853fe\"",
+      "lastModified": "Mon, 21 Sep 2026 09:14:11 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "combobox": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/combobox.json",
+      "type": "registry:ui",
+      "sha256": "142959468ad73b71a30f06432f91170b68ad53576cd2a61167d9c3c404e73f9c",
+      "contentSha256": "9e7c837ea45d8ca0a71cfc027aae84911c0d565c9289b6ca51b92edfa597fca7",
+      "etag": "W/\"bfaeb43059d5dc6c22821a79133ab03b\"",
+      "lastModified": "Fri, 25 Sep 2026 01:26:48 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "command": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/command.json",
+      "type": "registry:ui",
+      "sha256": "3bd6e302a08d7ad9388a4e379f7b1c44368d33fdf8a7337a6b27979e8e710848",
+      "contentSha256": "aa6ccec3cb46e8fb238fee4aa3454b3e9ce6623079f646ff3accdc2eabf5cd4f",
+      "etag": "W/\"3f8c509531f7a80f5a8abf1815cd2fc2\"",
+      "lastModified": "Mon, 21 Sep 2026 11:51:48 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "context-menu": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/context-menu.json",
+      "type": "registry:ui",
+      "sha256": "207bf0a399544c4e99a197aea6351f9edd87431249c21abd6d632ebcb8ecde13",
+      "contentSha256": "771261f2b52c8c6f2ee19f20ad6718524a9f34debae633d2742bfa7bb133ce14",
+      "etag": "W/\"acdc01f7e283766b1cde3316cdf722db\"",
+      "lastModified": "Mon, 21 Sep 2026 09:14:11 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "dialog": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/dialog.json",
+      "type": "registry:ui",
+      "sha256": "6d23615b9ac35b41d7db50f14ba31890a309d668e8626df09f56be363865fd8e",
+      "contentSha256": "356e4775f1edfd051ace0678b6a23bffbce042045f470971755438a7c199dafe",
+      "etag": "W/\"01f6071bbf77aeb43dce10fe944b9147\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:31 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "direction": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/direction.json",
+      "type": "registry:ui",
+      "sha256": "c4869bb72b8936dcf2b0d533ac58e98c8139ebadbe80490cb9a4f74d6ff64ade",
+      "contentSha256": "adc52fbbfec1ce5d59d435639959cfb47200ecdd95fb960eb64b4daedd6bec2a",
+      "etag": "\"e315493901f7269d877870fba947fd24\"",
+      "lastModified": "Fri, 25 Sep 2026 02:02:25 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "drawer": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/drawer.json",
+      "type": "registry:ui",
+      "sha256": "7b226435d778e491a77e3de9e19002d2ea7c60617ac8b702ee8fb35983c8c02c",
+      "contentSha256": "45a2d99a6c6f386c8f53085ba0977de2e7ebc0a83e159b6354826ea36f759b15",
+      "etag": "W/\"718672b69bd3c8632a5803fbbf574310\"",
+      "lastModified": "Mon, 21 Sep 2026 12:24:37 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "dropdown-menu": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/dropdown-menu.json",
+      "type": "registry:ui",
+      "sha256": "e3fc550ea566e461369960febb442e2e7719f31a3bf7a68a451c8f28d058b99d",
+      "contentSha256": "3ea1991f74952357130705af5d6dd0ae6856382562d0cb2e0c9e7d301a74fa7f",
+      "etag": "W/\"4c6f51bd1e75e370d7aabffd80992e2c\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:31 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "empty": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/empty.json",
+      "type": "registry:ui",
+      "sha256": "e1520ba651e778dfdc9bd42b2d60358ff7f0ce69ee6d594e7d8dbbc7d0bd9c23",
+      "contentSha256": "16a341dcd4e1fa3c690e67bbef1e2649834efc9b2f3057a4a0f7e2faee1a06d1",
+      "etag": "W/\"92c70df830089151e1ba4ca5866b852a\"",
+      "lastModified": "Fri, 25 Sep 2026 00:44:44 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "field": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/field.json",
+      "type": "registry:ui",
+      "sha256": "7faebf7aeaa03eebb9cd5edde6ea35bd76c2494f729ca761d6822324cd1e56f0",
+      "contentSha256": "bea69a05de39ce4358d1ae459a5e3ab74ebcc51df9ea3ecb0e22b21d442a84fc",
+      "etag": "W/\"ff4f4bbbc758d3008f2081b815e7289f\"",
+      "lastModified": "Mon, 21 Sep 2026 09:14:11 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "form": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/form.json",
+      "type": "registry:ui",
+      "sha256": "d4d08875842750ebed225383e3b3d737bf88471e44e25cc2359814415fed5b43",
+      "contentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "etag": "\"cba687c45470a3051f8a1d4975f1047e\"",
+      "lastModified": "Fri, 25 Sep 2026 01:25:59 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "hover-card": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/hover-card.json",
+      "type": "registry:ui",
+      "sha256": "7eab3e188fb226d242f3eb9e31fcd1c134f408865311fb92a175264737c199a0",
+      "contentSha256": "3560a395f3c6fcf87f5d2293295f722b92ef3efaf0e97f611a7207c01e41ab67",
+      "etag": "W/\"9f3bed5755e2604c9b121cf62fa1ea08\"",
+      "lastModified": "Mon, 21 Sep 2026 13:55:21 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "input": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/input.json",
+      "type": "registry:ui",
+      "sha256": "abfada3ac72ae8bf70b98d4a061371fc19299786c64686743d5672a2632b7de1",
+      "contentSha256": "31a57ec736d9c75d16f81eb1486098944782f4f565c597f715b8a1334e28f5d0",
+      "etag": "W/\"a518cd53ee2a6acffd618fb8b80d5cd4\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:34 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "input-group": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/input-group.json",
+      "type": "registry:ui",
+      "sha256": "bff17aca18ddcde6372e0113bd8cdaacbb0e41926fd5a2812e43f10850633d01",
+      "contentSha256": "631f54c33691082381aa0d9620f82579b3dde334e66cad9d6c153d4a974ad8f6",
+      "etag": "W/\"f126430b458126f9b4f7cc68eb65634a\"",
+      "lastModified": "Fri, 25 Sep 2026 01:26:49 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "input-otp": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/input-otp.json",
+      "type": "registry:ui",
+      "sha256": "f3be2445c98b8f33408034901759f68a01856b3ebd4360b25a38e1868463cbc1",
+      "contentSha256": "54f6dd46b5a450592778d4e3b238b92bfe5f9062b6be5ea6a28ae573a84d4d4a",
+      "etag": "W/\"d423c7b9da714523a61e305f8cb520eb\"",
+      "lastModified": "Mon, 21 Sep 2026 13:55:22 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "item": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/item.json",
+      "type": "registry:ui",
+      "sha256": "3bf29cb5cc5a39e684d0f54b42532411a2b99039e4ddc0846938ffd2274f02c6",
+      "contentSha256": "9fb90b161c84b248b7e72f5bcd1585d238eabb1e2996e4fc6d02cd12219520b8",
+      "etag": "W/\"7fa758fbd939bb585529625d48ef2597\"",
+      "lastModified": "Fri, 25 Sep 2026 02:02:25 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "kbd": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/kbd.json",
+      "type": "registry:ui",
+      "sha256": "17e39e6456b15b7a4d559cef4cd12da4314ff521f7b9d1e9ae48ec7a65811a8a",
+      "contentSha256": "241804b8d92bd456214f6b56bb87f9e0a05a56fe13c64cfb383653e360202702",
+      "etag": "W/\"5008a4f5e1064013cf0c17c949152cb0\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:34 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "label": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/label.json",
+      "type": "registry:ui",
+      "sha256": "2d284bed61a36b6b8f00070d3ac9491a856806ae19d56ec3521953a35b2b633e",
+      "contentSha256": "0c8c72d16df2e090ca419abf4f8378c6cf77fb67c8ac67d424997ae1199342b0",
+      "etag": "W/\"2169002228cbaed2c28e16215c2921fb\"",
+      "lastModified": "Mon, 21 Sep 2026 09:14:12 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "marker": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/marker.json",
+      "type": "registry:ui",
+      "sha256": "8f59be7b55a7d790992794959bc638aee119159619d38ac6e2e0b19f5e940c84",
+      "contentSha256": "cf39a4e633750a9bc57bab7bb3658cfa4ed1b1f9ed79769acd48a2ef8100c140",
+      "etag": "W/\"0c70b0bb0e6424cfd0a7378277ae9af4\"",
+      "lastModified": "Tue, 22 Sep 2026 01:28:31 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "menubar": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/menubar.json",
+      "type": "registry:ui",
+      "sha256": "cf35832368cc0c99c211db6e4c13809d34689099f649d11d0e687a955f8bda0e",
+      "contentSha256": "7e439524f877456cd33816428a52046b17d2a117bcd1efedcc31b7e5b6e2572a",
+      "etag": "W/\"cfe6a18dbddef30e0ee10e6c7f61346e\"",
+      "lastModified": "Fri, 25 Sep 2026 02:02:26 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "message": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/message.json",
+      "type": "registry:ui",
+      "sha256": "eeaccb9e09e7381d97e7eb2973f19252cffe26163501a8186f177a1d408d9bcb",
+      "contentSha256": "553a3189896b3b89cfee6837bd8d4cb8ec5c354104951cadcf69ba8085bd9547",
+      "etag": "W/\"7a9b0f4ad2cebb36d5fbd17f0f09af99\"",
+      "lastModified": "Fri, 25 Sep 2026 02:02:26 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "message-scroller": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/message-scroller.json",
+      "type": "registry:ui",
+      "sha256": "7be43528b7fec5bf78470e7f66e8f0e3a1d562bf3bc250ba1ecb6f4311de4f56",
+      "contentSha256": "c77690aa4277cee4674239dcd2249e0689175f1f90ec1069617e47bc9214c8b9",
+      "etag": "W/\"fce4194eaaf4810c5ab7a5b084108ad4\"",
+      "lastModified": "Tue, 22 Sep 2026 01:28:32 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "native-select": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/native-select.json",
+      "type": "registry:ui",
+      "sha256": "5971bd54b04edd639c1524c3b8ea0db0a7cddb37fce4b096eb396c2511f2f82a",
+      "contentSha256": "63e23a8cd6a79ac00f942c6aa127436de544b33a85439bf56f8c85fd897576ce",
+      "etag": "W/\"cf47aa22e4c1916bd5c7f1a8dc63a2c9\"",
+      "lastModified": "Mon, 21 Sep 2026 10:16:41 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "navigation-menu": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/navigation-menu.json",
+      "type": "registry:ui",
+      "sha256": "c86f33faf7ddf65173e5981ba216a156dd585d7a930377fa8bd9ea7c83af101d",
+      "contentSha256": "c2b15b4fb14f3b482de8f5190dda2994012fdfce50c245c68bd719559d649366",
+      "etag": "W/\"b12fe737fb211ea0e88ac7b73a89b140\"",
+      "lastModified": "Mon, 21 Sep 2026 09:50:35 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "pagination": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/pagination.json",
+      "type": "registry:ui",
+      "sha256": "3549dd6d6313ecb7bf604a4e40d916bda834f7f285a955051fec1082a24453e3",
+      "contentSha256": "4b3e96c09ffa92f5a0561aefc539ba25e5915165b21c246dbe299bea3ade86e0",
+      "etag": "W/\"e3cfd268844bee1c6584c50a447c8349\"",
+      "lastModified": "Mon, 21 Sep 2026 09:50:35 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "popover": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/popover.json",
+      "type": "registry:ui",
+      "sha256": "39cebe7a771cbd48e92571cdd587165814a610586509dd96c86562674fe9c2ff",
+      "contentSha256": "3c2d5214fbdae3e5d40444df7e18b8810c3a592bfefbdbfdc60abcec0b7fbd46",
+      "etag": "W/\"d768464e9830660002ddf7adc45d29d8\"",
+      "lastModified": "Mon, 21 Sep 2026 19:26:00 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "progress": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/progress.json",
+      "type": "registry:ui",
+      "sha256": "b1f224a1f4b2623967c564e786b213de076529fbc011fdaf3f93d5aad842a5ef",
+      "contentSha256": "17b3126ea8f904c1c89b2fc0c9a7dd06ea802bd49e3be0322b2377d1d629f832",
+      "etag": "W/\"d6f03b0d0cde740857920cb65f77af2a\"",
+      "lastModified": "Mon, 21 Sep 2026 21:13:30 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "questionnaire": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/questionnaire.json",
+      "type": "registry:ui",
+      "sha256": "659abbbc815f71bd94609450dbf8c9465ef05a7cf3c11cdacf4e782d3b30247d",
+      "contentSha256": "ed5d46e1ca76dc0ec3e58ad85f81f07e5e51d7474d14f0e75533db7f8bbc7cef",
+      "etag": "W/\"8e6fda0b6ccfedadd6ce64da7feeaeb4\"",
+      "lastModified": "Tue, 22 Sep 2026 01:28:34 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "radio-group": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/radio-group.json",
+      "type": "registry:ui",
+      "sha256": "150c93e951b49cb39f7683e6158f1199fe81c97cdaa17fbac36a31d4a2ffcbfa",
+      "contentSha256": "d0309ee41e23acc7e22fd10e5fc361eeecba09fea337b0798a502fac59592ded",
+      "etag": "W/\"1eb9fff27fc4dc2cfa92a2ea0141099a\"",
+      "lastModified": "Mon, 21 Sep 2026 09:50:18 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "resizable": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/resizable.json",
+      "type": "registry:ui",
+      "sha256": "15e9d511fcd52aeef688a2175e5c544b7199c8f31facafb85d7a21e5dde40fde",
+      "contentSha256": "0453e7ef505737dc9b22667507abf4ffcda5c40ca58e25e797b746a30b15c626",
+      "etag": "W/\"533b48cbbb304aa5607b4adc0604dbc8\"",
+      "lastModified": "Mon, 21 Sep 2026 13:38:06 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "scroll-area": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/scroll-area.json",
+      "type": "registry:ui",
+      "sha256": "948b799be79fb20c21a3299ea147a5224faae23bb7c9484b387752c782ba12a4",
+      "contentSha256": "15e804fb28218a1b0e2d3cbf31f56adec10e1d4f76cb20064c8b4bbed5f5958c",
+      "etag": "W/\"f06df21a91c9e49e552ed61f8832ae53\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:32 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "select": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/select.json",
+      "type": "registry:ui",
+      "sha256": "5cda2f83e4041bdb39b85919cd3c1d5e9a40e6abdcc763fe317cead6c3c76a2b",
+      "contentSha256": "2dc49435a6328da7449e2ab4362923e97ce4ef9810a90ee2456fe32be02993fc",
+      "etag": "W/\"06439d9b7c361caa1acf48c6256e6d7e\"",
+      "lastModified": "Fri, 25 Sep 2026 00:32:36 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "separator": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/separator.json",
+      "type": "registry:ui",
+      "sha256": "9461151ac5a97bebd16fab96ac39725456a7c1ccdb5c36f4b310a5eace0a93a2",
+      "contentSha256": "e331ea0c4e835484b0a3fcefa172a884864bdc0e1bfe39d12c119c66ad4e3195",
+      "etag": "W/\"d11ef064b4f343d5808bda50d40a8562\"",
+      "lastModified": "Fri, 25 Sep 2026 00:32:37 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "sheet": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/sheet.json",
+      "type": "registry:ui",
+      "sha256": "19e429997f325e7e0c0038d8f68006df4b2e41f9d506cea4400419942d63aac4",
+      "contentSha256": "51102b31cae673de5682e63b8a0e35c8ec421f9e93010634ceb9ac41c5c41efd",
+      "etag": "W/\"6aced6cad8839c7cff3cd72deaba4fc2\"",
+      "lastModified": "Mon, 21 Sep 2026 09:09:37 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "sidebar": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/sidebar.json",
+      "type": "registry:ui",
+      "sha256": "2f13fc8757f257b9f5a7d42918dc18e2185253f9a48ff86f028df98dc85400e0",
+      "contentSha256": "6d0d115f3821dcdf5ddf691620dd33fefbf8bdb8a22a404d257ad365d07b2ea2",
+      "etag": "W/\"9213ce2bc8907f9ed0fc0dadd2247cc9\"",
+      "lastModified": "Mon, 21 Sep 2026 09:12:32 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "skeleton": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/skeleton.json",
+      "type": "registry:ui",
+      "sha256": "6c95370fc30a7f0fa929790a8244f4975c1429fc9e67602bee1e64dc209cc278",
+      "contentSha256": "97a90c6788815d37eda6dad532aa207e5a878d22b4d5f9e91c16bb2f4bc2f341",
+      "etag": "\"a918602d8c7796dcbc1b71d9790eeba3\"",
+      "lastModified": "Mon, 21 Sep 2026 17:56:41 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "slider": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/slider.json",
+      "type": "registry:ui",
+      "sha256": "9d7c8c5c544f211aea6b6f68b072000388a270f46bb8505b15b20cea09394a9b",
+      "contentSha256": "1ecee0f7d7a1ccffdf65b527dce1ebd9ffa3edcb3db7056dedfaf19347f38f52",
+      "etag": "W/\"e99943c2d7cc4b01f874019cd3510d6f\"",
+      "lastModified": "Tue, 22 Sep 2026 01:28:36 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "sonner": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/sonner.json",
+      "type": "registry:ui",
+      "sha256": "4698083738679ab179f9a9d1a4faaf54119a53376d9476ec3abf7608571291ed",
+      "contentSha256": "5b47907c0d8b8c046cce305e477f3730c3d6294b6e4d2ebcdddc001cc7d82931",
+      "etag": "W/\"a5833a4c5caff60fdf0036ae55e9f625\"",
+      "lastModified": "Tue, 22 Sep 2026 00:52:41 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "spinner": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/spinner.json",
+      "type": "registry:ui",
+      "sha256": "79b3183f901d524a269dd59b42f463297a5cd89a4a490e41b4a16e5f89ac53b2",
+      "contentSha256": "80661ef8f9b3688b09b45cafd17d4c0b9a9b2c2f79576654885a4b5f5f1f3ec1",
+      "etag": "W/\"285bfe481445aa014d7b51d99157dc5b\"",
+      "lastModified": "Mon, 21 Sep 2026 09:15:54 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "switch": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/switch.json",
+      "type": "registry:ui",
+      "sha256": "06a822e33d5e8dc2462aeaae09bdac9608502f82f059bb5437931c7beb055b18",
+      "contentSha256": "525dae65e4ff6aed1394369a551d7b9dabd85f66506e84b3ce40390774eba398",
+      "etag": "W/\"2df0a2bd5c0515872540ad61b7a52533\"",
+      "lastModified": "Tue, 22 Sep 2026 00:52:41 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "table": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/table.json",
+      "type": "registry:ui",
+      "sha256": "f793e250e0278669c4c8dacc0bf517203fe697fb3b0baa8e2740c288f2cb4b6d",
+      "contentSha256": "cd8a2a8c2e0855f6263a911655b41d1191b4f29e95c3c67e0ab602aa2b2642f1",
+      "etag": "W/\"9ddc06c300f4b4b4bcfd05edd9be918c\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:34 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "tabs": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/tabs.json",
+      "type": "registry:ui",
+      "sha256": "208593183749c956c5d57f182653255ad276075728546dbc351399adc7ccd506",
+      "contentSha256": "3f882d61007b43252ce03dd07caa699fcf6b783f06ee5a6d914fa4aacdc09273",
+      "etag": "W/\"7995f54ff5032a6e33328370fe6f8300\"",
+      "lastModified": "Mon, 21 Sep 2026 09:12:32 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "textarea": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/textarea.json",
+      "type": "registry:ui",
+      "sha256": "eccb74dea429dfca2b2fa9d09fecac34764151861f440ec526c8cd448a9fbf4d",
+      "contentSha256": "5487cbf83c25f2139ea649fa3574d0c3f9991f2bdd6208278882c39620f0d4ab",
+      "etag": "W/\"db21560a802f428d666b1c5c06ba1d19\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:31 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "toast": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/toast.json",
+      "type": "registry:ui",
+      "sha256": "f73426ac05d8867e96b7cf8d7b24538c14bb186622173451990c114a2e2d5cc8",
+      "contentSha256": "081b8e55fd7cf6ad3d1fc87c3c8a0da11b66952c21fa95dc4bd553615c6dbe60",
+      "etag": "W/\"dd3245d7818580ea4279af36e1a2683c\"",
+      "lastModified": "Fri, 25 Sep 2026 02:02:26 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "toggle": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/toggle.json",
+      "type": "registry:ui",
+      "sha256": "2e72cb0a5419ed0e08972ed797cb94ea9a7e3fd463dfc6693c564ba77d54ba26",
+      "contentSha256": "4ca92799f14308746c74b209c149ed934537bc10687719dba21429332b090502",
+      "etag": "W/\"ce671a5190b12c8040b045a35d74e298\"",
+      "lastModified": "Mon, 21 Sep 2026 09:14:14 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "toggle-group": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/toggle-group.json",
+      "type": "registry:ui",
+      "sha256": "182dd6948f87e25d0c24970a990af910bdbe4431a35ed1763a1516c8f8447ac2",
+      "contentSha256": "09efc4edf7c75c96046af788d137af36d6bf2d386f9b9dbf5a6349c783ace321",
+      "etag": "W/\"c23e9c743fb2e10ab321a9eb34a4c883\"",
+      "lastModified": "Fri, 25 Sep 2026 01:18:09 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    },
+    "tooltip": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/tooltip.json",
+      "type": "registry:ui",
+      "sha256": "c555ec333b4f87a6006b110ee8108598a7668ed513fef7c6465afddde69f8672",
+      "contentSha256": "999f24433b0bb597cedfdef3a5de7f6dbfa5e819672ae66d581c0780e275766b",
+      "etag": "W/\"e64de03bbea6bb4a6297c733d77d440d\"",
+      "lastModified": "Mon, 21 Sep 2026 09:11:33 GMT",
+      "fetchedAt": "2026-09-25T11:42:51.028Z",
+      "upstreamCommit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+    }
+  }
+}
