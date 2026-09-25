@@ -27,6 +27,7 @@ export interface Classification {
 export const MAPPED_REACT_TYPES = new Set([
   "React.ComponentProps",
   "React.ComponentPropsWithoutRef",
+  "React.ComponentPropsWithRef",
   "React.ReactNode",
   "React.CSSProperties",
 ])

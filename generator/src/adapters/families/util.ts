@@ -249,7 +249,10 @@ export function replacePartTypes(
       part = ""
     } else if (name.startsWith(`${local}.`) && name.endsWith(".Props")) {
       part = name.slice(local.length + 1, -".Props".length)
-    } else if (name === "React.ComponentProps") {
+    } else if (
+      name === "React.ComponentProps" ||
+      name === "React.ComponentPropsWithRef"
+    ) {
       const [arg] = ref.getTypeArguments()
       const query = arg?.isKind(SyntaxKind.TypeQuery)
         ? arg.getExprName().getText()
@@ -266,6 +269,23 @@ export function replacePartTypes(
         step,
         `no type mapping for ${local}.${part}`
       )
+    const parent = ref.getParent()
+    // `React.ComponentPropsWithRef<typeof P.X> & P.X.Props` maps to one type.
+    if (
+      Node.isIntersectionTypeNode(parent) &&
+      parent
+        .getTypeNodes()
+        .some((node) => node !== ref && node.getText() === type)
+    ) {
+      parent.replaceWithText(
+        parent
+          .getTypeNodes()
+          .filter((node) => node !== ref)
+          .map((node) => node.getText())
+          .join(" & ")
+      )
+      continue
+    }
     ref.replaceWithText(type)
   }
 }

@@ -418,28 +418,46 @@
     },
     {
       "name": "combobox",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated-with-adapter",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/combobox.json",
         "contentSha256": "9e7c837ea45d8ca0a71cfc027aae84911c0d565c9289b6ca51b92edfa597fca7",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "Opening, filtering, keyboard highlighting and selection need the client script `/shadcn/combobox.js` (`<script type=\"module\" src=\"/shadcn/combobox.js\">`); without it the input shows the initial selection and the form submits the initial value. The list is a native popover placed with CSS anchor positioning.",
+        "Items come from `items` and the `ComboboxList` render function (or static children); values are compared by their string form (`itemToStringValue`, a `{ label, value }` object's value, or the string). Filtering follows Base UI's default (contains, ignoring case, accents and punctuation); `filter`, `limit`, `filteredItems` and `inline` are not supported. New chips of a multiple combobox are copied from the `ComboboxValue` render function's output for the first item, with its label replaced. Controlled state (`open`, `onValueChange`, `inputValue`) is not supported.",
+        "Accepts `class` instead of `className`.",
+        "`useComboboxAnchor()` returns a CSS anchor name for `ComboboxChips` (`ref`) and `ComboboxContent` (`anchor`) instead of a React ref."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react#Combobox",
         "react-hook:useRef",
         "react-runtime-api:React.useRef",
-        "react-type-unmapped:React.ComponentPropsWithRef",
-        "render-prop:ComboboxPrimitive.ChipRemove",
-        "render-prop:ComboboxPrimitive.Clear",
-        "render-prop:ComboboxPrimitive.Input",
-        "render-prop:ComboboxPrimitive.ItemIndicator"
+        "base-ui-primitive-mapped:@base-ui/react#Combobox",
+        "classname-to-class",
+        "cn-marker:cn-menu-target",
+        "cn-marker:cn-menu-translucent",
+        "component-dependency:button",
+        "component-dependency:input-group",
+        "component-import:button",
+        "component-import:input-group",
+        "icon-placeholder",
+        "lucide-icon:CheckIcon",
+        "lucide-icon:ChevronDownIcon",
+        "lucide-icon:XIcon",
+        "react-type-rewrite:React.ComponentPropsWithRef",
+        "render-composition:ComboboxPrimitive.ChipRemove",
+        "render-composition:ComboboxPrimitive.Clear",
+        "render-composition:ComboboxPrimitive.Input",
+        "render-composition:ComboboxPrimitive.ItemIndicator",
+        "render-composition:InputGroupButton",
+        "use-client-directive"
       ]
     },
     {
@@ -966,8 +984,7 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu",
-        "react-type-unmapped:React.ComponentPropsWithRef"
+        "base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu"
       ]
     },
     {

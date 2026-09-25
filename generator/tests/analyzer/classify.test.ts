@@ -233,6 +233,7 @@ describe("classification of the committed upstream snapshot", () => {
 
   // Built with an optional client script (script families, docs/adr/0025).
   const SCRIPTED = new Set([
+    "combobox",
     "context-menu",
     "dropdown-menu",
     "hover-card",
@@ -256,7 +257,7 @@ describe("classification of the committed upstream snapshot", () => {
     }
   )
 
-  test.each(["toast", "drawer", "combobox", "form"])(
+  test.each(["toast", "drawer", "navigation-menu", "form"])(
     "%s is unsupported",
     (name) => {
       expect(kindOf(name)).toBe("unsupported")

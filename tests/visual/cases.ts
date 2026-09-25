@@ -15,6 +15,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   accordion: "disclosure.spec.ts",
   checkbox: "controls.spec.ts",
   collapsible: "disclosure.spec.ts",
+  combobox: "combobox.spec.ts",
   "context-menu": "menu.spec.ts",
   "dropdown-menu": "menu.spec.ts",
   "hover-card": "hover.spec.ts",

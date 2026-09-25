@@ -1,9 +1,11 @@
 import { SyntaxKind } from "ts-morph"
 import { TransformError, type TransformStep } from "../context"
 
+// Refs are not supported (docs/adr/0007), so the `WithRef` variant maps the same way.
 const COMPONENT_PROPS = new Set([
   "React.ComponentProps",
   "React.ComponentPropsWithoutRef",
+  "React.ComponentPropsWithRef",
   "useRender.ComponentProps",
 ])
 

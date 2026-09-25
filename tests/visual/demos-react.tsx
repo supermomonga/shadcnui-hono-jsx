@@ -19,6 +19,19 @@ import {
 } from "./.upstream/alert-dialog"
 import { Button } from "./.upstream/button"
 import {
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxValue,
+  useComboboxAnchor,
+} from "./.upstream/combobox"
+import {
   ContextMenu,
   ContextMenuCheckboxItem,
   ContextMenuContent,
@@ -498,6 +511,82 @@ function HoverDemo() {
   )
 }
 
+const FRAMEWORKS = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"]
+
+function FrameworkList() {
+  return (
+    <ComboboxContent>
+      <ComboboxEmpty>No items found.</ComboboxEmpty>
+      <ComboboxList>
+        {(item: string) => (
+          <ComboboxItem key={item} value={item}>
+            {item}
+          </ComboboxItem>
+        )}
+      </ComboboxList>
+    </ComboboxContent>
+  )
+}
+
+function ComboboxChipsDemo() {
+  const anchor = useComboboxAnchor()
+  return (
+    <Combobox
+      multiple
+      autoHighlight
+      items={FRAMEWORKS}
+      defaultValue={["Next.js"]}
+      name="stack"
+    >
+      <ComboboxChips ref={anchor} className="w-full">
+        <ComboboxValue>
+          {(values: string[]) => (
+            <>
+              {values.map((value) => (
+                <ComboboxChip key={value}>{value}</ComboboxChip>
+              ))}
+              <ComboboxChipsInput />
+            </>
+          )}
+        </ComboboxValue>
+      </ComboboxChips>
+      <ComboboxContent anchor={anchor}>
+        <ComboboxEmpty>No items found.</ComboboxEmpty>
+        <ComboboxList>
+          {(item: string) => (
+            <ComboboxItem key={item} value={item}>
+              {item}
+            </ComboboxItem>
+          )}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  )
+}
+
+function ComboboxDemo() {
+  return (
+    <main className="flex flex-col gap-8 p-8">
+      <form id="combobox-form" className="flex w-64 flex-col gap-8">
+        <Combobox items={FRAMEWORKS} name="framework">
+          <ComboboxInput placeholder="Select a framework" />
+          <FrameworkList />
+        </Combobox>
+        <Combobox items={FRAMEWORKS} defaultValue="Remix" name="clearable">
+          <ComboboxInput placeholder="Clearable" showClear />
+          <FrameworkList />
+        </Combobox>
+        <div className="w-80">
+          <ComboboxChipsDemo />
+        </div>
+      </form>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main className="flex w-96 flex-col gap-6 p-8">
@@ -593,6 +682,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   select: () => <SelectDemo />,
   slider: () => <SliderDemo />,
   "input-group": () => <InputGroupDemo />,
+  combobox: () => <ComboboxDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,

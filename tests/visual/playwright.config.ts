@@ -15,6 +15,7 @@ export default defineConfig({
     "hover.spec.ts",
     "slider.spec.ts",
     "input-group.spec.ts",
+    "combobox.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

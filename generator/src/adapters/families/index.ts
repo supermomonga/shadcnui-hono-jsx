@@ -1,4 +1,5 @@
 import type { ComponentAdapter } from "../components"
+import { comboboxFamily } from "./combobox"
 import {
   checkboxFamily,
   radioFamily,
@@ -26,6 +27,7 @@ export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   alertDialogFamily,
   checkboxFamily,
   collapsibleFamily,
+  comboboxFamily,
   contextMenuFamily,
   dialogFamily,
   menubarFamily,
