@@ -30,7 +30,7 @@ Base UI, or Radix runtime in the generated components.
 - Tailwind CSS v4 and the shadcn/ui design tokens
 - Source-code ownership via a shadcn-compatible registry
 - Regenerated from upstream shadcn/ui instead of hand-maintained forks
-- JavaScript only where interactive behavior requires it (none so far, including Dialog, AlertDialog and Sheet)
+- JavaScript only where interactive behavior requires it (none so far, including Dialog, Sheet and Accordion)
 
 ## Requirements
 
@@ -131,6 +131,10 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
   Invoker Commands, so they need no JavaScript but require Chrome 135,
   Firefox 144 or Safari 26.2 or later, and have no controlled `open` state.
   Use `<DialogTrigger render={<Button variant="outline" />}>` as upstream does.
+- Accordion and Collapsible are native `<details>`/`<summary>` elements: no
+  JavaScript and no open/close animation. `CollapsibleTrigger` must be the first
+  child of `Collapsible` (everything else collapses) and is styled with
+  `class` instead of `render`.
 
 Per-component details are in the table below.
 
@@ -141,6 +145,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 
 | Component | Status | Conversion | Visual parity | Known differences |
 | --- | --- | --- | --- | --- |
+| accordion | experimental | generated | verified | Built on native `<details>`/`<summary>`: no JavaScript. Items share a `name` so only one is open unless `multiple` is set (Baseline 2024: Chrome 120, Firefox 130, Safari 17.2). Controlled state (`value`, `onValueChange`) is not supported; `defaultValue` opens items by their `value`. The trigger is the `<summary>` (no `h3` around it; browsers expose the expanded state without `aria-expanded`), and arrow keys do not move between items. Opening and closing are not animated. Closed panels stay in the page, so find-in-page can reveal them. Accepts `class` instead of `className`. |
 | alert | experimental | generated | verified | Accepts `class` instead of `className`. |
 | alert-dialog | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing has no exit animation; like Base UI, outside clicks do not close it. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | aspect-ratio | experimental | generated | verified | Accepts `class` instead of `className`. |
@@ -151,6 +156,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | button | experimental | generated | verified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` is supported on the server; a non-button target such as `render={<a href="/docs" />}` keeps its native role (no `role="button"` or `tabindex`), since the client-side button behavior Base UI adds is not shipped. `focusableWhenDisabled` is not supported. Accepts `class` instead of `className`. |
 | button-group | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
 | card | experimental | generated | verified | Accepts `class` instead of `className`. |
+| collapsible | experimental | generated | verified | Built on native `<details>`/`<summary>`: no JavaScript. `CollapsibleTrigger` must be the first child of `Collapsible` (rendering throws otherwise), and every other child is hidden while closed, not only `CollapsibleContent`. `CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants). Accepts `class` instead of `className`. |
 | dialog | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | empty | experimental | generated | verified | Accepts `class` instead of `className`. |
 | field | experimental | generated | verified | Accepts `class` instead of `className`. |
@@ -171,17 +177,15 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | textarea | experimental | generated | verified | Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (35 upstream components)</summary>
+<summary>Not yet available (33 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
-| accordion | unsupported | `base-ui-primitive-unmapped:@base-ui/react/accordion#Accordion` |
 | avatar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/avatar#Avatar` |
 | calendar | unsupported | `react-hook:useEffect`, `react-hook:useRef`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useRef`, `unknown-import:react-day-picker` |
 | carousel | unsupported | `event-handler:onClick`, `event-handler:onKeyDownCapture`, `react-hook:useCarousel`, `react-hook:useContext`, `react-hook:useEffect`, `react-hook:useEmblaCarousel`, `react-hook:useState`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `react-type-unmapped:React.KeyboardEvent`, `unknown-import:embla-carousel-react` |
 | chart | unsupported | `react-hook:useChart`, `react-hook:useContext`, `react-hook:useId`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useId`, `react-type-unmapped:React.ComponentType`, `unknown-import:recharts` |
 | checkbox | unsupported | `base-ui-primitive-unmapped:@base-ui/react/checkbox#Checkbox` |
-| collapsible | unsupported | `base-ui-primitive-unmapped:@base-ui/react/collapsible#Collapsible` |
 | combobox | unsupported | `base-ui-primitive-unmapped:@base-ui/react#Combobox`, `react-hook:useRef`, `react-runtime-api:React.useRef`, `react-type-unmapped:React.ComponentPropsWithRef`, `registry-dependency:input-group`, `registry-import:@/registry/base-nova/ui/input-group`, `render-prop:ComboboxPrimitive.ChipRemove`, `render-prop:ComboboxPrimitive.Clear`, `render-prop:ComboboxPrimitive.Input`, `render-prop:ComboboxPrimitive.ItemIndicator`, `render-prop:InputGroupButton` |
 | command | unsupported | `registry-dependency:input-group`, `registry-import:@/registry/base-nova/ui/input-group`, `unknown-import:cmdk` |
 | context-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/context-menu#ContextMenu` |

@@ -7,24 +7,40 @@
  */
 
 /**
- * Components whose interactive state is checked in a browser spec instead of
- * static cases: screenshots of the open state against upstream and
- * keyboard/focus/ARIA behavior.
+ * Components whose interactive behavior (keyboard, focus, ARIA, no scripts) is
+ * checked in a browser spec; modal specs also compare open-state screenshots
+ * with upstream.
  */
 export const BROWSER_SPECS: Readonly<Record<string, string>> = {
+  accordion: "disclosure.spec.ts",
+  collapsible: "disclosure.spec.ts",
   "alert-dialog": "modals.spec.ts",
   dialog: "modals.spec.ts",
   sheet: "modals.spec.ts",
 }
 
-/** A prop value may itself be an element (for `render={<a />}`). */
-export type CaseProps = Record<string, string | number | boolean | CaseElement>
+/** A prop value may itself be an element (for `render={<a />}`) or a list of strings. */
+export type CaseProps = Record<
+  string,
+  string | number | boolean | CaseElement | readonly string[]
+>
 export type CaseNode = string | CaseElement
 export type CaseElement = [
   type: string,
   props: CaseProps,
   ...children: CaseNode[],
 ]
+
+/** Element tuples have a props object in second position; string lists do not. */
+export function isCaseElement(value: unknown): value is CaseElement {
+  return (
+    Array.isArray(value) &&
+    typeof value[0] === "string" &&
+    typeof value[1] === "object" &&
+    value[1] !== null &&
+    !Array.isArray(value[1])
+  )
+}
 
 export interface VisualCase {
   id: string
@@ -46,6 +62,20 @@ const stack = (...children: CaseNode[]): CaseElement => [
   { class: "flex flex-col gap-3" },
   ...children,
 ]
+
+const accordionItem = (
+  value: string,
+  trigger: string,
+  content: string
+): CaseElement => [
+  "AccordionItem",
+  { value },
+  ["AccordionTrigger", {}, trigger],
+  ["AccordionContent", {}, ["p", {}, content]],
+]
+
+const collapsibleTrigger =
+  "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium"
 
 const buttonVariants = [
   "default",
@@ -617,6 +647,79 @@ export const VISUAL_CASES: VisualCase[] = [
         { value: 7, max: 20 },
         ["ProgressLabel", {}, "Steps"],
         ["ProgressValue", {}],
+      ]
+    ),
+  },
+  {
+    id: "accordion/default",
+    component: "accordion",
+    node: [
+      "Accordion",
+      { defaultValue: ["shipping"] },
+      accordionItem(
+        "product",
+        "Product Information",
+        "Our flagship product combines cutting-edge technology with sleek design."
+      ),
+      accordionItem(
+        "shipping",
+        "Shipping Details",
+        "We offer worldwide shipping through trusted courier partners."
+      ),
+      accordionItem(
+        "returns",
+        "Return Policy",
+        "We stand behind our products with a comprehensive 30-day return policy."
+      ),
+    ],
+  },
+  {
+    id: "accordion/multiple",
+    component: "accordion",
+    node: [
+      "Accordion",
+      { multiple: true, defaultValue: ["one", "two"] },
+      accordionItem(
+        "one",
+        "Is it accessible?",
+        "Yes. It uses native disclosure."
+      ),
+      accordionItem(
+        "two",
+        "Is it styled?",
+        "Yes. It matches the other components."
+      ),
+      [
+        "AccordionItem",
+        { value: "three", disabled: true },
+        ["AccordionTrigger", {}, "Is it disabled?"],
+        ["AccordionContent", {}, "Yes."],
+      ],
+    ],
+  },
+  {
+    id: "collapsible/states",
+    component: "collapsible",
+    node: stack(
+      [
+        "Collapsible",
+        { defaultOpen: true },
+        ["CollapsibleTrigger", { class: collapsibleTrigger }, "Order #4189"],
+        [
+          "CollapsibleContent",
+          { class: "mt-2 rounded-md border px-4 py-2 text-sm" },
+          "Shipped on September 12",
+        ],
+      ],
+      [
+        "Collapsible",
+        {},
+        ["CollapsibleTrigger", { class: collapsibleTrigger }, "Order #4190"],
+        [
+          "CollapsibleContent",
+          { class: "mt-2 rounded-md border px-4 py-2 text-sm" },
+          "Processing",
+        ],
       ]
     ),
   },

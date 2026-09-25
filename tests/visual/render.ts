@@ -13,9 +13,16 @@ import path from "node:path"
 import { jsx } from "hono/jsx"
 import { createElement, type ReactNode } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
+import { findFamilyRule } from "../../generator/src/adapters/families"
+import { collectFacts } from "../../generator/src/analyzer/facts"
 import { UpstreamStore } from "../../generator/src/upstream/store"
 import { config } from "../../generator.config"
-import { type CaseNode, type CaseProps, VISUAL_CASES } from "./cases"
+import {
+  type CaseNode,
+  type CaseProps,
+  isCaseElement,
+  VISUAL_CASES,
+} from "./cases"
 
 const HERE = import.meta.dir
 const ROOT = path.resolve(HERE, "../..")
@@ -130,7 +137,7 @@ function mapElementProps(
   return Object.fromEntries(
     Object.entries(props).map(([key, value]) => [
       key,
-      Array.isArray(value) ? convert(value) : value,
+      isCaseElement(value) ? convert(value) : value,
     ])
   )
 }
@@ -182,6 +189,27 @@ function section(
   return `<section data-case="${id}@${mode}" class="${mode === "dark" ? "dark" : ""}" style="width:${width}px"><div class="bg-background p-4 text-foreground">${html}</div></section>`
 }
 
+/**
+ * Components built on a `native-structure` family (docs/adr/0019): native
+ * elements replace Base UI's markup, so only pixels and icons are compared.
+ */
+function nativeStructureComponents(): Set<string> {
+  const store = new UpstreamStore(ROOT, config.style)
+  return new Set(
+    config.components.filter((name) =>
+      collectFacts(store.readItem(name)).files.some((file) =>
+        file.imports.some((imp) =>
+          imp.named.some(
+            (named) =>
+              findFamilyRule(imp.module, named.name)?.domParity ===
+              "native-structure"
+          )
+        )
+      )
+    )
+  )
+}
+
 async function main(): Promise<void> {
   writeUpstreamSources()
   const hono = await loadExports(path.join(ROOT, "components", "ui"))
@@ -189,13 +217,18 @@ async function main(): Promise<void> {
 
   const honoSections: string[] = []
   const reactSections: string[] = []
-  const ids: string[] = []
+  const nativeStructure = nativeStructureComponents()
+  const ids: { id: string; compareDom: boolean }[] = []
   for (const visualCase of VISUAL_CASES) {
     const width = visualCase.width ?? 520
-    const honoHtml = String(await toHono(visualCase.node, hono))
     const reactHtml = renderToStaticMarkup(toReact(visualCase.node, react))
     for (const mode of MODES) {
-      ids.push(`${visualCase.id}@${mode}`)
+      // Rendered per mode so generated ids (and <details name> groups) stay unique on the page.
+      const honoHtml = String(await toHono(visualCase.node, hono))
+      ids.push({
+        id: `${visualCase.id}@${mode}`,
+        compareDom: !nativeStructure.has(visualCase.component),
+      })
       honoSections.push(section(visualCase.id, mode, width, honoHtml))
       reactSections.push(section(visualCase.id, mode, width, reactHtml))
     }

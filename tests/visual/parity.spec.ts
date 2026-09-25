@@ -12,9 +12,9 @@ import { BASE_UI_PRIMITIVES } from "../../generator/src/adapters/primitives/base
  * components against upstream shadcn/ui (React). Run `bun render.ts` first.
  */
 const OUT = path.join(import.meta.dirname, ".output")
-const ids = JSON.parse(
+const cases = JSON.parse(
   readFileSync(path.join(OUT, "cases.json"), "utf8")
-) as string[]
+) as { id: string; compareDom: boolean }[]
 
 /**
  * Attributes Base UI renders that generated components deliberately omit,
@@ -76,7 +76,7 @@ test.beforeAll(async ({ browser }) => {
   await react.goto(pathToFileURL(path.join(OUT, "react.html")).href)
 })
 
-for (const id of ids) {
+for (const { id, compareDom } of cases) {
   // biome-ignore lint/correctness/noEmptyPattern: Playwright requires a destructuring pattern for fixtures.
   test(id, async ({}, testInfo) => {
     const selector = `[data-case="${id}"]`
@@ -86,20 +86,29 @@ for (const id of ids) {
     ])
     // The DOM must match upstream except for the declared omissions. Only the
     // upstream side is normalized, so extra attributes on ours still fail.
-    expect(
-      await domTree(hono, selector, []),
-      "DOM must match upstream"
-    ).toEqual(await domTree(react, selector, OMITTED))
+    // Native-structure families (<details>, <dialog>) are compared by pixels.
+    if (compareDom) {
+      expect(
+        await domTree(hono, selector, []),
+        "DOM must match upstream"
+      ).toEqual(await domTree(react, selector, OMITTED))
+    }
 
-    // Icons must match lucide-react's SVG exactly (attributes and shapes).
+    // Icons must match lucide-react's SVG exactly (attributes and shapes);
+    // native-structure families map state variants in classes, so classes
+    // are left to the pixel comparison there.
     const svgs = (page: Page) =>
-      page.locator(`${selector} svg`).evaluateAll((elements) =>
-        elements.map((svg) => ({
-          attributes: Object.fromEntries(
-            [...svg.attributes].map((a) => [a.name, a.value])
-          ),
-          content: svg.innerHTML,
-        }))
+      page.locator(`${selector} svg`).evaluateAll(
+        (elements, withClass) =>
+          elements.map((svg) => ({
+            attributes: Object.fromEntries(
+              [...svg.attributes]
+                .filter((a) => withClass || a.name !== "class")
+                .map((a) => [a.name, a.value])
+            ),
+            content: svg.innerHTML,
+          })),
+        compareDom
       )
     expect(
       await svgs(hono),

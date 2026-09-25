@@ -4,21 +4,30 @@
   "components": [
     {
       "name": "accordion",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/accordion.json",
         "contentSha256": "47959c713d540b59f84dc9b5689b2bc531fa67314ba3133337e518bd7e54143a",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Built on native `<details>`/`<summary>`: no JavaScript. Items share a `name` so only one is open unless `multiple` is set (Baseline 2024: Chrome 120, Firefox 130, Safari 17.2).",
+        "Controlled state (`value`, `onValueChange`) is not supported; `defaultValue` opens items by their `value`. The trigger is the `<summary>` (no `h3` around it; browsers expose the expanded state without `aria-expanded`), and arrow keys do not move between items.",
+        "Opening and closing are not animated. Closed panels stay in the page, so find-in-page can reveal them.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/accordion#Accordion"
+        "base-ui-primitive-mapped:@base-ui/react/accordion#Accordion",
+        "classname-to-class",
+        "icon-placeholder",
+        "lucide-icon:ChevronDownIcon",
+        "lucide-icon:ChevronUpIcon"
       ]
     },
     {
@@ -380,21 +389,27 @@
     },
     {
       "name": "collapsible",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/collapsible.json",
         "contentSha256": "3b60084afb5667cb11a4f7b40bbe66585cdc70f2cb26d698e551f055cda91a4d",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Built on native `<details>`/`<summary>`: no JavaScript. `CollapsibleTrigger` must be the first child of `Collapsible` (rendering throws otherwise), and every other child is hidden while closed, not only `CollapsibleContent`.",
+        "`CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants).",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/collapsible#Collapsible"
+        "base-ui-primitive-mapped:@base-ui/react/collapsible#Collapsible",
+        "classname-to-class",
+        "use-client-directive"
       ]
     },
     {

@@ -37,6 +37,36 @@
       }
     },
     {
+      "name": "accordion",
+      "type": "registry:item",
+      "title": "Accordion",
+      "description": "Hono JSX port of the shadcn/ui base-nova accordion component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/accordion.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/accordion.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "accordion",
+          "style": "base-nova",
+          "contentSha256": "47959c713d540b59f84dc9b5689b2bc531fa67314ba3133337e518bd7e54143a",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "alert",
       "type": "registry:item",
       "title": "Alert",
@@ -348,6 +378,36 @@
           "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
         },
         "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:item",
+      "title": "Collapsible",
+      "description": "Hono JSX port of the shadcn/ui base-nova collapsible component.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/collapsible.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/collapsible.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "collapsible",
+          "style": "base-nova",
+          "contentSha256": "3b60084afb5667cb11a4f7b40bbe66585cdc70f2cb26d698e551f055cda91a4d",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
         "mode": "generated"
       }
     },

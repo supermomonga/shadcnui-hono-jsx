@@ -9,6 +9,7 @@ export const config: GeneratorConfig = {
   licenseUrl: "https://raw.githubusercontent.com/shadcn-ui/ui/main/LICENSE.md",
   trackedTypes: ["registry:ui"],
   components: [
+    "accordion",
     "alert",
     "alert-dialog",
     "aspect-ratio",
@@ -19,6 +20,7 @@ export const config: GeneratorConfig = {
     "button",
     "button-group",
     "card",
+    "collapsible",
     "dialog",
     "empty",
     "field",
