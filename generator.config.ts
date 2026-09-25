@@ -10,6 +10,7 @@ export const config: GeneratorConfig = {
   trackedTypes: ["registry:ui"],
   components: [
     "alert",
+    "alert-dialog",
     "aspect-ratio",
     "attachment",
     "badge",
@@ -31,6 +32,7 @@ export const config: GeneratorConfig = {
     "pagination",
     "progress",
     "separator",
+    "sheet",
     "skeleton",
     "spinner",
     "table",

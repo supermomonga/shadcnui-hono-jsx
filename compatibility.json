@@ -43,22 +43,34 @@
     },
     {
       "name": "alert-dialog",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/alert-dialog.json",
         "contentSha256": "421061e714648e07c617f119b51db94c799b56eebf37545290939b7a780c7b27",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2).",
+        "Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant=\"outline\" />}`.",
+        "The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing has no exit animation; like Base UI, outside clicks do not close it.",
+        "Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/alert-dialog#AlertDialog",
-        "render-prop:AlertDialogPrimitive.Close"
+        "base-ui-primitive-mapped:@base-ui/react/alert-dialog#AlertDialog",
+        "classname-to-class",
+        "cn-marker:cn-font-heading",
+        "component-dependency:button",
+        "component-import:button",
+        "react-type-rewrite:React.ComponentProps",
+        "render-composition:AlertDialogPrimitive.Close",
+        "use-client-directive"
       ]
     },
     {
@@ -457,7 +469,7 @@
     {
       "name": "dialog",
       "status": "experimental",
-      "conversion": "generated-with-adapter",
+      "conversion": "generated",
       "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/dialog.json",
@@ -469,15 +481,14 @@
       "accessibility": "verified",
       "clientJs": "none",
       "knownDifferences": [
-        "Accepts `class` instead of `className`.",
         "Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2).",
-        "Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). `DialogTrigger` and `DialogClose` support `render`, e.g. `render={<Button variant=\"outline\" />}`.",
-        "The overlay is the dialog's `::backdrop` (DialogOverlay renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported.",
-        "Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup."
+        "Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant=\"outline\" />}`.",
+        "The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported.",
+        "Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup.",
+        "Accepts `class` instead of `className`."
       ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog",
-        "render-prop:DialogPrimitive.Close",
+        "base-ui-primitive-mapped:@base-ui/react/dialog#Dialog",
         "classname-to-class",
         "cn-marker:cn-font-heading",
         "component-dependency:button",
@@ -485,6 +496,7 @@
         "icon-placeholder",
         "lucide-icon:XIcon",
         "react-type-rewrite:React.ComponentProps",
+        "render-composition:DialogPrimitive.Close",
         "use-client-directive"
       ]
     },
@@ -1075,22 +1087,36 @@
     },
     {
       "name": "sheet",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/sheet.json",
         "contentSha256": "51102b31cae673de5682e63b8a0e35c8ec421f9e93010634ceb9ac41c5c41efd",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2).",
+        "Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant=\"outline\" />}`.",
+        "The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported.",
+        "Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog",
-        "render-prop:SheetPrimitive.Close"
+        "base-ui-primitive-mapped:@base-ui/react/dialog#Dialog",
+        "classname-to-class",
+        "cn-marker:cn-font-heading",
+        "component-dependency:button",
+        "component-import:button",
+        "icon-placeholder",
+        "lucide-icon:XIcon",
+        "react-type-rewrite:React.ComponentProps",
+        "render-composition:SheetPrimitive.Close",
+        "use-client-directive"
       ]
     },
     {
@@ -1120,11 +1146,9 @@
         "react-runtime-api:React.useContext",
         "react-runtime-api:React.useEffect",
         "react-runtime-api:React.useState",
-        "registry-dependency:sheet",
         "registry-dependency:tooltip",
         "registry-dependency:use-mobile",
         "registry-import:@/registry/base-nova/hooks/use-mobile",
-        "registry-import:@/registry/base-nova/ui/sheet",
         "registry-import:@/registry/base-nova/ui/tooltip",
         "render-prop:TooltipTrigger",
         "use-render-noncanonical"

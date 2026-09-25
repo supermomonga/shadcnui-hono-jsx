@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test"
 
 export default defineConfig({
   testDir: ".",
-  testMatch: ["parity.spec.ts", "dialog.spec.ts"],
+  testMatch: ["parity.spec.ts", "modals.spec.ts"],
   outputDir: "test-results",
   fullyParallel: false,
   workers: 1,

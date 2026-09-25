@@ -223,8 +223,8 @@ async function main(): Promise<void> {
       '@source "../.upstream";',
       '@source "../cases.ts";',
       '@source "../render.ts";',
-      '@source "../dialog-hono.tsx";',
-      '@source "../dialog-react.tsx";',
+      '@source "../modals-hono.tsx";',
+      '@source "../modals-react.tsx";',
       "",
     ].join("\n")
   )
@@ -239,22 +239,20 @@ async function main(): Promise<void> {
     { cwd: OUT, stdout: "pipe", stderr: "pipe" }
   )
   if (tailwind.exitCode !== 0) throw new Error(tailwind.stderr.toString())
-  await renderDialogPages()
+  await renderModalPages()
   console.log(
     `Rendered ${ids.length} cases to ${path.relative(process.cwd(), OUT)}`
   )
 }
 
-/** Behavior/parity pages: server-rendered Hono dialog and client-rendered upstream dialog. */
-async function renderDialogPages(): Promise<void> {
-  const { DialogDemo } = await import("./dialog-hono")
-  const head = `<meta charset="utf-8"><link rel="stylesheet" href="style.css">`
-  writeFileSync(
-    path.join(OUT, "dialog-hono.html"),
-    `<!doctype html><html lang="en"><head>${head}<title>Dialog (Hono)</title></head><body>${String(await DialogDemo())}</body></html>\n`
-  )
+/**
+ * Behavior/parity pages per modal demo: `<name>-hono.html` (server-rendered,
+ * no scripts) and `<name>-react.html` (upstream, rendered in the browser).
+ */
+async function renderModalPages(): Promise<void> {
+  const { MODAL_DEMOS } = await import("./modals-hono")
   const build = await Bun.build({
-    entrypoints: [path.join(HERE, "dialog-react.tsx")],
+    entrypoints: [path.join(HERE, "modals-react.tsx")],
     outdir: OUT,
     target: "browser",
     // Classic script: module scripts do not load from file:// URLs.
@@ -262,11 +260,18 @@ async function renderDialogPages(): Promise<void> {
     define: { "process.env.NODE_ENV": '"production"' },
   })
   if (!build.success)
-    throw new AggregateError(build.logs, "dialog-react build failed")
-  writeFileSync(
-    path.join(OUT, "dialog-react.html"),
-    `<!doctype html><html lang="en"><head>${head}<title>Dialog (upstream)</title></head><body><div id="root"></div><script src="dialog-react.js"></script></body></html>\n`
-  )
+    throw new AggregateError(build.logs, "modals-react build failed")
+  const head = `<meta charset="utf-8"><link rel="stylesheet" href="style.css">`
+  for (const [name, demo] of Object.entries(MODAL_DEMOS)) {
+    writeFileSync(
+      path.join(OUT, `${name}-hono.html`),
+      `<!doctype html><html lang="en"><head>${head}<title>${name} (Hono)</title></head><body>${String(await demo())}</body></html>\n`
+    )
+    writeFileSync(
+      path.join(OUT, `${name}-react.html`),
+      `<!doctype html><html lang="en"><head>${head}<title>${name} (upstream)</title></head><body><div id="root" data-demo="${name}"></div><script src="modals-react.js"></script></body></html>\n`
+    )
+  }
 }
 
 await main()

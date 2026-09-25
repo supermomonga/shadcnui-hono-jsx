@@ -30,7 +30,7 @@ Base UI, or Radix runtime in the generated components.
 - Tailwind CSS v4 and the shadcn/ui design tokens
 - Source-code ownership via a shadcn-compatible registry
 - Regenerated from upstream shadcn/ui instead of hand-maintained forks
-- JavaScript only where interactive behavior requires it (none so far, including Dialog)
+- JavaScript only where interactive behavior requires it (none so far, including Dialog, AlertDialog and Sheet)
 
 ## Requirements
 
@@ -127,10 +127,10 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
   `--font-sans`.
 - Icons are inlined SVG from Lucide (identical to lucide-react's output), not
   a runtime icon package.
-- Dialog is a native `<dialog>` opened with Invoker Commands, so it needs no
-  JavaScript but requires Chrome 135, Firefox 144 or Safari 26.2 or later, and
-  has no controlled `open` state. Use
-  `<DialogTrigger render={<Button variant="outline" />}>` as upstream does.
+- Dialog, AlertDialog and Sheet are native `<dialog>` elements opened with
+  Invoker Commands, so they need no JavaScript but require Chrome 135,
+  Firefox 144 or Safari 26.2 or later, and have no controlled `open` state.
+  Use `<DialogTrigger render={<Button variant="outline" />}>` as upstream does.
 
 Per-component details are in the table below.
 
@@ -142,6 +142,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | Component | Status | Conversion | Visual parity | Known differences |
 | --- | --- | --- | --- | --- |
 | alert | experimental | generated | verified | Accepts `class` instead of `className`. |
+| alert-dialog | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing has no exit animation; like Base UI, outside clicks do not close it. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | aspect-ratio | experimental | generated | verified | Accepts `class` instead of `className`. |
 | attachment | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
 | badge | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
@@ -150,7 +151,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | button | experimental | generated | verified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` is supported on the server; a non-button target such as `render={<a href="/docs" />}` keeps its native role (no `role="button"` or `tabindex`), since the client-side button behavior Base UI adds is not shipped. `focusableWhenDisabled` is not supported. Accepts `class` instead of `className`. |
 | button-group | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
 | card | experimental | generated | verified | Accepts `class` instead of `className`. |
-| dialog | experimental | generated-with-adapter | verified | Accepts `class` instead of `className`. Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). `DialogTrigger` and `DialogClose` support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (DialogOverlay renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. |
+| dialog | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | empty | experimental | generated | verified | Accepts `class` instead of `className`. |
 | field | experimental | generated | verified | Accepts `class` instead of `className`. |
 | input | experimental | generated | verified | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
@@ -163,18 +164,18 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | pagination | experimental | generated | verified | Accepts `class` instead of `className`. |
 | progress | experimental | generated | verified | Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported. Accepts `class` instead of `className`. |
 | separator | experimental | generated | verified | Accepts `class` instead of `className`. |
+| sheet | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | skeleton | experimental | generated | verified | Accepts `class` instead of `className`. |
 | spinner | experimental | generated | verified | Accepts `class` instead of `className`. |
 | table | experimental | generated | verified | Accepts `class` instead of `className`. |
 | textarea | experimental | generated | verified | Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (37 upstream components)</summary>
+<summary>Not yet available (35 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
 | accordion | unsupported | `base-ui-primitive-unmapped:@base-ui/react/accordion#Accordion` |
-| alert-dialog | unsupported | `base-ui-primitive-unmapped:@base-ui/react/alert-dialog#AlertDialog`, `render-prop:AlertDialogPrimitive.Close` |
 | avatar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/avatar#Avatar` |
 | calendar | unsupported | `react-hook:useEffect`, `react-hook:useRef`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useRef`, `unknown-import:react-day-picker` |
 | carousel | unsupported | `event-handler:onClick`, `event-handler:onKeyDownCapture`, `react-hook:useCarousel`, `react-hook:useContext`, `react-hook:useEffect`, `react-hook:useEmblaCarousel`, `react-hook:useState`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `react-type-unmapped:React.KeyboardEvent`, `unknown-import:embla-carousel-react` |
@@ -200,8 +201,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | resizable | unsupported | `unknown-import:react-resizable-panels` |
 | scroll-area | unsupported | `base-ui-primitive-unmapped:@base-ui/react/scroll-area#ScrollArea` |
 | select | unsupported | `base-ui-primitive-unmapped:@base-ui/react/select#Select`, `render-prop:SelectPrimitive.Icon`, `render-prop:SelectPrimitive.ItemIndicator` |
-| sheet | unsupported | `base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog`, `render-prop:SheetPrimitive.Close` |
-| sidebar | unsupported | `event-handler:onClick`, `event-handler:onOpenChange`, `react-hook:useContext`, `react-hook:useEffect`, `react-hook:useIsMobile`, `react-hook:useSidebar`, `react-hook:useState`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `registry-dependency:sheet`, `registry-dependency:tooltip`, `registry-dependency:use-mobile`, `registry-import:@/registry/base-nova/hooks/use-mobile`, `registry-import:@/registry/base-nova/ui/sheet`, `registry-import:@/registry/base-nova/ui/tooltip`, `render-prop:TooltipTrigger`, `use-render-noncanonical` |
+| sidebar | unsupported | `event-handler:onClick`, `event-handler:onOpenChange`, `react-hook:useContext`, `react-hook:useEffect`, `react-hook:useIsMobile`, `react-hook:useSidebar`, `react-hook:useState`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `registry-dependency:tooltip`, `registry-dependency:use-mobile`, `registry-import:@/registry/base-nova/hooks/use-mobile`, `registry-import:@/registry/base-nova/ui/tooltip`, `render-prop:TooltipTrigger`, `use-render-noncanonical` |
 | slider | unsupported | `base-ui-primitive-unmapped:@base-ui/react/slider#Slider` |
 | sonner | unsupported | `react-hook:useTheme`, `unknown-import:next-themes`, `unknown-import:sonner` |
 | switch | unsupported | `base-ui-primitive-unmapped:@base-ui/react/switch#Switch` |

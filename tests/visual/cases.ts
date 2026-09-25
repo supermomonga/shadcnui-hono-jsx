@@ -12,7 +12,9 @@
  * keyboard/focus/ARIA behavior.
  */
 export const BROWSER_SPECS: Readonly<Record<string, string>> = {
-  dialog: "dialog.spec.ts",
+  "alert-dialog": "modals.spec.ts",
+  dialog: "modals.spec.ts",
+  sheet: "modals.spec.ts",
 }
 
 /** A prop value may itself be an element (for `render={<a />}`). */
