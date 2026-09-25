@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
 import { type GeneratorConfig, indexUrl, itemUrl } from "../config"
 import { type FetchLike, fetchText } from "./fetch"
 import { resolveUpstreamHead } from "./github"
@@ -37,6 +37,11 @@ export interface ItemChange {
   after: UpstreamItem | null
 }
 
+export interface TextChange {
+  before: string | null
+  after: string
+}
+
 export interface SyncResult {
   added: ItemChange[]
   changed: ItemChange[]
@@ -45,6 +50,12 @@ export interface SyncResult {
   indexChanged: boolean
   themeChanged: boolean
   tailwindCssChanged: boolean
+  /** Canonical theme JSON before/after, when it changed. */
+  theme: TextChange | null
+  /** Vendored tailwind.css before/after (with package versions), when it changed. */
+  tailwindCss:
+    | (TextChange & { fromVersion: string | null; toVersion: string })
+    | null
   lockChanged: boolean
 }
 
@@ -173,6 +184,7 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
 
   // Theme.
   let themeChanged = false
+  let themeChange: TextChange | null = null
   const themeResult = await fetchText(config.themeUrl, {
     etag: etagFor(lock.theme, store.themeFile),
     fetchImpl,
@@ -183,6 +195,10 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     const text = toJsonText(value)
     const hash = sha256(text)
     if (lock.theme?.sha256 !== hash || !existsSync(store.themeFile)) {
+      const before = existsSync(store.themeFile)
+        ? readFileSync(store.themeFile, "utf8")
+        : null
+      themeChange = { before, after: text }
       store.writeText(store.themeFile, text)
       lock.theme = {
         url: config.themeUrl,
@@ -199,11 +215,20 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
   const css = options.tailwindCss
   const cssHash = sha256(css.text)
   let tailwindCssChanged = false
+  let tailwindCssChange: SyncResult["tailwindCss"] = null
   if (
     lock.tailwindCss?.sha256 !== cssHash ||
     lock.tailwindCss.version !== css.version ||
     !existsSync(store.tailwindCssFile)
   ) {
+    tailwindCssChange = {
+      before: existsSync(store.tailwindCssFile)
+        ? store.readTailwindCss()
+        : null,
+      after: css.text,
+      fromVersion: lock.tailwindCss?.version ?? null,
+      toVersion: css.version,
+    }
     store.writeText(store.tailwindCssFile, css.text)
     lock.tailwindCss = {
       package: css.package,
@@ -223,6 +248,8 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     indexChanged,
     themeChanged,
     tailwindCssChanged,
+    theme: themeChange,
+    tailwindCss: tailwindCssChange,
     lockChanged,
   }
 }
