@@ -1,0 +1,5 @@
+@import "tailwindcss" source("../app");
+@import "../../../styles/shadcn/theme.css";
+
+/* Components installed from the registry live outside app/, so scan them explicitly. */
+@source "../../../components/ui";
