@@ -150,13 +150,15 @@ with the pinned Biome (`biome check --write`, which also sorts imports):
 | Step | Effect |
 | --- | --- |
 | `remove-directives` | drops `"use client"` |
+| `component-imports` | `@/registry/<style>/ui/<name>` to `./<name>` for generated sibling components ([ADR 0015](./adr/0015-ship-imported-sibling-components-inside-each-registry-item.md)) |
 | `cn-markers` | `cn-font-heading` to `font-heading`; other `cn-*` classes removed (as the shadcn CLI does at install time) |
 | `use-render` | canonical `useRender({ defaultTagName, props: mergeProps(...), state })` to an intrinsic element; `state` entries become `data-*` attributes |
 | `primitives` | mapped Base UI primitives to intrinsic elements with their SSR attributes |
-| `react-types` | `React.ComponentProps<"x">`, `useRender.ComponentProps<"x">` to `ComponentProps<"x">`; `React.ReactNode` to `Child` |
+| `react-types` | `React.ComponentProps<"x">`, `useRender.ComponentProps<"x">` to `ComponentProps<"x">`; `React.ComponentProps<typeof X>` to `Parameters<typeof X>[0]`; `React.ReactNode` to `Child` |
+| `style-values` | numeric CSS custom property values in `style` objects to strings (Hono appends `px` to numbers) |
 | `class-attr` | `className` parameter binding to `class: className`; `className=` to `class=` |
 | `dom-attributes` | React camelCase DOM attributes Hono does not normalize (`tabIndex`, `readOnly`, ...) to lowercase |
-| `drop-props` | removes unused `render`/`asChild` bindings |
+| `drop-props` | removes unused `render`/`asChild` bindings; `render ? a : b` becomes `b` |
 | `helpers` | inserts the `ComponentProps` helper type |
 | `imports` | removes `react` and `@base-ui/*`; adds `hono/jsx` type imports |
 | `guard` | fails on any leftover React/Base UI construct, unresolved JSX component, or export change |
@@ -204,7 +206,7 @@ Nothing is merged or released automatically
 ([ADR 0010](./adr/0010-automate-upstream-synchronization-through-reviewed-pull-requests.md),
 [ADR 0011](./adr/0011-dispatch-ci-for-upstream-sync-pull-requests-instead-of-using-a-bot-token.md)).
 The repository allows GitHub Actions to create pull requests, and `main`
-requires the `check`, `examples`, and `registry-install` checks on pull
+requires the `check`, `examples`, `registry-install`, and `visual` checks on pull
 requests.
 Syncs are idempotent, so an unchanged upstream produces no pull request.
 
@@ -253,8 +255,7 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
 - No `asChild`/`render` composition and no ref forwarding.
 - Base UI client-side state attributes and behaviors (`focusableWhenDisabled`,
   field state) are not reproduced.
-- Upstream items that depend on other registry items (for example
-  `button-group`) are not generated yet: universal items cannot rewrite local
-  imports, so this needs a dependency strategy first.
+- Upstream items that import non-generated registry items, hooks, or icons
+  remain unsupported until those are generated or mapped.
 - The theme covers the `base-nova` preset with the neutral base color; fonts
   from the preset are not installed.
