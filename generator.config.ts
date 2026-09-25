@@ -18,6 +18,7 @@ export const config: GeneratorConfig = {
     "button",
     "button-group",
     "card",
+    "dialog",
     "empty",
     "input",
     "item",

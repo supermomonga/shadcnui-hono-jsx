@@ -6,6 +6,15 @@
  * Props use HTML attribute names (`class`, `for`); the React renderer maps them.
  */
 
+/**
+ * Components whose interactive state is checked in a browser spec instead of
+ * static cases: screenshots of the open state against upstream and
+ * keyboard/focus/ARIA behavior.
+ */
+export const BROWSER_SPECS: Readonly<Record<string, string>> = {
+  dialog: "dialog.spec.ts",
+}
+
 export type CaseProps = Record<string, string | number | boolean>
 export type CaseNode = string | CaseElement
 export type CaseElement = [

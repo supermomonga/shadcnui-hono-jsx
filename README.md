@@ -30,7 +30,7 @@ Base UI, or Radix runtime in the generated components.
 - Tailwind CSS v4 and the shadcn/ui design tokens
 - Source-code ownership via a shadcn-compatible registry
 - Regenerated from upstream shadcn/ui instead of hand-maintained forks
-- JavaScript only where interactive behavior requires it (none for the current set)
+- JavaScript only where interactive behavior requires it (none so far, including Dialog)
 
 ## Requirements
 
@@ -125,6 +125,10 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
   `--font-sans`.
 - Icons are inlined SVG from Lucide (identical to lucide-react's output), not
   a runtime icon package.
+- Dialog is a native `<dialog>` opened with Invoker Commands, so it needs no
+  JavaScript but requires Chrome 135, Firefox 144 or Safari 26.2 or later, and
+  has no controlled `open` state. Style the trigger with
+  `class={buttonVariants({ variant: "outline" })}`.
 
 Per-component details are in the table below.
 
@@ -144,6 +148,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | button | experimental | generated | verified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` and `focusableWhenDisabled` are not supported. Accepts `class` instead of `className`. |
 | button-group | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
 | card | experimental | generated | verified | Accepts `class` instead of `className`. |
+| dialog | experimental | generated-with-adapter | verified | Accepts `class` instead of `className`. Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `render` are not supported; style a trigger with `class={buttonVariants()}`. The trigger does not reflect the open state (`aria-expanded`). The overlay is the dialog's `::backdrop` (DialogOverlay renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. |
 | empty | experimental | generated | verified | Accepts `class` instead of `className`. |
 | input | experimental | generated | verified | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
 | item | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
@@ -159,7 +164,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | textarea | experimental | generated | verified | Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (41 upstream components)</summary>
+<summary>Not yet available (40 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -172,9 +177,8 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | checkbox | unsupported | `base-ui-primitive-unmapped:@base-ui/react/checkbox#Checkbox` |
 | collapsible | unsupported | `base-ui-primitive-unmapped:@base-ui/react/collapsible#Collapsible` |
 | combobox | unsupported | `base-ui-primitive-unmapped:@base-ui/react#Combobox`, `react-hook:useRef`, `react-runtime-api:React.useRef`, `react-type-unmapped:React.ComponentPropsWithRef`, `registry-dependency:input-group`, `registry-import:@/registry/base-nova/ui/input-group`, `render-prop:ComboboxPrimitive.ChipRemove`, `render-prop:ComboboxPrimitive.Clear`, `render-prop:ComboboxPrimitive.Input`, `render-prop:ComboboxPrimitive.ItemIndicator`, `render-prop:InputGroupButton` |
-| command | unsupported | `registry-dependency:dialog`, `registry-dependency:input-group`, `registry-import:@/registry/base-nova/ui/dialog`, `registry-import:@/registry/base-nova/ui/input-group`, `unknown-import:cmdk` |
+| command | unsupported | `registry-dependency:input-group`, `registry-import:@/registry/base-nova/ui/input-group`, `unknown-import:cmdk` |
 | context-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/context-menu#ContextMenu` |
-| dialog | unsupported | `base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog`, `render-prop:DialogPrimitive.Close` |
 | direction | unsupported | `base-ui-primitive-unmapped:@base-ui/react/direction-provider#DirectionProvider`, `base-ui-primitive-unmapped:@base-ui/react/direction-provider#useDirection` |
 | drawer | unsupported | `base-ui-primitive-unmapped:@base-ui/react/drawer#Drawer`, `react-hook:useContext`, `react-hook:useDrawer`, `react-hook:useMemo`, `react-runtime-api:React.createContext`, `react-runtime-api:React.useContext`, `react-runtime-api:React.useMemo` |
 | dropdown-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menu#Menu` |

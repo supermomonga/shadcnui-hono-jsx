@@ -317,6 +317,41 @@
       }
     },
     {
+      "name": "dialog",
+      "type": "registry:item",
+      "title": "Dialog",
+      "description": "Hono JSX port of the shadcn/ui base-nova dialog component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/dialog.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/dialog.tsx"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/button.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "dialog",
+          "style": "base-nova",
+          "contentSha256": "356e4775f1edfd051ace0678b6a23bffbce042045f470971755438a7c199dafe",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
+        "mode": "adapter"
+      }
+    },
+    {
       "name": "empty",
       "type": "registry:item",
       "title": "Empty",
