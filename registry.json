@@ -197,6 +197,46 @@
       }
     },
     {
+      "name": "avatar",
+      "type": "registry:item",
+      "title": "Avatar",
+      "description": "Hono JSX port of the shadcn/ui base-nova avatar component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/avatar.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/avatar.tsx"
+        },
+        {
+          "path": "public/shadcn/avatar.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/avatar.js"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/avatar.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "avatar",
+          "style": "base-nova",
+          "contentSha256": "5da016b137e57f173dfde63703eb96ea0b60fc45d0c9f1e423333430eeb853a7",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "badge",
       "type": "registry:item",
       "title": "Badge",
@@ -1208,6 +1248,46 @@
           "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
         },
         "classification": "native-adapter",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:item",
+      "title": "Scroll Area",
+      "description": "Hono JSX port of the shadcn/ui base-nova scroll-area component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/scroll-area.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/scroll-area.tsx"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "public/shadcn/scroll-area.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/scroll-area.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/scroll-area.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "scroll-area",
+          "style": "base-nova",
+          "contentSha256": "15e804fb28218a1b0e2d3cbf31f56adec10e1d4f76cb20064c8b4bbed5f5958c",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
         "mode": "generated"
       }
     },

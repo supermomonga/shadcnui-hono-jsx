@@ -23,6 +23,7 @@ describe("buildManifest", () => {
 
   // Components whose behavior needs a client script (docs/adr/0025).
   const SCRIPTED = new Set([
+    "avatar",
     "combobox",
     "context-menu",
     "dropdown-menu",
@@ -30,6 +31,7 @@ describe("buildManifest", () => {
     "input-group",
     "menubar",
     "navigation-menu",
+    "scroll-area",
     "slider",
     "tabs",
     "tooltip",

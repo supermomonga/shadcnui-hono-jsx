@@ -17,6 +17,8 @@ export default defineConfig({
     "input-group.spec.ts",
     "combobox.spec.ts",
     "navigation-menu.spec.ts",
+    "avatar.spec.ts",
+    "scroll-area.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

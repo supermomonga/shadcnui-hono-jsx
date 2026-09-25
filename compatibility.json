@@ -131,20 +131,29 @@
     },
     {
       "name": "avatar",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/avatar.json",
         "contentSha256": "5da016b137e57f173dfde63703eb96ea0b60fc45d0c9f1e423333430eeb853a7",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/avatar#Avatar"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "The image covers the fallback once it loads, so avatars work without JavaScript. Hiding an image that fails to load (the fallback shows instead) and removing the fallback after a load need the client script `/shadcn/avatar.js` (`<script type=\"module\" src=\"/shadcn/avatar.js\">`); without it a broken image shows its alt text over the fallback.",
+        "The fallback's `delay` and `onLoadingStatusChange` are not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/avatar#Avatar",
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps",
+        "use-client-directive"
+      ]
     },
     {
       "name": "badge",
@@ -1135,21 +1144,27 @@
     },
     {
       "name": "scroll-area",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/scroll-area.json",
         "contentSha256": "15e804fb28218a1b0e2d3cbf31f56adec10e1d4f76cb20064c8b4bbed5f5958c",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "The custom scrollbars need the client script `/shadcn/scroll-area.js` (`<script type=\"module\" src=\"/shadcn/scroll-area.js\">`); without it the area scrolls with the browser's own scrollbar.",
+        "`overflowEdgeThreshold` is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/scroll-area#ScrollArea"
+        "base-ui-primitive-mapped:@base-ui/react/scroll-area#ScrollArea",
+        "classname-to-class",
+        "use-client-directive"
       ]
     },
     {

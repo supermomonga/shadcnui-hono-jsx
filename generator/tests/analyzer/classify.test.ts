@@ -233,6 +233,7 @@ describe("classification of the committed upstream snapshot", () => {
 
   // Built with an optional client script (script families, docs/adr/0025).
   const SCRIPTED = new Set([
+    "avatar",
     "combobox",
     "context-menu",
     "dropdown-menu",
@@ -240,6 +241,7 @@ describe("classification of the committed upstream snapshot", () => {
     "input-group",
     "menubar",
     "navigation-menu",
+    "scroll-area",
     "slider",
     "tabs",
     "tooltip",

@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./.upstream/alert-dialog"
+import { Avatar, AvatarFallback, AvatarImage } from "./.upstream/avatar"
 import { Button } from "./.upstream/button"
 import {
   Combobox,
@@ -118,6 +119,7 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "./.upstream/popover"
+import { ScrollArea, ScrollBar } from "./.upstream/scroll-area"
 import {
   Select,
   SelectContent,
@@ -653,6 +655,60 @@ function NavigationMenuDemo() {
   )
 }
 
+const AVATAR_IMAGE = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect width="8" height="8" fill="#e11d48"/></svg>'
+)}`
+
+function AvatarDemo() {
+  return (
+    <main className="flex items-center gap-4 p-8">
+      <Avatar>
+        <AvatarImage src={AVATAR_IMAGE} alt="Loaded" />
+        <AvatarFallback>LD</AvatarFallback>
+      </Avatar>
+      <Avatar size="lg">
+        <AvatarImage src="/missing-avatar.png" alt="Broken" />
+        <AvatarFallback>BR</AvatarFallback>
+      </Avatar>
+      <Avatar size="sm">
+        <AvatarFallback>FB</AvatarFallback>
+      </Avatar>
+    </main>
+  )
+}
+
+const SCROLL_ITEMS = Array.from({ length: 30 }, (_, i) => `Item ${i + 1}`)
+const SCROLL_TAGS = Array.from({ length: 12 }, (_, i) => `Tag ${i + 1}`)
+
+function ScrollAreaDemo() {
+  return (
+    <main className="flex items-start gap-8 p-8">
+      <ScrollArea className="h-40 w-48 rounded-md border">
+        <div className="p-4">
+          {SCROLL_ITEMS.map((item) => (
+            <div key={item} className="h-6 text-sm">
+              {item}
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
+      <ScrollArea className="w-48 rounded-md border">
+        <div className="flex w-max gap-2 p-4">
+          {SCROLL_TAGS.map((tag) => (
+            <div key={tag} className="w-16 text-sm">
+              {tag}
+            </div>
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+      <ScrollArea className="h-24 w-48 rounded-md border">
+        <div className="p-4 text-sm">Short</div>
+      </ScrollArea>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main className="flex w-96 flex-col gap-6 p-8">
@@ -750,6 +806,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   "input-group": () => <InputGroupDemo />,
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
+  avatar: () => <AvatarDemo />,
+  "scroll-area": () => <ScrollAreaDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,

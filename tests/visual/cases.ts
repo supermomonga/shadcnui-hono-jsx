@@ -13,6 +13,7 @@
  */
 export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   accordion: "disclosure.spec.ts",
+  avatar: "avatar.spec.ts",
   checkbox: "controls.spec.ts",
   collapsible: "disclosure.spec.ts",
   combobox: "combobox.spec.ts",
@@ -24,6 +25,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   "navigation-menu": "navigation-menu.spec.ts",
   popover: "popover.spec.ts",
   "radio-group": "controls.spec.ts",
+  "scroll-area": "scroll-area.spec.ts",
   select: "select.spec.ts",
   slider: "slider.spec.ts",
   tabs: "tabs.spec.ts",
@@ -647,6 +649,22 @@ export const VISUAL_CASES: VisualCase[] = [
         ],
       ],
     ],
+  },
+  {
+    id: "avatar/fallbacks",
+    component: "avatar",
+    node: row(
+      ["Avatar", { size: "sm" }, ["AvatarFallback", {}, "SM"]],
+      ["Avatar", {}, ["AvatarFallback", {}, "CN"], ["AvatarBadge", {}]],
+      ["Avatar", { size: "lg" }, ["AvatarFallback", {}, "LG"]],
+      [
+        "AvatarGroup",
+        {},
+        ["Avatar", {}, ["AvatarFallback", {}, "A"]],
+        ["Avatar", {}, ["AvatarFallback", {}, "B"]],
+        ["AvatarGroupCount", {}, "+3"],
+      ]
+    ),
   },
   {
     id: "input-group/addons",

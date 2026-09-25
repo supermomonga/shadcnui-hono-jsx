@@ -15,6 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../../components/ui/alert-dialog"
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar"
 import { Button } from "../../components/ui/button"
 import {
   Combobox,
@@ -116,6 +117,7 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "../../components/ui/popover"
+import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
 import {
   Select,
   SelectContent,
@@ -633,6 +635,60 @@ function NavigationMenuDemo() {
   )
 }
 
+const AVATAR_IMAGE = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect width="8" height="8" fill="#e11d48"/></svg>'
+)}`
+
+function AvatarDemo() {
+  return (
+    <main class="flex items-center gap-4 p-8">
+      <Avatar>
+        <AvatarImage src={AVATAR_IMAGE} alt="Loaded" />
+        <AvatarFallback>LD</AvatarFallback>
+      </Avatar>
+      <Avatar size="lg">
+        <AvatarImage src="/missing-avatar.png" alt="Broken" />
+        <AvatarFallback>BR</AvatarFallback>
+      </Avatar>
+      <Avatar size="sm">
+        <AvatarFallback>FB</AvatarFallback>
+      </Avatar>
+    </main>
+  )
+}
+
+const SCROLL_ITEMS = Array.from({ length: 30 }, (_, i) => `Item ${i + 1}`)
+const SCROLL_TAGS = Array.from({ length: 12 }, (_, i) => `Tag ${i + 1}`)
+
+function ScrollAreaDemo() {
+  return (
+    <main class="flex items-start gap-8 p-8">
+      <ScrollArea class="h-40 w-48 rounded-md border">
+        <div class="p-4">
+          {SCROLL_ITEMS.map((item) => (
+            <div key={item} class="h-6 text-sm">
+              {item}
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
+      <ScrollArea class="w-48 rounded-md border">
+        <div class="flex w-max gap-2 p-4">
+          {SCROLL_TAGS.map((tag) => (
+            <div key={tag} class="w-16 text-sm">
+              {tag}
+            </div>
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+      <ScrollArea class="h-24 w-48 rounded-md border">
+        <div class="p-4 text-sm">Short</div>
+      </ScrollArea>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main class="flex w-96 flex-col gap-6 p-8">
@@ -725,6 +781,8 @@ export const DEMOS = {
   "input-group": () => <InputGroupDemo />,
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
+  avatar: () => <AvatarDemo />,
+  "scroll-area": () => <ScrollAreaDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,
@@ -746,6 +804,8 @@ export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
   "input-group": ["input-group"],
   combobox: ["combobox", "input-group"],
   "navigation-menu": ["navigation-menu"],
+  avatar: ["avatar"],
+  "scroll-area": ["scroll-area"],
   menubar: ["menu"],
   slider: ["slider"],
   tabs: ["tabs"],

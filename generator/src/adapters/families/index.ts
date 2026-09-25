@@ -1,4 +1,5 @@
 import type { ComponentAdapter } from "../components"
+import { avatarFamily } from "./avatar"
 import { comboboxFamily } from "./combobox"
 import {
   checkboxFamily,
@@ -15,6 +16,7 @@ import { contextMenuFamily, menubarFamily, menuFamily } from "./menu"
 import { navigationMenuFamily } from "./navigation-menu"
 import { popoverFamily } from "./popover"
 import { progressFamily } from "./progress"
+import { scrollAreaFamily } from "./scroll-area"
 import { selectFamily } from "./select"
 import { sliderFamily } from "./slider"
 import { tabsFamily } from "./tabs"
@@ -26,6 +28,7 @@ export type { FamilyRule } from "./types"
 export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   accordionFamily,
   alertDialogFamily,
+  avatarFamily,
   checkboxFamily,
   collapsibleFamily,
   comboboxFamily,
@@ -39,6 +42,7 @@ export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   progressFamily,
   radioFamily,
   radioGroupFamily,
+  scrollAreaFamily,
   selectFamily,
   sliderFamily,
   switchFamily,
