@@ -2,14 +2,16 @@ import { afterAll, beforeAll, describe, expect, test } from "bun:test"
 import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs"
 import { tmpdir } from "node:os"
 import path from "node:path"
+import { LICENSE_NOTICE_PATH } from "../../generator/src/licenses"
 import { ROOT } from "../../generator/src/paths"
 import { findProhibitedImports } from "../../generator/src/policy"
 import type { Registry } from "../../generator/src/registry/build"
 
 /**
- * Installs every registry item into a clean Hono project (no components.json,
- * no React) with the pinned shadcn CLI, then type-checks, renders and builds
- * Tailwind CSS there. Needs network access for `bun install`.
+ * Installs registry items into a clean Hono project (no components.json, no
+ * React) with the pinned shadcn CLI the way users do: one component, then the
+ * theme, then the rest, without --overwrite. Then type-checks, renders and
+ * builds Tailwind CSS there. Needs network access for `bun install`.
  */
 const enabled = process.env.SKIP_NETWORK_TESTS !== "1"
 const SHADCN = path.join(ROOT, "node_modules", ".bin", "shadcn")
@@ -23,6 +25,8 @@ function run(cmd: string[], cwd: string): string {
     stdin: "ignore",
     stdout: "pipe",
     stderr: "pipe",
+    // An unexpected interactive prompt must fail the test instead of hanging.
+    timeout: 120_000,
   })
   const output = `${result.stdout.toString()}${result.stderr.toString()}`
   if (result.exitCode !== 0) {
@@ -34,6 +38,12 @@ function run(cmd: string[], cwd: string): string {
 describe.skipIf(!enabled)("registry install into a clean Hono project", () => {
   let tmp: string
   let app: string
+  const outputs: Record<"button" | "theme" | "rest", string> = {
+    button: "",
+    theme: "",
+    rest: "",
+  }
+  let afterButton: string[] = []
 
   beforeAll(() => {
     tmp = mkdtempSync(path.join(tmpdir(), "shj-registry-"))
@@ -46,23 +56,37 @@ describe.skipIf(!enabled)("registry install into a clean Hono project", () => {
       recursive: true,
     })
     run(["bun", "install"], app)
-    const items = registry.items.map((item) =>
-      path.join(tmp, "r", `${item.name}.json`)
-    )
-    run(
-      [
-        SHADCN,
-        "add",
-        ...items,
-        "--cwd",
-        app,
-        "--yes",
-        "--overwrite",
-        "--silent",
-      ],
-      app
+    const add = (names: string[]) =>
+      run(
+        [
+          SHADCN,
+          "add",
+          ...names.map((name) => path.join(tmp, "r", `${name}.json`)),
+          "--cwd",
+          app,
+          "--yes",
+        ],
+        app
+      )
+    outputs.button = add(["button"])
+    afterButton = installedTargets()
+    outputs.theme = add(["theme"])
+    outputs.rest = add(
+      registry.items
+        .map((item) => item.name)
+        .filter((name) => name !== "button" && name !== "theme")
     )
   }, 300_000)
+
+  function installedTargets(): string[] {
+    return [
+      ...new Set(
+        registry.items.flatMap((item) => item.files.map((f) => f.target))
+      ),
+    ]
+      .filter((target) => existsSync(path.join(app, target.slice(2))))
+      .sort()
+  }
 
   afterAll(() => {
     if (tmp) rmSync(tmp, { recursive: true, force: true })
@@ -76,6 +100,21 @@ describe.skipIf(!enabled)("registry install into a clean Hono project", () => {
           readFileSync(path.join(ROOT, file.path), "utf8")
         )
       }
+    }
+  })
+
+  test("installs a single component together with the license notice", () => {
+    expect(afterButton).toEqual([
+      `~/${LICENSE_NOTICE_PATH}`,
+      "~/components/ui/button.tsx",
+    ])
+  })
+
+  test("later installs reuse the identical notice without prompting", () => {
+    for (const output of [outputs.theme, outputs.rest]) {
+      expect(output).not.toMatch(/overwrite\?/i)
+      expect(output).toContain(LICENSE_NOTICE_PATH)
+      expect(output).toMatch(/Skipped 1 file/)
     }
   })
 

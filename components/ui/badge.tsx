@@ -2,7 +2,10 @@
 // upstream: shadcn/ui base-nova/badge (https://ui.shadcn.com/r/styles/base-nova/badge.json)
 // upstream-revision: sha256:448725bcf39981b25aa06f804eb8dc46c07923976f973a4ad19a4c51b82130e9; shadcn-ui/ui@98a1fe67b439324ddc857f47fbdce056600a4329
 // mode: generated
-// Derived from shadcn/ui, Copyright (c) 2023 shadcn, MIT License. See https://github.com/supermomonga/shadcnui-hono-jsx/blob/main/THIRD_PARTY_LICENSES.md
+// Derived from shadcn/ui. Copyright (c) 2023 shadcn.
+// Original additions and modifications: Copyright (c) 2026 supermomonga.
+// SPDX-License-Identifier: MIT
+// Full license: LICENSE-shadcnui-hono-jsx.txt at the project root.
 
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"

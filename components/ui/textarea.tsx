@@ -2,7 +2,10 @@
 // upstream: shadcn/ui base-nova/textarea (https://ui.shadcn.com/r/styles/base-nova/textarea.json)
 // upstream-revision: sha256:5487cbf83c25f2139ea649fa3574d0c3f9991f2bdd6208278882c39620f0d4ab; shadcn-ui/ui@98a1fe67b439324ddc857f47fbdce056600a4329
 // mode: generated
-// Derived from shadcn/ui, Copyright (c) 2023 shadcn, MIT License. See https://github.com/supermomonga/shadcnui-hono-jsx/blob/main/THIRD_PARTY_LICENSES.md
+// Derived from shadcn/ui. Copyright (c) 2023 shadcn.
+// Original additions and modifications: Copyright (c) 2026 supermomonga.
+// SPDX-License-Identifier: MIT
+// Full license: LICENSE-shadcnui-hono-jsx.txt at the project root.
 
 import { cn } from "cn"
 import type { JSX } from "hono/jsx"

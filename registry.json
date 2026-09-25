@@ -19,6 +19,11 @@
           "path": "styles/shadcn/tailwind.css",
           "type": "registry:file",
           "target": "~/styles/shadcn/tailwind.css"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Import the theme after Tailwind CSS in your stylesheet: @import \"tailwindcss\"; @import \"<relative path>/styles/shadcn/theme.css\"; and make sure Tailwind scans components/ui (add @source if it is outside your source root).",
@@ -42,6 +47,11 @@
           "path": "components/ui/alert.tsx",
           "type": "registry:file",
           "target": "~/components/ui/alert.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
@@ -67,6 +77,11 @@
           "path": "components/ui/badge.tsx",
           "type": "registry:file",
           "target": "~/components/ui/badge.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
@@ -92,6 +107,11 @@
           "path": "components/ui/button.tsx",
           "type": "registry:file",
           "target": "~/components/ui/button.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
@@ -117,6 +137,11 @@
           "path": "components/ui/card.tsx",
           "type": "registry:file",
           "target": "~/components/ui/card.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
@@ -142,6 +167,11 @@
           "path": "components/ui/input.tsx",
           "type": "registry:file",
           "target": "~/components/ui/input.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
@@ -167,6 +197,11 @@
           "path": "components/ui/label.tsx",
           "type": "registry:file",
           "target": "~/components/ui/label.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
@@ -192,6 +227,11 @@
           "path": "components/ui/separator.tsx",
           "type": "registry:file",
           "target": "~/components/ui/separator.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
@@ -217,6 +257,11 @@
           "path": "components/ui/skeleton.tsx",
           "type": "registry:file",
           "target": "~/components/ui/skeleton.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
@@ -242,6 +287,11 @@
           "path": "components/ui/table.tsx",
           "type": "registry:file",
           "target": "~/components/ui/table.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
@@ -267,6 +317,11 @@
           "path": "components/ui/textarea.tsx",
           "type": "registry:file",
           "target": "~/components/ui/textarea.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
         }
       ],
       "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",

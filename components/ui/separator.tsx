@@ -2,7 +2,10 @@
 // upstream: shadcn/ui base-nova/separator (https://ui.shadcn.com/r/styles/base-nova/separator.json)
 // upstream-revision: sha256:e331ea0c4e835484b0a3fcefa172a884864bdc0e1bfe39d12c119c66ad4e3195; shadcn-ui/ui@98a1fe67b439324ddc857f47fbdce056600a4329
 // mode: generated
-// Derived from shadcn/ui, Copyright (c) 2023 shadcn, MIT License. See https://github.com/supermomonga/shadcnui-hono-jsx/blob/main/THIRD_PARTY_LICENSES.md
+// Derived from shadcn/ui. Copyright (c) 2023 shadcn.
+// Original additions and modifications: Copyright (c) 2026 supermomonga.
+// SPDX-License-Identifier: MIT
+// Full license: LICENSE-shadcnui-hono-jsx.txt at the project root.
 
 import { cn } from "cn"
 import type { JSX } from "hono/jsx"
