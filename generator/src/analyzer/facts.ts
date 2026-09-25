@@ -33,6 +33,8 @@ export interface FileFacts {
   jsx: JsxFact[]
   /** `cn-*` placeholder classes found in string literals. */
   cnMarkers: string[]
+  /** Whether a component parameter destructures `className`. */
+  classNameProp: boolean
 }
 
 export interface ComponentFacts {
@@ -193,6 +195,14 @@ function collectFileFacts(path: string, type: string, text: string): FileFacts {
     }
   }
 
+  const classNameProp = sf
+    .getDescendantsOfKind(SyntaxKind.BindingElement)
+    .some(
+      (b) =>
+        b.getFirstAncestorByKind(SyntaxKind.Parameter) !== undefined &&
+        (b.getPropertyNameNode()?.getText() ?? b.getName()) === "className"
+    )
+
   return {
     path,
     type,
@@ -205,6 +215,7 @@ function collectFileFacts(path: string, type: string, text: string): FileFacts {
     useRender,
     jsx,
     cnMarkers: uniqueSorted(cnMarkers),
+    classNameProp,
   }
 }
 

@@ -103,6 +103,7 @@ function fileReasons(file: FileFacts, primitives: PrimitiveRule[]): Reason[] {
       if (attribute === "className") reasons.push(reason("classname-to-class"))
     }
   }
+  if (file.classNameProp) reasons.push(reason("classname-to-class"))
   for (const marker of file.cnMarkers) {
     reasons.push(reason("cn-marker", marker))
   }

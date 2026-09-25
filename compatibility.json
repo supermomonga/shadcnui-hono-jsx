@@ -1,0 +1,1328 @@
+{
+  "generatedBy": "shadcnui-hono-jsx",
+  "style": "base-nova",
+  "components": [
+    {
+      "name": "accordion",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/accordion.json",
+        "contentSha256": "47959c713d540b59f84dc9b5689b2bc531fa67314ba3133337e518bd7e54143a",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/accordion#Accordion",
+        "icon-placeholder"
+      ]
+    },
+    {
+      "name": "alert",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/alert.json",
+        "contentSha256": "56d4827f4beed9ce6796b00fa28612f5bb8b13830197f3157860d251b6134861",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps"
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/alert-dialog.json",
+        "contentSha256": "421061e714648e07c617f119b51db94c799b56eebf37545290939b7a780c7b27",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/alert-dialog#AlertDialog",
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button"
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/aspect-ratio.json",
+        "contentSha256": "3d25d73f77dedf7c11f1e089114b9c1ed142f2aa44c9c3398c06f7d046809ea9",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": ["Convertible, but not generated yet."],
+      "reasons": []
+    },
+    {
+      "name": "attachment",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/attachment.json",
+        "contentSha256": "29a6055a78d5a4aaa31ed400f3671f6c80d93999537da927a5a6250d712172ed",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button"
+      ]
+    },
+    {
+      "name": "avatar",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/avatar.json",
+        "contentSha256": "5da016b137e57f173dfde63703eb96ea0b60fc45d0c9f1e423333430eeb853a7",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/avatar#Avatar"]
+    },
+    {
+      "name": "badge",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/badge.json",
+        "contentSha256": "448725bcf39981b25aa06f804eb8dc46c07923976f973a4ad19a4c51b82130e9",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "`render` (element replacement) is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": ["base-ui-use-render", "classname-to-class"]
+    },
+    {
+      "name": "breadcrumb",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/breadcrumb.json",
+        "contentSha256": "7281e8a42b945b15a0a0c31c7f1eeeb02fd1ec88f2a7c94d9c69c40878305902",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["icon-placeholder"]
+    },
+    {
+      "name": "bubble",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/bubble.json",
+        "contentSha256": "a21e25e29a040e39a72764312229ea8f294131e6b6a23f4520108d5904de405e",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": ["Convertible, but not generated yet."],
+      "reasons": []
+    },
+    {
+      "name": "button",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/button.json",
+        "contentSha256": "23a5cfb0c42fa8e55e26e34fbba8b0d1d7ee8663dc2c8b308830d1b5be7d9949",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Renders a native `<button>` with `type=\"button\"` by default, like Base UI; pass `type=\"submit\"` for form submission.",
+        "`render` and `focusableWhenDisabled` are not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/button#Button",
+        "classname-to-class"
+      ]
+    },
+    {
+      "name": "button-group",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/button-group.json",
+        "contentSha256": "ae7f9d6fd8a6097fd95111dcda93bab0c9ba26ae5bc9af404886cb9717258d15",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "registry-dependency:separator",
+        "registry-import:@/registry/base-nova/ui/separator"
+      ]
+    },
+    {
+      "name": "calendar",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/calendar.json",
+        "contentSha256": "71d0ae1a4beb00d5f0b5f6bc574e811a575f6654d727e49ad5b508867a4b1b98",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "icon-placeholder",
+        "react-hook:useEffect",
+        "react-hook:useRef",
+        "react-runtime-api:React.useEffect",
+        "react-runtime-api:React.useRef",
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button",
+        "unknown-import:react-day-picker"
+      ]
+    },
+    {
+      "name": "card",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/card.json",
+        "contentSha256": "766d3bb130e4a7b7ff3db8720a523330b9a0a6637043eb39bbde43a8691e17ba",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "cn-marker:cn-font-heading",
+        "react-type-rewrite:React.ComponentProps"
+      ]
+    },
+    {
+      "name": "carousel",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/carousel.json",
+        "contentSha256": "eac184c483f37dbcf8d16a5e6e46669753bcedc0e2593ee65f514834ad8ad074",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "event-handler:onClick",
+        "event-handler:onKeyDownCapture",
+        "icon-placeholder",
+        "react-hook:useCallback",
+        "react-hook:useCarousel",
+        "react-hook:useContext",
+        "react-hook:useEffect",
+        "react-hook:useEmblaCarousel",
+        "react-hook:useState",
+        "react-runtime-api:React.createContext",
+        "react-runtime-api:React.useCallback",
+        "react-runtime-api:React.useContext",
+        "react-runtime-api:React.useEffect",
+        "react-runtime-api:React.useState",
+        "react-type-unmapped:React.KeyboardEvent",
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button",
+        "unknown-import:embla-carousel-react"
+      ]
+    },
+    {
+      "name": "chart",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/chart.json",
+        "contentSha256": "650ca3a65e6780b505128cd44679c4ccfcd076f4c277fe20f5d4396333ea18e0",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "react-hook:useChart",
+        "react-hook:useContext",
+        "react-hook:useId",
+        "react-hook:useMemo",
+        "react-runtime-api:React.createContext",
+        "react-runtime-api:React.useContext",
+        "react-runtime-api:React.useId",
+        "react-runtime-api:React.useMemo",
+        "react-type-unmapped:React.ComponentType",
+        "registry-dependency:card",
+        "unknown-import:recharts"
+      ]
+    },
+    {
+      "name": "checkbox",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/checkbox.json",
+        "contentSha256": "ea4af0527f8c01513f17f785f93e71b0c8933f44be3fd74697fafc9ee4c9f03f",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/checkbox#Checkbox",
+        "icon-placeholder"
+      ]
+    },
+    {
+      "name": "collapsible",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/collapsible.json",
+        "contentSha256": "3b60084afb5667cb11a4f7b40bbe66585cdc70f2cb26d698e551f055cda91a4d",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/collapsible#Collapsible"
+      ]
+    },
+    {
+      "name": "combobox",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/combobox.json",
+        "contentSha256": "9e7c837ea45d8ca0a71cfc027aae84911c0d565c9289b6ca51b92edfa597fca7",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react#Combobox",
+        "icon-placeholder",
+        "react-hook:useRef",
+        "react-runtime-api:React.useRef",
+        "react-type-unmapped:React.ComponentPropsWithRef",
+        "registry-dependency:button",
+        "registry-dependency:input-group",
+        "registry-import:@/registry/base-nova/ui/button",
+        "registry-import:@/registry/base-nova/ui/input-group"
+      ]
+    },
+    {
+      "name": "command",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/command.json",
+        "contentSha256": "aa6ccec3cb46e8fb238fee4aa3454b3e9ce6623079f646ff3accdc2eabf5cd4f",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "icon-placeholder",
+        "registry-dependency:dialog",
+        "registry-dependency:input-group",
+        "registry-import:@/registry/base-nova/ui/dialog",
+        "registry-import:@/registry/base-nova/ui/input-group",
+        "unknown-import:cmdk"
+      ]
+    },
+    {
+      "name": "context-menu",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/context-menu.json",
+        "contentSha256": "771261f2b52c8c6f2ee19f20ad6718524a9f34debae633d2742bfa7bb133ce14",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/context-menu#ContextMenu",
+        "icon-placeholder"
+      ]
+    },
+    {
+      "name": "dialog",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/dialog.json",
+        "contentSha256": "356e4775f1edfd051ace0678b6a23bffbce042045f470971755438a7c199dafe",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog",
+        "icon-placeholder",
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button"
+      ]
+    },
+    {
+      "name": "direction",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/direction.json",
+        "contentSha256": "adc52fbbfec1ce5d59d435639959cfb47200ecdd95fb960eb64b4daedd6bec2a",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/direction-provider#DirectionProvider",
+        "base-ui-primitive-unmapped:@base-ui/react/direction-provider#useDirection"
+      ]
+    },
+    {
+      "name": "drawer",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/drawer.json",
+        "contentSha256": "45a2d99a6c6f386c8f53085ba0977de2e7ebc0a83e159b6354826ea36f759b15",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/drawer#Drawer",
+        "react-hook:useContext",
+        "react-hook:useDrawer",
+        "react-hook:useMemo",
+        "react-runtime-api:React.createContext",
+        "react-runtime-api:React.useContext",
+        "react-runtime-api:React.useMemo"
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/dropdown-menu.json",
+        "contentSha256": "3ea1991f74952357130705af5d6dd0ae6856382562d0cb2e0c9e7d301a74fa7f",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/menu#Menu",
+        "icon-placeholder"
+      ]
+    },
+    {
+      "name": "empty",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/empty.json",
+        "contentSha256": "16a341dcd4e1fa3c690e67bbef1e2649834efc9b2f3057a4a0f7e2faee1a06d1",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": ["Convertible, but not generated yet."],
+      "reasons": []
+    },
+    {
+      "name": "field",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/field.json",
+        "contentSha256": "bea69a05de39ce4358d1ae459a5e3ab74ebcc51df9ea3ecb0e22b21d442a84fc",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "react-hook:useMemo",
+        "react-runtime-api:useMemo",
+        "registry-dependency:label",
+        "registry-dependency:separator",
+        "registry-import:@/registry/base-nova/ui/label",
+        "registry-import:@/registry/base-nova/ui/separator"
+      ]
+    },
+    {
+      "name": "form",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/form.json",
+        "contentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["no-files"]
+    },
+    {
+      "name": "hover-card",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/hover-card.json",
+        "contentSha256": "3560a395f3c6fcf87f5d2293295f722b92ef3efaf0e97f611a7207c01e41ab67",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/preview-card#PreviewCard"
+      ]
+    },
+    {
+      "name": "input",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/input.json",
+        "contentSha256": "31a57ec736d9c75d16f81eb1486098944782f4f565c597f715b8a1334e28f5d0",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/input#Input",
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps"
+      ]
+    },
+    {
+      "name": "input-group",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/input-group.json",
+        "contentSha256": "631f54c33691082381aa0d9620f82579b3dde334e66cad9d6c153d4a974ad8f6",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "event-handler:onClick",
+        "registry-dependency:button",
+        "registry-dependency:input",
+        "registry-dependency:textarea",
+        "registry-import:@/registry/base-nova/ui/button",
+        "registry-import:@/registry/base-nova/ui/input",
+        "registry-import:@/registry/base-nova/ui/textarea"
+      ]
+    },
+    {
+      "name": "input-otp",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/input-otp.json",
+        "contentSha256": "54f6dd46b5a450592778d4e3b238b92bfe5f9062b6be5ea6a28ae573a84d4d4a",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "icon-placeholder",
+        "react-hook:useContext",
+        "react-runtime-api:React.useContext",
+        "unknown-import:input-otp"
+      ]
+    },
+    {
+      "name": "item",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/item.json",
+        "contentSha256": "9fb90b161c84b248b7e72f5bcd1585d238eabb1e2996e4fc6d02cd12219520b8",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "registry-dependency:separator",
+        "registry-import:@/registry/base-nova/ui/separator"
+      ]
+    },
+    {
+      "name": "kbd",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/kbd.json",
+        "contentSha256": "241804b8d92bd456214f6b56bb87f9e0a05a56fe13c64cfb383653e360202702",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": ["Convertible, but not generated yet."],
+      "reasons": []
+    },
+    {
+      "name": "label",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/label.json",
+        "contentSha256": "0c8c72d16df2e090ca419abf4f8378c6cf77fb67c8ac67d424997ae1199342b0",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps",
+        "use-client-directive"
+      ]
+    },
+    {
+      "name": "marker",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/marker.json",
+        "contentSha256": "cf39a4e633750a9bc57bab7bb3658cfa4ed1b1f9ed79769acd48a2ef8100c140",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": ["Convertible, but not generated yet."],
+      "reasons": []
+    },
+    {
+      "name": "menubar",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/menubar.json",
+        "contentSha256": "7e439524f877456cd33816428a52046b17d2a117bcd1efedcc31b7e5b6e2572a",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/menu#Menu",
+        "base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar",
+        "icon-placeholder",
+        "registry-dependency:dropdown-menu",
+        "registry-import:@/registry/base-nova/ui/dropdown-menu"
+      ]
+    },
+    {
+      "name": "message",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/message.json",
+        "contentSha256": "553a3189896b3b89cfee6837bd8d4cb8ec5c354104951cadcf69ba8085bd9547",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": ["Convertible, but not generated yet."],
+      "reasons": []
+    },
+    {
+      "name": "message-scroller",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/message-scroller.json",
+        "contentSha256": "c77690aa4277cee4674239dcd2249e0689175f1f90ec1069617e47bc9214c8b9",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "icon-placeholder",
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button",
+        "unknown-import:@shadcn/react/message-scroller"
+      ]
+    },
+    {
+      "name": "native-select",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/native-select.json",
+        "contentSha256": "63e23a8cd6a79ac00f942c6aa127436de544b33a85439bf56f8c85fd897576ce",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["icon-placeholder"]
+    },
+    {
+      "name": "navigation-menu",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/navigation-menu.json",
+        "contentSha256": "c2b15b4fb14f3b482de8f5190dda2994012fdfce50c245c68bd719559d649366",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu",
+        "icon-placeholder",
+        "react-type-unmapped:React.ComponentPropsWithRef"
+      ]
+    },
+    {
+      "name": "pagination",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/pagination.json",
+        "contentSha256": "4b3e96c09ffa92f5a0561aefc539ba25e5915165b21c246dbe299bea3ade86e0",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "icon-placeholder",
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button"
+      ]
+    },
+    {
+      "name": "popover",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/popover.json",
+        "contentSha256": "3c2d5214fbdae3e5d40444df7e18b8810c3a592bfefbdbfdc60abcec0b7fbd46",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/popover#Popover"]
+    },
+    {
+      "name": "progress",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/progress.json",
+        "contentSha256": "17b3126ea8f904c1c89b2fc0c9a7dd06ea802bd49e3be0322b2377d1d629f832",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/progress#Progress"]
+    },
+    {
+      "name": "questionnaire",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/questionnaire.json",
+        "contentSha256": "ed5d46e1ca76dc0ec3e58ad85f81f07e5e51d7474d14f0e75533db7f8bbc7cef",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "icon-placeholder",
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button",
+        "unknown-import:@shadcn/react/questionnaire"
+      ]
+    },
+    {
+      "name": "radio-group",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/radio-group.json",
+        "contentSha256": "d0309ee41e23acc7e22fd10e5fc361eeecba09fea337b0798a502fac59592ded",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/radio-group#RadioGroup",
+        "base-ui-primitive-unmapped:@base-ui/react/radio#Radio"
+      ]
+    },
+    {
+      "name": "resizable",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/resizable.json",
+        "contentSha256": "0453e7ef505737dc9b22667507abf4ffcda5c40ca58e25e797b746a30b15c626",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["unknown-import:react-resizable-panels"]
+    },
+    {
+      "name": "scroll-area",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/scroll-area.json",
+        "contentSha256": "15e804fb28218a1b0e2d3cbf31f56adec10e1d4f76cb20064c8b4bbed5f5958c",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/scroll-area#ScrollArea"
+      ]
+    },
+    {
+      "name": "select",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/select.json",
+        "contentSha256": "2dc49435a6328da7449e2ab4362923e97ce4ef9810a90ee2456fe32be02993fc",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/select#Select",
+        "icon-placeholder"
+      ]
+    },
+    {
+      "name": "separator",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/separator.json",
+        "contentSha256": "e331ea0c4e835484b0a3fcefa172a884864bdc0e1bfe39d12c119c66ad4e3195",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/separator#Separator",
+        "classname-to-class",
+        "use-client-directive"
+      ]
+    },
+    {
+      "name": "sheet",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/sheet.json",
+        "contentSha256": "51102b31cae673de5682e63b8a0e35c8ec421f9e93010634ceb9ac41c5c41efd",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog",
+        "icon-placeholder",
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button"
+      ]
+    },
+    {
+      "name": "sidebar",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/sidebar.json",
+        "contentSha256": "6d0d115f3821dcdf5ddf691620dd33fefbf8bdb8a22a404d257ad365d07b2ea2",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "event-handler:onClick",
+        "event-handler:onOpenChange",
+        "icon-placeholder",
+        "react-hook:useCallback",
+        "react-hook:useContext",
+        "react-hook:useEffect",
+        "react-hook:useIsMobile",
+        "react-hook:useMemo",
+        "react-hook:useSidebar",
+        "react-hook:useState",
+        "react-runtime-api:React.createContext",
+        "react-runtime-api:React.useCallback",
+        "react-runtime-api:React.useContext",
+        "react-runtime-api:React.useEffect",
+        "react-runtime-api:React.useMemo",
+        "react-runtime-api:React.useState",
+        "registry-dependency:button",
+        "registry-dependency:input",
+        "registry-dependency:separator",
+        "registry-dependency:sheet",
+        "registry-dependency:skeleton",
+        "registry-dependency:tooltip",
+        "registry-dependency:use-mobile",
+        "registry-import:@/registry/base-nova/hooks/use-mobile",
+        "registry-import:@/registry/base-nova/ui/button",
+        "registry-import:@/registry/base-nova/ui/input",
+        "registry-import:@/registry/base-nova/ui/separator",
+        "registry-import:@/registry/base-nova/ui/sheet",
+        "registry-import:@/registry/base-nova/ui/skeleton",
+        "registry-import:@/registry/base-nova/ui/tooltip",
+        "use-render-noncanonical"
+      ]
+    },
+    {
+      "name": "skeleton",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/skeleton.json",
+        "contentSha256": "97a90c6788815d37eda6dad532aa207e5a878d22b4d5f9e91c16bb2f4bc2f341",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps"
+      ]
+    },
+    {
+      "name": "slider",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/slider.json",
+        "contentSha256": "1ecee0f7d7a1ccffdf65b527dce1ebd9ffa3edcb3db7056dedfaf19347f38f52",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/slider#Slider"]
+    },
+    {
+      "name": "sonner",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/sonner.json",
+        "contentSha256": "5b47907c0d8b8c046cce305e477f3730c3d6294b6e4d2ebcdddc001cc7d82931",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "icon-placeholder",
+        "react-hook:useTheme",
+        "unknown-import:next-themes",
+        "unknown-import:sonner"
+      ]
+    },
+    {
+      "name": "spinner",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/spinner.json",
+        "contentSha256": "80661ef8f9b3688b09b45cafd17d4c0b9a9b2c2f79576654885a4b5f5f1f3ec1",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["icon-placeholder"]
+    },
+    {
+      "name": "switch",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/switch.json",
+        "contentSha256": "525dae65e4ff6aed1394369a551d7b9dabd85f66506e84b3ce40390774eba398",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/switch#Switch"]
+    },
+    {
+      "name": "table",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/table.json",
+        "contentSha256": "cd8a2a8c2e0855f6263a911655b41d1191b4f29e95c3c67e0ab602aa2b2642f1",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps",
+        "use-client-directive"
+      ]
+    },
+    {
+      "name": "tabs",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/tabs.json",
+        "contentSha256": "3f882d61007b43252ce03dd07caa699fcf6b783f06ee5a6d914fa4aacdc09273",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/tabs#Tabs"]
+    },
+    {
+      "name": "textarea",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/textarea.json",
+        "contentSha256": "5487cbf83c25f2139ea649fa3574d0c3f9991f2bdd6208278882c39620f0d4ab",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "unverified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps"
+      ]
+    },
+    {
+      "name": "toast",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/toast.json",
+        "contentSha256": "081b8e55fd7cf6ad3d1fc87c3c8a0da11b66952c21fa95dc4bd553615c6dbe60",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/toast#Toast",
+        "icon-placeholder",
+        "registry-dependency:button",
+        "registry-import:@/registry/base-nova/ui/button"
+      ]
+    },
+    {
+      "name": "toggle",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/toggle.json",
+        "contentSha256": "4ca92799f14308746c74b209c149ed934537bc10687719dba21429332b090502",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/toggle#Toggle"]
+    },
+    {
+      "name": "toggle-group",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/toggle-group.json",
+        "contentSha256": "09efc4edf7c75c96046af788d137af36d6bf2d386f9b9dbf5a6349c783ace321",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": [
+        "base-ui-primitive-unmapped:@base-ui/react/toggle-group#ToggleGroup",
+        "base-ui-primitive-unmapped:@base-ui/react/toggle#Toggle",
+        "react-hook:useContext",
+        "react-runtime-api:React.createContext",
+        "react-runtime-api:React.useContext",
+        "registry-dependency:toggle",
+        "registry-import:@/registry/base-nova/ui/toggle"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "status": "unsupported",
+      "conversion": null,
+      "classification": "unsupported",
+      "upstream": {
+        "url": "https://ui.shadcn.com/r/styles/base-nova/tooltip.json",
+        "contentSha256": "999f24433b0bb597cedfdef3a5de7f6dbfa5e819672ae66d581c0780e275766b",
+        "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+      },
+      "visualParity": "not-applicable",
+      "apiParity": "none",
+      "accessibility": "not-applicable",
+      "clientJs": "not-applicable",
+      "knownDifferences": [],
+      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/tooltip#Tooltip"]
+    }
+  ]
+}

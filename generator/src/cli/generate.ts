@@ -1,7 +1,15 @@
+import { readFileSync } from "node:fs"
+import path from "node:path"
 import { parseArgs } from "node:util"
 import { config } from "../../../generator.config"
-import { writeOutputs } from "../emit/write"
+import { formatWithBiome } from "../emit/format"
+import { type OutputFile, writeOutputs } from "../emit/write"
 import { COMPONENTS_DIR, GenerationError, generateComponent } from "../generate"
+import {
+  buildManifest,
+  renderCompatibilityTable,
+  replaceReadmeRegion,
+} from "../manifest/build"
 import { ROOT } from "../paths"
 import { UpstreamStore } from "../upstream/store"
 
@@ -27,7 +35,7 @@ if (!lock) {
 }
 
 const selected = positionals.length > 0 ? positionals : [...config.components]
-const files = []
+const files: OutputFile[] = []
 const errors: string[] = []
 for (const name of selected) {
   try {
@@ -41,6 +49,18 @@ if (errors.length > 0) {
   for (const message of errors) console.error(message)
   process.exit(1)
 }
+
+// Repository-level outputs are always rebuilt from the config and snapshot.
+const manifest = buildManifest({ config, store, lock })
+files.push({
+  path: "compatibility.json",
+  text: formatWithBiome(JSON.stringify(manifest), "compatibility.json"),
+})
+const readme = readFileSync(path.join(ROOT, "README.md"), "utf8")
+files.push({
+  path: "README.md",
+  text: replaceReadmeRegion(readme, renderCompatibilityTable(manifest)),
+})
 
 const full = positionals.length === 0
 const result = writeOutputs(ROOT, files, {

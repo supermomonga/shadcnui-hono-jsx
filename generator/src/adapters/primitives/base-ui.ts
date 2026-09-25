@@ -29,7 +29,7 @@ export interface PrimitiveRule {
   stateAttrs?: readonly { prop: string; attr: string }[]
   /** Primitive-only props removed from the public props. */
   dropProps?: readonly string[]
-  /** User-visible behavioral differences from the Base UI primitive. */
+  /** User-visible behavioral differences (Markdown; wrap HTML in backticks). */
   notes: readonly string[]
   /** Base UI source used as the parity reference. */
   reference: string
@@ -46,7 +46,7 @@ export const BASE_UI_PRIMITIVES: readonly PrimitiveRule[] = [
     stateAttrs: [{ prop: "disabled", attr: "data-disabled" }],
     dropProps: ["render", "nativeButton", "focusableWhenDisabled"],
     notes: [
-      'Renders a native <button> with type="button" by default, like Base UI; pass type="submit" for form submission.',
+      'Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission.',
       "`render` and `focusableWhenDisabled` are not supported.",
     ],
     reference:
@@ -61,7 +61,7 @@ export const BASE_UI_PRIMITIVES: readonly PrimitiveRule[] = [
     stateAttrs: [{ prop: "disabled", attr: "data-disabled" }],
     dropProps: ["render", "onValueChange"],
     notes: [
-      "Client-side field state attributes (data-dirty, data-touched, data-focused, data-filled, data-valid) and the auto-generated id are not rendered.",
+      "Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered.",
     ],
     reference:
       "https://github.com/mui/base-ui/blob/master/packages/react/src/input/Input.tsx",
