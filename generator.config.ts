@@ -36,6 +36,7 @@ export const config: GeneratorConfig = {
     "popover",
     "progress",
     "radio-group",
+    "select",
     "separator",
     "sheet",
     "skeleton",

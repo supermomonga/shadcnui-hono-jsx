@@ -38,6 +38,16 @@ import {
   PopoverTrigger,
 } from "./.upstream/popover"
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "./.upstream/select"
+import {
   Sheet,
   SheetClose,
   SheetContent,
@@ -159,6 +169,56 @@ function PopoverDemo() {
   )
 }
 
+const FRUITS = {
+  apple: "Apple",
+  banana: "Banana",
+  blueberry: "Blueberry",
+  carrot: "Carrot",
+  leek: "Leek",
+}
+const SIZES = { small: "Small", medium: "Medium", large: "Large" }
+
+function SelectDemo() {
+  return (
+    <main className="flex items-start gap-8 p-8 pl-48">
+      <Select name="fruit" items={FRUITS}>
+        <SelectTrigger id="fruit" className="w-45">
+          <SelectValue placeholder="Select a fruit" />
+        </SelectTrigger>
+        <SelectContent alignItemWithTrigger={false}>
+          <SelectGroup>
+            <SelectLabel>Fruits</SelectLabel>
+            <SelectItem value="apple">Apple</SelectItem>
+            <SelectItem value="banana">Banana</SelectItem>
+            <SelectItem value="blueberry">Blueberry</SelectItem>
+          </SelectGroup>
+          <SelectSeparator />
+          <SelectGroup>
+            <SelectLabel>Vegetables</SelectLabel>
+            <SelectItem value="carrot">Carrot</SelectItem>
+            <SelectItem value="leek" disabled>
+              Leek
+            </SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <Select name="size" defaultValue="medium" items={SIZES}>
+        <SelectTrigger id="size" size="sm" className="w-32">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent alignItemWithTrigger={false}>
+          <SelectItem value="small">Small</SelectItem>
+          <SelectItem value="medium">Medium</SelectItem>
+          <SelectItem value="large">Large</SelectItem>
+        </SelectContent>
+      </Select>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children: ReactNode }) {
   return (
     <main className="flex items-center gap-4 p-8">
@@ -189,6 +249,7 @@ const DEMOS: Record<string, () => ReactNode> = {
       </button>
     </main>
   ),
+  select: () => <SelectDemo />,
   sheet: () => (
     <Page>
       <SheetDemo side="right" />

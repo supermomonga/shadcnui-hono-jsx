@@ -1076,23 +1076,36 @@
     },
     {
       "name": "select",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/select.json",
         "contentSha256": "2dc49435a6328da7449e2ab4362923e97ce4ef9810a90ee2456fe32be02993fc",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Built on a customizable native `<select>` (`appearance: base-select`): no JavaScript, keyboard selection and typeahead are the browser's (Space and the arrow keys open it, Enter does not), and `name`/`value` are submitted with forms. Chrome 135, Firefox 149 and Safari 27 or later show upstream's design; older browsers show a classic select with the trigger's styles.",
+        "`SelectTrigger` renders the `<select>` (so `id` and `aria-*` given to it reach the form control), and `<SelectContent>` must be a direct child of `<Select>`. `value`/`defaultValue` set the initial selection; `onValueChange`, `multiple`, `items`, value render functions and aligning the selected item with the trigger (`alignItemWithTrigger`) are not supported: the list opens below the trigger. Classes given to `SelectContent` are not applied to the list.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/select#Select",
-        "render-prop:SelectPrimitive.Icon",
-        "render-prop:SelectPrimitive.ItemIndicator"
+        "base-ui-primitive-mapped:@base-ui/react/select#Select",
+        "classname-to-class",
+        "cn-marker:cn-menu-target",
+        "cn-marker:cn-menu-translucent",
+        "icon-placeholder",
+        "lucide-icon:CheckIcon",
+        "lucide-icon:ChevronDownIcon",
+        "lucide-icon:ChevronUpIcon",
+        "react-type-rewrite:React.ComponentProps",
+        "render-composition:SelectPrimitive.Icon",
+        "render-composition:SelectPrimitive.ItemIndicator",
+        "use-client-directive"
       ]
     },
     {

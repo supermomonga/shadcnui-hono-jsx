@@ -8,6 +8,7 @@ export default defineConfig({
     "disclosure.spec.ts",
     "controls.spec.ts",
     "popover.spec.ts",
+    "select.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

@@ -26,11 +26,12 @@ import {
 function mapStateVariants(token: string): string[] {
   const parts = splitVariants(token)
   const utility = parts.pop() as string
-  const variants = parts.map((v) => STATE_VARIANTS[v] ?? v)
+  const variants = parts.map((v) => POPUP_STATE_VARIANTS[v] ?? v)
   return [...variants, utility]
 }
 
-const STATE_VARIANTS: Readonly<Record<string, string>> = {
+/** Base UI popup state variants and their native equivalents. */
+export const POPUP_STATE_VARIANTS: Readonly<Record<string, string>> = {
   "data-open": "open",
   "data-closed": "not-open",
   "data-starting-style": "starting",

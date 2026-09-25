@@ -36,6 +36,16 @@ import {
   PopoverTrigger,
 } from "../../components/ui/popover"
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select"
+import {
   Sheet,
   SheetClose,
   SheetContent,
@@ -157,6 +167,47 @@ function PopoverDemo() {
   )
 }
 
+function SelectDemo() {
+  return (
+    <main class="flex items-start gap-8 p-8 pl-48">
+      <Select name="fruit">
+        <SelectTrigger id="fruit" class="w-45">
+          <SelectValue placeholder="Select a fruit" />
+        </SelectTrigger>
+        <SelectContent alignItemWithTrigger={false}>
+          <SelectGroup>
+            <SelectLabel>Fruits</SelectLabel>
+            <SelectItem value="apple">Apple</SelectItem>
+            <SelectItem value="banana">Banana</SelectItem>
+            <SelectItem value="blueberry">Blueberry</SelectItem>
+          </SelectGroup>
+          <SelectSeparator />
+          <SelectGroup>
+            <SelectLabel>Vegetables</SelectLabel>
+            <SelectItem value="carrot">Carrot</SelectItem>
+            <SelectItem value="leek" disabled>
+              Leek
+            </SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <Select name="size" defaultValue="medium">
+        <SelectTrigger id="size" size="sm" class="w-32">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent alignItemWithTrigger={false}>
+          <SelectItem value="small">Small</SelectItem>
+          <SelectItem value="medium">Medium</SelectItem>
+          <SelectItem value="large">Large</SelectItem>
+        </SelectContent>
+      </Select>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children?: unknown }) {
   return (
     <main class="flex items-center gap-4 p-8">
@@ -187,6 +238,7 @@ export const OVERLAY_DEMOS = {
       </button>
     </main>
   ),
+  select: () => <SelectDemo />,
   sheet: () => (
     <Page>
       <SheetDemo side="right" />

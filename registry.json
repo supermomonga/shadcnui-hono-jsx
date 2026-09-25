@@ -887,6 +887,36 @@
       }
     },
     {
+      "name": "select",
+      "type": "registry:item",
+      "title": "Select",
+      "description": "Hono JSX port of the shadcn/ui base-nova select component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/select.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/select.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "select",
+          "style": "base-nova",
+          "contentSha256": "2dc49435a6328da7449e2ab4362923e97ce4ef9810a90ee2456fe32be02993fc",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "separator",
       "type": "registry:item",
       "title": "Separator",

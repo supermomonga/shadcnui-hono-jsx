@@ -144,6 +144,11 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
 - Popover uses the native `popover` attribute and CSS anchor positioning. It
   opens next to its trigger in Chrome 135, Firefox 147 and Safari 26.2 or
   later, and centered in older browsers.
+- Select is a customizable native `<select>`: it works and submits without
+  JavaScript, and Chrome 135, Firefox 149 and Safari 27 or later show
+  upstream's design (older browsers show a classic select styled like the
+  trigger). `SelectContent` must be a direct child of `Select`, and the list
+  opens below the trigger.
 
 Per-component details are in the table below.
 
@@ -181,6 +186,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | popover | experimental | generated | verified | Built on the native `popover` attribute with Invoker Commands and CSS anchor positioning: no JavaScript, but placement next to the trigger needs Chrome 135, Firefox 147 or Safari 26.2 (elsewhere the popover opens centered). Outside clicks and Escape close it. Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `openOnHover` are not supported. `side`, `align`, `sideOffset` and `alignOffset` place the popover; on collision it flips to the opposite side, but `data-side` keeps the requested side. Focus is not moved into the popover, and the positioner's classes are not rendered. Accepts `class` instead of `className`. |
 | progress | experimental | generated | verified | Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported. Accepts `class` instead of `className`. |
 | radio-group | experimental | generated | verified | `value`/`defaultValue` set the initial selection; `onValueChange` and `readOnly` are not supported. Built on native `<input type="radio">` elements sharing the group's `name` (generated unless given): no JavaScript, arrow keys move the selection, and the value is submitted with forms. `id`, `disabled` and `aria-*` go to the input. Accepts `class` instead of `className`. |
+| select | experimental | generated | verified | Built on a customizable native `<select>` (`appearance: base-select`): no JavaScript, keyboard selection and typeahead are the browser's (Space and the arrow keys open it, Enter does not), and `name`/`value` are submitted with forms. Chrome 135, Firefox 149 and Safari 27 or later show upstream's design; older browsers show a classic select with the trigger's styles. `SelectTrigger` renders the `<select>` (so `id` and `aria-*` given to it reach the form control), and `<SelectContent>` must be a direct child of `<Select>`. `value`/`defaultValue` set the initial selection; `onValueChange`, `multiple`, `items`, value render functions and aligning the selected item with the trigger (`alignItemWithTrigger`) are not supported: the list opens below the trigger. Classes given to `SelectContent` are not applied to the list. Accepts `class` instead of `className`. |
 | separator | experimental | generated | verified | Accepts `class` instead of `className`. |
 | sheet | experimental | generated | verified | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | skeleton | experimental | generated | verified | Accepts `class` instead of `className`. |
@@ -192,7 +198,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | toggle-group | experimental | generated | verified | Items are native radios sharing a `name` (checkboxes with `multiple`): the pressed item of a single-selection group cannot be released by pressing it again, and arrow keys select as they move. `defaultValue` sets the pressed items; `value`/`onValueChange` are not supported. A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (27 upstream components)</summary>
+<summary>Not yet available (26 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -216,7 +222,6 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | questionnaire | unsupported | `unknown-import:@shadcn/react/questionnaire` |
 | resizable | unsupported | `unknown-import:react-resizable-panels` |
 | scroll-area | unsupported | `base-ui-primitive-unmapped:@base-ui/react/scroll-area#ScrollArea` |
-| select | unsupported | `base-ui-primitive-unmapped:@base-ui/react/select#Select`, `render-prop:SelectPrimitive.Icon`, `render-prop:SelectPrimitive.ItemIndicator` |
 | sidebar | unsupported | `event-handler:onClick`, `event-handler:onOpenChange`, `react-hook:useEffect`, `react-hook:useIsMobile`, `react-hook:useSidebar`, `react-hook:useState`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `registry-dependency:tooltip`, `registry-dependency:use-mobile`, `registry-import:@/registry/base-nova/hooks/use-mobile`, `registry-import:@/registry/base-nova/ui/tooltip`, `render-prop:TooltipTrigger`, `use-render-noncanonical` |
 | slider | unsupported | `base-ui-primitive-unmapped:@base-ui/react/slider#Slider` |
 | sonner | unsupported | `react-hook:useTheme`, `unknown-import:next-themes`, `unknown-import:sonner` |

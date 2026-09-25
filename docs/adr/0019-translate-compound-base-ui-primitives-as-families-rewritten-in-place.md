@@ -14,6 +14,8 @@ links:
   kind: amendedby
 - target: 23
   kind: amendedby
+- target: 24
+  kind: amendedby
 ---
 
 # Translate compound Base UI primitives as families rewritten in place

@@ -45,11 +45,11 @@ describe("buildManifest", () => {
   })
 
   test("unsupported items list their blocking reasons", () => {
-    const select = byName.get("select")
-    expect(select?.status).toBe("unsupported")
-    expect(select?.conversion).toBeNull()
-    expect(select?.reasons).toContain(
-      "base-ui-primitive-unmapped:@base-ui/react/select#Select"
+    const menu = byName.get("dropdown-menu")
+    expect(menu?.status).toBe("unsupported")
+    expect(menu?.conversion).toBeNull()
+    expect(menu?.reasons).toContain(
+      "base-ui-primitive-unmapped:@base-ui/react/menu#Menu"
     )
   })
 
@@ -79,6 +79,6 @@ describe("README region", () => {
     expect(table.indexOf("| button | experimental | generated |")).toBeLessThan(
       table.indexOf("\n<details>\n")
     )
-    expect(table).toContain("| select | unsupported |")
+    expect(table).toContain("| dropdown-menu | unsupported |")
   })
 })
