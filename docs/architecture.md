@@ -20,7 +20,7 @@ ui.shadcn.com registry (base-nova)
 | Path | Owner |
 | --- | --- |
 | `generator/` | hand-written generator code |
-| `generator/src/adapters/` | hand-written translation rules (primitive table, component adapters) |
+| `generator/src/adapters/` | hand-written translation rules (primitive table, primitive families, component adapters) |
 | `upstream/` | `upstream:sync` only |
 | `generator/src/licenses.ts` | hand-written, reviewed licensing record and notice text |
 | `components/ui/`, `styles/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `registry.json`, `compatibility.json` | `generate` only |
@@ -135,9 +135,14 @@ are passed, does not support array/object class values, and types `class` as
 All ten Tier A components translate through the generic pipeline with no
 component adapter. Stateless Base UI primitives (Button, Input, Separator) are
 data in the primitive table, and Badge's `useRender` + `mergeProps` pattern is
-handled by a generic step. The boundary for adapters is behavior: anything that
-needs hooks, context, event handlers, portals, or client state is either a
-native adapter (browser primitive with behavior, Tier B) or a custom adapter.
+handled by a generic step. Compound primitives (a Root plus parts sharing
+context, such as Progress and Dialog) are translated once as families that
+rewrite each part in place, so every upstream component on the same primitive
+(Dialog, AlertDialog, Sheet) is generated from its unmodified source
+([ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)).
+The boundary is behavior: anything that needs client state or event handlers
+is either mapped onto a browser primitive (native family, such as `<dialog>`
+with Invoker Commands) or left unsupported.
 See [ADR 0005](./adr/0005-translate-components-with-ts-morph-steps-a-declarative-base-ui-primitive-table-and-adapters.md)
 and [ADR 0007](./adr/0007-preserve-the-upstream-dom-contract-and-omit-render-aschild-and-refs.md).
 
@@ -154,13 +159,15 @@ with the pinned Biome (`biome check --write`, which also sorts imports):
 | `cn-markers` | `cn-font-heading` to `font-heading`; other `cn-*` classes removed (as the shadcn CLI does at install time) |
 | `icons` | `IconPlaceholder` to a file-local component inlining the Lucide SVG exactly as lucide-react renders it ([ADR 0016](./adr/0016-inline-lucide-icons-at-generation-time.md)) |
 | `use-render` | canonical `useRender({ defaultTagName, props: mergeProps(...), render, state })` to an intrinsic element wrapped in `renderElement(…, render)`; `state` entries become `data-*` attributes ([ADR 0018](./adr/0018-support-base-ui-render-props-on-the-server-and-omit-client-only-button-semantics.md)) |
+| `memo-hooks` | `useMemo(fn, deps)` to `fn()` and `useCallback(fn)` to `fn` (a server render runs once) |
+| `families` | compound Base UI primitives (`Progress`, `Dialog`, `AlertDialog`): each `<Local.Part>` and `Local.Part.Props` to file-local helpers inserted after the imports ([ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)) |
 | `primitives` | mapped Base UI primitives to intrinsic elements with their SSR attributes; `renderable` ones are wrapped in `renderElement(…, render)` and Base UI-only props are consumed |
 | `react-types` | `React.ComponentProps<"x">`, `useRender.ComponentProps<"x">` to `ComponentProps<"x">`; `React.ComponentProps<typeof X>` to `Parameters<typeof X>[0]`; `React.ReactNode` to `Child` |
 | `style-values` | numeric CSS custom property values in `style` objects to strings (Hono appends `px` to numbers) |
 | `class-attr` | `className` parameter binding to `class: className`; `className=` to `class=` |
 | `dom-attributes` | React camelCase DOM attributes Hono does not normalize (`tabIndex`, `readOnly`, ...) to lowercase |
 | `drop-props` | removes unused `asChild` bindings; `asChild ? a : b` becomes `b` |
-| `helpers` | inserts the `ComponentProps` helper type |
+| `helpers` | inserts the `ComponentProps` helper type (and `renderElement` when `render` is supported) |
 | `imports` | removes `react` and `@base-ui/*`; adds `hono/jsx` type imports |
 | `guard` | fails on any leftover React/Base UI construct, unresolved JSX component, or export change |
 
@@ -178,8 +185,8 @@ facts (imports, React type/value usage, hooks, JSX attributes, `cn-*` markers):
 
 | Kind | Meaning |
 | --- | --- |
-| `direct` | Plain HTML/Tailwind/variants, possibly via a stateless Base UI primitive mapped in `generator/src/adapters/primitives/base-ui.ts` or the canonical `useRender` pattern |
-| `native-adapter` | Maps onto a browser primitive with behavior through a `native` component adapter (Dialog: `<dialog>` with Invoker Commands, [ADR 0017](./adr/0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md)) |
+| `direct` | Plain HTML/Tailwind/variants, possibly via a stateless Base UI primitive mapped in `generator/src/adapters/primitives/base-ui.ts`, an `intrinsic` family (Progress) or the canonical `useRender` pattern |
+| `native-adapter` | Maps onto a browser primitive with behavior through a `native` family or component adapter (Dialog, AlertDialog, Sheet: `<dialog>` with Invoker Commands, [ADR 0017](./adr/0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md), [ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)) |
 | `custom-adapter` | Blocking reasons all resolved by an adapter in `generator/src/adapters/components/` |
 | `unsupported` | At least one blocking reason (unmapped Base UI primitive, React hooks/runtime APIs, event handlers, icon placeholder, registry imports, unknown packages, ...) |
 
@@ -224,7 +231,7 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Registry install into a clean Hono project | `tests/registry/` | `bun run test:registry`, CI |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
-| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/dialog.spec.ts` | `bun run test:visual`, CI `visual` |
+| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet) | `bun run test:visual`, CI `visual` |
 
 `tests/visual` renders the same case data with the generated components and
 with the upstream React sources from the snapshot, shares one Tailwind build,

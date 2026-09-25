@@ -58,7 +58,8 @@ export const helpers: TransformStep = {
       for (const name of RENDER_HELPER_TYPES) ctx.honoTypes.add(name)
       for (const name of RENDER_HELPER_VALUES) ctx.honoValues.add(name)
     }
-    ctx.sf.insertStatements(index, helpers.join("\n\n"))
+    // The trailing newline keeps a blank line before helpers inserted earlier.
+    ctx.sf.insertStatements(index, `${helpers.join("\n\n")}\n`)
     ctx.log.push("helpers: ComponentProps")
   },
 }

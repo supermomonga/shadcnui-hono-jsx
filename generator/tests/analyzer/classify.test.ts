@@ -92,8 +92,8 @@ export { Tag }`
 
   test.each([
     [
-      `import { Dialog as P } from "@base-ui/react/dialog"\nexport function D() { return <P.Root /> }`,
-      "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog",
+      `import { Menu as P } from "@base-ui/react/menu"\nexport function D() { return <P.Root /> }`,
+      "base-ui-primitive-unmapped:@base-ui/react/menu#Menu",
     ],
     [
       `export { DirectionProvider } from "@base-ui/react/direction-provider"`,
@@ -196,12 +196,13 @@ describe("classification of the committed upstream snapshot", () => {
       available: new Set(config.components),
     }).kind
 
+  // Built on browser primitives with behavior (native families, docs/adr/0019).
+  const NATIVE = new Set(["alert-dialog", "dialog", "sheet"])
+
   test.each([...config.components])(
     "%s (generation target) is direct or natively adapted",
     (name) => {
-      expect(kindOf(name)).toBe(
-        COMPONENT_ADAPTERS[name] ? "native-adapter" : "direct"
-      )
+      expect(kindOf(name)).toBe(NATIVE.has(name) ? "native-adapter" : "direct")
     }
   )
 

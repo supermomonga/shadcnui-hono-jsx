@@ -16,3 +16,4 @@
 * [16. Inline Lucide icons at generation time](0016-inline-lucide-icons-at-generation-time.md)
 * [17. Implement Dialog on the native dialog element with Invoker Commands](0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md)
 * [18. Support Base UI render props on the server and omit client-only button semantics](0018-support-base-ui-render-props-on-the-server-and-omit-client-only-button-semantics.md)
+* [19. Translate compound Base UI primitives as families rewritten in place](0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)

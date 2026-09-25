@@ -3,9 +3,9 @@ import {
   mapBackdropClasses,
   mapPopupClasses,
   splitVariants,
-} from "../../src/adapters/components/dialog"
+} from "../../src/adapters/families/dialog"
 
-describe("dialog adapter class mapping", () => {
+describe("dialog family class mapping", () => {
   test("splitVariants ignores colons inside brackets", () => {
     expect(splitVariants("supports-[display:grid]:data-open:grid")).toEqual([
       "supports-[display:grid]",

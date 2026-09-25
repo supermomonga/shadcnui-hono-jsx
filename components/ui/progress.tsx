@@ -21,6 +21,7 @@ type ComponentProps<
   render?: Render
   asChild?: never
 }
+
 type ProgressRootProps = ComponentProps<"div"> & {
   value?: number | null | undefined
   min?: number | undefined

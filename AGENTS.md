@@ -35,8 +35,10 @@ To support another upstream component, add it to `components` in
 `generator.config.ts`, add at least one case to `tests/visual/cases.ts` (or a
 browser spec listed in `BROWSER_SPECS` for interactive components), run
 `bun run analyze <name>`, and resolve blocking reasons
-with a primitive rule (`generator/src/adapters/primitives/`), a generic
-transformer step, or a component adapter (`generator/src/adapters/components/`).
+with a primitive rule (`generator/src/adapters/primitives/`), a primitive
+family (`generator/src/adapters/families/`, for compound Base UI primitives), a
+generic transformer step, or a component adapter
+(`generator/src/adapters/components/`).
 
 ## Workflow
 

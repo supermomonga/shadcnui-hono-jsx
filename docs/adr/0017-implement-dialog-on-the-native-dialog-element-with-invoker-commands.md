@@ -8,6 +8,8 @@ links:
   kind: amends
 - target: 18
   kind: amendedby
+- target: 19
+  kind: amendedby
 ---
 
 

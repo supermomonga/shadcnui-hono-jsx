@@ -104,7 +104,7 @@ describe("Dialog (native <dialog>, no JavaScript)", () => {
 
   test("requires a Dialog around its parts", () => {
     expect(() => render(<DialogTrigger>Open</DialogTrigger>)).toThrow(
-      "<DialogTrigger> must be used within <Dialog>"
+      "Dialog parts must be rendered inside <Dialog>"
     )
   })
 })

@@ -4,7 +4,6 @@
  * and document why it exists.
  */
 import type { TransformStep } from "../../transformers/context"
-import { dialogAdapter } from "./dialog"
 
 export interface ComponentAdapter {
   /**
@@ -20,6 +19,4 @@ export interface ComponentAdapter {
   steps?: readonly { after: string; step: TransformStep }[]
 }
 
-export const COMPONENT_ADAPTERS: Readonly<Record<string, ComponentAdapter>> = {
-  dialog: dialogAdapter,
-}
+export const COMPONENT_ADAPTERS: Readonly<Record<string, ComponentAdapter>> = {}

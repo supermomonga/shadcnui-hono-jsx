@@ -48,6 +48,8 @@ function fileReasons(
   available: ReadonlySet<string>
 ): Reason[] {
   const reasons: Reason[] = []
+  // `<Local.Part>` tags of family parts that support `render`.
+  const renderableParts = new Set<string>()
 
   if (file.type !== "registry:ui") {
     reasons.push(reason("unsupported-file-type", file.type))
@@ -70,9 +72,11 @@ function fileReasons(
       // Handled by the generic use-render transformer.
     } else if (module.startsWith("@base-ui/")) {
       for (const named of imp.named) {
-        const rule =
-          findPrimitiveRule(module, named.name) ??
-          findFamilyRule(module, named.name)
+        const family = findFamilyRule(module, named.name)
+        const rule = findPrimitiveRule(module, named.name) ?? family
+        for (const part of family?.renderableParts ?? []) {
+          renderableParts.add(`${named.alias ?? named.name}.${part}`)
+        }
         if (rule) {
           primitives.push(rule)
           reasons.push(
@@ -134,7 +138,7 @@ function fileReasons(
   for (const element of file.jsx) {
     if (!element.intrinsic && element.attributes.includes("render")) {
       reasons.push(
-        siblings.has(element.tag)
+        siblings.has(element.tag) || renderableParts.has(element.tag)
           ? reason("render-composition", element.tag)
           : reason("render-prop", element.tag)
       )

@@ -20,12 +20,59 @@ export interface PartElement {
   children: string
   /** Name of the enclosing function component. */
   component: string
-  /** Replaces the whole element; wraps in `{}` when it sits among JSX children. */
+  /** Replaces the whole element; non-JSX text is wrapped in `{}` among JSX children. */
   replace(text: string): void
+  /** First string literal passed to `cn(...)` in `className`, or null. */
+  classes(): string | null
+  /**
+   * Rewrites that first `cn(...)` string with \`map\` and inserts \`prepend\`
+   * strings before it. Must be called before \`attributes()\`.
+   */
+  mapClasses(
+    map: (classes: string) => string,
+    prepend?: readonly string[]
+  ): void
+}
+
+function classCall(element: JsxOpeningElement | JsxSelfClosingElement) {
+  const attr = element
+    .getAttributes()
+    .find(
+      (a) => Node.isJsxAttribute(a) && a.getNameNode().getText() === "className"
+    )
+  if (!attr || !Node.isJsxAttribute(attr)) return null
+  const value = attr.getInitializer()
+  const call = Node.isJsxExpression(value) ? value.getExpression() : undefined
+  if (
+    !call ||
+    !Node.isCallExpression(call) ||
+    call.getExpression().getText() !== "cn"
+  ) {
+    return null
+  }
+  const [first] = call.getArguments()
+  return first && Node.isStringLiteral(first) ? { call, first } : null
 }
 
 function tagOf(element: JsxOpeningElement | JsxSelfClosingElement): string {
   return element.getTagNameNode().getText()
+}
+
+/** The first `cn(...)` string of every `<local.Part>` element, in document order. */
+export function partClasses(
+  ctx: TransformContext,
+  local: string,
+  part: string
+): string[] {
+  return ctx.sf
+    .getDescendants()
+    .filter(
+      (n): n is JsxOpeningElement | JsxSelfClosingElement =>
+        (Node.isJsxOpeningElement(n) || Node.isJsxSelfClosingElement(n)) &&
+        tagOf(n) === `${local}.${part}`
+    )
+    .map((e) => classCall(e)?.first.getLiteralValue())
+    .filter((c) => c !== undefined)
 }
 
 /** Visits `<local.Part>` elements one at a time (re-querying after each replacement). */
@@ -44,7 +91,7 @@ export function forEachPart(
     const node: Node = Node.isJsxOpeningElement(element)
       ? element.getParentIfKindOrThrow(SyntaxKind.JsxElement)
       : element
-    const attrs = element.getAttributes()
+    const opening = element
     const children = Node.isJsxElement(node)
       ? node
           .getJsxChildren()
@@ -63,7 +110,8 @@ export function forEachPart(
       children,
       component,
       attributes: (without = []) =>
-        attrs
+        opening
+          .getAttributes()
           .filter(
             (a) =>
               !(
@@ -73,9 +121,11 @@ export function forEachPart(
           )
           .map((a) => a.getText()),
       attribute: (name) => {
-        const attr = attrs.find(
-          (a) => Node.isJsxAttribute(a) && a.getNameNode().getText() === name
-        )
+        const attr = opening
+          .getAttributes()
+          .find(
+            (a) => Node.isJsxAttribute(a) && a.getNameNode().getText() === name
+          )
         if (!attr || !Node.isJsxAttribute(attr)) return null
         const value = attr.getInitializer()
         if (!value) return "true"
@@ -83,10 +133,28 @@ export function forEachPart(
           return value.getExpression()?.getText() ?? null
         return value.getText()
       },
+      classes: () => classCall(opening)?.first.getLiteralValue() ?? null,
+      mapClasses: (map, prepend = []) => {
+        const found = classCall(opening)
+        if (!found)
+          throw new TransformError(
+            ctx,
+            "families",
+            `<${local}.${part}> has no cn("...") className`
+          )
+        const index = found.first.getChildIndex()
+        found.first.setLiteralValue(map(found.first.getLiteralValue()))
+        if (prepend.length > 0)
+          found.call.insertArguments(
+            index,
+            prepend.map((p) => JSON.stringify(p))
+          )
+      },
       replace: (text) => {
         const container = node.getParent()
         const wrapped =
-          Node.isJsxElement(container) || Node.isJsxFragment(container)
+          (Node.isJsxElement(container) || Node.isJsxFragment(container)) &&
+          !text.startsWith("<")
             ? `{${text}}`
             : text
         node.replaceWithText(wrapped)

@@ -14,6 +14,8 @@ export interface FamilyRule {
   transform(ctx: TransformContext, local: string): void
   /** User-visible differences (Markdown; wrap HTML in backticks). */
   notes: readonly string[]
+  /** Parts that accept Base UI's `render` prop (docs/adr/0018). */
+  renderableParts?: readonly string[]
   /** Attributes Base UI renders that are deliberately not reproduced. */
   omittedAttrs?: readonly OmittedAttribute[]
   /**

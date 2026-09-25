@@ -25,7 +25,7 @@ describe("buildManifest", () => {
     (name) => {
       expect(byName.get(name)).toMatchObject({
         status: "experimental",
-        conversion: name === "dialog" ? "generated-with-adapter" : "generated",
+        conversion: "generated",
         clientJs: "none",
         visualParity: "verified",
         upstream: { contentSha256: lock.items[name]?.contentSha256 },
