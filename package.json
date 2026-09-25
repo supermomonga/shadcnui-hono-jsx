@@ -16,8 +16,11 @@
     "format": "biome format --write .",
     "lint": "biome ci .",
     "typecheck": "tsc -p tsconfig.json && tsc -p tests/types/tsconfig.json && tsc -p tests/types/tsconfig.strict.json",
-    "test": "bun test",
-    "verify": "bun run lint && bun run typecheck && bun run test && bun run generate --check"
+    "test": "bun test ./generator ./tests/render ./tests/deps",
+    "test:registry": "bun test ./tests/registry",
+    "registry:validate": "shadcn registry validate ./registry.json",
+    "verify": "bun run lint && bun run typecheck && bun run test && bun run generate --check && bun run registry:validate",
+    "verify:full": "bun run verify && bun run test:registry"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
