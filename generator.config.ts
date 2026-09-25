@@ -56,6 +56,7 @@ export const config: GeneratorConfig = {
     "table",
     "tabs",
     "textarea",
+    "toast",
     "toggle",
     "toggle-group",
     "tooltip",

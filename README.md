@@ -137,6 +137,20 @@ HonoX serves `public/` already; add the script tag to
 to the document, so content inserted later (for example by htmx) works
 without initialization.
 
+Toasts are the one component with a client API: render `<Toaster />` once
+per page, then add toasts from your own module scripts or declaratively.
+Toasts known on the server (for example after a form post) render with
+`<Toaster toasts={...}>` and show without JavaScript.
+
+```tsx
+// in the page: <Toaster toasts={saved ? [{ title: "Saved" }] : []} />
+<button data-toast-trigger data-toast-title="Copied">Copy</button>
+
+// in a module script
+import { toast } from "/shadcn/toast.js"
+toast.add({ title: "Saved", description: "Your changes were saved." })
+```
+
 ## Differences from shadcn/ui
 
 - Components accept `class`, not `className` (Hono JSX renders `class`).
@@ -232,12 +246,13 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | table | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | tabs | experimental | generated | verified | `/shadcn/tabs.js` | Switching tabs needs the client script `/shadcn/tabs.js` (`<script type="module" src="/shadcn/tabs.js">`); without it the selected panel is shown. Pointer, Enter, Space, arrow keys, Home and End work like Base UI. Inactive panels are rendered with `hidden` (Base UI does not render them). Controlled state (`onValueChange`) and `render` are not supported; `value`/`defaultValue` set the selected tab. Accepts `class` instead of `className`. |
 | textarea | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| toast | experimental | generated-with-adapter | verified | `/shadcn/toast.js` | Toasts are added in the browser with `toast` from the client script (`import { toast } from "/shadcn/toast.js"`, then `toast.add({ title, description, type, actionProps })`), or declaratively with `data-toast-trigger` buttons (`data-toast-title`, `data-toast-description`, `data-toast-type`). The script copies the toast markup from templates that `<Toaster>` renders, so edit the components as usual. On the server, pass toasts to `<Toaster toasts={[{ title: "Saved" }]} />` (for example flash messages after a form post) or use a per-response `createToastManager()` with `<Toaster toastManager={manager}>`; they show without JavaScript, and the script times them out. The exported `toast` is shared by every request on the server, so its `add()` throws there. Action `onClick` and other function props, and `useToastManager()` state updates, work only through `/shadcn/toast.js`. Accepts `class` instead of `className`. |
 | toggle | experimental | generated | verified | none | A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
 | toggle-group | experimental | generated | verified | none | Items are native radios sharing a `name` (checkboxes with `multiple`): the pressed item of a single-selection group cannot be released by pressing it again, and arrow keys select as they move. `defaultValue` sets the pressed items; `value`/`onValueChange` are not supported. A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
 | tooltip | experimental | generated | verified | `/shadcn/hover.js` | Opening on hover or keyboard focus needs the client script `/shadcn/hover.js` (`<script type="module" src="/shadcn/hover.js">`); without it the tooltip does not open, but the trigger's `aria-describedby` still exposes its text. The popup is a native popover placed with CSS anchor positioning. Unlike Base UI, the popup has `role="tooltip"` and describes the trigger. Controlled state (`open`, `onOpenChange`) is not supported. Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (13 upstream components)</summary>
+<summary>Not yet available (12 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -253,7 +268,6 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | resizable | unsupported | `unknown-import:react-resizable-panels` |
 | sidebar | unsupported | `event-handler:onClick`, `event-handler:onOpenChange`, `react-hook:useEffect`, `react-hook:useIsMobile`, `react-hook:useState`, `react-runtime-api:React.useEffect`, `react-runtime-api:React.useState`, `registry-dependency:use-mobile`, `registry-import:@/registry/base-nova/hooks/use-mobile`, `use-render-noncanonical` |
 | sonner | unsupported | `react-hook:useTheme`, `unknown-import:next-themes`, `unknown-import:sonner` |
-| toast | unsupported | `base-ui-primitive-unmapped:@base-ui/react/toast#Toast`, `render-prop:ToastPrimitive.Action`, `render-prop:ToastPrimitive.Close` |
 
 </details>
 <!-- compatibility-table:end -->

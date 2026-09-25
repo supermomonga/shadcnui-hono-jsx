@@ -20,6 +20,7 @@ export default defineConfig({
     "avatar.spec.ts",
     "scroll-area.spec.ts",
     "drawer.spec.ts",
+    "toast.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

@@ -160,6 +160,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs"
+import { Toaster } from "../../components/ui/toast"
 import {
   Tooltip,
   TooltipContent,
@@ -749,6 +750,39 @@ function DrawerDemo() {
   )
 }
 
+function ToastDemo() {
+  return (
+    <main class="flex gap-2 p-8">
+      <button
+        type="button"
+        id="plain"
+        data-toast-trigger=""
+        data-toast-title="Saved"
+        data-toast-description="Your changes were saved."
+      >
+        Plain
+      </button>
+      <Toaster />
+    </main>
+  )
+}
+
+function ToastServerDemo() {
+  return (
+    <main class="p-8">
+      <Toaster
+        toasts={[
+          {
+            title: "Welcome back",
+            description: "You have 3 new messages.",
+            type: "info",
+          },
+        ]}
+      />
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main class="flex w-96 flex-col gap-6 p-8">
@@ -842,6 +876,8 @@ export const DEMOS = {
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
+  toast: () => <ToastDemo />,
+  "toast-server": () => <ToastServerDemo />,
   drawer: () => <DrawerDemo />,
   collapsible: () => <CollapsibleDemo />,
   "scroll-area": () => <ScrollAreaDemo />,
@@ -867,6 +903,8 @@ export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
   combobox: ["combobox", "input-group"],
   "navigation-menu": ["navigation-menu"],
   avatar: ["avatar"],
+  toast: ["toast"],
+  "toast-server": ["toast"],
   drawer: ["drawer"],
   collapsible: ["collapsible"],
   "scroll-area": ["scroll-area"],

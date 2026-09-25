@@ -109,8 +109,8 @@ export { Tag }`
 
   test.each([
     [
-      `import { Toast as P } from "@base-ui/react/toast"\nexport function D() { return <P.Root /> }`,
-      "base-ui-primitive-unmapped:@base-ui/react/toast#Toast",
+      `import { Meter as P } from "@base-ui/react/meter"\nexport function D() { return <P.Root /> }`,
+      "base-ui-primitive-unmapped:@base-ui/react/meter#Meter",
     ],
     [
       `export { DirectionProvider } from "@base-ui/react/direction-provider"`,
@@ -245,6 +245,7 @@ describe("classification of the committed upstream snapshot", () => {
     "scroll-area",
     "slider",
     "tabs",
+    "toast",
     "tooltip",
   ])
 
@@ -261,7 +262,7 @@ describe("classification of the committed upstream snapshot", () => {
     }
   )
 
-  test.each(["toast", "sidebar", "carousel", "form"])(
+  test.each(["sidebar", "carousel", "calendar", "form"])(
     "%s is unsupported",
     (name) => {
       expect(kindOf(name)).toBe("unsupported")

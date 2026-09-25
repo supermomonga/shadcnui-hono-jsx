@@ -1667,6 +1667,51 @@
       }
     },
     {
+      "name": "toast",
+      "type": "registry:item",
+      "title": "Toast",
+      "description": "Hono JSX port of the shadcn/ui base-nova toast component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/toast.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/toast.tsx"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/button.tsx"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "public/shadcn/toast.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/toast.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/toast.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "toast",
+          "style": "base-nova",
+          "contentSha256": "081b8e55fd7cf6ad3d1fc87c3c8a0da11b66952c21fa95dc4bd553615c6dbe60",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
+        "mode": "adapter"
+      }
+    },
+    {
       "name": "toggle",
       "type": "registry:item",
       "title": "Toggle",

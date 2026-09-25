@@ -1473,23 +1473,39 @@
     },
     {
       "name": "toast",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated-with-adapter",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/toast.json",
         "contentSha256": "081b8e55fd7cf6ad3d1fc87c3c8a0da11b66952c21fa95dc4bd553615c6dbe60",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "Toasts are added in the browser with `toast` from the client script (`import { toast } from \"/shadcn/toast.js\"`, then `toast.add({ title, description, type, actionProps })`), or declaratively with `data-toast-trigger` buttons (`data-toast-title`, `data-toast-description`, `data-toast-type`). The script copies the toast markup from templates that `<Toaster>` renders, so edit the components as usual.",
+        "On the server, pass toasts to `<Toaster toasts={[{ title: \"Saved\" }]} />` (for example flash messages after a form post) or use a per-response `createToastManager()` with `<Toaster toastManager={manager}>`; they show without JavaScript, and the script times them out. The exported `toast` is shared by every request on the server, so its `add()` throws there. Action `onClick` and other function props, and `useToastManager()` state updates, work only through `/shadcn/toast.js`.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/toast#Toast",
-        "render-prop:ToastPrimitive.Action",
-        "render-prop:ToastPrimitive.Close"
+        "base-ui-primitive-mapped:@base-ui/react/toast#Toast",
+        "classname-to-class",
+        "component-dependency:button",
+        "component-import:button",
+        "icon-placeholder",
+        "lucide-icon:CircleCheckIcon",
+        "lucide-icon:InfoIcon",
+        "lucide-icon:Loader2Icon",
+        "lucide-icon:OctagonXIcon",
+        "lucide-icon:TriangleAlertIcon",
+        "lucide-icon:XIcon",
+        "react-type-rewrite:React.ReactNode",
+        "render-composition:ToastPrimitive.Action",
+        "render-composition:ToastPrimitive.Close",
+        "use-client-directive"
       ]
     },
     {

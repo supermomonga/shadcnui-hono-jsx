@@ -4,7 +4,7 @@
  * components, rendered in the browser. Bundled by render.ts; the page picks a
  * demo with `<div id="root" data-demo="…">`.
  */
-import type { ReactNode } from "react"
+import { type ReactNode, useEffect } from "react"
 import { createRoot } from "react-dom/client"
 import {
   AlertDialog,
@@ -157,6 +157,7 @@ import {
 } from "./.upstream/sheet"
 import { Slider } from "./.upstream/slider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./.upstream/tabs"
+import { Toaster, toast } from "./.upstream/toast"
 import {
   Tooltip,
   TooltipContent,
@@ -771,6 +772,39 @@ function DrawerDemo() {
   )
 }
 
+function ToastDemo() {
+  ;(window as unknown as { __toast: typeof toast }).__toast = toast
+  return (
+    <main className="flex gap-2 p-8">
+      <button
+        type="button"
+        id="plain"
+        onClick={() =>
+          toast.add({ title: "Saved", description: "Your changes were saved." })
+        }
+      >
+        Plain
+      </button>
+      <Toaster />
+    </main>
+  )
+}
+
+function ToastServerDemo() {
+  useEffect(() => {
+    toast.add({
+      title: "Welcome back",
+      description: "You have 3 new messages.",
+      type: "info",
+    })
+  }, [])
+  return (
+    <main className="p-8">
+      <Toaster />
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main className="flex w-96 flex-col gap-6 p-8">
@@ -869,6 +903,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
+  toast: () => <ToastDemo />,
+  "toast-server": () => <ToastServerDemo />,
   drawer: () => <DrawerDemo />,
   collapsible: () => <CollapsibleDemo />,
   "scroll-area": () => <ScrollAreaDemo />,

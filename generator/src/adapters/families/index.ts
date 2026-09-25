@@ -21,6 +21,7 @@ import { scrollAreaFamily } from "./scroll-area"
 import { selectFamily } from "./select"
 import { sliderFamily } from "./slider"
 import { tabsFamily } from "./tabs"
+import { toastFamily } from "./toast"
 import type { FamilyRule } from "./types"
 
 export type { FamilyRule } from "./types"
@@ -49,6 +50,7 @@ export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   sliderFamily,
   switchFamily,
   tabsFamily,
+  toastFamily,
   toggleFamily,
   toggleGroupFamily,
   tooltipFamily,

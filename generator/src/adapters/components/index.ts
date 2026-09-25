@@ -5,6 +5,7 @@
  */
 import { comboboxAdapter } from "./combobox"
 import { inputGroupAdapter } from "./input-group"
+import { toastAdapter } from "./toast"
 import type { ComponentAdapter } from "./types"
 
 export type { ComponentAdapter } from "./types"
@@ -12,4 +13,5 @@ export type { ComponentAdapter } from "./types"
 export const COMPONENT_ADAPTERS: Readonly<Record<string, ComponentAdapter>> = {
   combobox: comboboxAdapter,
   "input-group": inputGroupAdapter,
+  toast: toastAdapter,
 }

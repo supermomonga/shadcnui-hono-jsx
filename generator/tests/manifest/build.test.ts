@@ -36,6 +36,7 @@ describe("buildManifest", () => {
     "scroll-area",
     "slider",
     "tabs",
+    "toast",
     "tooltip",
   ])
 
@@ -65,11 +66,11 @@ describe("buildManifest", () => {
   })
 
   test("unsupported items list their blocking reasons", () => {
-    const toast = byName.get("toast")
-    expect(toast?.status).toBe("unsupported")
-    expect(toast?.conversion).toBeNull()
-    expect(toast?.reasons).toContain(
-      "base-ui-primitive-unmapped:@base-ui/react/toast#Toast"
+    const direction = byName.get("direction")
+    expect(direction?.status).toBe("unsupported")
+    expect(direction?.conversion).toBeNull()
+    expect(direction?.reasons).toContain(
+      "base-ui-primitive-unmapped:@base-ui/react/direction-provider#DirectionProvider"
     )
   })
 
@@ -99,6 +100,6 @@ describe("README region", () => {
     expect(table.indexOf("| button | experimental | generated |")).toBeLessThan(
       table.indexOf("\n<details>\n")
     )
-    expect(table).toContain("| toast | unsupported |")
+    expect(table).toContain("| direction | unsupported |")
   })
 })

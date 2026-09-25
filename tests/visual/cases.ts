@@ -29,6 +29,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   select: "select.spec.ts",
   slider: "slider.spec.ts",
   tabs: "tabs.spec.ts",
+  toast: "toast.spec.ts",
   tooltip: "hover.spec.ts",
   switch: "controls.spec.ts",
   toggle: "controls.spec.ts",
