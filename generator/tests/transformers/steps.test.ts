@@ -300,6 +300,7 @@ export { Box, Button }
       "icons",
       "use-render",
       "memo-hooks",
+      "families",
       "primitives",
       "react-types",
       "style-values",

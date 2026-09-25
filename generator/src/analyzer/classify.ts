@@ -1,4 +1,5 @@
 import type { ComponentAdapter } from "../adapters/components"
+import { findFamilyRule } from "../adapters/families"
 import {
   BASE_UI_RENDER_HELPERS,
   findPrimitiveRule,
@@ -43,7 +44,7 @@ export interface ClassifyOptions {
 
 function fileReasons(
   file: FileFacts,
-  primitives: PrimitiveRule[],
+  primitives: { kind: PrimitiveRule["kind"] }[],
   available: ReadonlySet<string>
 ): Reason[] {
   const reasons: Reason[] = []
@@ -69,7 +70,9 @@ function fileReasons(
       // Handled by the generic use-render transformer.
     } else if (module.startsWith("@base-ui/")) {
       for (const named of imp.named) {
-        const rule = findPrimitiveRule(module, named.name)
+        const rule =
+          findPrimitiveRule(module, named.name) ??
+          findFamilyRule(module, named.name)
         if (rule) {
           primitives.push(rule)
           reasons.push(
@@ -167,7 +170,7 @@ export function classify(
 ): Classification {
   const available = options.available ?? new Set<string>()
   const reasons: Reason[] = []
-  const primitives: PrimitiveRule[] = []
+  const primitives: { kind: PrimitiveRule["kind"] }[] = []
 
   if (facts.files.length === 0) reasons.push(reason("no-files"))
   if (facts.files.length > 1) {

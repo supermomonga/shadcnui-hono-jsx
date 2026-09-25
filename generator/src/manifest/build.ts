@@ -1,5 +1,6 @@
 import { BROWSER_SPECS, VISUAL_CASES } from "../../../tests/visual/cases"
 import { COMPONENT_ADAPTERS } from "../adapters/components"
+import { PRIMITIVE_FAMILIES } from "../adapters/families"
 import { BASE_UI_PRIMITIVES } from "../adapters/primitives/base-ui"
 import { type ClassificationKind, classify } from "../analyzer/classify"
 import { collectFacts } from "../analyzer/facts"
@@ -57,9 +58,13 @@ function knownDifferences(
       const [module, exportName] = key
         .slice("base-ui-primitive-mapped:".length)
         .split("#")
-      const rule = BASE_UI_PRIMITIVES.find(
-        (r) => r.module === module && r.exportName === exportName
-      )
+      const rule =
+        BASE_UI_PRIMITIVES.find(
+          (r) => r.module === module && r.exportName === exportName
+        ) ??
+        PRIMITIVE_FAMILIES.find(
+          (r) => r.module === module && r.exportName === exportName
+        )
       notes.push(...(rule?.notes ?? []))
     }
   }

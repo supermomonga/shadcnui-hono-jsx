@@ -8,6 +8,7 @@ import { componentImports } from "./steps/component-imports"
 import { removeDirectives } from "./steps/directives"
 import { domAttributes } from "./steps/dom-attributes"
 import { dropProps } from "./steps/drop-props"
+import { families } from "./steps/families"
 import { guard } from "./steps/guard"
 import { helpers } from "./steps/helpers"
 import { icons } from "./steps/icons"
@@ -26,6 +27,7 @@ export const STEPS: readonly TransformStep[] = [
   icons,
   useRenderStep,
   memoHooks,
+  families,
   primitivesStep,
   reactTypes,
   styleValues,
