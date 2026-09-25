@@ -31,7 +31,19 @@ const RENDER_HELPER_MODULES = new Set<string>(
   Object.values(BASE_UI_RENDER_HELPERS)
 )
 
-function fileReasons(file: FileFacts, primitives: PrimitiveRule[]): Reason[] {
+/** `@/registry/<style>/ui/<name>` imports of another upstream component. */
+export const REGISTRY_UI_IMPORT = /^@\/registry\/[^/]+\/ui\/([a-z0-9-]+)$/
+
+export interface ClassifyOptions {
+  /** Components that are generated too; imports of them become `./<name>`. */
+  available?: ReadonlySet<string>
+}
+
+function fileReasons(
+  file: FileFacts,
+  primitives: PrimitiveRule[],
+  available: ReadonlySet<string>
+): Reason[] {
   const reasons: Reason[] = []
 
   if (file.type !== "registry:ui") {
@@ -72,6 +84,10 @@ function fileReasons(file: FileFacts, primitives: PrimitiveRule[]): Reason[] {
       }
     } else if (module.includes("icon-placeholder")) {
       reasons.push(reason("icon-placeholder"))
+    } else if (available.has(module.match(REGISTRY_UI_IMPORT)?.[1] ?? "")) {
+      reasons.push(
+        reason("component-import", module.match(REGISTRY_UI_IMPORT)?.[1])
+      )
     } else if (module.startsWith("@/")) {
       reasons.push(reason("registry-import", module))
     } else {
@@ -116,8 +132,10 @@ function fileReasons(file: FileFacts, primitives: PrimitiveRule[]): Reason[] {
  */
 export function classify(
   facts: ComponentFacts,
-  adapters: Readonly<Record<string, ComponentAdapter>>
+  adapters: Readonly<Record<string, ComponentAdapter>>,
+  options: ClassifyOptions = {}
 ): Classification {
+  const available = options.available ?? new Set<string>()
   const reasons: Reason[] = []
   const primitives: PrimitiveRule[] = []
 
@@ -126,10 +144,14 @@ export function classify(
     reasons.push(reason("multi-file", String(facts.files.length)))
   }
   for (const dependency of facts.registryDependencies) {
-    reasons.push(reason("registry-dependency", dependency))
+    reasons.push(
+      available.has(dependency)
+        ? reason("component-dependency", dependency)
+        : reason("registry-dependency", dependency)
+    )
   }
   for (const file of facts.files) {
-    reasons.push(...fileReasons(file, primitives))
+    reasons.push(...fileReasons(file, primitives, available))
   }
 
   const sorted = sortReasons(reasons)

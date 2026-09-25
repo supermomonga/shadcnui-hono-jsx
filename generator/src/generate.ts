@@ -34,7 +34,9 @@ export function generateComponent(
   const item = deps.store.readItem(name)
   const facts = collectFacts(item)
   const adapter = COMPONENT_ADAPTERS[name]
-  const classification = classify(facts, COMPONENT_ADAPTERS)
+  const classification = classify(facts, COMPONENT_ADAPTERS, {
+    available: new Set(deps.config.components),
+  })
   if (classification.kind === "unsupported") {
     const blocking = classification.reasons
       .filter((r) => r.blocking)

@@ -19,12 +19,12 @@ const { values } = parseArgs({
 const store = new UpstreamStore(ROOT, config.style)
 const classifyAll = () =>
   new Map<string, ClassificationKind>(
-    store
-      .listItems()
-      .map((name) => [
-        name,
-        classify(collectFacts(store.readItem(name)), COMPONENT_ADAPTERS).kind,
-      ])
+    store.listItems().map((name) => [
+      name,
+      classify(collectFacts(store.readItem(name)), COMPONENT_ADAPTERS, {
+        available: new Set(config.components),
+      }).kind,
+    ])
   )
 
 const before = classifyAll()

@@ -211,6 +211,16 @@ describe("drop-props", () => {
     )
   })
 
+  test("folds conditionals on a dropped prop to their else branch", () => {
+    const { text } = apply(
+      `function A({ render, type, ...props }) { return <button type={render ? type : (type ?? "button")} {...props} /> }`,
+      dropProps
+    )
+    expect(squash(text)).toBe(
+      `function A({ type, ...props }) { return <button type={(type ?? "button")} {...props} /> }`
+    )
+  })
+
   test("refuses to drop a prop that is still used", () => {
     expect(() =>
       apply(
@@ -278,6 +288,7 @@ export { Box, Button }
   test("runs every step exactly once, guard last", () => {
     expect(STEPS.map((s) => s.name)).toEqual([
       "remove-directives",
+      "component-imports",
       "cn-markers",
       "use-render",
       "primitives",

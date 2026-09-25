@@ -18,7 +18,8 @@ const names = positionals.length > 0 ? positionals : store.listItems()
 const results = names.map((name) => {
   const classification = classify(
     collectFacts(store.readItem(name)),
-    COMPONENT_ADAPTERS
+    COMPONENT_ADAPTERS,
+    { available: new Set(config.components) }
   )
   return { name, target: config.components.includes(name), ...classification }
 })

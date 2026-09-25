@@ -166,7 +166,9 @@ export { Tag }`
 describe("classification of the committed upstream snapshot", () => {
   const store = new UpstreamStore(ROOT, config.style)
   const kindOf = (name: string) =>
-    classify(collectFacts(store.readItem(name)), COMPONENT_ADAPTERS).kind
+    classify(collectFacts(store.readItem(name)), COMPONENT_ADAPTERS, {
+      available: new Set(config.components),
+    }).kind
 
   test.each([...config.components])(
     "%s (generation target) is direct",

@@ -52,10 +52,21 @@ const title = (name: string) =>
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ")
 
+/** Sibling components a generated file imports (`./<name>`). */
+export function collectComponentImports(file: OutputFile): string[] {
+  const names = new Set<string>()
+  for (const specifier of findImports(file.text)) {
+    const name = specifier.match(/^\.\/([a-z0-9-]+)$/)?.[1]
+    if (name) names.add(name)
+  }
+  return [...names].sort()
+}
+
 /** npm packages a generated file imports, excluding `hono` (a prerequisite). */
 export function collectDependencies(file: OutputFile): string[] {
   const packages = new Set<string>()
   for (const specifier of findImports(file.text)) {
+    if (/^\.\/[a-z0-9-]+$/.test(specifier)) continue
     const pkg = packageNameOf(specifier)
     if (pkg === null) {
       throw new Error(
@@ -113,18 +124,39 @@ export function buildRegistry(deps: {
       },
     },
   }
+  const byName = new Map(deps.components.map((c) => [c.name, c]))
+  /** The component plus every sibling component it imports, transitively. */
+  const closure = (name: string, seen = new Set<string>()): Set<string> => {
+    const component = byName.get(name)
+    if (!component) throw new Error(`${name} is imported but not generated`)
+    if (seen.has(name)) return seen
+    seen.add(name)
+    for (const dependency of collectComponentImports(component.file)) {
+      closure(dependency, seen)
+    }
+    return seen
+  }
   const components = [...deps.components]
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((component): RegistryItem => {
       const entry = lock.items[component.name]
+      // Sibling components are shipped in the same item (not registryDependencies)
+      // so a pinned `#ref` installs a consistent set; identical files are skipped.
+      const included = [...closure(component.name)]
+        .filter((name) => name !== component.name)
+        .sort()
+        .map((name) => byName.get(name) as ComponentEntry)
+      const files = [component, ...included]
       return {
         name: component.name,
         type: "registry:item",
         title: title(component.name),
         description: `Hono JSX port of the shadcn/ui ${config.style} ${component.name} component.`,
-        dependencies: collectDependencies(component.file),
+        dependencies: [
+          ...new Set(files.flatMap((c) => collectDependencies(c.file))),
+        ].sort(),
         files: [
-          universalFile(component.file.path),
+          ...files.map((c) => universalFile(c.file.path)),
           universalFile(LICENSE_NOTICE_PATH),
         ],
         docs: `Requires hono >= ${MIN_HONO_VERSION} with "jsxImportSource": "hono/jsx", and the ${config.repository}/${THEME_ITEM} item for styles.`,

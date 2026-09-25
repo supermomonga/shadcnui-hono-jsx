@@ -16,10 +16,15 @@ export const reactTypes: TransformStep = {
       const name = ref.getTypeName().getText()
       if (COMPONENT_PROPS.has(name)) {
         const args = ref.getTypeArguments()
-        if (
-          args.length !== 1 ||
-          args[0]?.getKind() !== SyntaxKind.LiteralType
-        ) {
+        const [arg] = args
+        // Props of another component: generated components are plain functions.
+        if (args.length === 1 && arg?.getKind() === SyntaxKind.TypeQuery) {
+          const query = arg.getText()
+          ref.replaceWithText(`Parameters<${query}>[0]`)
+          ctx.log.push(`react-types: ${name}<${query}>`)
+          continue
+        }
+        if (args.length !== 1 || arg?.getKind() !== SyntaxKind.LiteralType) {
           throw new TransformError(
             ctx,
             "react-types",

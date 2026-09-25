@@ -4,6 +4,7 @@ import { parseSource } from "../analyzer/source"
 import type { TransformContext, TransformStep } from "./context"
 import { classAttr } from "./steps/class-attr"
 import { cnMarkers } from "./steps/cn-markers"
+import { componentImports } from "./steps/component-imports"
 import { removeDirectives } from "./steps/directives"
 import { domAttributes } from "./steps/dom-attributes"
 import { dropProps } from "./steps/drop-props"
@@ -18,6 +19,7 @@ import { useRenderStep } from "./steps/use-render"
 /** Ordered translation steps applied to every upstream component file. */
 export const STEPS: readonly TransformStep[] = [
   removeDirectives,
+  componentImports,
   cnMarkers,
   useRenderStep,
   primitivesStep,

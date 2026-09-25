@@ -75,7 +75,8 @@ export function buildManifest(deps: {
   const components = deps.store.listItems().map((name): ManifestEntry => {
     const classification = classify(
       collectFacts(deps.store.readItem(name)),
-      COMPONENT_ADAPTERS
+      COMPONENT_ADAPTERS,
+      { available: new Set(deps.config.components) }
     )
     const reasons = classification.reasons.map(reasonKey)
     const lockEntry = deps.lock.items[name]

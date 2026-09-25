@@ -38,6 +38,15 @@ export const dropProps: TransformStep = {
       if (removed.length === 0) continue
       for (const element of removed) {
         const local = element.getName()
+        // A dropped prop is always undefined: `render ? a : b` is just `b`.
+        const conditionals = fn
+          .getDescendantsOfKind(SyntaxKind.ConditionalExpression)
+          .filter((c) => c.getCondition().getText() === local)
+        for (const conditional of conditionals.reverse()) {
+          const whenFalse = conditional.getWhenFalse().getText()
+          conditional.replaceWithText(whenFalse)
+          ctx.log.push(`drop-props: ${local} ? … : ${whenFalse}`)
+        }
         const used = fn
           .getDescendantsOfKind(SyntaxKind.Identifier)
           .some((id) => id.getText() === local && isReference(id))

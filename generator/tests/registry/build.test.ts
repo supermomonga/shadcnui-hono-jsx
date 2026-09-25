@@ -5,7 +5,11 @@ import { config } from "../../../generator.config"
 import { LICENSE_NOTICE_PATH } from "../../src/licenses"
 import { ROOT } from "../../src/paths"
 import { ALLOWED_REGISTRY_DEPENDENCIES } from "../../src/policy"
-import { collectDependencies, type Registry } from "../../src/registry/build"
+import {
+  collectComponentImports,
+  collectDependencies,
+  type Registry,
+} from "../../src/registry/build"
 
 const registry = JSON.parse(
   readFileSync(path.join(ROOT, "registry.json"), "utf8")
@@ -44,18 +48,50 @@ describe("registry.json", () => {
 })
 
 describe("collectDependencies", () => {
-  test("ignores hono and rejects local or non-allowlisted imports", () => {
-    const file = (text: string) => ({ path: "components/ui/x.tsx", text })
+  const file = (text: string) => ({ path: "components/ui/x.tsx", text })
+
+  test("ignores hono and sibling components, rejects other local or non-allowlisted imports", () => {
     expect(
       collectDependencies(
-        file(`import type { JSX } from "hono/jsx"\nimport { cn } from "cn"`)
+        file(
+          `import type { JSX } from "hono/jsx"\nimport { cn } from "cn"\nimport { Button } from "./button"`
+        )
       )
     ).toEqual(["cn"])
-    expect(() => collectDependencies(file(`import { x } from "./x"`))).toThrow(
+    expect(() => collectDependencies(file(`import { x } from "../x"`))).toThrow(
       /local imports/
     )
     expect(() =>
+      collectDependencies(file(`import { x } from "@/lib/x"`))
+    ).toThrow(/local imports/)
+    expect(() =>
       collectDependencies(file(`import { x } from "left-pad"`))
     ).toThrow(/allowlisted/)
+  })
+
+  test("collects sibling component imports", () => {
+    expect(
+      collectComponentImports(
+        file(
+          `import { Button } from "./button"\nimport { Separator } from "./separator"`
+        )
+      )
+    ).toEqual(["button", "separator"])
+  })
+})
+
+describe("items with sibling components", () => {
+  test("ship every transitively imported component file", () => {
+    for (const item of registry.items) {
+      if (item.name === "theme") continue
+      const own = `components/ui/${item.name}.tsx`
+      expect(item.files[0]?.path).toBe(own)
+      const text = readFileSync(path.join(ROOT, own), "utf8")
+      for (const sibling of collectComponentImports({ path: own, text })) {
+        expect(item.files.map((f) => f.path)).toContain(
+          `components/ui/${sibling}.tsx`
+        )
+      }
+    }
   })
 })

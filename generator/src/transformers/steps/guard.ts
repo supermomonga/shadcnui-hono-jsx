@@ -9,9 +9,20 @@ export const guard: TransformStep = {
     const fail = (message: string): never => {
       throw new TransformError(ctx, "guard", message)
     }
+    const imported: string[] = []
     for (const decl of ctx.sf.getImportDeclarations()) {
       const module = decl.getModuleSpecifierValue()
       if (isProhibitedModule(module)) fail(`prohibited import ${module}`)
+      if (module.startsWith("@/")) fail(`unresolved alias import ${module}`)
+      if (module.startsWith(".")) {
+        if (!/^\.\/[a-z0-9-]+$/.test(module))
+          fail(`unexpected relative import ${module}`)
+        imported.push(
+          ...decl
+            .getNamedImports()
+            .map((n) => n.getAliasNode()?.getText() ?? n.getName())
+        )
+      }
     }
     for (const statement of ctx.sf.getStatements()) {
       if (!Node.isExpressionStatement(statement)) break
@@ -29,6 +40,7 @@ export const guard: TransformStep = {
         fail("className attribute left behind")
     }
     const declared = new Set([
+      ...imported,
       ...ctx.sf.getFunctions().map((f) => f.getName()),
       ...ctx.sf.getVariableDeclarations().map((v) => v.getName()),
     ])

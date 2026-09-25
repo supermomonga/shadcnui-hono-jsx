@@ -21,6 +21,8 @@ export const REWRITE_CODES = [
   "base-ui-primitive-mapped",
   "base-ui-use-render",
   "cn-marker",
+  "component-import",
+  "component-dependency",
 ] as const
 
 export type BlockingCode = (typeof BLOCKING_CODES)[number]
