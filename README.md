@@ -199,6 +199,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | checkbox | experimental | generated | verified | none | Built on a native `<input type="checkbox">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual. `checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly`, `indeterminate` and `render` are not supported. Accepts `class` instead of `className`. |
 | collapsible | experimental | generated | verified | none | Built on native `<details>`/`<summary>`: no JavaScript. `CollapsibleTrigger` must be the first child of `Collapsible` (rendering throws otherwise), and every other child is hidden while closed, not only `CollapsibleContent`. `CollapsibleTrigger` does not support `render`; style it with `class` (for example `buttonVariants()`). `open`/`defaultOpen` set the initial state; `onOpenChange` and `disabled` are not supported, and state attributes (`data-open`, `data-panel-open`) are not rendered (use `open:` variants). Accepts `class` instead of `className`. |
 | dialog | experimental | generated | verified | none | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
+| dropdown-menu | experimental | generated | verified | `/shadcn/menu.js` | The menu is a native popover placed with CSS anchor positioning, so it opens without JavaScript (placement needs Chrome 135, Firefox 147 or Safari 26.2). The client script `/shadcn/menu.js` (`<script type="module" src="/shadcn/menu.js">`) adds the menu behavior: focus handling, arrow keys, typeahead, checkbox and radio items, submenus and closing after a choice. Items have no `onClick` on the server: use `render` for links (`render={<a href="/settings" />}`) or form buttons. Controlled state (`open`, `onOpenChange`, `checked`/`onCheckedChange`, `value`/`onValueChange`), `modal` (page scroll is not locked) and `openOnHover` on the root are not supported. Accepts `class` instead of `className`. |
 | empty | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | field | experimental | generated | verified | none | Accepts `class` instead of `className`. Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls. |
 | input | experimental | generated | verified | none | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
@@ -225,7 +226,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | toggle-group | experimental | generated | verified | none | Items are native radios sharing a `name` (checkboxes with `multiple`): the pressed item of a single-selection group cannot be released by pressing it again, and arrow keys select as they move. `defaultValue` sets the pressed items; `value`/`onValueChange` are not supported. A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (25 upstream components)</summary>
+<summary>Not yet available (24 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -238,12 +239,11 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | context-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/context-menu#ContextMenu` |
 | direction | unsupported | `base-ui-primitive-unmapped:@base-ui/react/direction-provider#DirectionProvider`, `base-ui-primitive-unmapped:@base-ui/react/direction-provider#useDirection` |
 | drawer | unsupported | `base-ui-primitive-unmapped:@base-ui/react/drawer#Drawer`, `react-hook:useDrawer` |
-| dropdown-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menu#Menu` |
 | form | unsupported | `no-files` |
 | hover-card | unsupported | `base-ui-primitive-unmapped:@base-ui/react/preview-card#PreviewCard` |
 | input-group | unsupported | `event-handler:onClick` |
 | input-otp | unsupported | `unknown-import:input-otp` |
-| menubar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menu#Menu`, `base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar`, `registry-dependency:dropdown-menu`, `registry-import:@/registry/base-nova/ui/dropdown-menu` |
+| menubar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar` |
 | message-scroller | unsupported | `render-prop:MessageScrollerPrimitive.Button`, `unknown-import:@shadcn/react/message-scroller` |
 | navigation-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu`, `react-type-unmapped:React.ComponentPropsWithRef` |
 | questionnaire | unsupported | `unknown-import:@shadcn/react/questionnaire` |

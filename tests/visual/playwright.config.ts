@@ -11,6 +11,7 @@ export default defineConfig({
     "popover.spec.ts",
     "select.spec.ts",
     "tabs.spec.ts",
+    "menu.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

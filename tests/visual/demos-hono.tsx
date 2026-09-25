@@ -25,6 +25,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "../../components/ui/dropdown-menu"
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 import {
@@ -250,6 +266,55 @@ function TabsDemo() {
   )
 }
 
+function DropdownMenuDemo() {
+  return (
+    <main class="flex items-start gap-8 p-8 pl-48">
+      <DropdownMenu>
+        <DropdownMenuTrigger render={<Button variant="outline" class="w-24" />}>
+          Open
+        </DropdownMenuTrigger>
+        <DropdownMenuContent class="w-56">
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuItem>
+              Profile
+              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem disabled>Settings</DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem defaultChecked>
+              Status bar
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem>Activity bar</DropdownMenuCheckboxItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuRadioGroup defaultValue="bottom">
+            <DropdownMenuLabel>Panel position</DropdownMenuLabel>
+            <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem>Email</DropdownMenuItem>
+              <DropdownMenuItem>Message</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+          <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children?: unknown }) {
   return (
     <main class="flex items-center gap-4 p-8">
@@ -281,6 +346,7 @@ export const DEMOS = {
     </main>
   ),
   select: () => <SelectDemo />,
+  "dropdown-menu": () => <DropdownMenuDemo />,
   tabs: () => <TabsDemo />,
   sheet: () => (
     <Page>
@@ -292,5 +358,6 @@ export const DEMOS = {
 
 /** Client scripts (public/shadcn/) each demo page loads. */
 export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
+  "dropdown-menu": ["menu"],
   tabs: ["tabs"],
 }

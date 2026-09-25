@@ -78,60 +78,59 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null
 }
 
-type PopoverRootProps = { id?: string | undefined; children?: Child }
-
-type PopoverSide =
+type AnchorSide =
   | "top"
   | "bottom"
   | "left"
   | "right"
   | "inline-start"
   | "inline-end"
-type PopoverAlign = "start" | "center" | "end"
+type AnchorAlign = "start" | "center" | "end"
 
-type PopoverPositionerProps = {
-  side?: PopoverSide | undefined
-  align?: PopoverAlign | undefined
+interface AnchorPlacement {
+  side: AnchorSide
+  align: AnchorAlign
+  sideOffset: number
+  alignOffset: number
+}
+
+type AnchorPositionerProps = {
+  side?: AnchorSide | undefined
+  align?: AnchorAlign | undefined
   sideOffset?: number | undefined
   alignOffset?: number | undefined
   class?: string | undefined
   children?: Child
 }
 
-interface PopoverContextValue {
-  id: string
-  anchor: string
-  titleId: string
-  descriptionId: string
-}
-
-const PopoverContext = createContext<PopoverContextValue | null>(null)
-
-function usePopoverContext(): PopoverContextValue {
-  const context = useContext(PopoverContext)
-  if (!context)
-    throw new Error("Popover parts must be rendered inside a popover")
-  return context
-}
-
-interface PopoverPlacement {
-  side: PopoverSide
-  align: PopoverAlign
-  sideOffset: number
-  alignOffset: number
-}
-
-const PopoverPlacementContext = createContext<PopoverPlacement>({
+const AnchorPlacementContext = createContext<AnchorPlacement>({
   side: "bottom",
   align: "center",
   sideOffset: 0,
   alignOffset: 0,
 })
 
-/** Inline styles that anchor the popover to its trigger like Base UI's Positioner. */
-function popoverPlacementStyle(
+/** Placement for the popup inside; the popup itself is positioned with CSS. */
+function AnchorPositioner({
+  side = "bottom",
+  align = "center",
+  sideOffset = 0,
+  alignOffset = 0,
+  children,
+}: AnchorPositionerProps) {
+  return (
+    <AnchorPlacementContext.Provider
+      value={{ side, align, sideOffset, alignOffset }}
+    >
+      {children}
+    </AnchorPlacementContext.Provider>
+  )
+}
+
+/** Inline styles that anchor a popup to `anchor` like Base UI's positioner. */
+function anchorPlacementStyle(
   anchor: string,
-  p: PopoverPlacement
+  p: AnchorPlacement
 ): Record<string, string> {
   const block = p.side === "top" || p.side === "bottom"
   const logical = p.side === "inline-start" || p.side === "inline-end"
@@ -187,6 +186,23 @@ function withStyle(
   }
   return { ...extra, ...style }
 }
+type PopoverRootProps = { id?: string | undefined; children?: Child }
+
+interface PopoverContextValue {
+  id: string
+  anchor: string
+  titleId: string
+  descriptionId: string
+}
+
+const PopoverContext = createContext<PopoverContextValue | null>(null)
+
+function usePopoverContext(): PopoverContextValue {
+  const context = useContext(PopoverContext)
+  if (!context)
+    throw new Error("Popover parts must be rendered inside a popover")
+  return context
+}
 
 /** Connects the trigger (the anchor), the native popover and its title and description. */
 function PopoverRootElement({ id, children }: PopoverRootProps) {
@@ -231,26 +247,9 @@ function PopoverPortalElement({ children }: { children?: Child }) {
   return <>{children}</>
 }
 
-/** Placement for the popup; the popover itself is positioned with CSS. */
-function PopoverPositionerElement({
-  side = "bottom",
-  align = "center",
-  sideOffset = 0,
-  alignOffset = 0,
-  children,
-}: PopoverPositionerProps) {
-  return (
-    <PopoverPlacementContext.Provider
-      value={{ side, align, sideOffset, alignOffset }}
-    >
-      {children}
-    </PopoverPlacementContext.Provider>
-  )
-}
-
 function PopoverPopupElement({ style, ...props }: ComponentProps<"div">) {
   const { id, anchor, titleId, descriptionId } = usePopoverContext()
-  const placement = useContext(PopoverPlacementContext)
+  const placement = useContext(AnchorPlacementContext)
   return (
     <div
       id={id}
@@ -260,7 +259,7 @@ function PopoverPopupElement({ style, ...props }: ComponentProps<"div">) {
       aria-describedby={descriptionId}
       data-side={placement.side}
       data-align={placement.align}
-      style={withStyle(style, popoverPlacementStyle(anchor, placement))}
+      style={withStyle(style, anchorPlacementStyle(anchor, placement))}
       {...props}
     />
   )
@@ -291,12 +290,12 @@ function PopoverContent({
   ...props
 }: ComponentProps<"div"> &
   Pick<
-    PopoverPositionerProps,
+    AnchorPositionerProps,
     "align" | "alignOffset" | "side" | "sideOffset"
   >) {
   return (
     <PopoverPortalElement>
-      <PopoverPositionerElement
+      <AnchorPositioner
         align={align}
         alignOffset={alignOffset}
         side={side}
@@ -312,7 +311,7 @@ function PopoverContent({
           )}
           {...props}
         />
-      </PopoverPositionerElement>
+      </AnchorPositioner>
     </PopoverPortalElement>
   )
 }

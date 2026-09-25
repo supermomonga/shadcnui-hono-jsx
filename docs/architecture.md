@@ -151,7 +151,7 @@ native inputs for form controls,
 [ADR 0023](./adr/0023-build-popover-on-the-native-popover-attribute-and-css-anchor-positioning.md),
 and the customizable `<select>` for Select,
 [ADR 0024](./adr/0024-build-select-on-the-customizable-native-select-element.md))
-or given an optional client script (script family, Tabs,
+or given an optional client script (script family: Tabs, Menu,
 [ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)).
 See [ADR 0005](./adr/0005-translate-components-with-ts-morph-steps-a-declarative-base-ui-primitive-table-and-adapters.md)
 and [ADR 0007](./adr/0007-preserve-the-upstream-dom-contract-and-omit-render-aschild-and-refs.md).
@@ -171,7 +171,7 @@ with the pinned Biome (`biome check --write`, which also sorts imports):
 | `use-render` | canonical `useRender({ defaultTagName, props: mergeProps(...), render, state })` to an intrinsic element wrapped in `renderElement(…, render)`; `state` entries become `data-*` attributes ([ADR 0018](./adr/0018-support-base-ui-render-props-on-the-server-and-omit-client-only-button-semantics.md)) |
 | `memo-hooks` | `useMemo(fn, deps)` to `fn()` and `useCallback(fn)` to `fn` (a server render runs once) |
 | `react-context` | `React.createContext`/`React.useContext` to the identical `hono/jsx` functions |
-| `families` | compound Base UI primitives (`Progress`, `Dialog`, `AlertDialog`, `Popover`, `Select`, `Accordion`, `Collapsible`, form controls): each `<Local.Part>` and `Local.Part.Props` to file-local helpers inserted after the imports ([ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)) |
+| `families` | compound Base UI primitives (`Progress`, `Dialog`, `AlertDialog`, `Popover`, `Menu`, `Select`, `Tabs`, `Accordion`, `Collapsible`, form controls): each `<Local.Part>` and `Local.Part.Props` to file-local helpers inserted after the imports ([ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)) |
 | `primitives` | mapped Base UI primitives to intrinsic elements with their SSR attributes; `renderable` ones are wrapped in `renderElement(…, render)` and Base UI-only props are consumed |
 | `control-state` | other components' reactions to Base UI control state (`has-data-checked:`) to the native `:checked` state ([ADR 0022](./adr/0022-implement-form-controls-on-native-inputs.md)) |
 | `react-types` | `React.ComponentProps<"x">`, `useRender.ComponentProps<"x">` to `ComponentProps<"x">`; `React.ComponentProps<typeof X>` to `Parameters<typeof X>[0]`; `React.ReactNode` to `Child` |
@@ -199,7 +199,7 @@ facts (imports, React type/value usage, hooks, JSX attributes, `cn-*` markers):
 | --- | --- |
 | `direct` | Plain HTML/Tailwind/variants, possibly via a stateless Base UI primitive mapped in `generator/src/adapters/primitives/base-ui.ts`, an `intrinsic` family (Progress) or the canonical `useRender` pattern |
 | `native-adapter` | Maps onto a browser primitive with behavior through a `native` family or component adapter (Dialog, AlertDialog, Sheet: `<dialog>` with Invoker Commands, [ADR 0017](./adr/0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md), [ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md); Accordion, Collapsible: `<details>`/`<summary>`, [ADR 0020](./adr/0020-implement-accordion-and-collapsible-on-native-details-and-summary.md)) |
-| `script-adapter` | Behavior from an optional client script in `public/shadcn/` (Tabs, [ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)) |
+| `script-adapter` | Behavior from an optional client script in `public/shadcn/` (Tabs, DropdownMenu, [ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)) |
 | `custom-adapter` | Blocking reasons all resolved by an adapter in `generator/src/adapters/components/` |
 | `unsupported` | At least one blocking reason (unmapped Base UI primitive, React hooks/runtime APIs, event handlers, icon placeholder, registry imports, unknown packages, ...) |
 
@@ -244,7 +244,7 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Registry install into a clean Hono project | `tests/registry/` | `bun run test:registry`, CI |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
-| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts`, `tests/visual/tabs.spec.ts` (step-by-step behavior against Base UI) | `bun run test:visual`, CI `visual` |
+| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts`, `tests/visual/tabs.spec.ts` and `tests/visual/menu.spec.ts` (step-by-step behavior against Base UI) | `bun run test:visual`, CI `visual` |
 
 `tests/visual` renders the same case data with the generated components and
 with the upstream React sources from the snapshot, shares one Tailwind build,

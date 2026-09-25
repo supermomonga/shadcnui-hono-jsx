@@ -5,29 +5,12 @@
  * next to the trigger, so no JavaScript ships. Anchor positioning needs
  * Chrome 125, Firefox 147 or Safari 26; elsewhere the popover opens centered.
  */
+import { ANCHORED_POPUP_RESET, insertAnchorHelpers } from "./anchor"
 import { mapPopupClasses } from "./dialog"
 import type { FamilyRule } from "./types"
 import { forEachPart, insertHelpers, replacePartTypes } from "./util"
 
-/**
- * Without anchor positioning the popover keeps the user-agent centering
- * (`margin: auto`); with it, margins only carry the offsets.
- */
-export const POPOVER_RESET = "m-auto supports-[position-area:bottom]:m-0"
-
 const SHARED_HELPERS = `type PopoverRootProps = { id?: string | undefined; children?: Child }
-
-type PopoverSide = "top" | "bottom" | "left" | "right" | "inline-start" | "inline-end"
-type PopoverAlign = "start" | "center" | "end"
-
-type PopoverPositionerProps = {
-  side?: PopoverSide | undefined
-  align?: PopoverAlign | undefined
-  sideOffset?: number | undefined
-  alignOffset?: number | undefined
-  class?: string | undefined
-  children?: Child
-}
 
 interface PopoverContextValue {
   id: string
@@ -42,71 +25,6 @@ function usePopoverContext(): PopoverContextValue {
   const context = useContext(PopoverContext)
   if (!context) throw new Error("Popover parts must be rendered inside a popover")
   return context
-}
-
-interface PopoverPlacement {
-  side: PopoverSide
-  align: PopoverAlign
-  sideOffset: number
-  alignOffset: number
-}
-
-const PopoverPlacementContext = createContext<PopoverPlacement>({
-  side: "bottom",
-  align: "center",
-  sideOffset: 0,
-  alignOffset: 0,
-})
-
-/** Inline styles that anchor the popover to its trigger like Base UI's Positioner. */
-function popoverPlacementStyle(anchor: string, p: PopoverPlacement): Record<string, string> {
-  const block = p.side === "top" || p.side === "bottom"
-  const logical = p.side === "inline-start" || p.side === "inline-end"
-  const span = block
-    ? { start: "span-x-end", center: "", end: "span-x-start" }[p.align]
-    : logical
-      ? { start: "span-block-end", center: "", end: "span-block-start" }[p.align]
-      : { start: "span-y-end", center: "", end: "span-y-start" }[p.align]
-  const toward = {
-    top: "margin-bottom",
-    bottom: "margin-top",
-    left: "margin-right",
-    right: "margin-left",
-    "inline-start": "margin-inline-end",
-    "inline-end": "margin-inline-start",
-  }[p.side]
-  const across = block
-    ? p.align === "end" ? "margin-inline-end" : "margin-inline-start"
-    : p.align === "end" ? "margin-block-end" : "margin-block-start"
-  const edge = { start: "0%", center: "50%", end: "100%" }[p.align]
-  const origin = {
-    top: \`\${edge} 100%\`,
-    bottom: \`\${edge} 0%\`,
-    left: \`100% \${edge}\`,
-    right: \`0% \${edge}\`,
-    "inline-start": \`100% \${edge}\`,
-    "inline-end": \`0% \${edge}\`,
-  }[p.side]
-  return {
-    "position-anchor": anchor,
-    "position-area": [p.side, span].filter(Boolean).join(" "),
-    "position-try-fallbacks": block ? "flip-block" : "flip-inline",
-    [toward]: \`\${p.sideOffset}px\`,
-    ...(p.alignOffset === 0 ? {} : { [across]: \`\${p.alignOffset}px\` }),
-    "--transform-origin": origin,
-  }
-}
-
-/** Adds \`extra\` declarations to a string or object \`style\` prop (the prop wins). */
-function withStyle(
-  style: string | JSX.CSSProperties | undefined,
-  extra: Record<string, string>
-): string | JSX.CSSProperties {
-  if (typeof style === "string") {
-    const css = Object.entries(extra).map(([key, value]) => \`\${key}:\${value}\`)
-    return [...css, style].join(";")
-  }
-  return { ...extra, ...style }
 }`
 
 /** File-local implementation of each part, inserted only when the file uses it. */
@@ -151,23 +69,9 @@ function PopoverRootElement({ id, children }: PopoverRootProps) {
 function PopoverPortalElement({ children }: { children?: Child }) {
   return <>{children}</>
 }`,
-  Positioner: `/** Placement for the popup; the popover itself is positioned with CSS. */
-function PopoverPositionerElement({
-  side = "bottom",
-  align = "center",
-  sideOffset = 0,
-  alignOffset = 0,
-  children,
-}: PopoverPositionerProps) {
-  return (
-    <PopoverPlacementContext.Provider value={{ side, align, sideOffset, alignOffset }}>
-      {children}
-    </PopoverPlacementContext.Provider>
-  )
-}`,
   Popup: `function PopoverPopupElement({ style, ...props }: ComponentProps<"div">) {
   const { id, anchor, titleId, descriptionId } = usePopoverContext()
-  const placement = useContext(PopoverPlacementContext)
+  const placement = useContext(AnchorPlacementContext)
   return (
     <div
       id={id}
@@ -177,7 +81,7 @@ function PopoverPositionerElement({
       aria-describedby={descriptionId}
       data-side={placement.side}
       data-align={placement.align}
-      style={withStyle(style, popoverPlacementStyle(anchor, placement))}
+      style={withStyle(style, anchorPlacementStyle(anchor, placement))}
       {...props}
     />
   )
@@ -219,7 +123,7 @@ export const popoverFamily: FamilyRule = {
       Root: "PopoverRootProps",
       Trigger: 'ComponentProps<"button", RenderProp>',
       Portal: "{ children?: Child }",
-      Positioner: "PopoverPositionerProps",
+      Positioner: "AnchorPositionerProps",
       Popup: 'ComponentProps<"div">',
       Title: 'ComponentProps<"h2">',
       Description: 'ComponentProps<"p">',
@@ -228,15 +132,18 @@ export const popoverFamily: FamilyRule = {
     const used = new Set<string>()
     forEachPart(ctx, local, (element) => {
       used.add(element.part)
-      if (!(element.part in PART_HELPERS)) {
+      if (!(element.part in PART_HELPERS) && element.part !== "Positioner") {
         throw new Error(
           `[${ctx.name}] ${step}: unknown part ${local}.${element.part}`
         )
       }
       if (element.part === "Popup") {
-        element.mapClasses(mapPopupClasses, [POPOVER_RESET])
+        element.mapClasses(mapPopupClasses, [ANCHORED_POPUP_RESET])
       }
-      const tag = `Popover${element.part}Element`
+      const tag =
+        element.part === "Positioner"
+          ? "AnchorPositioner"
+          : `Popover${element.part}Element`
       const attrs = element.attributes().join(" ")
       element.replace(
         element.children
@@ -248,6 +155,7 @@ export const popoverFamily: FamilyRule = {
       .filter(([part]) => used.has(part))
       .map(([, text]) => text)
     insertHelpers(ctx, [SHARED_HELPERS, ...parts].join("\n\n"))
+    insertAnchorHelpers(ctx)
     ctx.needsComponentProps = true
     ctx.needsRender = true
     ctx.honoTypes.add("Child")

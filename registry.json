@@ -477,6 +477,46 @@
       }
     },
     {
+      "name": "dropdown-menu",
+      "type": "registry:item",
+      "title": "Dropdown Menu",
+      "description": "Hono JSX port of the shadcn/ui base-nova dropdown-menu component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/dropdown-menu.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/dropdown-menu.tsx"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "public/shadcn/menu.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/menu.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/menu.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "dropdown-menu",
+          "style": "base-nova",
+          "contentSha256": "3ea1991f74952357130705af5d6dd0ae6856382562d0cb2e0c9e7d301a74fa7f",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "empty",
       "type": "registry:item",
       "title": "Empty",

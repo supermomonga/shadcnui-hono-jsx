@@ -21,7 +21,7 @@ describe("buildManifest", () => {
   })
 
   // Components whose behavior needs a client script (docs/adr/0025).
-  const SCRIPTED = new Set(["tabs"])
+  const SCRIPTED = new Set(["dropdown-menu", "tabs"])
 
   test.each([...config.components])(
     "%s is generated and experimental",
@@ -48,11 +48,11 @@ describe("buildManifest", () => {
   })
 
   test("unsupported items list their blocking reasons", () => {
-    const menu = byName.get("dropdown-menu")
-    expect(menu?.status).toBe("unsupported")
-    expect(menu?.conversion).toBeNull()
-    expect(menu?.reasons).toContain(
-      "base-ui-primitive-unmapped:@base-ui/react/menu#Menu"
+    const tooltip = byName.get("tooltip")
+    expect(tooltip?.status).toBe("unsupported")
+    expect(tooltip?.conversion).toBeNull()
+    expect(tooltip?.reasons).toContain(
+      "base-ui-primitive-unmapped:@base-ui/react/tooltip#Tooltip"
     )
   })
 
@@ -82,6 +82,6 @@ describe("README region", () => {
     expect(table.indexOf("| button | experimental | generated |")).toBeLessThan(
       table.indexOf("\n<details>\n")
     )
-    expect(table).toContain("| dropdown-menu | unsupported |")
+    expect(table).toContain("| tooltip | unsupported |")
   })
 })

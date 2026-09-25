@@ -8,6 +8,7 @@ import {
 } from "./controls"
 import { accordionFamily, collapsibleFamily } from "./details"
 import { alertDialogFamily, dialogFamily } from "./dialog"
+import { menuFamily } from "./menu"
 import { popoverFamily } from "./popover"
 import { progressFamily } from "./progress"
 import { selectFamily } from "./select"
@@ -23,6 +24,7 @@ export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   checkboxFamily,
   collapsibleFamily,
   dialogFamily,
+  menuFamily,
   popoverFamily,
   progressFamily,
   radioFamily,

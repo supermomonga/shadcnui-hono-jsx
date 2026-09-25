@@ -27,6 +27,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./.upstream/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "./.upstream/dropdown-menu"
 import { Input } from "./.upstream/input"
 import { Label } from "./.upstream/label"
 import {
@@ -256,6 +272,57 @@ function TabsDemo() {
   )
 }
 
+function DropdownMenuDemo() {
+  return (
+    <main className="flex items-start gap-8 p-8 pl-48">
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={<Button variant="outline" className="w-24" />}
+        >
+          Open
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuItem>
+              Profile
+              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem disabled>Settings</DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem defaultChecked>
+              Status bar
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem>Activity bar</DropdownMenuCheckboxItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuRadioGroup defaultValue="bottom">
+            <DropdownMenuLabel>Panel position</DropdownMenuLabel>
+            <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem>Email</DropdownMenuItem>
+              <DropdownMenuItem>Message</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+          <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function Page({ children }: { children: ReactNode }) {
   return (
     <main className="flex items-center gap-4 p-8">
@@ -287,6 +354,7 @@ const DEMOS: Record<string, () => ReactNode> = {
     </main>
   ),
   select: () => <SelectDemo />,
+  "dropdown-menu": () => <DropdownMenuDemo />,
   tabs: () => <TabsDemo />,
   sheet: () => (
     <Page>

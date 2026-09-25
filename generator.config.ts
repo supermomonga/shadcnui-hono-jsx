@@ -23,6 +23,7 @@ export const config: GeneratorConfig = {
     "checkbox",
     "collapsible",
     "dialog",
+    "dropdown-menu",
     "empty",
     "field",
     "input",
