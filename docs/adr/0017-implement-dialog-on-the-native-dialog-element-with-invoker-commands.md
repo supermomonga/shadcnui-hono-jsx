@@ -6,6 +6,8 @@ date: 2026-09-25
 links:
 - target: 7
   kind: amends
+- target: 18
+  kind: amendedby
 ---
 
 

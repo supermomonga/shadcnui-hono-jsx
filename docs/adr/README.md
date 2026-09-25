@@ -15,3 +15,4 @@
 * [15. Ship imported sibling components inside each registry item](0015-ship-imported-sibling-components-inside-each-registry-item.md)
 * [16. Inline Lucide icons at generation time](0016-inline-lucide-icons-at-generation-time.md)
 * [17. Implement Dialog on the native dialog element with Invoker Commands](0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md)
+* [18. Support Base UI render props on the server and omit client-only button semantics](0018-support-base-ui-render-props-on-the-server-and-omit-client-only-button-semantics.md)

@@ -153,13 +153,13 @@ with the pinned Biome (`biome check --write`, which also sorts imports):
 | `component-imports` | `@/registry/<style>/ui/<name>` to `./<name>` for generated sibling components ([ADR 0015](./adr/0015-ship-imported-sibling-components-inside-each-registry-item.md)) |
 | `cn-markers` | `cn-font-heading` to `font-heading`; other `cn-*` classes removed (as the shadcn CLI does at install time) |
 | `icons` | `IconPlaceholder` to a file-local component inlining the Lucide SVG exactly as lucide-react renders it ([ADR 0016](./adr/0016-inline-lucide-icons-at-generation-time.md)) |
-| `use-render` | canonical `useRender({ defaultTagName, props: mergeProps(...), state })` to an intrinsic element; `state` entries become `data-*` attributes |
-| `primitives` | mapped Base UI primitives to intrinsic elements with their SSR attributes |
+| `use-render` | canonical `useRender({ defaultTagName, props: mergeProps(...), render, state })` to an intrinsic element wrapped in `renderElement(…, render)`; `state` entries become `data-*` attributes ([ADR 0018](./adr/0018-support-base-ui-render-props-on-the-server-and-omit-client-only-button-semantics.md)) |
+| `primitives` | mapped Base UI primitives to intrinsic elements with their SSR attributes; `renderable` ones are wrapped in `renderElement(…, render)` and Base UI-only props are consumed |
 | `react-types` | `React.ComponentProps<"x">`, `useRender.ComponentProps<"x">` to `ComponentProps<"x">`; `React.ComponentProps<typeof X>` to `Parameters<typeof X>[0]`; `React.ReactNode` to `Child` |
 | `style-values` | numeric CSS custom property values in `style` objects to strings (Hono appends `px` to numbers) |
 | `class-attr` | `className` parameter binding to `class: className`; `className=` to `class=` |
 | `dom-attributes` | React camelCase DOM attributes Hono does not normalize (`tabIndex`, `readOnly`, ...) to lowercase |
-| `drop-props` | removes unused `render`/`asChild` bindings; `render ? a : b` becomes `b` |
+| `drop-props` | removes unused `asChild` bindings; `asChild ? a : b` becomes `b` |
 | `helpers` | inserts the `ComponentProps` helper type |
 | `imports` | removes `react` and `@base-ui/*`; adds `hono/jsx` type imports |
 | `guard` | fails on any leftover React/Base UI construct, unresolved JSX component, or export change |
@@ -258,7 +258,7 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
 
 - Server-rendered only; no component ships client JavaScript. Dialog relies on
   Baseline 2025 browser features (Invoker Commands) instead.
-- No `asChild`/`render` composition and no ref forwarding.
+- `render` works on the server only; no `asChild` and no ref forwarding.
 - Base UI client-side state attributes and behaviors (`focusableWhenDisabled`,
   field state) are not reproduced.
 - Upstream items that import non-generated registry items, hooks, or icons
