@@ -11,13 +11,15 @@ import { cn } from "cn"
 import type { JSX } from "hono/jsx"
 
 /** Props of the intrinsic element `T`, following Hono JSX conventions (`class`, no `render`/`asChild`). */
-type ComponentProps<T extends keyof JSX.IntrinsicElements> =
-  JSX.IntrinsicElements[T] & {
-    class?: string | undefined
-    className?: never
-    render?: never
-    asChild?: never
-  }
+type ComponentProps<
+  T extends keyof JSX.IntrinsicElements,
+  Render = never,
+> = JSX.IntrinsicElements[T] & {
+  class?: string | undefined
+  className?: never
+  render?: Render
+  asChild?: never
+}
 
 function Label({ class: className, ...props }: ComponentProps<"label">) {
   return (

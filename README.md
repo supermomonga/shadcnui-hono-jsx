@@ -115,7 +115,9 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
 ## Differences from shadcn/ui
 
 - Components accept `class`, not `className` (Hono JSX renders `class`).
-- `asChild` and Base UI's `render` prop are not supported yet; refs are not
+- Base UI's `render` prop works on the server (for example
+  `<Button render={<a href="/docs" />}>Docs</Button>`); links rendered this way
+  stay links (no `role="button"`). `asChild` is not supported and refs are not
   forwarded.
 - Everything is server-rendered. Client-side state attributes from Base UI (for
   example `data-focused`) are not rendered.
@@ -127,8 +129,8 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
   a runtime icon package.
 - Dialog is a native `<dialog>` opened with Invoker Commands, so it needs no
   JavaScript but requires Chrome 135, Firefox 144 or Safari 26.2 or later, and
-  has no controlled `open` state. Style the trigger with
-  `class={buttonVariants({ variant: "outline" })}`.
+  has no controlled `open` state. Use
+  `<DialogTrigger render={<Button variant="outline" />}>` as upstream does.
 
 Per-component details are in the table below.
 
@@ -141,22 +143,23 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | --- | --- | --- | --- | --- |
 | alert | experimental | generated | verified | Accepts `class` instead of `className`. |
 | aspect-ratio | experimental | generated | verified | Accepts `class` instead of `className`. |
-| attachment | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
-| badge | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
-| breadcrumb | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
-| bubble | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
-| button | experimental | generated | verified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` and `focusableWhenDisabled` are not supported. Accepts `class` instead of `className`. |
-| button-group | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
+| attachment | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| badge | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| breadcrumb | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| bubble | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
+| button | experimental | generated | verified | Renders a native `<button>` with `type="button"` by default, like Base UI; pass `type="submit"` for form submission. `render` is supported on the server; a non-button target such as `render={<a href="/docs" />}` keeps its native role (no `role="button"` or `tabindex`), since the client-side button behavior Base UI adds is not shipped. `focusableWhenDisabled` is not supported. Accepts `class` instead of `className`. |
+| button-group | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
 | card | experimental | generated | verified | Accepts `class` instead of `className`. |
-| dialog | experimental | generated-with-adapter | verified | Accepts `class` instead of `className`. Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `render` are not supported; style a trigger with `class={buttonVariants()}`. The trigger does not reflect the open state (`aria-expanded`). The overlay is the dialog's `::backdrop` (DialogOverlay renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. |
+| dialog | experimental | generated-with-adapter | verified | Accepts `class` instead of `className`. Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). `DialogTrigger` and `DialogClose` support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (DialogOverlay renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. |
 | empty | experimental | generated | verified | Accepts `class` instead of `className`. |
 | input | experimental | generated | verified | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
-| item | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
+| item | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
 | kbd | experimental | generated | verified | Accepts `class` instead of `className`. |
 | label | experimental | generated | verified | Accepts `class` instead of `className`. |
-| marker | experimental | generated | verified | `render` (element replacement) is not supported. Accepts `class` instead of `className`. |
+| marker | experimental | generated | verified | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. |
 | message | experimental | generated | verified | Accepts `class` instead of `className`. |
 | native-select | experimental | generated | verified | Accepts `class` instead of `className`. |
+| pagination | experimental | generated | verified | Accepts `class` instead of `className`. |
 | separator | experimental | generated | verified | Accepts `class` instead of `className`. |
 | skeleton | experimental | generated | verified | Accepts `class` instead of `className`. |
 | spinner | experimental | generated | verified | Accepts `class` instead of `className`. |
@@ -164,7 +167,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | textarea | experimental | generated | verified | Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (40 upstream components)</summary>
+<summary>Not yet available (39 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -190,7 +193,6 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | menubar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menu#Menu`, `base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar`, `registry-dependency:dropdown-menu`, `registry-import:@/registry/base-nova/ui/dropdown-menu` |
 | message-scroller | unsupported | `render-prop:MessageScrollerPrimitive.Button`, `unknown-import:@shadcn/react/message-scroller` |
 | navigation-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu`, `react-type-unmapped:React.ComponentPropsWithRef` |
-| pagination | unsupported | `render-prop:Button` |
 | popover | unsupported | `base-ui-primitive-unmapped:@base-ui/react/popover#Popover` |
 | progress | unsupported | `base-ui-primitive-unmapped:@base-ui/react/progress#Progress` |
 | questionnaire | unsupported | `unknown-import:@shadcn/react/questionnaire` |

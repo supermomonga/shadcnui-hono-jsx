@@ -97,7 +97,7 @@
       "accessibility": "static-markup",
       "clientJs": "none",
       "knownDifferences": [
-        "`render` (element replacement) is not supported.",
+        "`render` is supported on the server (element or function), like Base UI.",
         "Accepts `class` instead of `className`."
       ],
       "reasons": [
@@ -140,7 +140,7 @@
       "accessibility": "static-markup",
       "clientJs": "none",
       "knownDifferences": [
-        "`render` (element replacement) is not supported.",
+        "`render` is supported on the server (element or function), like Base UI.",
         "Accepts `class` instead of `className`."
       ],
       "reasons": ["base-ui-use-render", "classname-to-class"]
@@ -160,7 +160,7 @@
       "accessibility": "static-markup",
       "clientJs": "none",
       "knownDifferences": [
-        "`render` (element replacement) is not supported.",
+        "`render` is supported on the server (element or function), like Base UI.",
         "Accepts `class` instead of `className`."
       ],
       "reasons": [
@@ -188,7 +188,7 @@
       "accessibility": "static-markup",
       "clientJs": "none",
       "knownDifferences": [
-        "`render` (element replacement) is not supported.",
+        "`render` is supported on the server (element or function), like Base UI.",
         "Accepts `class` instead of `className`."
       ],
       "reasons": [
@@ -213,7 +213,8 @@
       "clientJs": "none",
       "knownDifferences": [
         "Renders a native `<button>` with `type=\"button\"` by default, like Base UI; pass `type=\"submit\"` for form submission.",
-        "`render` and `focusableWhenDisabled` are not supported.",
+        "`render` is supported on the server; a non-button target such as `render={<a href=\"/docs\" />}` keeps its native role (no `role=\"button\"` or `tabindex`), since the client-side button behavior Base UI adds is not shipped.",
+        "`focusableWhenDisabled` is not supported.",
         "Accepts `class` instead of `className`."
       ],
       "reasons": [
@@ -236,7 +237,7 @@
       "accessibility": "static-markup",
       "clientJs": "none",
       "knownDifferences": [
-        "`render` (element replacement) is not supported.",
+        "`render` is supported on the server (element or function), like Base UI.",
         "Accepts `class` instead of `className`."
       ],
       "reasons": [
@@ -474,7 +475,7 @@
       "knownDifferences": [
         "Accepts `class` instead of `className`.",
         "Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2).",
-        "Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `render` are not supported; style a trigger with `class={buttonVariants()}`. The trigger does not reflect the open state (`aria-expanded`).",
+        "Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). `DialogTrigger` and `DialogClose` support `render`, e.g. `render={<Button variant=\"outline\" />}`.",
         "The overlay is the dialog's `::backdrop` (DialogOverlay renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported.",
         "Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup."
       ],
@@ -704,7 +705,7 @@
       "accessibility": "static-markup",
       "clientJs": "none",
       "knownDifferences": [
-        "`render` (element replacement) is not supported.",
+        "`render` is supported on the server (element or function), like Base UI.",
         "Accepts `class` instead of `className`."
       ],
       "reasons": [
@@ -771,7 +772,7 @@
       "accessibility": "static-markup",
       "clientJs": "none",
       "knownDifferences": [
-        "`render` (element replacement) is not supported.",
+        "`render` is supported on the server (element or function), like Base UI.",
         "Accepts `class` instead of `className`."
       ],
       "reasons": [
@@ -886,20 +887,31 @@
     },
     {
       "name": "pagination",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/pagination.json",
         "contentSha256": "4b3e96c09ffa92f5a0561aefc539ba25e5915165b21c246dbe299bea3ade86e0",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["render-prop:Button"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "reasons": [
+        "classname-to-class",
+        "cn-marker:cn-rtl-flip",
+        "component-dependency:button",
+        "component-import:button",
+        "icon-placeholder",
+        "lucide-icon:ChevronLeftIcon",
+        "lucide-icon:ChevronRightIcon",
+        "lucide-icon:MoreHorizontalIcon",
+        "react-type-rewrite:React.ComponentProps",
+        "render-composition:Button"
+      ]
     },
     {
       "name": "popover",

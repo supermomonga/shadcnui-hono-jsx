@@ -27,6 +27,7 @@ export const config: GeneratorConfig = {
     "marker",
     "message",
     "native-select",
+    "pagination",
     "separator",
     "skeleton",
     "spinner",
