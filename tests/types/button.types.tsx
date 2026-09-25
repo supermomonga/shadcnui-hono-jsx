@@ -23,8 +23,11 @@ export const classes: string = buttonVariants({ variant: "ghost", size: "lg" })
 export const e1 = <Button className="x" />
 // @ts-expect-error class must be a string (Hono's Promise<string> is not supported).
 export const e2 = <Button class={Promise.resolve("x")} />
-// @ts-expect-error render (element replacement) is not supported.
-export const e3 = <Button render={<a href="/" />} />
+// Base UI's render prop: an element or a function.
+export const asLink = <Button render={<a href="/docs" />}>Docs</Button>
+export const asFunction = (
+  <Button render={(props) => <a href="/docs" {...props} />}>Docs</Button>
+)
 // @ts-expect-error asChild is not supported.
 export const e4 = <Button asChild />
 // @ts-expect-error unknown variant.

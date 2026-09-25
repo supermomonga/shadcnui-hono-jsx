@@ -1,4 +1,4 @@
-import { buttonVariants } from "../../components/ui/button"
+import { Button, buttonVariants } from "../../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -19,7 +19,11 @@ export const valid = [
 
 // @ts-expect-error controlled state is not supported (no JavaScript).
 export const e1 = <Dialog open />
-// @ts-expect-error render (element replacement) is not supported.
-export const e2 = <DialogTrigger render={<button type="button" />} />
+// DialogTrigger supports Base UI's render prop, like upstream.
+export const asButton = (
+  <Dialog>
+    <DialogTrigger render={<Button variant="outline" />}>Open</DialogTrigger>
+  </Dialog>
+)
 // @ts-expect-error className is not accepted.
 export const e3 = <DialogContent className="x" />

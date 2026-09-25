@@ -2,7 +2,7 @@
  * Dialog demo rendered on the server with the generated Hono JSX components
  * (no client JavaScript). Used by dialog.spec.ts.
  */
-import { Button, buttonVariants } from "../../components/ui/button"
+import { Button } from "../../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -19,7 +19,7 @@ export function DialogDemo() {
   return (
     <main class="flex items-center gap-4 p-8">
       <Dialog id="edit-profile">
-        <DialogTrigger class={buttonVariants({ variant: "outline" })}>
+        <DialogTrigger render={<Button variant="outline" />}>
           Edit profile
         </DialogTrigger>
         <DialogContent>

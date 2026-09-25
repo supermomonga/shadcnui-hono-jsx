@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url"
 import { expect, type Page, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { BASE_UI_PRIMITIVES } from "../../generator/src/adapters/primitives/base-ui"
 
 /**
  * Compares screenshots of each case rendered by the generated Hono JSX
@@ -13,6 +14,45 @@ const OUT = path.join(import.meta.dirname, ".output")
 const ids = JSON.parse(
   readFileSync(path.join(OUT, "cases.json"), "utf8")
 ) as string[]
+
+/**
+ * Attributes Base UI renders that generated components deliberately omit,
+ * as declared in the primitive table (docs/adr/0018). Only these are removed
+ * from the upstream DOM before comparing.
+ */
+const OMITTED = BASE_UI_PRIMITIVES.flatMap((rule) => rule.omittedAttrs ?? [])
+
+interface DomNode {
+  tag: string
+  attributes: Record<string, string>
+  text: string
+  children: DomNode[]
+}
+
+const domTree = (page: Page, selector: string, omit: typeof OMITTED) =>
+  page.locator(selector).evaluate((root, omitted) => {
+    const walk = (el: Element): DomNode => {
+      const tag = el.tagName.toLowerCase()
+      const attributes: Record<string, string> = {}
+      for (const { name, value } of [...el.attributes]) {
+        const skip = omitted.some(
+          (o) =>
+            o.attr === name &&
+            (o.value === undefined || o.value === value) &&
+            (o.valuePattern === undefined ||
+              new RegExp(o.valuePattern).test(value)) &&
+            (!o.nonButtonOnly || (tag !== "button" && tag !== "input"))
+        )
+        if (!skip) attributes[name] = value
+      }
+      const text = [...el.childNodes]
+        .filter((n) => n.nodeType === Node.TEXT_NODE)
+        .map((n) => n.textContent ?? "")
+        .join("")
+      return { tag, attributes, text, children: [...el.children].map(walk) }
+    }
+    return walk(root)
+  }, omit)
 
 /** Share of differing pixels tolerated per case (anti-aliasing noise only). */
 const MAX_DIFF_RATIO = 0.001
@@ -41,6 +81,13 @@ for (const id of ids) {
       hono.locator(selector).screenshot({ animations: "disabled" }),
       react.locator(selector).screenshot({ animations: "disabled" }),
     ])
+    // The DOM must match upstream except for the declared omissions. Only the
+    // upstream side is normalized, so extra attributes on ours still fail.
+    expect(
+      await domTree(hono, selector, []),
+      "DOM must match upstream"
+    ).toEqual(await domTree(react, selector, OMITTED))
+
     // Icons must match lucide-react's SVG exactly (attributes and shapes).
     const svgs = (page: Page) =>
       page.locator(`${selector} svg`).evaluateAll((elements) =>

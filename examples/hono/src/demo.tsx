@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -135,7 +135,7 @@ export function Demo({ runtime }: { runtime: string }) {
           still without any JavaScript.
         </p>
         <Dialog id="edit-profile">
-          <DialogTrigger class={buttonVariants({ variant: "outline" })}>
+          <DialogTrigger render={<Button variant="outline" />}>
             Edit profile
           </DialogTrigger>
           <DialogContent>

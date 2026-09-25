@@ -54,7 +54,9 @@ export const e1 = <Badge variant="info" />
 export const e2 = <Card size="lg" />
 // @ts-expect-error invalid separator orientation.
 export const e3 = <Separator orientation="diagonal" />
-// @ts-expect-error Badge does not support render (element replacement).
-export const e4 = <Badge render={<a href="/" />} />
+// Badge supports Base UI's render prop; plain HTML components do not.
+export const badgeLink = <Badge render={<a href="/" />}>Link</Badge>
+// @ts-expect-error Card has no render prop (upstream renders a plain div).
+export const e4 = <Card render={<section />} />
 // @ts-expect-error className is not accepted.
 export const e5 = <Textarea className="x" />

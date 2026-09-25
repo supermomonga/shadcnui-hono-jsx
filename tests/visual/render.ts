@@ -105,15 +105,32 @@ const REACT_PROP_NAMES: Record<string, string> = {
   rowspan: "rowSpan",
   tabindex: "tabIndex",
   readonly: "readOnly",
-  // Uncontrolled fields in React; renders the same value attribute.
-  value: "defaultValue",
 }
 
-function toReactProps(props: CaseProps): CaseProps {
+/** Text fields are uncontrolled in React (`defaultValue` renders the same attribute). */
+const UNCONTROLLED_FIELDS = new Set(["Input", "Textarea", "input", "textarea"])
+
+function toReactProps(type: string, props: CaseProps): CaseProps {
+  // React's render prop target takes className like any React element.
   return Object.fromEntries(
     Object.entries(props).map(([key, value]) => [
-      REACT_PROP_NAMES[key] ?? key,
+      key === "value" && UNCONTROLLED_FIELDS.has(type)
+        ? "defaultValue"
+        : (REACT_PROP_NAMES[key] ?? key),
       value,
+    ])
+  )
+}
+
+/** Element-valued props (`render`) are rendered with the same runtime. */
+function mapElementProps(
+  props: CaseProps,
+  convert: (node: CaseNode) => unknown
+): Record<string, unknown> {
+  return Object.fromEntries(
+    Object.entries(props).map(([key, value]) => [
+      key,
+      Array.isArray(value) ? convert(value) : value,
     ])
   )
 }
@@ -124,7 +141,7 @@ function toHono(node: CaseNode, exports: Exports): unknown {
   const tag = resolveType(type, exports) as Parameters<typeof jsx>[0]
   return jsx(
     tag,
-    props,
+    mapElementProps(props, (n) => toHono(n, exports)) as never,
     ...(children.map((c) => toHono(c, exports)) as never[])
   )
 }
@@ -135,7 +152,7 @@ function toReact(node: CaseNode, exports: Exports): ReactNode {
   const tag = resolveType(type, exports) as string
   return createElement(
     tag,
-    toReactProps(props),
+    mapElementProps(toReactProps(type, props), (n) => toReact(n, exports)),
     ...children.map((c) => toReact(c, exports))
   )
 }

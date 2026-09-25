@@ -15,7 +15,8 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   dialog: "dialog.spec.ts",
 }
 
-export type CaseProps = Record<string, string | number | boolean>
+/** A prop value may itself be an element (for `render={<a />}`). */
+export type CaseProps = Record<string, string | number | boolean | CaseElement>
 export type CaseNode = string | CaseElement
 export type CaseElement = [
   type: string,
@@ -523,5 +524,39 @@ export const VISUAL_CASES: VisualCase[] = [
       ["Spinner", { class: "size-6" }],
       ["Spinner", { class: "size-8 text-muted-foreground" }]
     ),
+  },
+  {
+    id: "button/render-link",
+    component: "button",
+    node: row(
+      ["Button", { render: ["a", { href: "#docs" }] }, "Docs"],
+      [
+        "Button",
+        { variant: "outline", render: ["a", { href: "#next", class: "w-32" }] },
+        "Next",
+      ]
+    ),
+  },
+  {
+    id: "pagination/pages",
+    component: "pagination",
+    node: [
+      "Pagination",
+      {},
+      [
+        "PaginationContent",
+        {},
+        ["PaginationItem", {}, ["PaginationPrevious", { href: "#" }]],
+        ["PaginationItem", {}, ["PaginationLink", { href: "#1" }, "1"]],
+        [
+          "PaginationItem",
+          {},
+          ["PaginationLink", { href: "#2", isActive: true }, "2"],
+        ],
+        ["PaginationItem", {}, ["PaginationLink", { href: "#3" }, "3"]],
+        ["PaginationItem", {}, ["PaginationEllipsis", {}]],
+        ["PaginationItem", {}, ["PaginationNext", { href: "#" }]],
+      ],
+    ],
   },
 ]
