@@ -91,6 +91,62 @@ minimum needed to reproduce a generated file is the style, the item URL, and
 `contentSha256`, the best-effort commit, and the `shadcn` package version whose
 `tailwind.css` is vendored.
 
+### What is the cleanest Hono type for intrinsic element props?
+
+`JSX.IntrinsicElements[T]` from `import type { JSX } from "hono/jsx"`: it
+resolves to element-specific attribute types (for example
+`ButtonHTMLAttributes` with `type` and `disabled`). The per-element interfaces
+are not exported by name, and `JSX.HTMLAttributes` carries a
+`[attr: string]: any` index signature, so generated files intersect it with
+`{ class?: string | undefined; className?: never; render?: never; asChild?: never }`
+instead of using `Omit` (which would erase every known attribute).
+See [ADR 0006](./adr/0006-generated-components-accept-class-through-a-file-local-componentprops-intersection-type.md).
+
+### Should generated components use `class` or keep a `className` alias?
+
+`class` only. Hono JSX renames `className` to `class` but renders both if both
+are passed, does not support array/object class values, and types `class` as
+`string | Promise<string>`. Components bind `class` to the upstream local name
+`className`, so upstream bodies stay unchanged, and `className` is a type error.
+
+### How much upstream structure can be handled generically?
+
+All ten Tier A components translate through the generic pipeline with no
+component adapter. Stateless Base UI primitives (Button, Input, Separator) are
+data in the primitive table, and Badge's `useRender` + `mergeProps` pattern is
+handled by a generic step. The boundary for adapters is behavior: anything that
+needs hooks, context, event handlers, portals, or client state is either a
+native adapter (browser primitive with behavior, Tier B) or a custom adapter.
+See [ADR 0005](./adr/0005-translate-components-with-ts-morph-steps-a-declarative-base-ui-primitive-table-and-adapters.md)
+and [ADR 0007](./adr/0007-preserve-the-upstream-dom-contract-and-omit-render-aschild-and-refs.md).
+
+## Translation pipeline
+
+`generator/src/transformers/pipeline.ts` applies these steps to the upstream
+source (ts-morph, syntax only), then prepends the generated header and formats
+with the pinned Biome (`biome check --write`, which also sorts imports):
+
+| Step | Effect |
+| --- | --- |
+| `remove-directives` | drops `"use client"` |
+| `cn-markers` | `cn-font-heading` to `font-heading`; other `cn-*` classes removed (as the shadcn CLI does at install time) |
+| `use-render` | canonical `useRender({ defaultTagName, props: mergeProps(...), state })` to an intrinsic element; `state` entries become `data-*` attributes |
+| `primitives` | mapped Base UI primitives to intrinsic elements with their SSR attributes |
+| `react-types` | `React.ComponentProps<"x">`, `useRender.ComponentProps<"x">` to `ComponentProps<"x">`; `React.ReactNode` to `Child` |
+| `class-attr` | `className` parameter binding to `class: className`; `className=` to `class=` |
+| `dom-attributes` | React camelCase DOM attributes Hono does not normalize (`tabIndex`, `readOnly`, ...) to lowercase |
+| `drop-props` | removes unused `render`/`asChild` bindings |
+| `helpers` | inserts the `ComponentProps` helper type |
+| `imports` | removes `react` and `@base-ui/*`; adds `hono/jsx` type imports |
+| `guard` | fails on any leftover React/Base UI construct, unresolved JSX component, or export change |
+
+## Determinism
+
+- Generation reads only `upstream/` and the generator source.
+- Headers contain no timestamps; the revision is the item's `contentSha256`.
+- Output is formatted by the pinned Biome; `bun run generate --check` fails if
+  any generated file differs from disk or an unexpected file exists.
+
 ## Classification
 
 `bun run analyze` classifies every snapshotted `registry:ui` item from parsed

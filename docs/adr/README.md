@@ -2,3 +2,6 @@
 * [2. Use Bun, TypeScript 6.0 and a hoisted workspace as the toolchain](0002-use-bun-typescript-6-0-and-a-hoisted-workspace-as-the-toolchain.md)
 * [3. Commit generated artifacts and verify their freshness in CI](0003-commit-generated-artifacts-and-verify-their-freshness-in-ci.md)
 * [4. Snapshot the built base-nova registry JSON as the upstream source](0004-snapshot-the-built-base-nova-registry-json-as-the-upstream-source.md)
+* [5. Translate components with ts-morph steps, a declarative Base UI primitive table and adapters](0005-translate-components-with-ts-morph-steps-a-declarative-base-ui-primitive-table-and-adapters.md)
+* [6. Generated components accept class through a file-local ComponentProps intersection type](0006-generated-components-accept-class-through-a-file-local-componentprops-intersection-type.md)
+* [7. Preserve the upstream DOM contract and omit render, asChild and refs](0007-preserve-the-upstream-dom-contract-and-omit-render-aschild-and-refs.md)
