@@ -179,7 +179,7 @@ facts (imports, React type/value usage, hooks, JSX attributes, `cn-*` markers):
 | Kind | Meaning |
 | --- | --- |
 | `direct` | Plain HTML/Tailwind/variants, possibly via a stateless Base UI primitive mapped in `generator/src/adapters/primitives/base-ui.ts` or the canonical `useRender` pattern |
-| `native-adapter` | Maps onto a browser primitive with behavior (e.g. `<dialog>`); none yet |
+| `native-adapter` | Maps onto a browser primitive with behavior through a `native` component adapter (Dialog: `<dialog>` with Invoker Commands, [ADR 0017](./adr/0017-implement-dialog-on-the-native-dialog-element-with-invoker-commands.md)) |
 | `custom-adapter` | Blocking reasons all resolved by an adapter in `generator/src/adapters/components/` |
 | `unsupported` | At least one blocking reason (unmapped Base UI primitive, React hooks/runtime APIs, event handlers, icon placeholder, registry imports, unknown packages, ...) |
 
@@ -224,6 +224,7 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Registry install into a clean Hono project | `tests/registry/` | `bun run test:registry`, CI |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
+| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/dialog.spec.ts` | `bun run test:visual`, CI `visual` |
 
 `tests/visual` renders the same case data with the generated components and
 with the upstream React sources from the snapshot, shares one Tailwind build,
@@ -255,8 +256,8 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
 
 ## Known limitations
 
-- Server-rendered only; no component ships client JavaScript, and none needs it
-  yet.
+- Server-rendered only; no component ships client JavaScript. Dialog relies on
+  Baseline 2025 browser features (Invoker Commands) instead.
 - No `asChild`/`render` composition and no ref forwarding.
 - Base UI client-side state attributes and behaviors (`focusableWhenDisabled`,
   field state) are not reproduced.

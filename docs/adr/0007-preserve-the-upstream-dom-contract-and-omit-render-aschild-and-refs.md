@@ -3,6 +3,9 @@ number: 7
 title: Preserve the upstream DOM contract and omit render, asChild and refs
 status: accepted
 date: 2026-09-25
+links:
+- target: 17
+  kind: amendedby
 ---
 
 # Preserve the upstream DOM contract and omit render, asChild and refs
