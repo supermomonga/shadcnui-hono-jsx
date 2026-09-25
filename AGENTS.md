@@ -19,6 +19,21 @@ generator (transformer, adapter, or config) and regenerate.
 | `registry.json`, `compatibility.json` | `bun run generate` |
 | README compatibility table (between markers) | `bun run generate` |
 
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `bun run upstream:sync [--report file]` | Update the upstream snapshot |
+| `bun run analyze [name...]` | Classify upstream components |
+| `bun run generate [name...] [--check]` | Regenerate generated outputs |
+| `bun run verify` | Lint, type-check, test, freshness check, registry validation |
+| `bun run verify:full` | `verify` plus examples and the network registry install test |
+
+To support another upstream component, add it to `components` in
+`generator.config.ts`, run `bun run analyze <name>`, and resolve blocking reasons
+with a primitive rule (`generator/src/adapters/primitives/`), a generic
+transformer step, or a component adapter (`generator/src/adapters/components/`).
+
 ## Workflow
 
 - Run `bun run verify` before every commit.

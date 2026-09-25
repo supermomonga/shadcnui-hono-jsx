@@ -32,6 +32,94 @@ Base UI, or Radix runtime in the generated components.
 - Regenerated from upstream shadcn/ui instead of hand-maintained forks
 - JavaScript only where interactive behavior requires it (none for the current set)
 
+## Requirements
+
+- [Hono](https://hono.dev) 4.12.34 or newer (JSX security fixes; 4.13.9+
+  recommended), with `"jsx": "react-jsx"` and `"jsxImportSource": "hono/jsx"`
+  in `tsconfig.json`
+- [Tailwind CSS](https://tailwindcss.com) v4
+- The [shadcn CLI](https://ui.shadcn.com/docs/cli) (run with `bunx`/`npx`; it is
+  not added to your dependencies)
+
+## Installation
+
+Components are installed as source files from the GitHub registry at
+`supermomonga/shadcnui-hono-jsx`. No `components.json` is required.
+
+1. Install the theme once. It adds `styles/shadcn/theme.css` and
+   `styles/shadcn/tailwind.css` and the `tw-animate-css` package:
+
+   ```sh
+   bunx shadcn@latest add supermomonga/shadcnui-hono-jsx/theme
+   ```
+
+2. Import the theme after Tailwind CSS in your stylesheet, and make sure
+   Tailwind scans `components/ui`:
+
+   ```css
+   @import "tailwindcss";
+   @import "../styles/shadcn/theme.css"; /* path relative to this file */
+   @source "../components/ui";
+   ```
+
+   For HonoX, `app/style.css` typically looks like this:
+
+   ```css
+   @import "tailwindcss" source("../app");
+   @import "../styles/shadcn/theme.css";
+   @source "../components";
+   ```
+
+3. Add components. They are written to `components/ui/<name>.tsx` and install
+   their npm dependencies (`cn`, `class-variance-authority`):
+
+   ```sh
+   bunx shadcn@latest add supermomonga/shadcnui-hono-jsx/button supermomonga/shadcnui-hono-jsx/card
+   ```
+
+   Append `#<tag-or-commit>` to an address to pin a revision.
+
+4. Import them with a path alias (`"paths": { "@/*": ["./*"] }`) or a relative
+   path.
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+
+export default function Page() {
+  return (
+    <Card class="max-w-sm">
+      <CardHeader>
+        <CardTitle>Account</CardTitle>
+      </CardHeader>
+      <CardContent>...</CardContent>
+      <CardFooter>
+        <Button type="submit">Save</Button>
+      </CardFooter>
+    </Card>
+  )
+}
+```
+
+These are plain `hono/jsx` components: render them with `c.html(...)`,
+`jsxRenderer`, or HonoX routes.
+
+## Differences from shadcn/ui
+
+- Components accept `class`, not `className` (Hono JSX renders `class`).
+- `asChild` and Base UI's `render` prop are not supported yet; refs are not
+  forwarded.
+- Everything is server-rendered. Client-side state attributes from Base UI (for
+  example `data-focused`) are not rendered.
+- `Button` renders `type="button"` by default, like Base UI; pass
+  `type="submit"` inside forms.
+- The upstream preset font (Geist) is not installed; `font-heading` uses your
+  `--font-sans`.
+
+Per-component details are in the table below.
+
 ## Compatibility
 
 <!-- compatibility-table:start -->
@@ -112,7 +200,52 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 </details>
 <!-- compatibility-table:end -->
 
+## Examples
+
+- [`examples/hono`](./examples/hono): plain Hono on Bun, Tailwind CLI
+- [`examples/honox`](./examples/honox): HonoX with the standard Hono JSX
+  renderer and `@tailwindcss/vite`
+
+Both import the generated components from this repository through an
+`@/components/*` alias and render the same demo page without client
+JavaScript.
+
+```sh
+bun install
+bun run examples:build
+cd examples/hono && bun run dev    # http://localhost:3000
+cd examples/honox && bun run dev   # Vite dev server
+```
+
+## How it works
+
+1. `bun run upstream:sync` snapshots the shadcn/ui `base-nova` registry
+   (`upstream/`), recording a content hash per item in `upstream/lock.json`.
+2. `bun run generate` classifies each upstream component and translates the
+   supported ones with ts-morph: React types become Hono JSX types, `className`
+   becomes `class`, stateless Base UI primitives become the HTML they render,
+   and the output is formatted with Biome. It also writes the theme, the
+   registry, and the compatibility manifest.
+3. A weekly workflow syncs upstream and opens a pull request with the diff;
+   nothing is merged automatically.
+
+Generated files are never edited by hand. See
+[docs/architecture.md](./docs/architecture.md) and the
+[architecture decision records](./docs/adr/README.md).
+
+## Development
+
+| Command | Purpose |
+| --- | --- |
+| `bun run upstream:sync [--report file]` | Update the upstream snapshot |
+| `bun run analyze [name...]` | Classify upstream components |
+| `bun run generate [name...] [--check]` | Regenerate components, theme, registry, manifest |
+| `bun run verify` | Lint, type-check, test, check generated files, validate the registry |
+| `bun run verify:full` | `verify` plus examples and the registry install test (network) |
+
 ## License
 
-[MIT](./LICENSE). Derived from shadcn/ui (MIT); see
-[THIRD_PARTY_LICENSES.md](./THIRD_PARTY_LICENSES.md).
+[MIT](./LICENSE). Derived from [shadcn/ui](https://github.com/shadcn-ui/ui)
+(MIT, Copyright (c) 2023 shadcn); see
+[THIRD_PARTY_LICENSES.md](./THIRD_PARTY_LICENSES.md). This is an unofficial
+community project and is not affiliated with or endorsed by shadcn.

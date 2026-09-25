@@ -182,3 +182,51 @@ facts (imports, React type/value usage, hooks, JSX attributes, `cn-*` markers):
 Reasons are machine-readable (`code` or `code:detail`), sorted, and recorded in
 the compatibility manifest. Generation fails if a configured component is
 `unsupported`, which surfaces upstream changes that need a new rule.
+
+## Upstream synchronization
+
+`.github/workflows/upstream-check.yml` runs weekly and on demand:
+
+1. bumps the pinned `shadcn` devDependency (source of the vendored
+   `tailwind.css`);
+2. runs `bun run upstream:sync --report`, which updates `upstream/` and writes a
+   Markdown report (added/changed/removed items, affected generated components,
+   classification changes, unified diffs);
+3. runs `bun run generate` and `bun run verify`, allowing both to fail;
+4. opens or updates the `upstream/base-nova` pull request with the report as its
+   body. Failed generation or verification makes it a draft labelled
+   `needs-adapter`.
+
+Nothing is merged or released automatically
+([ADR 0010](./adr/0010-automate-upstream-synchronization-through-reviewed-pull-requests.md)).
+Syncs are idempotent, so an unchanged upstream produces no pull request.
+
+## Test layers
+
+| Layer | Location | Runs in |
+| --- | --- | --- |
+| Generator unit tests (policy, sync, report, analyzer, transformer steps, theme, registry, manifest) | `generator/tests/` | `bun run test` |
+| Render tests (targeted HTML assertions per component) | `tests/render/` | `bun run test` |
+| Dependency policy (no React/Base UI imports, allowlisted packages) | `tests/deps/` | `bun run test` |
+| Type tests (valid usage and `@ts-expect-error` misuse, strict variant) | `tests/types/` | `bun run typecheck` |
+| Freshness of generated files | `bun run generate --check` | `bun run verify`, CI |
+| Registry validation | `shadcn registry validate` | `bun run verify`, CI |
+| Registry install into a clean Hono project | `tests/registry/` | `bun run test:registry`, CI |
+| Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
+
+Browser (Playwright) and visual regression tests are deferred until interactive
+primitives exist; the current components were checked visually in both
+examples in light and dark mode.
+
+## Known limitations
+
+- Server-rendered only; no component ships client JavaScript, and none needs it
+  yet.
+- No `asChild`/`render` composition and no ref forwarding.
+- Base UI client-side state attributes and behaviors (`focusableWhenDisabled`,
+  field state) are not reproduced.
+- Upstream items that depend on other registry items (for example
+  `button-group`) are not generated yet: universal items cannot rewrite local
+  imports, so this needs a dependency strategy first.
+- The theme covers the `base-nova` preset with the neutral base color; fonts
+  from the preset are not installed.

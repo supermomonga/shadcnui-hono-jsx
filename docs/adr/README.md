@@ -7,3 +7,4 @@
 * [7. Preserve the upstream DOM contract and omit render, asChild and refs](0007-preserve-the-upstream-dom-contract-and-omit-render-aschild-and-refs.md)
 * [8. Distribute components as universal items from a GitHub source registry](0008-distribute-components-as-universal-items-from-a-github-source-registry.md)
 * [9. Vendor shadcn tailwind.css in the theme item](0009-vendor-shadcn-tailwind-css-in-the-theme-item.md)
+* [10. Automate upstream synchronization through reviewed pull requests](0010-automate-upstream-synchronization-through-reviewed-pull-requests.md)
