@@ -1,0 +1,199 @@
+/**
+ * Renders every visual parity case twice from the same data:
+ *   - with the generated Hono JSX components (components/ui), and
+ *   - with the upstream shadcn/ui React components from the committed snapshot,
+ *     after the shadcn CLI's install-time `cn-*` marker rewrite.
+ * Both pages share one Tailwind CSS build (the generated theme), so screenshot
+ * differences come from markup and classes only.
+ *
+ * Output: .output/{hono,react}.html, .output/style.css, .output/cases.json
+ */
+import { mkdirSync, rmSync, writeFileSync } from "node:fs"
+import path from "node:path"
+import { jsx } from "hono/jsx"
+import { createElement, type ReactNode } from "react"
+import { renderToStaticMarkup } from "react-dom/server"
+import { UpstreamStore } from "../../generator/src/upstream/store"
+import { config } from "../../generator.config"
+import { type CaseNode, type CaseProps, VISUAL_CASES } from "./cases"
+
+const HERE = import.meta.dir
+const ROOT = path.resolve(HERE, "../..")
+const OUT = path.join(HERE, ".output")
+const UPSTREAM = path.join(HERE, ".upstream")
+const MODES = ["light", "dark"] as const
+
+type Exports = Record<string, unknown>
+
+/** Mirrors the shadcn CLI install step: `cn-font-heading` -> `font-heading`, other `cn-*` removed. */
+function applyInstallMarkers(source: string): string {
+  return source
+    .split("\n")
+    .map((line) =>
+      line.startsWith("import ")
+        ? line
+        : line.replace(/\bcn-[a-z-]+\b/g, (m) =>
+            m === "cn-font-heading" ? "font-heading" : ""
+          )
+    )
+    .join("\n")
+}
+
+function writeUpstreamSources(): void {
+  const store = new UpstreamStore(ROOT, config.style)
+  rmSync(UPSTREAM, { recursive: true, force: true })
+  mkdirSync(UPSTREAM, { recursive: true })
+  for (const name of config.components) {
+    const [file] = store.readItem(name).files ?? []
+    if (!file) throw new Error(`${name} has no upstream file`)
+    writeFileSync(
+      path.join(UPSTREAM, `${name}.tsx`),
+      `/** @jsxImportSource react */\n${applyInstallMarkers(file.content)}`
+    )
+  }
+}
+
+async function loadExports(dir: string): Promise<Exports> {
+  const exports: Exports = {}
+  for (const name of config.components) {
+    Object.assign(exports, await import(path.join(dir, `${name}.tsx`)))
+  }
+  return exports
+}
+
+function resolveType(type: string, exports: Exports): unknown {
+  if (/^[a-z]/.test(type)) return type
+  const component = exports[type]
+  if (typeof component !== "function")
+    throw new Error(`Unknown component ${type}`)
+  return component
+}
+
+const REACT_PROP_NAMES: Record<string, string> = {
+  class: "className",
+  for: "htmlFor",
+  colspan: "colSpan",
+  rowspan: "rowSpan",
+  tabindex: "tabIndex",
+  readonly: "readOnly",
+  // Uncontrolled fields in React; renders the same value attribute.
+  value: "defaultValue",
+}
+
+function toReactProps(props: CaseProps): CaseProps {
+  return Object.fromEntries(
+    Object.entries(props).map(([key, value]) => [
+      REACT_PROP_NAMES[key] ?? key,
+      value,
+    ])
+  )
+}
+
+function toHono(node: CaseNode, exports: Exports): unknown {
+  if (typeof node === "string") return node
+  const [type, props, ...children] = node
+  const tag = resolveType(type, exports) as Parameters<typeof jsx>[0]
+  return jsx(
+    tag,
+    props,
+    ...(children.map((c) => toHono(c, exports)) as never[])
+  )
+}
+
+function toReact(node: CaseNode, exports: Exports): ReactNode {
+  if (typeof node === "string") return node
+  const [type, props, ...children] = node
+  const tag = resolveType(type, exports) as string
+  return createElement(
+    tag,
+    toReactProps(props),
+    ...children.map((c) => toReact(c, exports))
+  )
+}
+
+function page(title: string, sections: string[]): string {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>${title}</title>
+<link rel="stylesheet" href="style.css">
+<style>body { margin: 0 } [data-case] { display: block; margin: 0 0 8px }</style>
+</head>
+<body>
+${sections.join("\n")}
+</body>
+</html>
+`
+}
+
+function section(
+  id: string,
+  mode: (typeof MODES)[number],
+  width: number,
+  html: string
+): string {
+  return `<section data-case="${id}@${mode}" class="${mode === "dark" ? "dark" : ""}" style="width:${width}px"><div class="bg-background p-4 text-foreground">${html}</div></section>`
+}
+
+async function main(): Promise<void> {
+  writeUpstreamSources()
+  const hono = await loadExports(path.join(ROOT, "components", "ui"))
+  const react = await loadExports(UPSTREAM)
+
+  const honoSections: string[] = []
+  const reactSections: string[] = []
+  const ids: string[] = []
+  for (const visualCase of VISUAL_CASES) {
+    const width = visualCase.width ?? 520
+    const honoHtml = String(await toHono(visualCase.node, hono))
+    const reactHtml = renderToStaticMarkup(toReact(visualCase.node, react))
+    for (const mode of MODES) {
+      ids.push(`${visualCase.id}@${mode}`)
+      honoSections.push(section(visualCase.id, mode, width, honoHtml))
+      reactSections.push(section(visualCase.id, mode, width, reactHtml))
+    }
+  }
+
+  mkdirSync(OUT, { recursive: true })
+  writeFileSync(
+    path.join(OUT, "hono.html"),
+    page("Hono JSX (generated)", honoSections)
+  )
+  writeFileSync(
+    path.join(OUT, "react.html"),
+    page("shadcn/ui (upstream React)", reactSections)
+  )
+  writeFileSync(
+    path.join(OUT, "cases.json"),
+    `${JSON.stringify(ids, null, 2)}\n`
+  )
+  writeFileSync(
+    path.join(OUT, "input.css"),
+    [
+      '@import "tailwindcss";',
+      '@import "../../../styles/shadcn/theme.css";',
+      '@source "../../../components/ui";',
+      '@source "../.upstream";',
+      '@source "../cases.ts";',
+      '@source "../render.ts";',
+      "",
+    ].join("\n")
+  )
+  const tailwind = Bun.spawnSync(
+    [
+      path.join(HERE, "node_modules", ".bin", "tailwindcss"),
+      "-i",
+      "input.css",
+      "-o",
+      "style.css",
+    ],
+    { cwd: OUT, stdout: "pipe", stderr: "pipe" }
+  )
+  if (tailwind.exitCode !== 0) throw new Error(tailwind.stderr.toString())
+  console.log(
+    `Rendered ${ids.length} cases to ${path.relative(process.cwd(), OUT)}`
+  )
+}
+
+await main()

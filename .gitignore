@@ -6,3 +6,7 @@ dist/
 coverage/
 examples/*/public/style.css
 examples/*/dist/
+tests/visual/.upstream/
+tests/visual/.output/
+tests/visual/test-results/
+tests/visual/playwright-report/
