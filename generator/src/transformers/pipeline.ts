@@ -12,6 +12,7 @@ import { helpers } from "./steps/helpers"
 import { imports } from "./steps/imports"
 import { primitivesStep } from "./steps/primitives"
 import { reactTypes } from "./steps/react-types"
+import { styleValues } from "./steps/style-values"
 import { useRenderStep } from "./steps/use-render"
 
 /** Ordered translation steps applied to every upstream component file. */
@@ -21,6 +22,7 @@ export const STEPS: readonly TransformStep[] = [
   useRenderStep,
   primitivesStep,
   reactTypes,
+  styleValues,
   classAttr,
   domAttributes,
   dropProps,

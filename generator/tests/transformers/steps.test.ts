@@ -16,6 +16,7 @@ import { domAttributes } from "../../src/transformers/steps/dom-attributes"
 import { dropProps } from "../../src/transformers/steps/drop-props"
 import { primitivesStep } from "../../src/transformers/steps/primitives"
 import { reactTypes } from "../../src/transformers/steps/react-types"
+import { styleValues } from "../../src/transformers/steps/style-values"
 import { useRenderStep } from "../../src/transformers/steps/use-render"
 
 function facts(source: string) {
@@ -157,6 +158,20 @@ type C = { icon: Child; style: CSSProperties }`)
   })
 })
 
+describe("style-values", () => {
+  test("stringifies non-string custom property values in style objects", () => {
+    const { text } = apply(
+      `const a = <div style={{ "--ratio": ratio, "--gap": "4px", width: 10 } as React.CSSProperties} />
+const b = <div style={{ ["--x"]: 1 }} />`,
+      styleValues
+    )
+    expect(
+      text
+    ).toBe(`const a = <div style={{ "--ratio": String(ratio), "--gap": "4px", width: 10 } as React.CSSProperties} />
+const b = <div style={{ ["--x"]: 1 }} />`)
+  })
+})
+
 describe("class-attr", () => {
   test("binds the class prop to the upstream className local and renders class", () => {
     const { text } = apply(
@@ -267,6 +282,7 @@ export { Box, Button }
       "use-render",
       "primitives",
       "react-types",
+      "style-values",
       "class-attr",
       "dom-attributes",
       "drop-props",
