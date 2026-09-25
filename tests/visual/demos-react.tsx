@@ -64,6 +64,14 @@ import {
   HoverCardTrigger,
 } from "./.upstream/hover-card"
 import { Input } from "./.upstream/input"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "./.upstream/input-group"
 import { Label } from "./.upstream/label"
 import {
   Menubar,
@@ -490,6 +498,31 @@ function HoverDemo() {
   )
 }
 
+function InputGroupDemo() {
+  return (
+    <main className="flex w-96 flex-col gap-6 p-8">
+      <InputGroup>
+        <InputGroupInput placeholder="example.com" />
+        <InputGroupAddon>
+          <InputGroupText>https://</InputGroupText>
+        </InputGroupAddon>
+      </InputGroup>
+      <InputGroup>
+        <InputGroupInput placeholder="Search" />
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton>Clear</InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+      <InputGroup>
+        <InputGroupTextarea placeholder="Message" />
+        <InputGroupAddon align="block-end">
+          <InputGroupText>0/280</InputGroupText>
+        </InputGroupAddon>
+      </InputGroup>
+    </main>
+  )
+}
+
 function SliderDemo() {
   return (
     <main className="flex flex-col gap-10 p-8 pl-24">
@@ -559,6 +592,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   ),
   select: () => <SelectDemo />,
   slider: () => <SliderDemo />,
+  "input-group": () => <InputGroupDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,

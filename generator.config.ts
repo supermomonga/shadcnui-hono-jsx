@@ -29,6 +29,7 @@ export const config: GeneratorConfig = {
     "field",
     "hover-card",
     "input",
+    "input-group",
     "item",
     "kbd",
     "label",

@@ -136,7 +136,10 @@ export function buildManifest(deps: {
       apiParity: "partial",
       // Interactive components are checked for keyboard, focus and ARIA in a browser.
       accessibility: name in BROWSER_SPECS ? "verified" : "static-markup",
-      clientJs: behaviorsOf(reasons).length > 0 ? "required" : "none",
+      clientJs:
+        behaviorsOf(reasons, COMPONENT_ADAPTERS[name]).length > 0
+          ? "required"
+          : "none",
       knownDifferences: knownDifferences(
         reasons,
         COMPONENT_ADAPTERS[name]?.notes ?? []
@@ -169,7 +172,7 @@ export function renderCompatibilityTable(manifest: Manifest): string {
     ...generated.map(
       (c) =>
         `| ${c.name} | ${c.status} | ${c.conversion} | ${c.visualParity} | ${
-          behaviorsOf(c.reasons)
+          behaviorsOf(c.reasons, COMPONENT_ADAPTERS[c.name])
             .filter((name) => name !== "core")
             .map((name) => `\`/shadcn/${name}.js\``)
             .join(", ") || "none"

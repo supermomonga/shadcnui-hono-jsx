@@ -1,3 +1,4 @@
+import { COMPONENT_ADAPTERS } from "../adapters/components"
 import { BEHAVIORS_DIR, behaviorsOf } from "../adapters/families"
 import type { Classification } from "../analyzer/classify"
 import { reasonKey } from "../analyzer/reasons"
@@ -152,7 +153,10 @@ export function buildRegistry(deps: {
       const behaviors = [
         ...new Set(
           files.flatMap((c) =>
-            behaviorsOf(c.classification.reasons.map(reasonKey))
+            behaviorsOf(
+              c.classification.reasons.map(reasonKey),
+              COMPONENT_ADAPTERS[c.name]
+            )
           )
         ),
       ].sort()

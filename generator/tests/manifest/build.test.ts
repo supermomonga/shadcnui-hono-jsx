@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { config } from "../../../generator.config"
 import { BROWSER_SPECS, VISUAL_CASES } from "../../../tests/visual/cases"
+import { COMPONENT_ADAPTERS } from "../../src/adapters/components"
 import {
   buildManifest,
   renderCompatibilityTable,
@@ -25,6 +26,7 @@ describe("buildManifest", () => {
     "context-menu",
     "dropdown-menu",
     "hover-card",
+    "input-group",
     "menubar",
     "slider",
     "tabs",
@@ -36,7 +38,8 @@ describe("buildManifest", () => {
     (name) => {
       expect(byName.get(name)).toMatchObject({
         status: "experimental",
-        conversion: "generated",
+        conversion:
+          name in COMPONENT_ADAPTERS ? "generated-with-adapter" : "generated",
         clientJs: SCRIPTED.has(name) ? "required" : "none",
         visualParity: "verified",
         upstream: { contentSha256: lock.items[name]?.contentSha256 },

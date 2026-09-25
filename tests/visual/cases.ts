@@ -18,6 +18,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   "context-menu": "menu.spec.ts",
   "dropdown-menu": "menu.spec.ts",
   "hover-card": "hover.spec.ts",
+  "input-group": "input-group.spec.ts",
   menubar: "menu.spec.ts",
   popover: "popover.spec.ts",
   "radio-group": "controls.spec.ts",
@@ -644,6 +645,71 @@ export const VISUAL_CASES: VisualCase[] = [
         ],
       ],
     ],
+  },
+  {
+    id: "input-group/addons",
+    component: "input-group",
+    width: 320,
+    node: stack(
+      [
+        "InputGroup",
+        {},
+        ["InputGroupInput", { placeholder: "example.com" }],
+        ["InputGroupAddon", {}, ["InputGroupText", {}, "https://"]],
+      ],
+      [
+        "InputGroup",
+        {},
+        ["InputGroupInput", { placeholder: "Search..." }],
+        ["InputGroupAddon", { align: "inline-end" }, ["Kbd", {}, "⌘K"]],
+      ],
+      [
+        "InputGroup",
+        {},
+        ["InputGroupInput", { placeholder: "Username", value: "shadcn" }],
+        [
+          "InputGroupAddon",
+          { align: "inline-end" },
+          ["InputGroupButton", { size: "icon-xs", "aria-label": "Copy" }, "C"],
+        ],
+      ],
+      [
+        "InputGroup",
+        {},
+        ["InputGroupInput", { placeholder: "Amount", disabled: true }],
+        ["InputGroupAddon", {}, ["InputGroupText", {}, "$"]],
+        [
+          "InputGroupAddon",
+          { align: "inline-end" },
+          ["InputGroupText", {}, "USD"],
+        ],
+      ],
+      [
+        "InputGroup",
+        {},
+        ["InputGroupInput", { "aria-invalid": "true", value: "bad@" }],
+        [
+          "InputGroupAddon",
+          { align: "block-start" },
+          ["InputGroupText", {}, "Email"],
+        ],
+      ],
+      [
+        "InputGroup",
+        {},
+        ["InputGroupTextarea", { placeholder: "Ask anything" }],
+        [
+          "InputGroupAddon",
+          { align: "block-end" },
+          ["InputGroupText", {}, "0/280"],
+          [
+            "InputGroupButton",
+            { size: "sm", variant: "default", class: "ml-auto" },
+            "Send",
+          ],
+        ],
+      ]
+    ),
   },
   {
     id: "progress/states",

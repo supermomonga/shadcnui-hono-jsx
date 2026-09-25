@@ -14,6 +14,7 @@ export default defineConfig({
     "menu.spec.ts",
     "hover.spec.ts",
     "slider.spec.ts",
+    "input-group.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

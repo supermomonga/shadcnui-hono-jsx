@@ -203,6 +203,8 @@ export function C() { return <Button render={<a href="/" />} /> }`
     expect(run(source, {}, partial).kind).toBe("unsupported")
     const native = { fixture: { ...adapters.fixture, kind: "native" as const } }
     expect(run(source, {}, native).kind).toBe("native-adapter")
+    const script = { fixture: { ...adapters.fixture, kind: "script" as const } }
+    expect(run(source, {}, script).kind).toBe("script-adapter")
   })
 })
 
@@ -234,6 +236,7 @@ describe("classification of the committed upstream snapshot", () => {
     "context-menu",
     "dropdown-menu",
     "hover-card",
+    "input-group",
     "menubar",
     "slider",
     "tabs",

@@ -436,13 +436,10 @@
         "react-hook:useRef",
         "react-runtime-api:React.useRef",
         "react-type-unmapped:React.ComponentPropsWithRef",
-        "registry-dependency:input-group",
-        "registry-import:@/registry/base-nova/ui/input-group",
         "render-prop:ComboboxPrimitive.ChipRemove",
         "render-prop:ComboboxPrimitive.Clear",
         "render-prop:ComboboxPrimitive.Input",
-        "render-prop:ComboboxPrimitive.ItemIndicator",
-        "render-prop:InputGroupButton"
+        "render-prop:ComboboxPrimitive.ItemIndicator"
       ]
     },
     {
@@ -460,11 +457,7 @@
       "accessibility": "not-applicable",
       "clientJs": "not-applicable",
       "knownDifferences": [],
-      "reasons": [
-        "registry-dependency:input-group",
-        "registry-import:@/registry/base-nova/ui/input-group",
-        "unknown-import:cmdk"
-      ]
+      "reasons": ["unknown-import:cmdk"]
     },
     {
       "name": "context-menu",
@@ -724,20 +717,34 @@
     },
     {
       "name": "input-group",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated-with-adapter",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/input-group.json",
         "contentSha256": "631f54c33691082381aa0d9620f82579b3dde334e66cad9d6c153d4a974ad8f6",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["event-handler:onClick"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "Accepts `class` instead of `className`.",
+        "Clicking an addon focuses the input with the client script `/shadcn/input-group.js` (`<script type=\"module\" src=\"/shadcn/input-group.js\">`); without it the addon is not clickable."
+      ],
+      "reasons": [
+        "event-handler:onClick",
+        "classname-to-class",
+        "component-dependency:button",
+        "component-dependency:input",
+        "component-dependency:textarea",
+        "component-import:button",
+        "component-import:input",
+        "component-import:textarea",
+        "react-type-rewrite:React.ComponentProps",
+        "use-client-directive"
+      ]
     },
     {
       "name": "input-otp",

@@ -62,6 +62,14 @@ import {
   HoverCardTrigger,
 } from "../../components/ui/hover-card"
 import { Input } from "../../components/ui/input"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "../../components/ui/input-group"
 import { Label } from "../../components/ui/label"
 import {
   Menubar,
@@ -478,6 +486,31 @@ function HoverDemo() {
   )
 }
 
+function InputGroupDemo() {
+  return (
+    <main class="flex w-96 flex-col gap-6 p-8">
+      <InputGroup>
+        <InputGroupInput placeholder="example.com" />
+        <InputGroupAddon>
+          <InputGroupText>https://</InputGroupText>
+        </InputGroupAddon>
+      </InputGroup>
+      <InputGroup>
+        <InputGroupInput placeholder="Search" />
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton>Clear</InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+      <InputGroup>
+        <InputGroupTextarea placeholder="Message" />
+        <InputGroupAddon align="block-end">
+          <InputGroupText>0/280</InputGroupText>
+        </InputGroupAddon>
+      </InputGroup>
+    </main>
+  )
+}
+
 function SliderDemo() {
   return (
     <main class="flex flex-col gap-10 p-8 pl-24">
@@ -542,6 +575,7 @@ export const DEMOS = {
   ),
   select: () => <SelectDemo />,
   slider: () => <SliderDemo />,
+  "input-group": () => <InputGroupDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,
@@ -560,6 +594,7 @@ export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
   "context-menu": ["menu"],
   "dropdown-menu": ["menu"],
   hover: ["hover"],
+  "input-group": ["input-group"],
   menubar: ["menu"],
   slider: ["slider"],
   tabs: ["tabs"],

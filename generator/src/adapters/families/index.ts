@@ -1,3 +1,4 @@
+import type { ComponentAdapter } from "../components"
 import {
   checkboxFamily,
   radioFamily,
@@ -57,11 +58,14 @@ export const BEHAVIORS_DIR = "public/shadcn"
 
 /**
  * Client scripts a component needs, from its mapped Base UI primitives
- * (`base-ui-primitive-mapped:<module>#<export>` reason keys), plus the
- * shared `core` module they import.
+ * (`base-ui-primitive-mapped:<module>#<export>` reason keys) and its
+ * component adapter, plus the shared `core` module they import.
  */
-export function behaviorsOf(reasonKeys: readonly string[]): string[] {
-  const names = new Set<string>()
+export function behaviorsOf(
+  reasonKeys: readonly string[],
+  adapter?: Pick<ComponentAdapter, "behaviors">
+): string[] {
+  const names = new Set<string>(adapter?.behaviors)
   for (const key of reasonKeys) {
     const match = key.match(/^base-ui-primitive-mapped:(.+)#(.+)$/)
     if (!match) continue

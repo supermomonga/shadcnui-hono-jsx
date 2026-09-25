@@ -219,8 +219,12 @@ export function classify(
     if (!adapter || !blocking.every(resolved)) {
       return { kind: "unsupported", reasons: sorted }
     }
-    const kind = adapter.kind === "native" ? "native-adapter" : "custom-adapter"
-    return { kind, reasons: sorted }
+    const kind = {
+      native: "native-adapter",
+      script: "script-adapter",
+      custom: "custom-adapter",
+    } as const
+    return { kind: kind[adapter.kind], reasons: sorted }
   }
   // A client script (docs/adr/0025) outranks browser primitives.
   if (primitives.some((rule) => rule.kind === "script")) {

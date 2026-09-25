@@ -52,11 +52,7 @@ export function generateComponent(
   if (!lockEntry)
     throw new GenerationError(`${name} is missing from upstream/lock.json`)
 
-  const mode =
-    classification.kind === "custom-adapter" ||
-    (classification.kind === "native-adapter" && adapter !== undefined)
-      ? "adapter"
-      : "generated"
+  const mode = adapter === undefined ? "generated" : "adapter"
   const output = transformSource({
     name,
     source: file.content,
@@ -71,7 +67,7 @@ export function generateComponent(
     upstreamCommit: lockEntry.upstreamCommit,
     mode,
     icons: { names: output.icons, version: lucideVersion() },
-    scripts: behaviorsOf(classification.reasons.map(reasonKey)).filter(
+    scripts: behaviorsOf(classification.reasons.map(reasonKey), adapter).filter(
       (script) => script !== "core"
     ),
   })

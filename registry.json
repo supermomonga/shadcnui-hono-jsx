@@ -697,6 +697,61 @@
       }
     },
     {
+      "name": "input-group",
+      "type": "registry:item",
+      "title": "Input Group",
+      "description": "Hono JSX port of the shadcn/ui base-nova input-group component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/input-group.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/input-group.tsx"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/button.tsx"
+        },
+        {
+          "path": "components/ui/input.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/input.tsx"
+        },
+        {
+          "path": "components/ui/textarea.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/textarea.tsx"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "public/shadcn/input-group.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/input-group.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/input-group.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "input-group",
+          "style": "base-nova",
+          "contentSha256": "631f54c33691082381aa0d9620f82579b3dde334e66cad9d6c153d4a974ad8f6",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
+        "mode": "adapter"
+      }
+    },
+    {
       "name": "item",
       "type": "registry:item",
       "title": "Item",
