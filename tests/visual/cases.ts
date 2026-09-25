@@ -35,6 +35,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   "toggle-group": "controls.spec.ts",
   "alert-dialog": "modals.spec.ts",
   dialog: "modals.spec.ts",
+  drawer: "drawer.spec.ts",
   sheet: "modals.spec.ts",
 }
 

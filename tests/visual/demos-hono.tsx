@@ -60,6 +60,16 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog"
 import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../../components/ui/drawer"
+import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -715,6 +725,30 @@ function CollapsibleDemo() {
   )
 }
 
+function DrawerDemo() {
+  return (
+    <main class="p-8">
+      <Drawer showSwipeHandle>
+        <DrawerTrigger class={buttonVariants({ variant: "outline" })}>
+          Open drawer
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Move goal</DrawerTitle>
+            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+          </DrawerHeader>
+          <div class="h-32 p-4 text-sm">Goal: 350 calories</div>
+          <DrawerFooter>
+            <DrawerClose class={buttonVariants({ variant: "outline" })}>
+              Cancel
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main class="flex w-96 flex-col gap-6 p-8">
@@ -808,6 +842,7 @@ export const DEMOS = {
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
+  drawer: () => <DrawerDemo />,
   collapsible: () => <CollapsibleDemo />,
   "scroll-area": () => <ScrollAreaDemo />,
   hover: () => <HoverDemo />,
@@ -832,6 +867,7 @@ export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
   combobox: ["combobox", "input-group"],
   "navigation-menu": ["navigation-menu"],
   avatar: ["avatar"],
+  drawer: ["drawer"],
   collapsible: ["collapsible"],
   "scroll-area": ["scroll-area"],
   menubar: ["menu"],

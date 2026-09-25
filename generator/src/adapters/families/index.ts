@@ -11,6 +11,7 @@ import {
 } from "./controls"
 import { accordionFamily, collapsibleFamily } from "./details"
 import { alertDialogFamily, dialogFamily } from "./dialog"
+import { drawerFamily } from "./drawer"
 import { previewCardFamily, tooltipFamily } from "./hover"
 import { contextMenuFamily, menubarFamily, menuFamily } from "./menu"
 import { navigationMenuFamily } from "./navigation-menu"
@@ -34,6 +35,7 @@ export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   comboboxFamily,
   contextMenuFamily,
   dialogFamily,
+  drawerFamily,
   menubarFamily,
   menuFamily,
   navigationMenuFamily,

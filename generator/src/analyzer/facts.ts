@@ -160,8 +160,13 @@ function collectFileFacts(path: string, type: string, text: string): FileFacts {
 
   const hookCalls: string[] = []
   let useRender: FileFacts["useRender"] = null
+  // Hooks the file defines itself are translated with it (their own calls count).
+  const localFunctions = new Set(
+    sf.getFunctions().map((fn) => fn.getName() ?? "")
+  )
   for (const call of sf.getDescendantsOfKind(SyntaxKind.CallExpression)) {
     const callee = call.getExpression().getText()
+    if (localFunctions.has(callee)) continue
     const name = callee.startsWith(`${reactNamespace}.`)
       ? callee.slice(reactNamespace.length + 1)
       : callee

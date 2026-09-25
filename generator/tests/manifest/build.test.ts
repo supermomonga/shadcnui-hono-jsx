@@ -27,6 +27,7 @@ describe("buildManifest", () => {
     "collapsible",
     "combobox",
     "context-menu",
+    "drawer",
     "dropdown-menu",
     "hover-card",
     "input-group",

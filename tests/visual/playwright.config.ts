@@ -19,6 +19,7 @@ export default defineConfig({
     "navigation-menu.spec.ts",
     "avatar.spec.ts",
     "scroll-area.spec.ts",
+    "drawer.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

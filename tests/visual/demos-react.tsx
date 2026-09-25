@@ -62,6 +62,16 @@ import {
   DialogTrigger,
 } from "./.upstream/dialog"
 import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "./.upstream/drawer"
+import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -737,6 +747,30 @@ function CollapsibleDemo() {
   )
 }
 
+function DrawerDemo() {
+  return (
+    <main className="p-8">
+      <Drawer showSwipeHandle>
+        <DrawerTrigger className={buttonVariants({ variant: "outline" })}>
+          Open drawer
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Move goal</DrawerTitle>
+            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+          </DrawerHeader>
+          <div className="h-32 p-4 text-sm">Goal: 350 calories</div>
+          <DrawerFooter>
+            <DrawerClose className={buttonVariants({ variant: "outline" })}>
+              Cancel
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main className="flex w-96 flex-col gap-6 p-8">
@@ -835,6 +869,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
+  drawer: () => <DrawerDemo />,
   collapsible: () => <CollapsibleDemo />,
   "scroll-area": () => <ScrollAreaDemo />,
   hover: () => <HoverDemo />,

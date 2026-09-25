@@ -41,21 +41,33 @@ export const POPUP_STATE_VARIANTS: Readonly<Record<string, string>> = {
 /**
  * Keeps a closing popup rendered and in the top layer until its exit
  * animation ends: `display` and `overlay` transition discretely over the
- * popup's transition duration. Tailwind's `transition` already lists both;
- * otherwise they are the only transitioned properties. `overlay` is
- * Chromium-only, so elsewhere the popup animates out of the top layer.
+ * popup's transition duration. Tailwind's `transition` already lists both,
+ * and they are added to an explicit `transition-[...]` list; otherwise they
+ * are the only transitioned properties. `overlay` is Chromium-only, so
+ * elsewhere the popup animates out of the top layer.
  */
 function exitTransition(tokens: readonly string[]): string[] {
   const transitions = tokens.filter((t) => /^transition(-|$)/.test(t))
   if (transitions.length === 0) {
     return ["transition-[display,overlay]", "transition-discrete"]
   }
-  if (transitions.every((t) => t === "transition")) {
+  if (transitions.every((t) => t === "transition" || TRANSITION_LIST.test(t))) {
     return ["transition-discrete"]
   }
   throw new Error(
     `dialog popup: cannot keep display/overlay transitions alongside ${transitions.join(" ")}`
   )
+}
+
+const TRANSITION_LIST = /^transition-\[([^\]]+)\]$/
+
+/** Maps Base UI popup state variants to native ones, token by token. */
+export function mapPopupStateClasses(classes: string): string {
+  return classes
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((t) => mapStateVariants(t).join(":"))
+    .join(" ")
 }
 
 /**
@@ -65,7 +77,11 @@ function exitTransition(tokens: readonly string[]): string[] {
 export function mapPopupClasses(classes: string): string {
   const tokens = classes.split(/\s+/).filter(Boolean)
   return [
-    ...tokens.map((t) => mapStateVariants(t).join(":")),
+    ...tokens.map((t) =>
+      mapStateVariants(t)
+        .join(":")
+        .replace(TRANSITION_LIST, "transition-[$1,display,overlay]")
+    ),
     "not-open:hidden",
     ...exitTransition(tokens),
   ].join(" ")
@@ -80,7 +96,8 @@ export function mapBackdropClasses(classes: string): string {
   for (const token of tokens) {
     const parts = mapStateVariants(token)
     const utility = parts.pop() as string
-    if (parts.length === 0 && OVERLAY_POSITIONING.test(utility)) continue
+    // The backdrop is fixed to the viewport by the browser.
+    if (OVERLAY_POSITIONING.test(utility)) continue
     mapped.push([...parts, "backdrop", utility].join(":"))
   }
   return mapped.join(" ")
