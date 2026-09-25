@@ -110,12 +110,16 @@ describe.skipIf(!enabled)("registry install into a clean Hono project", () => {
     ])
   })
 
-  test("later installs reuse the identical notice without prompting", () => {
+  test("later installs reuse identical files (notice, shared components) without prompting", () => {
+    // The CLI reports "Skipped N files" on stderr and lists the paths on stdout.
     for (const output of [outputs.theme, outputs.rest]) {
       expect(output).not.toMatch(/overwrite\?/i)
+      expect(output).toMatch(/Skipped \d+ files?/)
       expect(output).toContain(LICENSE_NOTICE_PATH)
-      expect(output).toMatch(/Skipped 1 file/)
     }
+    // button.tsx was installed first and is shipped again with attachment.
+    expect(outputs.rest).toContain("components/ui/button.tsx")
+    expect(outputs.rest).not.toMatch(/Updated \d+ files?/)
   })
 
   test("does not create components.json", () => {

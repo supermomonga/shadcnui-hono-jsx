@@ -58,9 +58,7 @@
       "clientJs": "not-applicable",
       "knownDifferences": [],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/alert-dialog#AlertDialog",
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button"
+        "base-ui-primitive-unmapped:@base-ui/react/alert-dialog#AlertDialog"
       ]
     },
     {
@@ -86,22 +84,28 @@
     },
     {
       "name": "attachment",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/attachment.json",
         "contentSha256": "29a6055a78d5a4aaa31ed400f3671f6c80d93999537da927a5a6250d712172ed",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "`render` (element replacement) is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button"
+        "base-ui-use-render",
+        "classname-to-class",
+        "component-dependency:button",
+        "component-import:button",
+        "react-type-rewrite:React.ComponentProps"
       ]
     },
     {
@@ -208,22 +212,28 @@
     },
     {
       "name": "button-group",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/button-group.json",
         "contentSha256": "ae7f9d6fd8a6097fd95111dcda93bab0c9ba26ae5bc9af404886cb9717258d15",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "`render` (element replacement) is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "registry-dependency:separator",
-        "registry-import:@/registry/base-nova/ui/separator"
+        "base-ui-use-render",
+        "classname-to-class",
+        "component-dependency:separator",
+        "component-import:separator",
+        "react-type-rewrite:React.ComponentProps"
       ]
     },
     {
@@ -247,8 +257,6 @@
         "react-hook:useRef",
         "react-runtime-api:React.useEffect",
         "react-runtime-api:React.useRef",
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button",
         "unknown-import:react-day-picker"
       ]
     },
@@ -304,8 +312,6 @@
         "react-runtime-api:React.useEffect",
         "react-runtime-api:React.useState",
         "react-type-unmapped:React.KeyboardEvent",
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button",
         "unknown-import:embla-carousel-react"
       ]
     },
@@ -334,7 +340,6 @@
         "react-runtime-api:React.useId",
         "react-runtime-api:React.useMemo",
         "react-type-unmapped:React.ComponentType",
-        "registry-dependency:card",
         "unknown-import:recharts"
       ]
     },
@@ -398,9 +403,7 @@
         "react-hook:useRef",
         "react-runtime-api:React.useRef",
         "react-type-unmapped:React.ComponentPropsWithRef",
-        "registry-dependency:button",
         "registry-dependency:input-group",
-        "registry-import:@/registry/base-nova/ui/button",
         "registry-import:@/registry/base-nova/ui/input-group"
       ]
     },
@@ -465,9 +468,7 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog",
-        "icon-placeholder",
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button"
+        "icon-placeholder"
       ]
     },
     {
@@ -571,14 +572,7 @@
       "accessibility": "not-applicable",
       "clientJs": "not-applicable",
       "knownDifferences": [],
-      "reasons": [
-        "react-hook:useMemo",
-        "react-runtime-api:useMemo",
-        "registry-dependency:label",
-        "registry-dependency:separator",
-        "registry-import:@/registry/base-nova/ui/label",
-        "registry-import:@/registry/base-nova/ui/separator"
-      ]
+      "reasons": ["react-hook:useMemo", "react-runtime-api:useMemo"]
     },
     {
       "name": "form",
@@ -655,15 +649,7 @@
       "accessibility": "not-applicable",
       "clientJs": "not-applicable",
       "knownDifferences": [],
-      "reasons": [
-        "event-handler:onClick",
-        "registry-dependency:button",
-        "registry-dependency:input",
-        "registry-dependency:textarea",
-        "registry-import:@/registry/base-nova/ui/button",
-        "registry-import:@/registry/base-nova/ui/input",
-        "registry-import:@/registry/base-nova/ui/textarea"
-      ]
+      "reasons": ["event-handler:onClick"]
     },
     {
       "name": "input-otp",
@@ -689,22 +675,28 @@
     },
     {
       "name": "item",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/item.json",
         "contentSha256": "9fb90b161c84b248b7e72f5bcd1585d238eabb1e2996e4fc6d02cd12219520b8",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "`render` (element replacement) is not supported.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "registry-dependency:separator",
-        "registry-import:@/registry/base-nova/ui/separator"
+        "base-ui-use-render",
+        "classname-to-class",
+        "component-dependency:separator",
+        "component-import:separator",
+        "react-type-rewrite:React.ComponentProps"
       ]
     },
     {
@@ -832,8 +824,6 @@
       "knownDifferences": [],
       "reasons": [
         "icon-placeholder",
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button",
         "unknown-import:@shadcn/react/message-scroller"
       ]
     },
@@ -890,11 +880,7 @@
       "accessibility": "not-applicable",
       "clientJs": "not-applicable",
       "knownDifferences": [],
-      "reasons": [
-        "icon-placeholder",
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button"
-      ]
+      "reasons": ["icon-placeholder"]
     },
     {
       "name": "popover",
@@ -947,8 +933,6 @@
       "knownDifferences": [],
       "reasons": [
         "icon-placeholder",
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button",
         "unknown-import:@shadcn/react/questionnaire"
       ]
     },
@@ -1066,9 +1050,7 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/dialog#Dialog",
-        "icon-placeholder",
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button"
+        "icon-placeholder"
       ]
     },
     {
@@ -1103,19 +1085,11 @@
         "react-runtime-api:React.useEffect",
         "react-runtime-api:React.useMemo",
         "react-runtime-api:React.useState",
-        "registry-dependency:button",
-        "registry-dependency:input",
-        "registry-dependency:separator",
         "registry-dependency:sheet",
-        "registry-dependency:skeleton",
         "registry-dependency:tooltip",
         "registry-dependency:use-mobile",
         "registry-import:@/registry/base-nova/hooks/use-mobile",
-        "registry-import:@/registry/base-nova/ui/button",
-        "registry-import:@/registry/base-nova/ui/input",
-        "registry-import:@/registry/base-nova/ui/separator",
         "registry-import:@/registry/base-nova/ui/sheet",
-        "registry-import:@/registry/base-nova/ui/skeleton",
         "registry-import:@/registry/base-nova/ui/tooltip",
         "use-render-noncanonical"
       ]
@@ -1288,9 +1262,7 @@
       "knownDifferences": [],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/toast#Toast",
-        "icon-placeholder",
-        "registry-dependency:button",
-        "registry-import:@/registry/base-nova/ui/button"
+        "icon-placeholder"
       ]
     },
     {

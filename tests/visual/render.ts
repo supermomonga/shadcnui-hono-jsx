@@ -25,13 +25,16 @@ const MODES = ["light", "dark"] as const
 
 type Exports = Record<string, unknown>
 
-/** Mirrors the shadcn CLI install step: `cn-font-heading` -> `font-heading`, other `cn-*` removed. */
+/**
+ * Mirrors the shadcn CLI install step: `cn-font-heading` -> `font-heading`,
+ * other `cn-*` removed, and registry imports resolved to the sibling files.
+ */
 function applyInstallMarkers(source: string): string {
   return source
     .split("\n")
     .map((line) =>
       line.startsWith("import ")
-        ? line
+        ? line.replace(/"@\/registry\/[^/]+\/ui\/([a-z0-9-]+)"/, '"./$1"')
         : line.replace(/\bcn-[a-z-]+\b/g, (m) =>
             m === "cn-font-heading" ? "font-heading" : ""
           )

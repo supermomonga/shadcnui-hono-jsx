@@ -374,4 +374,95 @@ export const VISUAL_CASES: VisualCase[] = [
       ],
     ],
   },
+  {
+    id: "attachment/states",
+    component: "attachment",
+    width: 640,
+    node: [
+      "AttachmentGroup",
+      {},
+      ...["done", "idle", "error"].map(
+        (state): CaseNode => [
+          "Attachment",
+          { state },
+          ["AttachmentMedia", {}, "📄"],
+          [
+            "AttachmentContent",
+            {},
+            ["AttachmentTitle", {}, `report-${state}.pdf`],
+            ["AttachmentDescription", {}, "2.4 MB"],
+          ],
+          [
+            "AttachmentActions",
+            {},
+            ["AttachmentAction", { "aria-label": "Remove" }, "×"],
+          ],
+        ]
+      ),
+      [
+        "Attachment",
+        { orientation: "vertical", size: "sm" },
+        ["AttachmentMedia", {}, "🖼"],
+        ["AttachmentContent", {}, ["AttachmentTitle", {}, "photo.png"]],
+      ],
+    ],
+  },
+  {
+    id: "button-group/orientations",
+    component: "button-group",
+    node: stack(
+      [
+        "ButtonGroup",
+        {},
+        ["Button", { variant: "outline" }, "Archive"],
+        ["Button", { variant: "outline" }, "Report"],
+        ["ButtonGroupSeparator", {}],
+        ["Button", { variant: "outline" }, "Snooze"],
+      ],
+      [
+        "ButtonGroup",
+        {},
+        ["ButtonGroupText", {}, "https://"],
+        ["Input", { placeholder: "example.com" }],
+      ],
+      [
+        "ButtonGroup",
+        { orientation: "vertical" },
+        ["Button", { variant: "outline" }, "Top"],
+        ["Button", { variant: "outline" }, "Bottom"],
+      ]
+    ),
+  },
+  {
+    id: "item/variants",
+    component: "item",
+    node: [
+      "ItemGroup",
+      {},
+      ...["default", "outline", "muted"].map(
+        (variant): CaseNode => [
+          "Item",
+          { variant },
+          ["ItemMedia", { variant: "icon" }, "★"],
+          [
+            "ItemContent",
+            {},
+            ["ItemTitle", {}, `Item ${variant}`],
+            ["ItemDescription", {}, "A short description of the item."],
+          ],
+          [
+            "ItemActions",
+            {},
+            ["Button", { size: "sm", variant: "outline" }, "Open"],
+          ],
+        ]
+      ),
+      ["ItemSeparator", {}],
+      [
+        "Item",
+        { size: "sm" },
+        ["ItemContent", {}, ["ItemTitle", {}, "Small item"]],
+      ],
+    ],
+  },
 ]

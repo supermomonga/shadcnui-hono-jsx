@@ -97,6 +97,41 @@
       }
     },
     {
+      "name": "attachment",
+      "type": "registry:item",
+      "title": "Attachment",
+      "description": "Hono JSX port of the shadcn/ui base-nova attachment component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/attachment.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/attachment.tsx"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/button.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "attachment",
+          "style": "base-nova",
+          "contentSha256": "29a6055a78d5a4aaa31ed400f3671f6c80d93999537da927a5a6250d712172ed",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "badge",
       "type": "registry:item",
       "title": "Badge",
@@ -187,6 +222,41 @@
       }
     },
     {
+      "name": "button-group",
+      "type": "registry:item",
+      "title": "Button Group",
+      "description": "Hono JSX port of the shadcn/ui base-nova button-group component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/button-group.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/button-group.tsx"
+        },
+        {
+          "path": "components/ui/separator.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/separator.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "button-group",
+          "style": "base-nova",
+          "contentSha256": "ae7f9d6fd8a6097fd95111dcda93bab0c9ba26ae5bc9af404886cb9717258d15",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "card",
       "type": "registry:item",
       "title": "Card",
@@ -270,6 +340,41 @@
           "name": "input",
           "style": "base-nova",
           "contentSha256": "31a57ec736d9c75d16f81eb1486098944782f4f565c597f715b8a1334e28f5d0",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "item",
+      "type": "registry:item",
+      "title": "Item",
+      "description": "Hono JSX port of the shadcn/ui base-nova item component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/item.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/item.tsx"
+        },
+        {
+          "path": "components/ui/separator.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/separator.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "item",
+          "style": "base-nova",
+          "contentSha256": "9fb90b161c84b248b7e72f5bcd1585d238eabb1e2996e4fc6d02cd12219520b8",
           "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
         },
         "classification": "direct",
