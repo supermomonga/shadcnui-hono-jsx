@@ -91,6 +91,26 @@ minimum needed to reproduce a generated file is the style, the item URL, and
 `contentSha256`, the best-effort commit, and the `shadcn` package version whose
 `tailwind.css` is vendored.
 
+### How should universal registry targets be configured for Hono/HonoX?
+
+Every item is `registry:item` and every file a `registry:file` whose `target`
+is `~/` plus its repository path, so installed projects mirror this repository:
+`~/components/ui/<name>.tsx` and `~/styles/shadcn/{theme,tailwind}.css`. The
+`~/` prefix is the only target form the CLI resolves without components.json.
+Generated components import only npm packages (`cn`,
+`class-variance-authority`) and `hono/jsx` types, so the CLI's missing import
+rewriting for universal items does not matter. Consumers:
+
+- import `@/components/ui/button` with a `paths` alias (`"@/*": ["./*"]`) or a
+  relative path;
+- import the theme after Tailwind (`@import "tailwindcss";
+  @import "./styles/shadcn/theme.css";` adjusted to the stylesheet location);
+- make Tailwind scan `components/ui` (HonoX's `source("../app")` needs
+  `@source "../components";`).
+
+See [ADR 0008](./adr/0008-distribute-components-as-universal-items-from-a-github-source-registry.md)
+and [ADR 0009](./adr/0009-vendor-shadcn-tailwind-css-in-the-theme-item.md).
+
 ### What is the cleanest Hono type for intrinsic element props?
 
 `JSX.IntrinsicElements[T]` from `import type { JSX } from "hono/jsx"`: it

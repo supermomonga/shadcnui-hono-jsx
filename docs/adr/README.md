@@ -5,3 +5,5 @@
 * [5. Translate components with ts-morph steps, a declarative Base UI primitive table and adapters](0005-translate-components-with-ts-morph-steps-a-declarative-base-ui-primitive-table-and-adapters.md)
 * [6. Generated components accept class through a file-local ComponentProps intersection type](0006-generated-components-accept-class-through-a-file-local-componentprops-intersection-type.md)
 * [7. Preserve the upstream DOM contract and omit render, asChild and refs](0007-preserve-the-upstream-dom-contract-and-omit-render-aschild-and-refs.md)
+* [8. Distribute components as universal items from a GitHub source registry](0008-distribute-components-as-universal-items-from-a-github-source-registry.md)
+* [9. Vendor shadcn tailwind.css in the theme item](0009-vendor-shadcn-tailwind-css-in-the-theme-item.md)
