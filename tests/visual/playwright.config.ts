@@ -7,6 +7,7 @@ export default defineConfig({
     "modals.spec.ts",
     "disclosure.spec.ts",
     "controls.spec.ts",
+    "popover.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

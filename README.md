@@ -141,6 +141,9 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
   upstream's styled elements: they work and submit with forms without
   JavaScript, and `id`/`name`/`value`/`aria-*` go to the input. A Toggle is a
   label around a checkbox, so Space presses it and Enter does not.
+- Popover uses the native `popover` attribute and CSS anchor positioning. It
+  opens next to its trigger in Chrome 135, Firefox 147 and Safari 26.2 or
+  later, and centered in older browsers.
 
 Per-component details are in the table below.
 
@@ -175,6 +178,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | message | experimental | generated | verified | Accepts `class` instead of `className`. |
 | native-select | experimental | generated | verified | Accepts `class` instead of `className`. |
 | pagination | experimental | generated | verified | Accepts `class` instead of `className`. |
+| popover | experimental | generated | verified | Built on the native `popover` attribute with Invoker Commands and CSS anchor positioning: no JavaScript, but placement next to the trigger needs Chrome 135, Firefox 147 or Safari 26.2 (elsewhere the popover opens centered). Outside clicks and Escape close it. Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `openOnHover` are not supported. `side`, `align`, `sideOffset` and `alignOffset` place the popover; on collision it flips to the opposite side, but `data-side` keeps the requested side. Focus is not moved into the popover, and the positioner's classes are not rendered. Accepts `class` instead of `className`. |
 | progress | experimental | generated | verified | Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported. Accepts `class` instead of `className`. |
 | radio-group | experimental | generated | verified | `value`/`defaultValue` set the initial selection; `onValueChange` and `readOnly` are not supported. Built on native `<input type="radio">` elements sharing the group's `name` (generated unless given): no JavaScript, arrow keys move the selection, and the value is submitted with forms. `id`, `disabled` and `aria-*` go to the input. Accepts `class` instead of `className`. |
 | separator | experimental | generated | verified | Accepts `class` instead of `className`. |
@@ -188,7 +192,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | toggle-group | experimental | generated | verified | Items are native radios sharing a `name` (checkboxes with `multiple`): the pressed item of a single-selection group cannot be released by pressing it again, and arrow keys select as they move. `defaultValue` sets the pressed items; `value`/`onValueChange` are not supported. A `label` around a visually hidden native checkbox (the pressed state is its checked state): no JavaScript, and `name`/`value` are submitted with forms. `aria-*` goes to the input, so icon-only toggles need `aria-label` as upstream. Space toggles, Enter does not (a checkbox, not a button); `pressed`/`defaultPressed` set the initial state; `onPressedChange` and `render` are not supported. Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (28 upstream components)</summary>
+<summary>Not yet available (27 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -209,7 +213,6 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | menubar | unsupported | `base-ui-primitive-unmapped:@base-ui/react/menu#Menu`, `base-ui-primitive-unmapped:@base-ui/react/menubar#Menubar`, `registry-dependency:dropdown-menu`, `registry-import:@/registry/base-nova/ui/dropdown-menu` |
 | message-scroller | unsupported | `render-prop:MessageScrollerPrimitive.Button`, `unknown-import:@shadcn/react/message-scroller` |
 | navigation-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu`, `react-type-unmapped:React.ComponentPropsWithRef` |
-| popover | unsupported | `base-ui-primitive-unmapped:@base-ui/react/popover#Popover` |
 | questionnaire | unsupported | `unknown-import:@shadcn/react/questionnaire` |
 | resizable | unsupported | `unknown-import:react-resizable-panels` |
 | scroll-area | unsupported | `base-ui-primitive-unmapped:@base-ui/react/scroll-area#ScrollArea` |

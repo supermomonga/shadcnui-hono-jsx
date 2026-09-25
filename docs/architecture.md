@@ -145,7 +145,9 @@ is either mapped onto a browser primitive (native family: `<dialog>` with
 Invoker Commands, `<details>`/`<summary>` for Accordion and Collapsible,
 [ADR 0020](./adr/0020-implement-accordion-and-collapsible-on-native-details-and-summary.md),
 native inputs for form controls,
-[ADR 0022](./adr/0022-implement-form-controls-on-native-inputs.md))
+[ADR 0022](./adr/0022-implement-form-controls-on-native-inputs.md), the
+`popover` attribute and CSS anchor positioning for Popover,
+[ADR 0023](./adr/0023-build-popover-on-the-native-popover-attribute-and-css-anchor-positioning.md))
 or left unsupported.
 See [ADR 0005](./adr/0005-translate-components-with-ts-morph-steps-a-declarative-base-ui-primitive-table-and-adapters.md)
 and [ADR 0007](./adr/0007-preserve-the-upstream-dom-contract-and-omit-render-aschild-and-refs.md).
@@ -165,7 +167,7 @@ with the pinned Biome (`biome check --write`, which also sorts imports):
 | `use-render` | canonical `useRender({ defaultTagName, props: mergeProps(...), render, state })` to an intrinsic element wrapped in `renderElement(…, render)`; `state` entries become `data-*` attributes ([ADR 0018](./adr/0018-support-base-ui-render-props-on-the-server-and-omit-client-only-button-semantics.md)) |
 | `memo-hooks` | `useMemo(fn, deps)` to `fn()` and `useCallback(fn)` to `fn` (a server render runs once) |
 | `react-context` | `React.createContext`/`React.useContext` to the identical `hono/jsx` functions |
-| `families` | compound Base UI primitives (`Progress`, `Dialog`, `AlertDialog`, `Accordion`, `Collapsible`, form controls): each `<Local.Part>` and `Local.Part.Props` to file-local helpers inserted after the imports ([ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)) |
+| `families` | compound Base UI primitives (`Progress`, `Dialog`, `AlertDialog`, `Popover`, `Accordion`, `Collapsible`, form controls): each `<Local.Part>` and `Local.Part.Props` to file-local helpers inserted after the imports ([ADR 0019](./adr/0019-translate-compound-base-ui-primitives-as-families-rewritten-in-place.md)) |
 | `primitives` | mapped Base UI primitives to intrinsic elements with their SSR attributes; `renderable` ones are wrapped in `renderElement(…, render)` and Base UI-only props are consumed |
 | `control-state` | other components' reactions to Base UI control state (`has-data-checked:`) to the native `:checked` state ([ADR 0022](./adr/0022-implement-form-controls-on-native-inputs.md)) |
 | `react-types` | `React.ComponentProps<"x">`, `useRender.ComponentProps<"x">` to `ComponentProps<"x">`; `React.ComponentProps<typeof X>` to `Parameters<typeof X>[0]`; `React.ReactNode` to `Child` |
@@ -237,15 +239,15 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Registry install into a clean Hono project | `tests/registry/` | `bun run test:registry`, CI |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
-| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls) | `bun run test:visual`, CI `visual` |
+| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts` | `bun run test:visual`, CI `visual` |
 
 `tests/visual` renders the same case data with the generated components and
 with the upstream React sources from the snapshot, shares one Tailwind build,
 and fails when screenshots differ by more than 0.1% of pixels. It also compares
 the normalized DOM and inline SVGs, except for cases that use a component on a
-`native-structure` family (`<details>`, `<dialog>`, native inputs), which are
-compared by pixels and visible icons.
-React is only installed in that package
+`native-structure` family (`<details>`, `<dialog>`, `popover`, native
+inputs), which are compared by pixels and visible icons. React is only
+installed in that package
 ([ADR 0014](./adr/0014-verify-visual-parity-against-upstream-react-renders-in-an-isolated-test-package.md)).
 
 ## Licensing

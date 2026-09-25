@@ -1,8 +1,11 @@
+/** @jsxImportSource react */
 /**
- * Modal demos rendered on the server with the generated Hono JSX components
- * (no client JavaScript). Used by modals.spec.ts; modals-react.tsx renders
- * the same demos with upstream shadcn/ui.
+ * The overlay demos of overlays-hono.tsx with upstream shadcn/ui (Base UI)
+ * components, rendered in the browser. Bundled by render.ts; the page picks a
+ * demo with `<div id="root" data-demo="…">`.
  */
+import type { ReactNode } from "react"
+import { createRoot } from "react-dom/client"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,8 +16,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../../components/ui/alert-dialog"
-import { Button } from "../../components/ui/button"
+} from "./.upstream/alert-dialog"
+import { Button } from "./.upstream/button"
 import {
   Dialog,
   DialogContent,
@@ -23,9 +26,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../components/ui/dialog"
-import { Input } from "../../components/ui/input"
-import { Label } from "../../components/ui/label"
+} from "./.upstream/dialog"
+import { Input } from "./.upstream/input"
+import { Label } from "./.upstream/label"
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "./.upstream/popover"
 import {
   Sheet,
   SheetClose,
@@ -35,11 +46,11 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../../components/ui/sheet"
+} from "./.upstream/sheet"
 
 function DialogDemo() {
   return (
-    <Dialog id="edit-profile">
+    <Dialog>
       <DialogTrigger render={<Button variant="outline" />}>
         Edit profile
       </DialogTrigger>
@@ -50,9 +61,9 @@ function DialogDemo() {
             Make changes to your profile here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <div class="grid gap-3">
-          <Label for="name">Name</Label>
-          <Input id="name" value="Pedro Duarte" />
+        <div className="grid gap-3">
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" defaultValue="Pedro Duarte" />
         </div>
         <DialogFooter showCloseButton>
           <Button>Save changes</Button>
@@ -64,7 +75,7 @@ function DialogDemo() {
 
 function AlertDialogDemo() {
   return (
-    <AlertDialog id="delete-account">
+    <AlertDialog>
       <AlertDialogTrigger render={<Button variant="outline" />}>
         Delete account
       </AlertDialogTrigger>
@@ -87,7 +98,7 @@ function AlertDialogDemo() {
 
 function SheetDemo({ side }: { side: "right" | "bottom" }) {
   return (
-    <Sheet id={`sheet-${side}`}>
+    <Sheet>
       <SheetTrigger render={<Button variant="outline" />}>
         Open {side}
       </SheetTrigger>
@@ -98,10 +109,10 @@ function SheetDemo({ side }: { side: "right" | "bottom" }) {
             Make changes to your profile here. Click save when you're done.
           </SheetDescription>
         </SheetHeader>
-        <div class="grid flex-1 auto-rows-min gap-6 px-4">
-          <div class="grid gap-3">
-            <Label for={`name-${side}`}>Name</Label>
-            <Input id={`name-${side}`} value="Pedro Duarte" />
+        <div className="grid flex-1 auto-rows-min gap-6 px-4">
+          <div className="grid gap-3">
+            <Label htmlFor={`name-${side}`}>Name</Label>
+            <Input id={`name-${side}`} defaultValue="Pedro Duarte" />
           </div>
         </div>
         <SheetFooter>
@@ -113,9 +124,44 @@ function SheetDemo({ side }: { side: "right" | "bottom" }) {
   )
 }
 
-function Page({ children }: { children?: unknown }) {
+function PopoverDemo() {
   return (
-    <main class="flex items-center gap-4 p-8">
+    <>
+      <Popover>
+        <PopoverTrigger render={<Button variant="outline" className="w-32" />}>
+          Dimensions
+        </PopoverTrigger>
+        <PopoverContent className="w-80">
+          <PopoverHeader>
+            <PopoverTitle>Dimensions</PopoverTitle>
+            <PopoverDescription>
+              Set the dimensions for the layer.
+            </PopoverDescription>
+          </PopoverHeader>
+          <div className="grid grid-cols-3 items-center gap-4">
+            <Label htmlFor="width">Width</Label>
+            <Input id="width" defaultValue="100%" className="col-span-2 h-8" />
+          </div>
+        </PopoverContent>
+      </Popover>
+      <Popover>
+        <PopoverTrigger render={<Button variant="outline" />}>
+          Details
+        </PopoverTrigger>
+        <PopoverContent side="right" align="start" sideOffset={8}>
+          <PopoverHeader>
+            <PopoverTitle>Details</PopoverTitle>
+            <PopoverDescription>Placed to the right.</PopoverDescription>
+          </PopoverHeader>
+        </PopoverContent>
+      </Popover>
+    </>
+  )
+}
+
+function Page({ children }: { children: ReactNode }) {
+  return (
+    <main className="flex items-center gap-4 p-8">
       {children}
       <button type="button" id="after">
         After
@@ -124,7 +170,7 @@ function Page({ children }: { children?: unknown }) {
   )
 }
 
-export const MODAL_DEMOS = {
+const DEMOS: Record<string, () => ReactNode> = {
   dialog: () => (
     <Page>
       <DialogDemo />
@@ -135,6 +181,14 @@ export const MODAL_DEMOS = {
       <AlertDialogDemo />
     </Page>
   ),
+  popover: () => (
+    <main className="flex min-h-96 items-center gap-24 p-8 pl-48">
+      <PopoverDemo />
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  ),
   sheet: () => (
     <Page>
       <SheetDemo side="right" />
@@ -142,3 +196,7 @@ export const MODAL_DEMOS = {
     </Page>
   ),
 }
+
+const root = document.getElementById("root")
+const demo = DEMOS[root?.dataset.demo ?? ""]
+if (root && demo) createRoot(root).render(demo())

@@ -797,6 +797,36 @@
       }
     },
     {
+      "name": "popover",
+      "type": "registry:item",
+      "title": "Popover",
+      "description": "Hono JSX port of the shadcn/ui base-nova popover component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/popover.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/popover.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "popover",
+          "style": "base-nova",
+          "contentSha256": "3c2d5214fbdae3e5d40444df7e18b8810c3a592bfefbdbfdc60abcec0b7fbd46",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "native-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "progress",
       "type": "registry:item",
       "title": "Progress",

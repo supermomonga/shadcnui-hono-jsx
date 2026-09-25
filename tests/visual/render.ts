@@ -273,8 +273,8 @@ async function main(): Promise<void> {
       '@source "../.upstream";',
       '@source "../cases.ts";',
       '@source "../render.ts";',
-      '@source "../modals-hono.tsx";',
-      '@source "../modals-react.tsx";',
+      '@source "../overlays-hono.tsx";',
+      '@source "../overlays-react.tsx";',
       "",
     ].join("\n")
   )
@@ -289,7 +289,7 @@ async function main(): Promise<void> {
     { cwd: OUT, stdout: "pipe", stderr: "pipe" }
   )
   if (tailwind.exitCode !== 0) throw new Error(tailwind.stderr.toString())
-  await renderModalPages()
+  await renderOverlayPages()
   console.log(
     `Rendered ${ids.length} cases to ${path.relative(process.cwd(), OUT)}`
   )
@@ -299,10 +299,10 @@ async function main(): Promise<void> {
  * Behavior/parity pages per modal demo: `<name>-hono.html` (server-rendered,
  * no scripts) and `<name>-react.html` (upstream, rendered in the browser).
  */
-async function renderModalPages(): Promise<void> {
-  const { MODAL_DEMOS } = await import("./modals-hono")
+async function renderOverlayPages(): Promise<void> {
+  const { OVERLAY_DEMOS } = await import("./overlays-hono")
   const build = await Bun.build({
-    entrypoints: [path.join(HERE, "modals-react.tsx")],
+    entrypoints: [path.join(HERE, "overlays-react.tsx")],
     outdir: OUT,
     target: "browser",
     // Classic script: module scripts do not load from file:// URLs.
@@ -310,16 +310,16 @@ async function renderModalPages(): Promise<void> {
     define: { "process.env.NODE_ENV": '"production"' },
   })
   if (!build.success)
-    throw new AggregateError(build.logs, "modals-react build failed")
+    throw new AggregateError(build.logs, "overlays-react build failed")
   const head = `<meta charset="utf-8"><link rel="stylesheet" href="style.css">`
-  for (const [name, demo] of Object.entries(MODAL_DEMOS)) {
+  for (const [name, demo] of Object.entries(OVERLAY_DEMOS)) {
     writeFileSync(
       path.join(OUT, `${name}-hono.html`),
       `<!doctype html><html lang="en"><head>${head}<title>${name} (Hono)</title></head><body>${String(await demo())}</body></html>\n`
     )
     writeFileSync(
       path.join(OUT, `${name}-react.html`),
-      `<!doctype html><html lang="en"><head>${head}<title>${name} (upstream)</title></head><body><div id="root" data-demo="${name}"></div><script src="modals-react.js"></script></body></html>\n`
+      `<!doctype html><html lang="en"><head>${head}<title>${name} (upstream)</title></head><body><div id="root" data-demo="${name}"></div><script src="overlays-react.js"></script></body></html>\n`
     )
   }
 }

@@ -947,20 +947,29 @@
     },
     {
       "name": "popover",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "native-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/popover.json",
         "contentSha256": "3c2d5214fbdae3e5d40444df7e18b8810c3a592bfefbdbfdc60abcec0b7fbd46",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/popover#Popover"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Built on the native `popover` attribute with Invoker Commands and CSS anchor positioning: no JavaScript, but placement next to the trigger needs Chrome 135, Firefox 147 or Safari 26.2 (elsewhere the popover opens centered). Outside clicks and Escape close it.",
+        "Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `openOnHover` are not supported. `side`, `align`, `sideOffset` and `alignOffset` place the popover; on collision it flips to the opposite side, but `data-side` keeps the requested side. Focus is not moved into the popover, and the positioner's classes are not rendered.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/popover#Popover",
+        "classname-to-class",
+        "react-type-rewrite:React.ComponentProps",
+        "use-client-directive"
+      ]
     },
     {
       "name": "progress",

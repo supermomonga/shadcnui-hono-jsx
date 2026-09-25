@@ -33,6 +33,7 @@ export const config: GeneratorConfig = {
     "message",
     "native-select",
     "pagination",
+    "popover",
     "progress",
     "radio-group",
     "separator",

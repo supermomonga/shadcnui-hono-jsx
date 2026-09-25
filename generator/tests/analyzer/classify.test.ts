@@ -220,6 +220,7 @@ describe("classification of the committed upstream snapshot", () => {
     "checkbox",
     "collapsible",
     "dialog",
+    "popover",
     "radio-group",
     "sheet",
     "switch",
