@@ -3,6 +3,9 @@ number: 10
 title: Automate upstream synchronization through reviewed pull requests
 status: accepted
 date: 2026-09-25
+links:
+- target: 11
+  kind: amendedby
 ---
 
 # Automate upstream synchronization through reviewed pull requests

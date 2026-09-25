@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Dispatched by upstream-check for its PR branch: PRs opened with
+  # GITHUB_TOKEN otherwise wait for manual approval before CI runs.
+  workflow_dispatch:
 
 permissions:
   contents: read

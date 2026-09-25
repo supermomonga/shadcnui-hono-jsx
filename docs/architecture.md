@@ -195,10 +195,16 @@ the compatibility manifest. Generation fails if a configured component is
 3. runs `bun run generate` and `bun run verify`, allowing both to fail;
 4. opens or updates the `upstream/base-nova` pull request with the report as its
    body. Failed generation or verification makes it a draft labelled
-   `needs-adapter`.
+   `needs-adapter`;
+5. dispatches `ci.yml` on the pull request branch, because `pull_request` runs
+   for pull requests opened with `GITHUB_TOKEN` wait for manual approval.
 
 Nothing is merged or released automatically
-([ADR 0010](./adr/0010-automate-upstream-synchronization-through-reviewed-pull-requests.md)).
+([ADR 0010](./adr/0010-automate-upstream-synchronization-through-reviewed-pull-requests.md),
+[ADR 0011](./adr/0011-dispatch-ci-for-upstream-sync-pull-requests-instead-of-using-a-bot-token.md)).
+The repository allows GitHub Actions to create pull requests, and `main`
+requires the `check`, `examples`, and `registry-install` checks on pull
+requests.
 Syncs are idempotent, so an unchanged upstream produces no pull request.
 
 ## Test layers

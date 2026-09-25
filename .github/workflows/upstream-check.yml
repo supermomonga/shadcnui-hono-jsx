@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
   pull-requests: write
 
@@ -61,12 +62,11 @@ jobs:
           } >> "$RUNNER_TEMP/report.md"
           cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"
 
-      # Opens or updates a PR; never merges. PRs opened with GITHUB_TOKEN do not
-      # trigger other workflows, so set UPSTREAM_BOT_TOKEN (a GitHub App or
-      # fine-grained token) to run CI on the PR automatically.
-      - uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+      # Opens or updates a PR; never merges. The repository must allow GitHub
+      # Actions to create pull requests (Settings > Actions > General).
+      - id: pr
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          token: ${{ secrets.UPSTREAM_BOT_TOKEN || github.token }}
           branch: upstream/base-nova
           delete-branch: true
           commit-message: "chore(upstream): sync shadcn/ui base-nova"
@@ -74,3 +74,12 @@ jobs:
           body-path: ${{ runner.temp }}/report.md
           labels: ${{ (steps.generate.outcome == 'success' && steps.verify.outcome == 'success') && 'upstream' || 'upstream,needs-adapter' }}
           draft: ${{ steps.generate.outcome != 'success' || steps.verify.outcome != 'success' }}
+
+      # pull_request runs for PRs opened with GITHUB_TOKEN wait for manual
+      # approval, but workflow_dispatch always runs, so start CI on the PR branch
+      # directly. Its check runs attach to the PR's head commit.
+      - name: Run CI on the pull request
+        if: steps.pr.outputs.pull-request-operation == 'created' || steps.pr.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref upstream/base-nova
