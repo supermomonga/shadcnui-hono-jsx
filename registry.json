@@ -1047,6 +1047,46 @@
       }
     },
     {
+      "name": "navigation-menu",
+      "type": "registry:item",
+      "title": "Navigation Menu",
+      "description": "Hono JSX port of the shadcn/ui base-nova navigation-menu component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/navigation-menu.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/navigation-menu.tsx"
+        },
+        {
+          "path": "public/shadcn/core.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/core.js"
+        },
+        {
+          "path": "public/shadcn/navigation-menu.js",
+          "type": "registry:file",
+          "target": "~/public/shadcn/navigation-menu.js"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles. Serve public/shadcn/ as static files and load <script type=\"module\" src=\"/shadcn/navigation-menu.js\"> on pages that use it.",
+      "meta": {
+        "upstream": {
+          "name": "navigation-menu",
+          "style": "base-nova",
+          "contentSha256": "c2b15b4fb14f3b482de8f5190dda2994012fdfce50c245c68bd719559d649366",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "script-adapter",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "pagination",
       "type": "registry:item",
       "title": "Pagination",

@@ -743,3 +743,6 @@ document.addEventListener("focusout", (event) => {
   if (to === null) return
   close(parts)
 })
+
+// A module: its declarations stay local.
+export {}

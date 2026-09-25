@@ -21,6 +21,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   "hover-card": "hover.spec.ts",
   "input-group": "input-group.spec.ts",
   menubar: "menu.spec.ts",
+  "navigation-menu": "navigation-menu.spec.ts",
   popover: "popover.spec.ts",
   "radio-group": "controls.spec.ts",
   select: "select.spec.ts",

@@ -970,21 +970,29 @@
     },
     {
       "name": "navigation-menu",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "script-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/navigation-menu.json",
         "contentSha256": "c2b15b4fb14f3b482de8f5190dda2994012fdfce50c245c68bd719559d649366",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "verified",
+      "clientJs": "required",
+      "knownDifferences": [
+        "Opening items on hover, click and the keyboard needs the client script `/shadcn/navigation-menu.js` (`<script type=\"module\" src=\"/shadcn/navigation-menu.js\">`); without it only the top-level links work. The content shows in a native popover placed with CSS anchor positioning under the open item's trigger.",
+        "Controlled state (`value`, `defaultValue`, `onValueChange`) is not supported. Switching items does not animate the popup's size.",
+        "Accepts `class` instead of `className`."
+      ],
       "reasons": [
-        "base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu"
+        "base-ui-primitive-mapped:@base-ui/react/navigation-menu#NavigationMenu",
+        "classname-to-class",
+        "icon-placeholder",
+        "lucide-icon:ChevronDownIcon",
+        "react-type-rewrite:React.ComponentPropsWithRef"
       ]
     },
     {

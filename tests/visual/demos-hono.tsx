@@ -100,6 +100,15 @@ import {
   MenubarTrigger,
 } from "../../components/ui/menubar"
 import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "../../components/ui/navigation-menu"
+import {
   Popover,
   PopoverContent,
   PopoverDescription,
@@ -567,6 +576,63 @@ function ComboboxDemo() {
   )
 }
 
+function NavigationMenuDemo() {
+  return (
+    <main class="flex flex-col items-start gap-8 p-8">
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul class="grid w-96 gap-1">
+                <li>
+                  <NavigationMenuLink href="#intro">
+                    Introduction
+                  </NavigationMenuLink>
+                </li>
+                <li>
+                  <NavigationMenuLink href="#install">
+                    Installation
+                  </NavigationMenuLink>
+                </li>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul class="grid w-72 grid-cols-2 gap-1">
+                <li>
+                  <NavigationMenuLink href="#alert">Alert</NavigationMenuLink>
+                </li>
+                <li>
+                  <NavigationMenuLink href="#button" active>
+                    Button
+                  </NavigationMenuLink>
+                </li>
+                <li>
+                  <NavigationMenuLink href="#card">Card</NavigationMenuLink>
+                </li>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="#docs"
+              class={navigationMenuTriggerStyle()}
+            >
+              Docs
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+      <button type="button" id="after">
+        After
+      </button>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main class="flex w-96 flex-col gap-6 p-8">
@@ -658,6 +724,7 @@ export const DEMOS = {
   slider: () => <SliderDemo />,
   "input-group": () => <InputGroupDemo />,
   combobox: () => <ComboboxDemo />,
+  "navigation-menu": () => <NavigationMenuDemo />,
   hover: () => <HoverDemo />,
   menubar: () => <MenubarDemo />,
   "context-menu": () => <ContextMenuDemo />,
@@ -678,6 +745,7 @@ export const DEMO_SCRIPTS: Readonly<Record<string, readonly string[]>> = {
   hover: ["hover"],
   "input-group": ["input-group"],
   combobox: ["combobox", "input-group"],
+  "navigation-menu": ["navigation-menu"],
   menubar: ["menu"],
   slider: ["slider"],
   tabs: ["tabs"],

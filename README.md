@@ -214,6 +214,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | menubar | experimental | generated | verified | `/shadcn/menu.js` | The menu is a native popover placed with CSS anchor positioning, so it opens without JavaScript (placement needs Chrome 135, Firefox 147 or Safari 26.2). The client script `/shadcn/menu.js` (`<script type="module" src="/shadcn/menu.js">`) adds the menu behavior: focus handling, arrow keys, typeahead, checkbox and radio items, submenus and closing after a choice. Items have no `onClick` on the server: use `render` for links (`render={<a href="/settings" />}`) or form buttons. Controlled state (`open`, `onOpenChange`, `checked`/`onCheckedChange`, `value`/`onValueChange`), `modal` (page scroll is not locked) and `openOnHover` on the root are not supported. Moving between menus with the arrow keys and switching menus by hovering while one is open need the client script `/shadcn/menu.js` (`<script type="module" src="/shadcn/menu.js">`); without it each menu still opens with its trigger. `modal` is not supported. Accepts `class` instead of `className`. |
 | message | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | native-select | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| navigation-menu | experimental | generated | verified | `/shadcn/navigation-menu.js` | Opening items on hover, click and the keyboard needs the client script `/shadcn/navigation-menu.js` (`<script type="module" src="/shadcn/navigation-menu.js">`); without it only the top-level links work. The content shows in a native popover placed with CSS anchor positioning under the open item's trigger. Controlled state (`value`, `defaultValue`, `onValueChange`) is not supported. Switching items does not animate the popup's size. Accepts `class` instead of `className`. |
 | pagination | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | popover | experimental | generated | verified | none | Built on the native `popover` attribute with Invoker Commands and CSS anchor positioning: no JavaScript, but placement next to the trigger needs Chrome 135, Firefox 147 or Safari 26.2 (elsewhere the popover opens centered). Outside clicks and Escape close it. Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `openOnHover` are not supported. `side`, `align`, `sideOffset` and `alignOffset` place the popover; on collision it flips to the opposite side, but `data-side` keeps the requested side. Focus is not moved into the popover, and the positioner's classes are not rendered. Accepts `class` instead of `className`. |
 | progress | experimental | generated | verified | none | Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported. Accepts `class` instead of `className`. |
@@ -233,7 +234,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | tooltip | experimental | generated | verified | `/shadcn/hover.js` | Opening on hover or keyboard focus needs the client script `/shadcn/hover.js` (`<script type="module" src="/shadcn/hover.js">`); without it the tooltip does not open, but the trigger's `aria-describedby` still exposes its text. The popup is a native popover placed with CSS anchor positioning. Unlike Base UI, the popup has `role="tooltip"` and describes the trigger. Controlled state (`open`, `onOpenChange`) is not supported. Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (17 upstream components)</summary>
+<summary>Not yet available (16 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -247,7 +248,6 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | form | unsupported | `no-files` |
 | input-otp | unsupported | `unknown-import:input-otp` |
 | message-scroller | unsupported | `render-prop:MessageScrollerPrimitive.Button`, `unknown-import:@shadcn/react/message-scroller` |
-| navigation-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu` |
 | questionnaire | unsupported | `unknown-import:@shadcn/react/questionnaire` |
 | resizable | unsupported | `unknown-import:react-resizable-panels` |
 | scroll-area | unsupported | `base-ui-primitive-unmapped:@base-ui/react/scroll-area#ScrollArea` |

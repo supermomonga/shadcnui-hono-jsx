@@ -36,6 +36,7 @@ export const config: GeneratorConfig = {
     "label",
     "marker",
     "menubar",
+    "navigation-menu",
     "message",
     "native-select",
     "pagination",

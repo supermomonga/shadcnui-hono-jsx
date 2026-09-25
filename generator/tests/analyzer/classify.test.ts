@@ -239,6 +239,7 @@ describe("classification of the committed upstream snapshot", () => {
     "hover-card",
     "input-group",
     "menubar",
+    "navigation-menu",
     "slider",
     "tabs",
     "tooltip",
@@ -257,7 +258,7 @@ describe("classification of the committed upstream snapshot", () => {
     }
   )
 
-  test.each(["toast", "drawer", "navigation-menu", "form"])(
+  test.each(["toast", "drawer", "carousel", "form"])(
     "%s is unsupported",
     (name) => {
       expect(kindOf(name)).toBe("unsupported")

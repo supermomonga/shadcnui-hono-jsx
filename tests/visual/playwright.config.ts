@@ -16,6 +16,7 @@ export default defineConfig({
     "slider.spec.ts",
     "input-group.spec.ts",
     "combobox.spec.ts",
+    "navigation-menu.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

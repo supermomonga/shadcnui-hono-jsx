@@ -12,6 +12,7 @@ import { accordionFamily, collapsibleFamily } from "./details"
 import { alertDialogFamily, dialogFamily } from "./dialog"
 import { previewCardFamily, tooltipFamily } from "./hover"
 import { contextMenuFamily, menubarFamily, menuFamily } from "./menu"
+import { navigationMenuFamily } from "./navigation-menu"
 import { popoverFamily } from "./popover"
 import { progressFamily } from "./progress"
 import { selectFamily } from "./select"
@@ -32,6 +33,7 @@ export const PRIMITIVE_FAMILIES: readonly FamilyRule[] = [
   dialogFamily,
   menubarFamily,
   menuFamily,
+  navigationMenuFamily,
   popoverFamily,
   previewCardFamily,
   progressFamily,
