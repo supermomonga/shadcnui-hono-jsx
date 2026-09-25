@@ -400,7 +400,7 @@ function MenubarDemo() {
     <main class="flex flex-col items-start gap-8 p-8">
       <Menubar>
         <MenubarMenu>
-          <MenubarTrigger>File</MenubarTrigger>
+          <MenubarTrigger class="w-16 justify-center">File</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
               New Tab <MenubarShortcut>⌘T</MenubarShortcut>
@@ -419,7 +419,7 @@ function MenubarDemo() {
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger>View</MenubarTrigger>
+          <MenubarTrigger class="w-16 justify-center">View</MenubarTrigger>
           <MenubarContent>
             <MenubarCheckboxItem defaultChecked>
               Always Show Bookmarks Bar
@@ -430,7 +430,7 @@ function MenubarDemo() {
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger>Profiles</MenubarTrigger>
+          <MenubarTrigger class="w-16 justify-center">Profiles</MenubarTrigger>
           <MenubarContent>
             <MenubarRadioGroup defaultValue="benoit">
               <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
@@ -454,7 +454,7 @@ function HoverDemo() {
           <TooltipTrigger render={<Button variant="outline" class="w-28" />}>
             Hover
           </TooltipTrigger>
-          <TooltipContent>
+          <TooltipContent class="w-32 justify-center">
             <p>Add to library</p>
           </TooltipContent>
         </Tooltip>

@@ -309,6 +309,8 @@ test("menubar behaves like upstream Base UI", async ({ browser }) => {
   }
 })
 
+// The demo's triggers have whole-pixel widths: Base UI rounds popup positions
+// to pixels, anchor positioning does not (see popover.spec.ts).
 test("open menubar menu matches upstream shadcn/ui", async ({
   browser,
 }, testInfo) => {
