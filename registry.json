@@ -1,0 +1,285 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "shadcnui-hono-jsx",
+  "homepage": "https://github.com/supermomonga/shadcnui-hono-jsx",
+  "items": [
+    {
+      "name": "theme",
+      "type": "registry:item",
+      "title": "Theme",
+      "description": "shadcn/ui base-nova design tokens, dark mode and custom variants for Tailwind CSS v4.",
+      "dependencies": ["tw-animate-css"],
+      "files": [
+        {
+          "path": "styles/shadcn/theme.css",
+          "type": "registry:file",
+          "target": "~/styles/shadcn/theme.css"
+        },
+        {
+          "path": "styles/shadcn/tailwind.css",
+          "type": "registry:file",
+          "target": "~/styles/shadcn/tailwind.css"
+        }
+      ],
+      "docs": "Import the theme after Tailwind CSS in your stylesheet: @import \"tailwindcss\"; @import \"<relative path>/styles/shadcn/theme.css\"; and make sure Tailwind scans components/ui (add @source if it is outside your source root).",
+      "meta": {
+        "upstream": {
+          "style": "base-nova",
+          "url": "https://ui.shadcn.com/init?base=base&style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=geist&rtl=false&menuAccent=subtle&menuColor=default&radius=default",
+          "sha256": "2fa48e8348e90bcacf263e237393057b761f943ceff6ff69aa783d7909259c9d",
+          "tailwindCss": "shadcn@4.21.0/dist/tailwind.css"
+        }
+      }
+    },
+    {
+      "name": "alert",
+      "type": "registry:item",
+      "title": "Alert",
+      "description": "Hono JSX port of the shadcn/ui base-nova alert component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/alert.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/alert.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "alert",
+          "style": "base-nova",
+          "contentSha256": "56d4827f4beed9ce6796b00fa28612f5bb8b13830197f3157860d251b6134861",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "badge",
+      "type": "registry:item",
+      "title": "Badge",
+      "description": "Hono JSX port of the shadcn/ui base-nova badge component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/badge.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/badge.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "badge",
+          "style": "base-nova",
+          "contentSha256": "448725bcf39981b25aa06f804eb8dc46c07923976f973a4ad19a4c51b82130e9",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "button",
+      "type": "registry:item",
+      "title": "Button",
+      "description": "Hono JSX port of the shadcn/ui base-nova button component.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "files": [
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/button.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "button",
+          "style": "base-nova",
+          "contentSha256": "23a5cfb0c42fa8e55e26e34fbba8b0d1d7ee8663dc2c8b308830d1b5be7d9949",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "card",
+      "type": "registry:item",
+      "title": "Card",
+      "description": "Hono JSX port of the shadcn/ui base-nova card component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/card.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/card.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "card",
+          "style": "base-nova",
+          "contentSha256": "766d3bb130e4a7b7ff3db8720a523330b9a0a6637043eb39bbde43a8691e17ba",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "input",
+      "type": "registry:item",
+      "title": "Input",
+      "description": "Hono JSX port of the shadcn/ui base-nova input component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/input.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/input.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "input",
+          "style": "base-nova",
+          "contentSha256": "31a57ec736d9c75d16f81eb1486098944782f4f565c597f715b8a1334e28f5d0",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "label",
+      "type": "registry:item",
+      "title": "Label",
+      "description": "Hono JSX port of the shadcn/ui base-nova label component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/label.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/label.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "label",
+          "style": "base-nova",
+          "contentSha256": "0c8c72d16df2e090ca419abf4f8378c6cf77fb67c8ac67d424997ae1199342b0",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "separator",
+      "type": "registry:item",
+      "title": "Separator",
+      "description": "Hono JSX port of the shadcn/ui base-nova separator component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/separator.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/separator.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "separator",
+          "style": "base-nova",
+          "contentSha256": "e331ea0c4e835484b0a3fcefa172a884864bdc0e1bfe39d12c119c66ad4e3195",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:item",
+      "title": "Skeleton",
+      "description": "Hono JSX port of the shadcn/ui base-nova skeleton component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/skeleton.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/skeleton.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "skeleton",
+          "style": "base-nova",
+          "contentSha256": "97a90c6788815d37eda6dad532aa207e5a878d22b4d5f9e91c16bb2f4bc2f341",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "table",
+      "type": "registry:item",
+      "title": "Table",
+      "description": "Hono JSX port of the shadcn/ui base-nova table component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/table.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/table.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "table",
+          "style": "base-nova",
+          "contentSha256": "cd8a2a8c2e0855f6263a911655b41d1191b4f29e95c3c67e0ab602aa2b2642f1",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
+      "name": "textarea",
+      "type": "registry:item",
+      "title": "Textarea",
+      "description": "Hono JSX port of the shadcn/ui base-nova textarea component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/textarea.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/textarea.tsx"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "textarea",
+          "style": "base-nova",
+          "contentSha256": "5487cbf83c25f2139ea649fa3574d0c3f9991f2bdd6208278882c39620f0d4ab",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    }
+  ]
+}
