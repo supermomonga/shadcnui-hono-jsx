@@ -40,6 +40,7 @@ function apply(source: string, ...steps: TransformStep[]) {
     adapter: undefined,
     honoTypes: new Set(),
     needsComponentProps: false,
+    icons: new Set(),
     log: [],
   }
   for (const step of steps) step.run(ctx)
@@ -290,6 +291,7 @@ export { Box, Button }
       "remove-directives",
       "component-imports",
       "cn-markers",
+      "icons",
       "use-render",
       "primitives",
       "react-types",

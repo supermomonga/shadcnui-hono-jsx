@@ -1,4 +1,4 @@
-import { derivedNoticeLines } from "../licenses"
+import { derivedNoticeLines, iconNoticeLines } from "../licenses"
 
 export interface HeaderInput {
   name: string
@@ -7,6 +7,8 @@ export interface HeaderInput {
   contentSha256: string
   upstreamCommit: string | null
   mode: "generated" | "adapter"
+  /** Canonical names of inlined Lucide icons, and the pinned lucide version. */
+  icons?: { names: string[]; version: string }
 }
 
 /**
@@ -21,6 +23,9 @@ export function renderHeader(input: HeaderInput): string {
     `upstream-revision: sha256:${input.contentSha256}; shadcn-ui/ui@${input.upstreamCommit ?? "unknown"}`,
     `mode: ${input.mode}`,
     ...derivedNoticeLines(),
+    ...(input.icons && input.icons.names.length > 0
+      ? iconNoticeLines(input.icons.names, input.icons.version)
+      : []),
   ]
     .map((line) => `// ${line}\n`)
     .join("")

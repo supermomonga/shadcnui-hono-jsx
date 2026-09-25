@@ -120,8 +120,8 @@ export { Tag }`
       "event-handler:onClick",
     ],
     [
-      `import { ChevronIcon } from "@/app/(create)/components/icon-placeholder"\nexport function C() { return <ChevronIcon /> }`,
-      "icon-placeholder",
+      `import { IconPlaceholder } from "@/app/(create)/components/icon-placeholder"\nexport function C() { return <IconPlaceholder lucide="NoSuchIcon" /> }`,
+      "icon-unresolved:NoSuchIcon",
     ],
     [
       `import { Button } from "@/registry/base-nova/ui/button"\nexport function C() { return <Button /> }`,
@@ -135,6 +135,18 @@ export { Tag }`
     const result = run(source)
     expect(result.kind).toBe("unsupported")
     expect(result.blocking).toContain(expected)
+  })
+
+  test("Lucide icons behind IconPlaceholder are rewrites; render props block", () => {
+    const icons = `import { IconPlaceholder } from "@/app/(create)/components/icon-placeholder"
+export function C() { return <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" /> }`
+    expect(run(icons)).toMatchObject({
+      kind: "direct",
+      rewrites: ["icon-placeholder", "lucide-icon:ChevronRightIcon"],
+    })
+    const renderProp = `import { Button } from "@/registry/base-nova/ui/button"
+export function C() { return <Button render={<a href="/" />} /> }`
+    expect(run(renderProp).blocking).toContain("render-prop:Button")
   })
 
   test("items without files, with several files, or with registry dependencies are blocked", () => {
@@ -158,7 +170,7 @@ export { Tag }`
     const source = `export function C() { return <button onClick={() => {}} /> }`
     const adapters = { fixture: { resolves: ["event-handler"], notes: [] } }
     expect(run(source, {}, adapters).kind).toBe("custom-adapter")
-    const partial = { fixture: { resolves: ["icon-placeholder"], notes: [] } }
+    const partial = { fixture: { resolves: ["icon-unresolved"], notes: [] } }
     expect(run(source, {}, partial).kind).toBe("unsupported")
   })
 })

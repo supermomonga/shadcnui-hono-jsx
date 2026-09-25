@@ -17,6 +17,8 @@ export interface TransformContext {
   honoTypes: Set<HonoTypeImport>
   /** Whether the file-local `ComponentProps` helper type is needed. */
   needsComponentProps: boolean
+  /** Canonical names of Lucide icons inlined into the file. */
+  icons: Set<string>
   /** Human-readable record of applied rewrites (for debugging and tests). */
   log: string[]
 }

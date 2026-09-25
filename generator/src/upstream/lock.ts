@@ -29,6 +29,14 @@ export interface VendoredLock {
   licenseSha256: string | null
 }
 
+/** An npm package whose content is inlined into generated sources (monitored licensing). */
+export interface PackageLock {
+  package: string
+  version: string
+  license: string | null
+  licenseSha256: string | null
+}
+
 export interface UpstreamLock {
   schemaVersion: 1
   style: string
@@ -38,6 +46,8 @@ export interface UpstreamLock {
   /** Upstream repository license (monitored, see generator/src/licenses.ts). */
   license: ResourceLock | null
   tailwindCss: VendoredLock | null
+  /** Icon package inlined by the generator (lucide). */
+  icons: PackageLock | null
   items: Record<string, ItemLock>
 }
 
@@ -53,6 +63,7 @@ export function emptyLock(
     theme: null,
     license: null,
     tailwindCss: null,
+    icons: null,
     items: {},
   }
 }
@@ -100,6 +111,7 @@ export function serializeLock(lock: UpstreamLock): string {
           licenseSha256: lock.tailwindCss.licenseSha256 ?? null,
         }
       : null,
+    icons: lock.icons ?? null,
     items,
   })
 }

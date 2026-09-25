@@ -6,6 +6,7 @@ import { type GeneratorConfig, itemUrl } from "./config"
 import { formatWithBiome } from "./emit/format"
 import { renderHeader } from "./emit/header"
 import type { OutputFile } from "./emit/write"
+import { lucideVersion } from "./icons/lucide"
 import { transformSource } from "./transformers/pipeline"
 import type { UpstreamLock } from "./upstream/lock"
 import type { UpstreamStore } from "./upstream/store"
@@ -65,6 +66,7 @@ export function generateComponent(
     contentSha256: lockEntry.contentSha256,
     upstreamCommit: lockEntry.upstreamCommit,
     mode,
+    icons: { names: output.icons, version: lucideVersion() },
   })
   const path = componentPath(name)
   return {

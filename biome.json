@@ -53,6 +53,8 @@
         "rules": {
           "a11y": {
             "noLabelWithoutControl": "off",
+            "noSvgWithoutTitle": "off",
+            "useFocusableInteractive": "off",
             "useSemanticElements": "off"
           }
         }

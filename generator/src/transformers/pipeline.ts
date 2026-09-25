@@ -10,6 +10,7 @@ import { domAttributes } from "./steps/dom-attributes"
 import { dropProps } from "./steps/drop-props"
 import { guard } from "./steps/guard"
 import { helpers } from "./steps/helpers"
+import { icons } from "./steps/icons"
 import { imports } from "./steps/imports"
 import { primitivesStep } from "./steps/primitives"
 import { reactTypes } from "./steps/react-types"
@@ -21,6 +22,7 @@ export const STEPS: readonly TransformStep[] = [
   removeDirectives,
   componentImports,
   cnMarkers,
+  icons,
   useRenderStep,
   primitivesStep,
   reactTypes,
@@ -58,6 +60,8 @@ export interface TransformOutput {
   /** Unformatted Hono JSX source. */
   text: string
   log: string[]
+  /** Canonical names of inlined Lucide icons. */
+  icons: string[]
 }
 
 export function transformSource(input: TransformInput): TransformOutput {
@@ -69,8 +73,13 @@ export function transformSource(input: TransformInput): TransformOutput {
     adapter: input.adapter,
     honoTypes: new Set(),
     needsComponentProps: false,
+    icons: new Set(),
     log: [],
   }
   for (const step of resolveSteps(input.adapter)) step.run(ctx)
-  return { text: ctx.sf.getFullText(), log: ctx.log }
+  return {
+    text: ctx.sf.getFullText(),
+    log: ctx.log,
+    icons: [...ctx.icons].sort(),
+  }
 }

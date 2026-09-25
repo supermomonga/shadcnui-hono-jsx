@@ -35,6 +35,8 @@ export interface FileFacts {
   cnMarkers: string[]
   /** Whether a component parameter destructures `className`. */
   classNameProp: boolean
+  /** `lucide` names of `<IconPlaceholder>` elements (empty string when missing). */
+  icons: string[]
 }
 
 export interface ComponentFacts {
@@ -203,6 +205,20 @@ function collectFileFacts(path: string, type: string, text: string): FileFacts {
         (b.getPropertyNameNode()?.getText() ?? b.getName()) === "className"
     )
 
+  const icons: string[] = []
+  for (const element of [
+    ...sf.getDescendantsOfKind(SyntaxKind.JsxOpeningElement),
+    ...sf.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement),
+  ]) {
+    if (element.getTagNameNode().getText() !== "IconPlaceholder") continue
+    const lucide = element
+      .getAttributes()
+      .filter(Node.isJsxAttribute)
+      .find((a) => a.getNameNode().getText() === "lucide")
+      ?.getInitializer()
+    icons.push(Node.isStringLiteral(lucide) ? lucide.getLiteralValue() : "")
+  }
+
   return {
     path,
     type,
@@ -216,6 +232,7 @@ function collectFileFacts(path: string, type: string, text: string): FileFacts {
     jsx,
     cnMarkers: uniqueSorted(cnMarkers),
     classNameProp,
+    icons: uniqueSorted(icons),
   }
 }
 

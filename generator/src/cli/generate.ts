@@ -51,6 +51,7 @@ if (!lock?.theme || !lock.tailwindCss) {
 const licenseProblems = checkUpstreamLicenses(lock, {
   repository: store.readOptional(store.licenseFile),
   package: store.readOptional(store.packageLicenseFile),
+  icons: store.readOptional(store.iconLicenseFile),
 })
 if (licenseProblems.length > 0) {
   console.error(

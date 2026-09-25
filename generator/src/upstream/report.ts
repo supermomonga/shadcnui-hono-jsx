@@ -97,7 +97,7 @@ export function renderSyncReport(input: ReportInput): string {
         ? `${result.tailwindCss.fromVersion ?? "none"} -> ${result.tailwindCss.toVersion}`
         : "unchanged"
     }`,
-    `- Upstream license: ${result.license || result.packageLicense ? "changed" : "unchanged"}`,
+    `- Upstream license: ${result.license || result.packageLicense || result.iconLicense ? "changed" : "unchanged"}`,
     "",
     "Review the diffs below. Upstream changes can alter behavior; this PR is never merged automatically."
   )
@@ -125,6 +125,14 @@ export function renderSyncReport(input: ReportInput): string {
           textSection(
             `LICENSE.md (shadcn package; license field ${result.packageLicense.fromLicense ?? "none"} -> ${result.packageLicense.toLicense ?? "none"})`,
             result.packageLicense
+          ),
+        ]
+      : []),
+    ...(result.iconLicense
+      ? [
+          textSection(
+            `LICENSE (lucide; license field ${result.iconLicense.fromLicense ?? "none"} -> ${result.iconLicense.toLicense ?? "none"})`,
+            result.iconLicense
           ),
         ]
       : []),

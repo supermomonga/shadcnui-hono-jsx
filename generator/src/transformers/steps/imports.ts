@@ -6,7 +6,11 @@ export const imports: TransformStep = {
   run(ctx) {
     for (const decl of ctx.sf.getImportDeclarations()) {
       const module = decl.getModuleSpecifierValue()
-      if (module === "react" || module.startsWith("@base-ui/")) {
+      if (
+        module === "react" ||
+        module.startsWith("@base-ui/") ||
+        module.includes("icon-placeholder")
+      ) {
         ctx.log.push(`imports: remove ${module}`)
         decl.remove()
       }

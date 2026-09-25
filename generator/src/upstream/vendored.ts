@@ -24,3 +24,30 @@ export function readShadcnTailwindCss(root: string): VendoredSource {
       : null,
   }
 }
+
+export interface PackageLicenseSource {
+  package: string
+  version: string
+  license: string | null
+  licenseText: string | null
+}
+
+/** Reads the licensing of the pinned `lucide` package, whose icons are inlined. */
+export function readLucidePackage(root: string): PackageLicenseSource {
+  const dir = path.join(root, "node_modules", "lucide")
+  const pkg = JSON.parse(
+    readFileSync(path.join(dir, "package.json"), "utf8")
+  ) as {
+    version: string
+    license?: string
+  }
+  const licensePath = path.join(dir, "LICENSE")
+  return {
+    package: "lucide",
+    version: pkg.version,
+    license: pkg.license ?? null,
+    licenseText: existsSync(licensePath)
+      ? readFileSync(licensePath, "utf8")
+      : null,
+  }
+}

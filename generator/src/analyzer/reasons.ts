@@ -4,7 +4,8 @@ export const BLOCKING_CODES = [
   "unsupported-file-type",
   "unknown-import",
   "registry-import",
-  "icon-placeholder",
+  "icon-unresolved",
+  "render-prop",
   "base-ui-primitive-unmapped",
   "react-runtime-api",
   "react-hook",
@@ -23,6 +24,8 @@ export const REWRITE_CODES = [
   "cn-marker",
   "component-import",
   "component-dependency",
+  "icon-placeholder",
+  "lucide-icon",
 ] as const
 
 export type BlockingCode = (typeof BLOCKING_CODES)[number]

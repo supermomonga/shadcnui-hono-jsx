@@ -9,7 +9,7 @@ import { ROOT } from "../paths"
 import { type ClassificationChange, renderSyncReport } from "../upstream/report"
 import { UpstreamStore } from "../upstream/store"
 import { syncUpstream } from "../upstream/sync"
-import { readShadcnTailwindCss } from "../upstream/vendored"
+import { readLucidePackage, readShadcnTailwindCss } from "../upstream/vendored"
 
 const { values } = parseArgs({
   args: Bun.argv.slice(2),
@@ -32,6 +32,7 @@ const result = await syncUpstream({
   config,
   store,
   tailwindCss: readShadcnTailwindCss(ROOT),
+  icons: readLucidePackage(ROOT),
   githubToken: process.env.GITHUB_TOKEN,
 })
 const after = classifyAll()
@@ -67,6 +68,7 @@ const licenseProblems = checkUpstreamLicenses(
   {
     repository: store.readOptional(store.licenseFile),
     package: store.readOptional(store.packageLicenseFile),
+    icons: store.readOptional(store.iconLicenseFile),
   }
 )
 if (licenseProblems.length > 0) {

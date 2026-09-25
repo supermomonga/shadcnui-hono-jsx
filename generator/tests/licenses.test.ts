@@ -3,15 +3,18 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 import { config } from "../../generator.config"
 import {
+  ACCEPTED_ICON_LICENSE,
   ACCEPTED_UPSTREAM_LICENSE,
   buildLicenseNotice,
   checkUpstreamLicenses,
   derivedNoticeLines,
   LICENSE_NOTICE_PATH,
+  LUCIDE_LICENSE_TEXT,
   PROJECT_COPYRIGHT,
   vendoredNoticeLines,
 } from "../src/licenses"
 import { ROOT } from "../src/paths"
+import { sha256 } from "../src/upstream/hash"
 import { UpstreamStore } from "../src/upstream/store"
 
 const store = new UpstreamStore(ROOT, config.style)
@@ -20,6 +23,7 @@ if (!lock) throw new Error("missing upstream lock")
 const texts = {
   repository: store.readOptional(store.licenseFile),
   package: store.readOptional(store.packageLicenseFile),
+  icons: store.readOptional(store.iconLicenseFile),
 }
 
 describe("buildLicenseNotice", () => {
@@ -34,6 +38,12 @@ describe("buildLicenseNotice", () => {
       "The above copyright notice and this permission notice shall be included in all"
     )
     expect(notice).toContain('THE SOFTWARE IS PROVIDED "AS IS"')
+  })
+
+  test("reproduces the reviewed Lucide license verbatim", () => {
+    expect(sha256(LUCIDE_LICENSE_TEXT)).toBe(ACCEPTED_ICON_LICENSE.sha256)
+    expect(notice).toContain(LUCIDE_LICENSE_TEXT)
+    expect(notice).toContain("Copyright (c) 2013-present Cole Bemis")
   })
 
   test("states its scope and that the project is unofficial", () => {
@@ -105,7 +115,29 @@ describe("checkUpstreamLicenses", () => {
 
   test("rejects missing snapshots", () => {
     expect(
-      checkUpstreamLicenses(lock, { repository: null, package: null })
-    ).toHaveLength(2)
+      checkUpstreamLicenses(lock, {
+        repository: null,
+        package: null,
+        icons: null,
+      })
+    ).toHaveLength(3)
+  })
+
+  test("rejects a changed icon package license", () => {
+    const icons = lock.icons
+    if (!icons) throw new Error("missing icon lock")
+    expect(
+      checkUpstreamLicenses(
+        { ...lock, icons: { ...icons, license: "MIT" } },
+        texts
+      )
+    ).toEqual([
+      `lucide@${icons.version} declares license "MIT", expected "ISC"`,
+    ])
+    expect(
+      checkUpstreamLicenses(lock, { ...texts, icons: "changed\n" })
+    ).toEqual([
+      `lucide@${icons.version} LICENSE differs from the reviewed text`,
+    ])
   })
 })

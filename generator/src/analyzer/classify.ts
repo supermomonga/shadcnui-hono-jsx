@@ -4,6 +4,7 @@ import {
   findPrimitiveRule,
   type PrimitiveRule,
 } from "../adapters/primitives/base-ui"
+import { resolveLucideIcon } from "../icons/lucide"
 import type { ComponentFacts, FileFacts } from "./facts"
 import { type Reason, reason, reasonKey, sortReasons } from "./reasons"
 
@@ -83,6 +84,7 @@ function fileReasons(
         reasons.push(reason("base-ui-primitive-unmapped", module))
       }
     } else if (module.includes("icon-placeholder")) {
+      // Resolved per icon below; the placeholder import itself is dropped.
       reasons.push(reason("icon-placeholder"))
     } else if (available.has(module.match(REGISTRY_UI_IMPORT)?.[1] ?? "")) {
       reasons.push(
@@ -113,6 +115,10 @@ function fileReasons(
     reasons.push(reason("use-render-noncanonical"))
 
   for (const element of file.jsx) {
+    // Element replacement (`render={<a />}`) has no generic Hono equivalent.
+    if (!element.intrinsic && element.attributes.includes("render")) {
+      reasons.push(reason("render-prop", element.tag))
+    }
     for (const attribute of element.attributes) {
       if (/^on[A-Z]/.test(attribute))
         reasons.push(reason("event-handler", attribute))
@@ -120,6 +126,13 @@ function fileReasons(
     }
   }
   if (file.classNameProp) reasons.push(reason("classname-to-class"))
+  for (const icon of file.icons) {
+    reasons.push(
+      icon && resolveLucideIcon(icon)
+        ? reason("lucide-icon", icon)
+        : reason("icon-unresolved", icon || "(no lucide name)")
+    )
+  }
   for (const marker of file.cnMarkers) {
     reasons.push(reason("cn-marker", marker))
   }
