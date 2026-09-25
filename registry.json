@@ -672,6 +672,36 @@
       }
     },
     {
+      "name": "progress",
+      "type": "registry:item",
+      "title": "Progress",
+      "description": "Hono JSX port of the shadcn/ui base-nova progress component.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/progress.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/progress.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "progress",
+          "style": "base-nova",
+          "contentSha256": "17b3126ea8f904c1c89b2fc0c9a7dd06ea802bd49e3be0322b2377d1d629f832",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "direct",
+        "mode": "generated"
+      }
+    },
+    {
       "name": "separator",
       "type": "registry:item",
       "title": "Separator",

@@ -161,6 +161,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | message | experimental | generated | verified | Accepts `class` instead of `className`. |
 | native-select | experimental | generated | verified | Accepts `class` instead of `className`. |
 | pagination | experimental | generated | verified | Accepts `class` instead of `className`. |
+| progress | experimental | generated | verified | Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported. Accepts `class` instead of `className`. |
 | separator | experimental | generated | verified | Accepts `class` instead of `className`. |
 | skeleton | experimental | generated | verified | Accepts `class` instead of `className`. |
 | spinner | experimental | generated | verified | Accepts `class` instead of `className`. |
@@ -168,7 +169,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | textarea | experimental | generated | verified | Accepts `class` instead of `className`. |
 
 <details>
-<summary>Not yet available (38 upstream components)</summary>
+<summary>Not yet available (37 upstream components)</summary>
 
 | Component | Classification | Blocking reasons |
 | --- | --- | --- |
@@ -194,7 +195,6 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | message-scroller | unsupported | `render-prop:MessageScrollerPrimitive.Button`, `unknown-import:@shadcn/react/message-scroller` |
 | navigation-menu | unsupported | `base-ui-primitive-unmapped:@base-ui/react/navigation-menu#NavigationMenu`, `react-type-unmapped:React.ComponentPropsWithRef` |
 | popover | unsupported | `base-ui-primitive-unmapped:@base-ui/react/popover#Popover` |
-| progress | unsupported | `base-ui-primitive-unmapped:@base-ui/react/progress#Progress` |
 | questionnaire | unsupported | `unknown-import:@shadcn/react/questionnaire` |
 | radio-group | unsupported | `base-ui-primitive-unmapped:@base-ui/react/radio-group#RadioGroup`, `base-ui-primitive-unmapped:@base-ui/react/radio#Radio` |
 | resizable | unsupported | `unknown-import:react-resizable-panels` |

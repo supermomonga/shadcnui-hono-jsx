@@ -599,4 +599,23 @@ export const VISUAL_CASES: VisualCase[] = [
       ],
     ],
   },
+  {
+    id: "progress/states",
+    component: "progress",
+    node: stack(
+      [
+        "Progress",
+        { value: 42 },
+        ["ProgressLabel", {}, "Uploading"],
+        ["ProgressValue", {}],
+      ],
+      ["Progress", { value: 100 }],
+      [
+        "Progress",
+        { value: 7, max: 20 },
+        ["ProgressLabel", {}, "Steps"],
+        ["ProgressValue", {}],
+      ]
+    ),
+  },
 ]

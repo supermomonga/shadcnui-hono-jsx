@@ -936,20 +936,27 @@
     },
     {
       "name": "progress",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated",
+      "classification": "direct",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/progress.json",
         "contentSha256": "17b3126ea8f904c1c89b2fc0c9a7dd06ea802bd49e3be0322b2377d1d629f832",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
-      "reasons": ["base-ui-primitive-unmapped:@base-ui/react/progress#Progress"]
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported.",
+        "Accepts `class` instead of `className`."
+      ],
+      "reasons": [
+        "base-ui-primitive-mapped:@base-ui/react/progress#Progress",
+        "classname-to-class",
+        "use-client-directive"
+      ]
     },
     {
       "name": "questionnaire",

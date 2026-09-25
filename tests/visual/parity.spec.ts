@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url"
 import { expect, type Page, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { PRIMITIVE_FAMILIES } from "../../generator/src/adapters/families"
 import { BASE_UI_PRIMITIVES } from "../../generator/src/adapters/primitives/base-ui"
 
 /**
@@ -20,7 +21,9 @@ const ids = JSON.parse(
  * as declared in the primitive table (docs/adr/0018). Only these are removed
  * from the upstream DOM before comparing.
  */
-const OMITTED = BASE_UI_PRIMITIVES.flatMap((rule) => rule.omittedAttrs ?? [])
+const OMITTED = [...BASE_UI_PRIMITIVES, ...PRIMITIVE_FAMILIES].flatMap(
+  (rule) => rule.omittedAttrs ?? []
+)
 
 interface DomNode {
   tag: string
