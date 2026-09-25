@@ -1,8 +1,8 @@
 import { Node, SyntaxKind } from "ts-morph"
 import { TransformError, type TransformStep } from "../context"
 
-/** Props without a Hono JSX equivalent (element replacement / Slot semantics). */
-export const DROPPED_PROPS = ["render", "asChild"] as const
+/** Props without a Hono JSX equivalent (Radix Slot semantics). */
+export const DROPPED_PROPS = ["asChild"] as const
 
 /** Whether `id` reads a variable (rather than naming a property or attribute). */
 function isReference(id: Node): boolean {
@@ -21,9 +21,6 @@ export const dropProps: TransformStep = {
   name: "drop-props",
   run(ctx) {
     const dropped = new Set<string>(DROPPED_PROPS)
-    for (const rule of ctx.primitives.values()) {
-      for (const prop of rule.dropProps ?? []) dropped.add(prop)
-    }
     const patterns = ctx.sf
       .getDescendantsOfKind(SyntaxKind.ObjectBindingPattern)
       .filter((p) => Node.isParameterDeclaration(p.getParent()))

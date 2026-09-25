@@ -31,7 +31,13 @@ export const reactTypes: TransformStep = {
             `${ref.getText()} needs one intrinsic tag argument`
           )
         }
-        ref.getTypeName().replaceWithText("ComponentProps")
+        if (name === "useRender.ComponentProps") {
+          // Base UI's render prop is supported (docs/adr/0018).
+          ref.replaceWithText(`ComponentProps<${arg.getText()}, RenderProp>`)
+          ctx.needsRender = true
+        } else {
+          ref.getTypeName().replaceWithText("ComponentProps")
+        }
         ctx.needsComponentProps = true
       } else if (name === "React.ReactNode") {
         ref.replaceWithText("Child")

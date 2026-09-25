@@ -15,6 +15,26 @@ export const imports: TransformStep = {
         decl.remove()
       }
     }
+    if (ctx.honoValues.size > 0) {
+      const existing = ctx.sf
+        .getImportDeclarations()
+        .find(
+          (d) => d.getModuleSpecifierValue() === "hono/jsx" && !d.isTypeOnly()
+        )
+      const names = [...ctx.honoValues].sort()
+      if (existing) {
+        const present = new Set(
+          existing.getNamedImports().map((n) => n.getName())
+        )
+        existing.addNamedImports(names.filter((n) => !present.has(n)))
+      } else {
+        ctx.sf.insertImportDeclaration(0, {
+          moduleSpecifier: "hono/jsx",
+          namedImports: names,
+        })
+      }
+      ctx.log.push(`imports: hono/jsx values ${names.join(", ")}`)
+    }
     if (ctx.honoTypes.size > 0) {
       ctx.sf.insertImportDeclaration(0, {
         isTypeOnly: true,

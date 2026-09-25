@@ -26,6 +26,7 @@ export const REWRITE_CODES = [
   "component-dependency",
   "icon-placeholder",
   "lucide-icon",
+  "render-composition",
 ] as const
 
 export type BlockingCode = (typeof BLOCKING_CODES)[number]

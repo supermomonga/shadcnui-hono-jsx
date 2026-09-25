@@ -114,10 +114,21 @@ function fileReasons(
   if (file.useRender === "other")
     reasons.push(reason("use-render-noncanonical"))
 
+  // Locals imported from generated sibling components, which support `render`.
+  const siblings = new Set(
+    file.imports
+      .filter((imp) =>
+        available.has(imp.module.match(REGISTRY_UI_IMPORT)?.[1] ?? "")
+      )
+      .flatMap((imp) => imp.named.map((n) => n.alias ?? n.name))
+  )
   for (const element of file.jsx) {
-    // Element replacement (`render={<a />}`) has no generic Hono equivalent.
     if (!element.intrinsic && element.attributes.includes("render")) {
-      reasons.push(reason("render-prop", element.tag))
+      reasons.push(
+        siblings.has(element.tag)
+          ? reason("render-composition", element.tag)
+          : reason("render-prop", element.tag)
+      )
     }
     for (const attribute of element.attributes) {
       if (/^on[A-Z]/.test(attribute))

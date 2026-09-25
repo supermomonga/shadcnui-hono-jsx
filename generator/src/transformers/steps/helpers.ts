@@ -1,12 +1,17 @@
 import { SyntaxKind } from "ts-morph"
 import type { TransformStep } from "../context"
+import {
+  RENDER_HELPER,
+  RENDER_HELPER_TYPES,
+  RENDER_HELPER_VALUES,
+} from "../render-helper"
 
 export const COMPONENT_PROPS_HELPER = `/** Props of the intrinsic element \`T\`, following Hono JSX conventions (\`class\`, no \`render\`/\`asChild\`). */
-type ComponentProps<T extends keyof JSX.IntrinsicElements> =
+type ComponentProps<T extends keyof JSX.IntrinsicElements, Render = never> =
   JSX.IntrinsicElements[T] & {
     class?: string | undefined
     className?: never
-    render?: never
+    render?: Render
     asChild?: never
   }`
 
@@ -16,15 +21,17 @@ type ComponentProps<T extends keyof JSX.IntrinsicElements> =
  * Hono's generic \`JSX.HTMLAttributes\`.
  */
 export const COMPONENT_PROPS_HELPER_WITH_SVG = `/** Props of the intrinsic element \`T\`, following Hono JSX conventions (\`class\`, no \`render\`/\`asChild\`). */
-type ComponentProps<T extends keyof JSX.IntrinsicElements | "svg"> =
-  (T extends keyof JSX.IntrinsicElements
-    ? JSX.IntrinsicElements[T]
-    : JSX.HTMLAttributes) & {
-    class?: string | undefined
-    className?: never
-    render?: never
-    asChild?: never
-  }`
+type ComponentProps<
+  T extends keyof JSX.IntrinsicElements | "svg",
+  Render = never,
+> = (T extends keyof JSX.IntrinsicElements
+  ? JSX.IntrinsicElements[T]
+  : JSX.HTMLAttributes) & {
+  class?: string | undefined
+  className?: never
+  render?: Render
+  asChild?: never
+}`
 
 /**
  * Inserts the file-local \`ComponentProps\` helper. It is an intersection (not an
@@ -43,10 +50,15 @@ export const helpers: TransformStep = {
       .some(
         (ref) => ref.getText().replace(/\s/g, "") === 'ComponentProps<"svg">'
       )
-    ctx.sf.insertStatements(
-      index,
-      needsSvg ? COMPONENT_PROPS_HELPER_WITH_SVG : COMPONENT_PROPS_HELPER
-    )
+    const helpers = [
+      needsSvg ? COMPONENT_PROPS_HELPER_WITH_SVG : COMPONENT_PROPS_HELPER,
+    ]
+    if (ctx.needsRender) {
+      helpers.push(RENDER_HELPER)
+      for (const name of RENDER_HELPER_TYPES) ctx.honoTypes.add(name)
+      for (const name of RENDER_HELPER_VALUES) ctx.honoValues.add(name)
+    }
+    ctx.sf.insertStatements(index, helpers.join("\n\n"))
     ctx.log.push("helpers: ComponentProps")
   },
 }

@@ -74,6 +74,8 @@ export function transformSource(input: TransformInput): TransformOutput {
     honoTypes: new Set(),
     needsComponentProps: false,
     icons: new Set(),
+    honoValues: new Set(),
+    needsRender: false,
     log: [],
   }
   for (const step of resolveSteps(input.adapter)) step.run(ctx)

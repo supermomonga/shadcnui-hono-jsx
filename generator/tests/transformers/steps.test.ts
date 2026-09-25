@@ -41,6 +41,8 @@ function apply(source: string, ...steps: TransformStep[]) {
     honoTypes: new Set(),
     needsComponentProps: false,
     icons: new Set(),
+    honoValues: new Set(),
+    needsRender: false,
     log: [],
   }
   for (const step of steps) step.run(ctx)
@@ -91,7 +93,7 @@ describe("use-render", () => {
       useRenderStep
     )
     expect(squash(text)).toContain(
-      `return <span data-slot="badge" data-variant={variant} data-isopen={open} className={cn(badgeVariants({ variant }), className)} {...props} />`
+      `return renderElement(<span data-slot="badge" data-variant={variant} data-isopen={open} className={cn(badgeVariants({ variant }), className)} {...props} />, render)`
     )
   })
 })
@@ -106,12 +108,13 @@ function Button({ className, ...props }: ButtonPrimitive.Props & V) {
       primitivesStep
     )
     expect(squash(text)).toContain(
-      `function Button({ className, ...props }: ComponentProps<"button"> & V)`
+      `function Button({ className, render, nativeButton: _nativeButton, focusableWhenDisabled: _focusableWhenDisabled, ...props }: ComponentProps<"button", RenderProp> & V)`
     )
     expect(squash(text)).toContain(
-      `<button data-slot="button" className={className} type="button" data-disabled={props.disabled ? "" : undefined} {...props} />`
+      `return renderElement(<button data-slot="button" className={className} type="button" data-disabled={props.disabled ? "" : undefined} {...props} />, render)`
     )
     expect(ctx.needsComponentProps).toBe(true)
+    expect(ctx.needsRender).toBe(true)
   })
 
   test("maps prop attributes and keeps explicit attributes over defaults", () => {
@@ -147,7 +150,7 @@ type C = { icon: React.ReactNode; style: React.CSSProperties }`,
       reactTypes
     )
     expect(text).toBe(`type A = ComponentProps<"div">
-type B = ComponentProps<"span">
+type B = ComponentProps<"span", RenderProp>
 type C = { icon: Child; style: CSSProperties }`)
     expect([...ctx.honoTypes].sort()).toEqual(["CSSProperties", "Child"])
   })
@@ -202,19 +205,19 @@ const b = <Custom tabIndex={0} />`)
 })
 
 describe("drop-props", () => {
-  test("removes unused render/asChild bindings", () => {
+  test("removes unused asChild bindings and keeps render (supported)", () => {
     const { text } = apply(
       `function A({ className, render, asChild, ...props }) { return <div {...props} /> }`,
       dropProps
     )
     expect(squash(text)).toBe(
-      `function A({ className, ...props }) { return <div {...props} /> }`
+      `function A({ className, render, ...props }) { return <div {...props} /> }`
     )
   })
 
   test("folds conditionals on a dropped prop to their else branch", () => {
     const { text } = apply(
-      `function A({ render, type, ...props }) { return <button type={render ? type : (type ?? "button")} {...props} /> }`,
+      `function A({ asChild, type, ...props }) { return <button type={asChild ? type : (type ?? "button")} {...props} /> }`,
       dropProps
     )
     expect(squash(text)).toBe(
@@ -225,10 +228,10 @@ describe("drop-props", () => {
   test("refuses to drop a prop that is still used", () => {
     expect(() =>
       apply(
-        `function A({ render, ...props }) { return render(props) }`,
+        `function A({ asChild, ...props }) { return asChild(props) }`,
         dropProps
       )
-    ).toThrow(/"render" is still used/)
+    ).toThrow(/"asChild" is still used/)
   })
 })
 
@@ -256,13 +259,16 @@ export { Box, Button }
       source,
       facts: facts(source),
     })
-    expect(text).toStartWith(`import type { JSX } from "hono/jsx"`)
+    expect(text).toMatch(/^import type \{ [^}]*JSX[^}]* \} from "hono\/jsx"/)
+    expect(text).toContain(
+      `import { cloneElement, isValidElement } from "hono/jsx"`
+    )
     expect(text).not.toContain("React")
     expect(text).not.toContain("@base-ui")
     expect(text).not.toContain("use client")
     expect(text).not.toContain("className=")
     expect(text).toContain(
-      `type ComponentProps<T extends keyof JSX.IntrinsicElements>`
+      `type ComponentProps<T extends keyof JSX.IntrinsicElements, Render = never>`
     )
     expect(squash(text)).toContain(
       `function Box({ class: className, ...props }: ComponentProps<"div">)`

@@ -41,7 +41,8 @@ export interface Manifest {
 
 const COMMON_DIFFERENCES: Record<string, string> = {
   "classname-to-class": "Accepts `class` instead of `className`.",
-  "base-ui-use-render": "`render` (element replacement) is not supported.",
+  "base-ui-use-render":
+    "`render` is supported on the server (element or function), like Base UI.",
 }
 
 function knownDifferences(

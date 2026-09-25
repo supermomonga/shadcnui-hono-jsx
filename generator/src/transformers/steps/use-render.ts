@@ -71,9 +71,9 @@ function mergePropsAttributes(ctx: TransformContext, call: Node): string[] {
 
 /**
  * `useRender({ defaultTagName, props: mergeProps(...), render, state })` becomes
- * a plain intrinsic element. Base UI renders each state entry as a
- * `data-<key>` attribute; state values are assumed to be strings. The `render`
- * prop (element replacement) is not supported and is dropped.
+ * a plain intrinsic element, wrapped in `renderElement(…, render)` when a
+ * `render` prop is passed through. Base UI renders each state entry as a
+ * `data-<key>` attribute; state values are assumed to be strings.
  */
 function toJsx(ctx: TransformContext, call: CallExpression): string {
   const [options] = call.getArguments()
@@ -119,7 +119,12 @@ function toJsx(ctx: TransformContext, call: CallExpression): string {
   }
   const props = propertyInitializer(ctx, options, "props")
   if (props) attributes.push(...mergePropsAttributes(ctx, props))
-  return `<${tag.getLiteralValue()} ${attributes.join(" ")} />`
+  const element = `<${tag.getLiteralValue()} ${attributes.join(" ")} />`
+  const render = propertyInitializer(ctx, options, "render")
+  if (!render) return element
+  ctx.needsRender = true
+  ctx.needsComponentProps = true
+  return `renderElement(${element}, ${render.getText()})`
 }
 
 export const useRenderStep: TransformStep = {

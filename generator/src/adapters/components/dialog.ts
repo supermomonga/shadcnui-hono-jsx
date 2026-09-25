@@ -202,9 +202,13 @@ function Dialog({
   )
 }
 
-function DialogTrigger({ type = "button", ...props }: ComponentProps<"button">) {
+function DialogTrigger({
+  type = "button",
+  render,
+  ...props
+}: ComponentProps<"button", RenderProp>) {
   const { id } = useDialogContext("DialogTrigger")
-  return (
+  return renderElement(
     <button
       type={type}
       command="show-modal"
@@ -212,7 +216,8 @@ function DialogTrigger({ type = "button", ...props }: ComponentProps<"button">) 
       aria-haspopup="dialog"
       data-slot="dialog-trigger"
       {...props}
-    />
+    />,
+    render
   )
 }
 
@@ -221,16 +226,21 @@ function DialogPortal({ children }: { children?: Child }) {
   return <>{children}</>
 }
 
-function DialogClose({ type = "button", ...props }: ComponentProps<"button">) {
+function DialogClose({
+  type = "button",
+  render,
+  ...props
+}: ComponentProps<"button", RenderProp>) {
   const { id } = useDialogContext("DialogClose")
-  return (
+  return renderElement(
     <button
       type={type}
       command="close"
       commandfor={id}
       data-slot="dialog-close"
       {...props}
-    />
+    />,
+    render
   )
 }
 
@@ -353,6 +363,7 @@ const dialogStep: TransformStep = {
     const text = template(ctx, ctx.sf)
     ctx.sf.replaceWithText(text)
     ctx.needsComponentProps = true
+    ctx.needsRender = true
     ctx.honoTypes.add("Child")
     ctx.log.push("dialog-adapter: native <dialog> with Invoker Commands")
   },
@@ -366,7 +377,7 @@ export const dialogAdapter: ComponentAdapter = {
   ],
   notes: [
     "Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2).",
-    "Controlled state (`open`, `defaultOpen`, `onOpenChange`) and `render` are not supported; style a trigger with `class={buttonVariants()}`. The trigger does not reflect the open state (`aria-expanded`).",
+    'Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). `DialogTrigger` and `DialogClose` support `render`, e.g. `render={<Button variant="outline" />}`.',
     "The overlay is the dialog's `::backdrop` (DialogOverlay renders nothing); closing has no exit animation; outside clicks close the dialog only where `closedby` is supported.",
     "Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup.",
   ],

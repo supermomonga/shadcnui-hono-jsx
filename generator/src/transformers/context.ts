@@ -3,7 +3,7 @@ import type { ComponentAdapter } from "../adapters/components"
 import type { PrimitiveRule } from "../adapters/primitives/base-ui"
 import type { FileFacts } from "../analyzer/facts"
 
-export type HonoTypeImport = "JSX" | "Child" | "CSSProperties"
+export type HonoTypeImport = "JSX" | "Child" | "CSSProperties" | "JSXNode"
 
 export interface TransformContext {
   sf: SourceFile
@@ -19,6 +19,10 @@ export interface TransformContext {
   needsComponentProps: boolean
   /** Canonical names of Lucide icons inlined into the file. */
   icons: Set<string>
+  /** Values that must be imported from \`hono/jsx\`. */
+  honoValues: Set<string>
+  /** Whether the file-local \`renderElement\` helper (Base UI \`render\` prop) is needed. */
+  needsRender: boolean
   /** Human-readable record of applied rewrites (for debugging and tests). */
   log: string[]
 }
