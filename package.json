@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "upstream:sync": "bun generator/src/cli/sync.ts",
+    "analyze": "bun generator/src/cli/analyze.ts",
     "format": "biome format --write .",
     "lint": "biome ci .",
     "typecheck": "tsc -p tsconfig.json",
