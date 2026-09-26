@@ -13,15 +13,15 @@ import { UpstreamStore } from "../../generator/src/upstream/store"
 import { config } from "../../generator.config"
 
 /**
- * Runs the CLI the way users do, in a clean Hono project (no components.json,
- * no React): `init`, `add` for every item, then `apply`. ui.shadcn.com is
+ * Runs the CLI the way users do, from its packed npm package under Node, in a
+ * clean Hono project (no components.json, no React): `init`, `add` for every
+ * item, then `apply`. ui.shadcn.com is
  * replaced by a local server that answers from the upstream snapshot (with the
  * primary color taken from the `theme` parameter), so the output is
  * deterministic. Then type-checks, renders and builds Tailwind CSS there.
  * Needs network access for the package manager.
  */
 const enabled = process.env.SKIP_NETWORK_TESTS !== "1"
-const CLI = path.join(ROOT, "cli", "src", "index.ts")
 const catalog = readCatalog()
 const store = new UpstreamStore(ROOT, config.style)
 const nova = resolvePreset("nova")
@@ -84,22 +84,30 @@ describe.skipIf(!enabled)("the CLI in a clean Hono project", () => {
   }
 
   const read = (file: string) => readFileSync(path.join(app, file), "utf8")
+  const cli = (...args: string[]) =>
+    run(["node", path.join(tmp, "package", "dist", "bin.js"), ...args])
 
   beforeAll(async () => {
     server = serveSnapshot()
     tmp = mkdtempSync(path.join(tmpdir(), "shj-install-"))
     app = path.join(tmp, "app")
+    // `npm pack` builds dist/ (prepack) and applies the package's `files`.
+    const tarball = (
+      await run(
+        ["npm", "pack", "--silent", "--pack-destination", tmp],
+        path.join(ROOT, "cli")
+      )
+    )
+      .trim()
+      .split("\n")
+      .at(-1)
+    await run(["tar", "-xzf", `${tmp}/${tarball}`], tmp)
     cpSync(path.join(ROOT, "tests", "install", "fixture"), app, {
       recursive: true,
     })
     await run(["bun", "install"])
-    outputs.init = await run(["bun", CLI, "init", "button"])
-    outputs.add = await run([
-      "bun",
-      CLI,
-      "add",
-      ...catalog.items.map((item) => item.name),
-    ])
+    outputs.init = await cli("init", "button")
+    outputs.add = await cli("add", ...catalog.items.map((item) => item.name))
   }, 300_000)
 
   afterAll(() => {
@@ -209,7 +217,7 @@ describe.skipIf(!enabled)("the CLI in a clean Hono project", () => {
   })
 
   test("apply switches the preset and rewrites the theme and components", async () => {
-    outputs.apply = await run(["bun", CLI, "apply", "--preset", blue])
+    outputs.apply = await cli("apply", "--preset", blue)
     expect(JSON.parse(read("shadcnui-hono-jsx.json")).preset).toBe(blue)
     expect(read("styles/shadcn/theme.css")).toContain(
       "--primary: oklch(0.5 0.2 260);"
@@ -221,7 +229,7 @@ describe.skipIf(!enabled)("the CLI in a clean Hono project", () => {
   })
 
   test("apply switches the style of the installed components", async () => {
-    await run(["bun", CLI, "apply", "--preset", lyra])
+    await cli("apply", "--preset", lyra)
     expect(read("components/ui/button.tsx")).toBe(
       finalize(readTemplate("base-lyra", "button"), {
         iconLibrary: "lucide",
@@ -235,7 +243,7 @@ describe.skipIf(!enabled)("the CLI in a clean Hono project", () => {
       ...nova.config,
       menuColor: "inverted-translucent",
     })
-    await run(["bun", CLI, "apply", "--preset", translucent, "--rtl"])
+    await cli("apply", "--preset", translucent, "--rtl")
     expect(JSON.parse(read("shadcnui-hono-jsx.json"))).toEqual({
       preset: translucent,
       rtl: true,
@@ -255,7 +263,7 @@ describe.skipIf(!enabled)("the CLI in a clean Hono project", () => {
     "apply swaps in %s icons and their license, and type-checks",
     async (iconLibrary) => {
       const preset = encodePreset({ ...nova.config, iconLibrary })
-      const output = await run(["bun", CLI, "apply", "--preset", preset])
+      const output = await cli("apply", "--preset", preset)
       // The project stays right-to-left from the previous test.
       const variant = { rtl: true, menuColor: "default" } as const
       expect(read("components/ui/select.tsx")).toBe(

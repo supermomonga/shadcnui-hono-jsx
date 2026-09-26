@@ -1,7 +1,7 @@
 ---
 number: 29
 title: Distribute components through a shadcnui-hono-jsx CLI that applies shadcn/ui presets
-status: proposed
+status: accepted
 date: 2026-09-26
 links:
 - target: 8
@@ -78,7 +78,8 @@ option, including re-applying a preset to installed components, without a
 server and with a single install path.
 
 * The npm package `shadcnui-hono-jsx`, published from a workspace package,
-  provides the `shadcnui-hono-jsx` command for `bunx` and `npx`:
+  provides the `shadcnui-hono-jsx` command for `bunx` and `npx`, bundled for
+  Node when packed (`dist/bin.js`) so that it runs without Bun:
   * `init [--preset <code|name>] [--rtl] [--pointer] [components]` writes
     the config file, the theme and the license notice, and installs
     dependencies. Without `--preset` it uses the `nova` preset, like
@@ -176,8 +177,7 @@ package.
 
 ## More Information
 
-On acceptance, ADR 0008 becomes superseded. The theme item of ADR 0009 (a
-`theme.css` written by `generate`) and the registry-item wording of ADR 0013
-(every registry item lists the notice file) are replaced by the CLI writing
-those files. The package name `shadcnui-hono-jsx` was free on npm on
+ADR 0008 is superseded. The theme item of ADR 0009 (a `theme.css` written
+by `generate`) and the registry-item wording of ADR 0013 (every registry item
+lists the notice file) are replaced by the CLI writing those files. The package name `shadcnui-hono-jsx` was free on npm on
 2026-09-26.

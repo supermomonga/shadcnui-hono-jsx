@@ -7,6 +7,7 @@ import {
   ACCEPTED_ICON_LICENSES,
   ACCEPTED_UPSTREAM_LICENSE,
   buildLicenseNotice,
+  buildPackageLicense,
   checkUpstreamLicenses,
   derivedNoticeLines,
   iconHeaderLine,
@@ -53,7 +54,9 @@ describe("buildLicenseNotice", () => {
       expect(sha256(accepted.text)).toBe(accepted.sha256)
       const text = buildLicenseNotice("owner/repo", library)
       expect(text).toContain(accepted.text)
-      expect(text).toContain(`${accepted.title} (${accepted.url})`)
+      expect(text.replace(/\s+/g, " ")).toContain(
+        `${accepted.title} (${accepted.url})`
+      )
       for (const other of ICON_LIBRARIES) {
         if (other === library) continue
         expect(text).not.toContain(ACCEPTED_ICON_LICENSES[other].text)
@@ -93,6 +96,27 @@ describe("buildLicenseNotice", () => {
         )
       ).toBe(buildLicenseNotice(config.repository, library))
     }
+  })
+})
+
+describe("buildPackageLicense", () => {
+  const license = buildPackageLicense("owner/repo")
+
+  test("carries both copyright notices and every icon license", () => {
+    expect(license).toContain(
+      `${ACCEPTED_UPSTREAM_LICENSE.copyright}\n${PROJECT_COPYRIGHT}\n`
+    )
+    expect(license).toContain("Permission is hereby granted, free of charge")
+    for (const library of ICON_LIBRARIES) {
+      expect(license).toContain(ACCEPTED_ICON_LICENSES[library].text)
+    }
+    expect(license).toContain("which is not an open source license")
+  })
+
+  test("matches the generated file", () => {
+    expect(readFileSync(path.join(ROOT, "cli", "LICENSE"), "utf8")).toBe(
+      buildPackageLicense(config.repository)
+    )
   })
 })
 

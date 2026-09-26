@@ -1,4 +1,3 @@
-#!/usr/bin/env bun
 import { readFileSync } from "node:fs"
 import path from "node:path"
 import { parseArgs } from "node:util"
@@ -143,8 +142,9 @@ export async function main(argv: string[]): Promise<void> {
   }
 }
 
-if (import.meta.main) {
-  main(process.argv.slice(2)).catch((error: unknown) => {
+/** Runs a command and exits with 1 on failure, printing usage errors briefly. */
+export function run(argv: string[]): void {
+  main(argv).catch((error: unknown) => {
     const code = (error as { code?: unknown } | null)?.code
     if (
       error instanceof UsageError ||

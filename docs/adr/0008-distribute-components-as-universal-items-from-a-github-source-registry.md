@@ -1,7 +1,7 @@
 ---
 number: 8
 title: Distribute components as universal items from a GitHub source registry
-status: accepted
+status: superseded
 date: 2026-09-25
 links:
 - target: 13

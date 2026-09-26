@@ -15,7 +15,7 @@
     "analyze": "bun generator/src/cli/analyze.ts",
     "generate": "bun generator/src/cli/generate.ts",
     "dev:install": "bun generator/src/cli/dev-install.ts",
-    "cli": "bun cli/src/index.ts",
+    "cli": "bun cli/src/bin.ts",
     "format": "biome format --write .",
     "lint": "biome ci .",
     "typecheck": "tsc -p tsconfig.json && tsc -p tests/types/tsconfig.json && tsc -p tests/types/tsconfig.strict.json",

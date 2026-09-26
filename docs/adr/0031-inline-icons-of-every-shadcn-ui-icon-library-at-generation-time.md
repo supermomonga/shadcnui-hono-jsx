@@ -1,7 +1,7 @@
 ---
 number: 31
 title: Inline icons of every shadcn/ui icon library at generation time
-status: proposed
+status: accepted
 date: 2026-09-26
 links:
 - target: 16
@@ -126,5 +126,5 @@ with each React package (`test:visual:styles --variant icons-<library>`).
 
 ## More Information
 
-On acceptance, ADR 0016 becomes superseded; its rendering and gating rules
-carry over to every library.
+ADR 0016 is superseded; its rendering and gating rules carry over to every
+library.

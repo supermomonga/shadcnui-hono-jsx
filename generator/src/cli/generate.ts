@@ -11,7 +11,11 @@ import { type OutputFile, writeOutputs } from "../emit/write"
 import { TEMPLATES_DIR } from "../generate"
 import type { StyleResult } from "../generate-style"
 import { buildIconSets } from "../icons/sets"
-import { buildLicenseNotice, checkUpstreamLicenses } from "../licenses"
+import {
+  buildLicenseNotice,
+  buildPackageLicense,
+  checkUpstreamLicenses,
+} from "../licenses"
 import { LITE_COMPONENTS } from "../lite"
 import {
   buildManifest,
@@ -135,6 +139,10 @@ for (const library of ICON_LIBRARIES) {
     text: buildLicenseNotice(config.repository, library),
   })
 }
+files.push({
+  path: "cli/LICENSE",
+  text: buildPackageLicense(config.repository),
+})
 for (const set of buildIconSets(
   [...byStyle.values()].flat().map((c) => c.file.text)
 )) {

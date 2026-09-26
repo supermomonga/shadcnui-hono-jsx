@@ -1,7 +1,7 @@
 ---
 number: 16
 title: Inline Lucide icons at generation time
-status: accepted
+status: superseded
 date: 2026-09-25
 links:
 - target: 13

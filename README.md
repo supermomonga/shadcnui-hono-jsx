@@ -48,7 +48,7 @@ Base UI, or Radix runtime in the generated components.
 > [!NOTE]
 > The CLI is not published to npm yet. Until the first release, run it from a
 > clone of this repository: replace `bunx shadcnui-hono-jsx` with
-> `bun <path to the clone>/cli/src/index.ts`.
+> `bun <path to the clone>/cli/src/bin.ts`.
 
 1. Set up the theme once, in the root of your Hono project. `init` writes
    `shadcnui-hono-jsx.json`, `styles/shadcn/theme.css`,

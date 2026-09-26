@@ -14,8 +14,8 @@ generator (transformer, adapter, or config) and regenerate.
 | Path | Written by |
 | --- | --- |
 | `upstream/**` | `bun run upstream:sync` |
-| `cli/generated/**` (templates, `catalog.json`, vendored `tailwind.css` and `shadcn/preset`, the license notice) | `bun run generate` (notice text lives in `generator/src/licenses.ts`) |
-| `compatibility.json` | `bun run generate` |
+| `cli/generated/**` (templates, `catalog.json`, icon sets, vendored `tailwind.css` and `shadcn/preset`, the license notices) | `bun run generate` (notice text lives in `generator/src/licenses.ts`) |
+| `cli/LICENSE`, `compatibility.json` | `bun run generate` (license text lives in `generator/src/licenses.ts`) |
 | README compatibility table (between markers) | `bun run generate` |
 | `components/ui/`, `styles/shadcn/`, `public/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `shadcnui-hono-jsx.json` at the root (git-ignored) | `bun run dev:install` |
 

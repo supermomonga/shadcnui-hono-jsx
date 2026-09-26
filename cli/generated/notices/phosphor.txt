@@ -42,9 +42,9 @@ SOFTWARE.
 
 Icons
 
-Some installed sources inline SVG icons from Phosphor Icons (https://phosphoricons.com),
-version-pinned in their headers. Phosphor Icons is licensed as follows
-(reproduced from the @phosphor-icons/core package):
+Some installed sources inline SVG icons from Phosphor Icons
+(https://phosphoricons.com), version-pinned in their headers. Phosphor Icons is
+licensed as follows (reproduced from the @phosphor-icons/core package):
 
 MIT License
 

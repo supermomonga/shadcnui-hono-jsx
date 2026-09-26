@@ -3,14 +3,35 @@
   "version": "0.0.0",
   "private": true,
   "description": "Installs shadcn/ui components ported to Hono JSX, with shadcn/ui presets.",
+  "keywords": [
+    "shadcn",
+    "shadcn-ui",
+    "hono",
+    "hono-jsx",
+    "components",
+    "tailwindcss"
+  ],
+  "homepage": "https://github.com/supermomonga/shadcnui-hono-jsx#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supermomonga/shadcnui-hono-jsx.git",
+    "directory": "cli"
+  },
   "license": "MIT",
   "type": "module",
   "bin": {
-    "shadcnui-hono-jsx": "./src/index.ts"
+    "shadcnui-hono-jsx": "./dist/bin.js"
   },
   "files": [
-    "src",
+    "dist",
     "client",
     "generated"
-  ]
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "bun build.ts",
+    "prepack": "bun build.ts"
+  }
 }

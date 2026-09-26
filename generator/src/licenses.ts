@@ -218,11 +218,77 @@ ${MIT_PERMISSION_NOTICE}
 
 Icons
 
-Some installed sources inline SVG icons from ${icons.title} (${icons.url}),
-version-pinned in their headers. ${icons.title} is licensed as follows
-(reproduced from the ${icons.package} package${icons.remark ? `, ${icons.remark}` : ""}):
+${wrap(`Some installed sources inline SVG icons from ${icons.title} (${icons.url}), version-pinned in their headers. ${iconLicenseIntro(library)}`)}
 
 ${icons.text}`
+}
+
+/** `text` as lines of at most 80 characters. */
+function wrap(text: string): string {
+  const lines: string[] = []
+  let line = ""
+  for (const word of text.split(" ")) {
+    if (line && line.length + 1 + word.length > 80) {
+      lines.push(line)
+      line = word
+    } else {
+      line = line ? `${line} ${word}` : word
+    }
+  }
+  return [...lines, line].join("\n")
+}
+
+/** "Lucide is licensed as follows (reproduced from …):" */
+function iconLicenseIntro(library: IconLibrary): string {
+  const icons = ACCEPTED_ICON_LICENSES[library]
+  return `${icons.title} is licensed as follows (reproduced from the ${icons.package} package${icons.remark ? `, ${icons.remark}` : ""}):`
+}
+
+const RULE =
+  "-------------------------------------------------------------------------------"
+
+/**
+ * `cli/LICENSE`, the license of the npm package: its CLI code, the templates
+ * and vendored files derived from shadcn/ui, and the icons of every library.
+ */
+export function buildPackageLicense(repository: string): string {
+  const icons = ICON_LIBRARIES.map((library) => {
+    const icon = ACCEPTED_ICON_LICENSES[library]
+    return `${RULE}
+
+${wrap(`${icon.title} (${icon.url}). ${iconLicenseIntro(library)}`)}
+
+${icon.text}`
+  })
+  return `shadcnui-hono-jsx - https://github.com/${repository}
+
+This package contains the shadcnui-hono-jsx CLI, component templates and
+stylesheets derived from shadcn/ui (https://github.com/shadcn-ui/ui), files
+vendored from the shadcn package (generated/tailwind.css and
+generated/shadcn-preset.js), and SVG icons inlined from the icon libraries
+below (generated/templates/ for Lucide, generated/icons/ for the others). The
+supermomonga notice applies only to original additions and modifications made
+by shadcnui-hono-jsx. The CLI installs LICENSE-shadcnui-hono-jsx.txt
+(generated/notices/) with the sources it installs, with the license of the
+icon library they use.
+
+shadcnui-hono-jsx is an unofficial community project and is not affiliated
+with, maintained by, or endorsed by shadcn or shadcn/ui.
+
+MIT License
+
+${ACCEPTED_UPSTREAM_LICENSE.copyright}
+${PROJECT_COPYRIGHT}
+
+${MIT_PERMISSION_NOTICE}
+
+${RULE}
+
+Icons
+
+The icons are licensed as follows.
+
+${icons.join("\n")}`
 }
 
 /** License lines for generated sources that include this project's changes. */

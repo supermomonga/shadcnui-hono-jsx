@@ -21,6 +21,7 @@
   },
   "include": ["generator", "tests", "cli", "components", "*.ts"],
   "exclude": [
+    "cli/dist",
     "cli/generated/shadcn-preset.js",
     "cli/generated/templates",
     "examples",

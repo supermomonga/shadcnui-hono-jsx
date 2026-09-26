@@ -1,7 +1,7 @@
 ---
 number: 30
 title: Generate templates for every Base UI style and finalize them at install time
-status: proposed
+status: accepted
 date: 2026-09-26
 links:
 - target: 3
@@ -103,9 +103,10 @@ before release.
   copying base-nova's, and the generator resolves those references per style.
   The record of base items covers every style.
 * Visual parity (amends ADR 0014) runs for each style with default options,
-  and for base-nova with each other icon library, menu color, menu accent,
-  RTL and pointer. `tests/visual` applies the same shadcn transforms to the
-  upstream React sources, and installs the React icon packages there only.
+  and for base-nova with each other icon library, menu color and RTL; menu
+  accent and pointer only change the theme. `tests/visual` applies the same
+  shadcn transforms to the upstream React sources, and installs the React
+  icon packages there only.
 
 ### Consequences
 
@@ -114,7 +115,7 @@ before release.
 * Good, because menu colors and RTL follow the shadcn CLI exactly, without a
   re-implementation to maintain.
 * Bad, because the snapshot and the generated output grow: about 500
-  upstream files, and about 1,000 templates (roughly 10 MB) with the RTL and
+  upstream files, and about 1,000 templates (roughly 13 MB, 0.8 MB packed) with the RTL and
   menu color variants; upstream sync pull requests get larger.
 * Bad, because lite alternatives need references into upstream parts instead
   of plain classes.
