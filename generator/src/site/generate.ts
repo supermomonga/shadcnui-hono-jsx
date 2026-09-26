@@ -19,6 +19,7 @@ import { type DocsContext, transformDocs } from "./docs"
 import { buildIconsModule, type IconUse } from "./icons-module"
 import {
   applyOverride,
+  dropFunctions,
   type FunctionIssue,
   tidyImports,
   translateExample,
@@ -35,9 +36,18 @@ export interface ExampleEntry {
   skipped?: string
 }
 
+/** A registry example the create page previews. */
+export interface CreateItem {
+  name: string
+  title: string
+  /** Sections left out because they need React and have no override. */
+  dropped: string[]
+}
+
 export interface SiteManifest {
   commit: string
   examples: Record<string, ExampleEntry>
+  create: CreateItem[]
 }
 
 export interface MissingOverride extends FunctionIssue {
@@ -50,6 +60,8 @@ export interface SiteOutput {
   missing: MissingOverride[]
   /** Overrides whose upstream function changed (sha256 mismatch) or vanished. */
   stale: string[]
+  /** What was left out without failing (create page items). */
+  warnings: string[]
 }
 
 const LICENSE =
@@ -124,9 +136,18 @@ export function generateSite(): SiteOutput {
     throw new Error(
       "upstream/site/lock.json is missing; run `bun run upstream:sync`."
     )
-  const output: SiteOutput = { files: new Map(), missing: [], stale: [] }
+  const output: SiteOutput = {
+    files: new Map(),
+    missing: [],
+    stale: [],
+    warnings: [],
+  }
   const icons: IconUse[] = []
-  const manifest: SiteManifest = { commit: lock.commit, examples: {} }
+  const manifest: SiteManifest = {
+    commit: lock.commit,
+    examples: {},
+    create: [],
+  }
 
   const components = store.list("docs", ".mdx")
   const context: DocsContext = {
@@ -191,6 +212,53 @@ export function generateSite(): SiteOutput {
     )
   }
 
+  // The create page's registry examples: sections that need React and have
+  // no override are left out rather than failing the build.
+  for (const name of store.list("registry", ".json")) {
+    const item = JSON.parse(store.read(`registry/${name}.json`)) as {
+      title?: string
+      files: { content: string }[]
+    }
+    const source = item.files[0]?.content
+    if (!source) continue
+    let result: ReturnType<typeof translateExample>
+    try {
+      result = translateExample(name, source)
+    } catch (error) {
+      output.warnings.push(
+        `create/${name} is left out: ${error instanceof Error ? error.message : error}`
+      )
+      continue
+    }
+    const override = OVERRIDES[`registry/${name}`]
+    let text = result.text
+    if (override) {
+      text = applyOverride(
+        text,
+        readFileSync(
+          path.join(OVERRIDES_DIR, "registry", `${name}.tsx`),
+          "utf8"
+        ),
+        Object.keys(override.functions)
+      )
+    }
+    const dropped = result.issues
+      .map((issue) => issue.name)
+      .filter((fn) => !override?.functions[fn])
+    if (dropped.length > 0) text = dropFunctions(text, dropped)
+    if (name !== "example") {
+      manifest.create.push({ name, title: item.title ?? name, dropped })
+    }
+    output.files.set(
+      `create/${name}.tsx`,
+      format(
+        // Previews only: Base UI's object values (SelectItem) need not type-check.
+        `${header(`registry/base-nova/${name}`, lock.commit, dropped.length > 0 ? [`Left out (needs React): ${dropped.join(", ")}.`] : [])}\n// @ts-nocheck: a preview of the create page, not code shown to users.\n\n${tidyImports(text)}`,
+        `create/${name}.tsx`
+      )
+    )
+  }
+
   output.files.set(
     "icons.tsx",
     format(
@@ -201,7 +269,10 @@ export function generateSite(): SiteOutput {
       "icons.tsx"
     )
   )
-  output.files.set("manifest.json", `${JSON.stringify(manifest, null, 2)}\n`)
+  output.files.set(
+    "manifest.json",
+    format(`${JSON.stringify(manifest, null, 2)}\n`, "manifest.json")
+  )
   return output
 }
 

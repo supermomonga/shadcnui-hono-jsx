@@ -23,6 +23,7 @@ const { values } = parseArgs({
 })
 
 const output = generateSite()
+for (const warning of output.warnings) console.warn(warning)
 const problems: string[] = []
 if (output.missing.length > 0) {
   const lines = output.missing.map(

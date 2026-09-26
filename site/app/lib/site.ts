@@ -19,3 +19,23 @@ export const siteConfig = {
 
 /** The package the documented commands run. */
 export const CLI = "shadcnui-hono-jsx@latest"
+
+/**
+ * The components' client scripts (public/shadcn/): pages render every
+ * component, and the scripts only listen on the document.
+ */
+export const CLIENT_SCRIPTS = [
+  "avatar",
+  "collapsible",
+  "combobox",
+  "drawer",
+  "hover",
+  "input-group",
+  "menu",
+  "navigation-menu",
+  "scroll-area",
+  "sidebar",
+  "slider",
+  "tabs",
+  "toast",
+]

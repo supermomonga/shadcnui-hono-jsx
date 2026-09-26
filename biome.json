@@ -78,7 +78,8 @@
             "noSvgWithoutTitle": "off",
             "useButtonType": "off",
             "useSemanticElements": "off",
-            "useValidAnchor": "off"
+            "useValidAnchor": "off",
+            "noAmbiguousAnchorText": "off"
           },
           "complexity": {
             "noUselessFragments": "off"

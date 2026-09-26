@@ -21,6 +21,7 @@ import { parseSource } from "../analyzer/source"
 import type { TransformContext } from "../transformers/context"
 import { classAttr } from "../transformers/steps/class-attr"
 import { removeDirectives } from "../transformers/steps/directives"
+import { icons as iconsStep } from "../transformers/steps/icons"
 import { reactTypes } from "../transformers/steps/react-types"
 import { sha256 } from "../upstream/hash"
 
@@ -33,7 +34,11 @@ const UI_ALIASES: [RegExp, string][] = [
   [/^@\/styles\/base-nova\/ui-rtl\/(.+)$/, "@/ui/nova-rtl/$1"],
   [/^@\/styles\/base-rhea\/ui\/(.+)$/, "@/ui/rhea/$1"],
   [/^@\/registry\/base-nova\/ui\/(.+)$/, "@/components/ui/$1"],
+  [/^@\/registry\/base-nova\/components\/(.+)$/, "./$1"],
 ]
+
+/** Modules whose imports go away: `IconPlaceholder` becomes inline icons. */
+const DROPPED_MODULES = ["@/app/(create)/components/icon-placeholder"]
 
 /** Modules examples may keep importing. */
 const KEPT_MODULES = [
@@ -143,6 +148,12 @@ export function translateExample(
   const sf = parseSource(source, `${name}.tsx`)
   const ctx = context(sf, name)
   removeDirectives.run(ctx)
+  // Registry examples (the create page) use IconPlaceholder, which becomes an
+  // inline Lucide icon marked with every library's name, as in components.
+  const placeholders = sf
+    .getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement)
+    .some((element) => element.getTagNameNode().getText() === "IconPlaceholder")
+  if (placeholders) iconsStep.run(ctx)
 
   const icons: TranslatedExample["icons"] = []
   /** Local names imported from modules the site cannot provide. */
@@ -150,6 +161,10 @@ export function translateExample(
   const renames = new Map<string, string>()
   for (const declaration of sf.getImportDeclarations()) {
     const module = declaration.getModuleSpecifierValue()
+    if (DROPPED_MODULES.includes(module)) {
+      declaration.remove()
+      continue
+    }
     const alias = UI_ALIASES.find(([pattern]) => pattern.test(module))
     if (alias) {
       declaration.setModuleSpecifier(module.replace(alias[0], alias[1]))
@@ -279,6 +294,9 @@ export function translateExample(
     fragment = true
   }
   if (fragment) sf.insertStatements(0, 'import { Fragment } from "hono/jsx"')
+  if (placeholders && !sf.getImportDeclaration("cn")) {
+    sf.insertStatements(0, 'import { cn } from "cn"')
+  }
   if (ctx.honoTypes.size > 0) {
     sf.insertStatements(
       0,
@@ -423,4 +441,45 @@ export function tidyImports(text: string): string {
       return `import ${e.typeOnly ? "type " : ""}${parts.join(", ")} from ${JSON.stringify(module)}`
     })
   return `${imports.join("\n")}\n\n${sf.getFullText().trimStart()}`
+}
+
+/**
+ * Removes top-level functions and where other functions render them
+ * (`<Name />`): the sections of a registry example that need React.
+ */
+export function dropFunctions(text: string, names: readonly string[]): string {
+  const sf = parseSource(text, "drop.tsx")
+  const dropped = new Set(names)
+  // Also drop what uses a dropped declaration other than by rendering it.
+  for (let changed = true; changed; ) {
+    changed = false
+    for (const [name, node] of topLevel(sf)) {
+      if (dropped.has(name)) continue
+      const uses = node
+        .getDescendantsOfKind(SyntaxKind.Identifier)
+        .some((identifier) => {
+          if (!dropped.has(identifier.getText())) return false
+          const parent = identifier.getParent()
+          return !(
+            Node.isJsxSelfClosingElement(parent) &&
+            parent.getTagNameNode() === identifier
+          )
+        })
+      if (uses) {
+        dropped.add(name)
+        changed = true
+      }
+    }
+  }
+  for (const element of sf
+    .getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement)
+    .reverse()) {
+    if (dropped.has(element.getTagNameNode().getText())) {
+      element.replaceWithText("{null}")
+    }
+  }
+  for (const [name, node] of topLevel(sf)) {
+    if (dropped.has(name) && !node.wasForgotten()) node.remove()
+  }
+  return sf.getFullText()
 }

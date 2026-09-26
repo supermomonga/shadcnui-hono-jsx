@@ -1087,5 +1087,280 @@
     "tooltip-rtl": {
       "component": "tooltip"
     }
-  }
+  },
+  "create": [
+    {
+      "name": "accordion-example",
+      "title": "Accordion",
+      "dropped": []
+    },
+    {
+      "name": "alert-dialog-example",
+      "title": "Alert Dialog",
+      "dropped": []
+    },
+    {
+      "name": "alert-example",
+      "title": "Alert",
+      "dropped": []
+    },
+    {
+      "name": "aspect-ratio-example",
+      "title": "Aspect Ratio",
+      "dropped": []
+    },
+    {
+      "name": "avatar-example",
+      "title": "Avatar",
+      "dropped": []
+    },
+    {
+      "name": "badge-example",
+      "title": "Badge",
+      "dropped": []
+    },
+    {
+      "name": "breadcrumb-example",
+      "title": "Breadcrumb",
+      "dropped": []
+    },
+    {
+      "name": "bubble-example",
+      "title": "Bubble",
+      "dropped": [
+        "BubbleCollapsible",
+        "BubbleReactionsButtons",
+        "BubbleButtonLinks"
+      ]
+    },
+    {
+      "name": "button-example",
+      "title": "Button",
+      "dropped": []
+    },
+    {
+      "name": "button-group-example",
+      "title": "Button Group",
+      "dropped": []
+    },
+    {
+      "name": "card-example",
+      "title": "Card",
+      "dropped": ["CardCustomSpacing"]
+    },
+    {
+      "name": "checkbox-example",
+      "title": "Checkbox",
+      "dropped": ["CheckboxInTable"]
+    },
+    {
+      "name": "collapsible-example",
+      "title": "Collapsible",
+      "dropped": ["CollapsibleSettings"]
+    },
+    {
+      "name": "component-example",
+      "title": "Example",
+      "dropped": ["FormExample"]
+    },
+    {
+      "name": "context-menu-example",
+      "title": "Context Menu",
+      "dropped": ["ContextMenuWithRadio", "ContextMenuWithInset"]
+    },
+    {
+      "name": "demo",
+      "title": "Demo",
+      "dropped": ["Demo"]
+    },
+    {
+      "name": "dialog-example",
+      "title": "Dialog",
+      "dropped": ["DialogChatSettings"]
+    },
+    {
+      "name": "drawer-example",
+      "title": "Drawer",
+      "dropped": []
+    },
+    {
+      "name": "empty-example",
+      "title": "Empty",
+      "dropped": []
+    },
+    {
+      "name": "hover-card-example",
+      "title": "Hover Card",
+      "dropped": []
+    },
+    {
+      "name": "input-example",
+      "title": "Input",
+      "dropped": []
+    },
+    {
+      "name": "input-group-example",
+      "title": "Input Group",
+      "dropped": [
+        "InputGroupExample",
+        "InputGroupWithAddons",
+        "InputGroupWithTooltip"
+      ]
+    },
+    {
+      "name": "item-example",
+      "title": "Item",
+      "dropped": []
+    },
+    {
+      "name": "kbd-example",
+      "title": "Kbd",
+      "dropped": []
+    },
+    {
+      "name": "label-example",
+      "title": "Label",
+      "dropped": []
+    },
+    {
+      "name": "marker-example",
+      "title": "Marker",
+      "dropped": ["MarkerExample"]
+    },
+    {
+      "name": "menubar-example",
+      "title": "Menubar",
+      "dropped": ["MenubarWithRadio", "MenubarWithInset"]
+    },
+    {
+      "name": "message-example",
+      "title": "Message",
+      "dropped": ["messagePartsChat", "MessageTextPart"]
+    },
+    {
+      "name": "native-select-example",
+      "title": "Native Select",
+      "dropped": []
+    },
+    {
+      "name": "navigation-menu-example",
+      "title": "Navigation Menu",
+      "dropped": []
+    },
+    {
+      "name": "pagination-example",
+      "title": "Pagination",
+      "dropped": []
+    },
+    {
+      "name": "popover-example",
+      "title": "Popover",
+      "dropped": []
+    },
+    {
+      "name": "progress-example",
+      "title": "Progress",
+      "dropped": ["ProgressControlled", "FileUploadList"]
+    },
+    {
+      "name": "radio-group-example",
+      "title": "Radio Group",
+      "dropped": []
+    },
+    {
+      "name": "scroll-area-example",
+      "title": "Scroll Area",
+      "dropped": []
+    },
+    {
+      "name": "select-example",
+      "title": "Select",
+      "dropped": []
+    },
+    {
+      "name": "separator-example",
+      "title": "Separator",
+      "dropped": []
+    },
+    {
+      "name": "sheet-example",
+      "title": "Sheet",
+      "dropped": []
+    },
+    {
+      "name": "sidebar-example",
+      "title": "Sidebar",
+      "dropped": ["SidebarExample"]
+    },
+    {
+      "name": "sidebar-floating-example",
+      "title": "Sidebar (Floating)",
+      "dropped": []
+    },
+    {
+      "name": "sidebar-icon-example",
+      "title": "Sidebar (Icon)",
+      "dropped": ["SidebarIconExample"]
+    },
+    {
+      "name": "sidebar-inset-example",
+      "title": "Sidebar (Inset)",
+      "dropped": []
+    },
+    {
+      "name": "skeleton-example",
+      "title": "Skeleton",
+      "dropped": []
+    },
+    {
+      "name": "slider-example",
+      "title": "Slider",
+      "dropped": ["SliderControlled"]
+    },
+    {
+      "name": "spinner-example",
+      "title": "Spinner",
+      "dropped": []
+    },
+    {
+      "name": "switch-example",
+      "title": "Switch",
+      "dropped": []
+    },
+    {
+      "name": "table-example",
+      "title": "Table",
+      "dropped": []
+    },
+    {
+      "name": "tabs-example",
+      "title": "Tabs",
+      "dropped": []
+    },
+    {
+      "name": "textarea-example",
+      "title": "Textarea",
+      "dropped": []
+    },
+    {
+      "name": "toast-example",
+      "title": "Toast",
+      "dropped": ["ToastBasic", "ToastWithAction", "ToastPromise"]
+    },
+    {
+      "name": "toggle-example",
+      "title": "Toggle",
+      "dropped": []
+    },
+    {
+      "name": "toggle-group-example",
+      "title": "Toggle Group",
+      "dropped": ["ToggleGroupFontWeightSelector"]
+    },
+    {
+      "name": "tooltip-example",
+      "title": "Tooltip",
+      "dropped": ["TooltipOnLink"]
+    }
+  ]
 }

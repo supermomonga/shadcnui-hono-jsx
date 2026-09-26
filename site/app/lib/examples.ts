@@ -6,9 +6,16 @@ export interface ExampleEntry {
   skipped?: string
 }
 
+export interface CreateItem {
+  name: string
+  title: string
+  dropped: string[]
+}
+
 export const manifest = manifestJson as {
   commit: string
   examples: Record<string, ExampleEntry>
+  create: CreateItem[]
 }
 
 const modules = import.meta.glob<Record<string, unknown>>(

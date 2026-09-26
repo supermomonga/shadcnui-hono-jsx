@@ -17,7 +17,15 @@ const installs = path.join(siteDir, ".installs")
 export default defineConfig(({ mode }) => ({
   plugins: [
     honox({
-      client: { input: ["/app/client.ts", "/app/style.css"] },
+      client: {
+        input: [
+          "/app/client.ts",
+          "/app/style.css",
+          "/app/create.ts",
+          "/app/preview.ts",
+          "/app/preview.css",
+        ],
+      },
     }),
     tailwindcss(),
     ...(mode === "client"

@@ -5,27 +5,7 @@ import { THEME_SCRIPT } from "@/components/mode-switcher"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { SiteScript } from "@/components/site-script"
-import { siteConfig } from "@/lib/site"
-
-/**
- * The components' client scripts (public/shadcn/): the docs render every
- * component, and the scripts only listen on the document.
- */
-const CLIENT_SCRIPTS = [
-  "avatar",
-  "collapsible",
-  "combobox",
-  "drawer",
-  "hover",
-  "input-group",
-  "menu",
-  "navigation-menu",
-  "scroll-area",
-  "sidebar",
-  "slider",
-  "tabs",
-  "toast",
-]
+import { CLIENT_SCRIPTS, siteConfig } from "@/lib/site"
 
 export default jsxRenderer(({ children, title, description, bare }, c) => {
   const pageTitle = title ? `${title} - ${siteConfig.name}` : siteConfig.name

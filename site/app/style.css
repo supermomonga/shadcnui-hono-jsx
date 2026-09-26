@@ -11,6 +11,8 @@
 @source "../.installs/*/components";
 @source "../content";
 @source "../generated";
+/* Swatches of the create page reference the palette's variables. */
+@source inline("bg-{neutral,stone,zinc,gray,mauve,olive,mist,taupe,amber,blue,cyan,emerald,fuchsia,green,indigo,lime,orange,pink,purple,red,rose,sky,teal,violet,yellow}-500");
 
 @custom-variant fixed (&:is(.layout-fixed *));
 

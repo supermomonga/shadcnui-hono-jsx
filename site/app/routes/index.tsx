@@ -1,5 +1,6 @@
 import { createRoute } from "honox/factory"
 import { ArrowRight } from "lucide"
+import { CardsDemo } from "@/components/cards-demo"
 import { Icon } from "@/components/icon"
 import {
   PageActions,
@@ -36,6 +37,13 @@ export default createRoute((c) =>
           </Button>
         </PageActions>
       </PageHeader>
+      <div class="container-wrapper flex-1 p-0">
+        <div class="container overflow-hidden px-0 lg:max-w-none">
+          <section>
+            <CardsDemo />
+          </section>
+        </div>
+      </div>
     </div>,
     { description: siteConfig.description }
   )
