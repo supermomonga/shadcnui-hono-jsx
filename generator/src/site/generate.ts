@@ -272,7 +272,16 @@ export function generateSite(): SiteOutput {
       `create/${name}.tsx`,
       format(
         // Previews only: Base UI's object values (SelectItem) need not type-check.
-        `${header(`registry/base-nova/${name}`, lock.commit, dropped.length > 0 ? [`Left out (needs React): ${dropped.join(", ")}.`] : [])}\n// @ts-nocheck: a preview of the create page, not code shown to users.\n\n${tidyImports(text)}`,
+        `${header(`registry/base-nova/${name}`, lock.commit, [
+          ...(override
+            ? [
+                `Overridden: ${Object.keys(override.functions).join(", ")} (site/examples/registry-overrides/${name}.tsx).`,
+              ]
+            : []),
+          ...(dropped.length > 0
+            ? [`Left out (needs React): ${dropped.join(", ")}.`]
+            : []),
+        ])}\n// @ts-nocheck: a preview of the create page, not code shown to users.\n\n${tidyImports(text)}`,
         `create/${name}.tsx`
       )
     )

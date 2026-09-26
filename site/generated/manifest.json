@@ -1127,11 +1127,7 @@
     {
       "name": "bubble-example",
       "title": "Bubble",
-      "dropped": [
-        "BubbleCollapsible",
-        "BubbleReactionsButtons",
-        "BubbleButtonLinks"
-      ]
+      "dropped": []
     },
     {
       "name": "button-example",
@@ -1146,42 +1142,42 @@
     {
       "name": "card-example",
       "title": "Card",
-      "dropped": ["CardCustomSpacing"]
+      "dropped": []
     },
     {
       "name": "checkbox-example",
       "title": "Checkbox",
-      "dropped": ["CheckboxInTable"]
+      "dropped": []
     },
     {
       "name": "collapsible-example",
       "title": "Collapsible",
-      "dropped": ["CollapsibleSettings"]
+      "dropped": []
     },
     {
       "name": "combobox-example",
       "title": "Combobox",
-      "dropped": ["ComboboxWithForm", "ComboboxInDialog"]
+      "dropped": []
     },
     {
       "name": "component-example",
       "title": "Example",
-      "dropped": ["FormExample"]
+      "dropped": []
     },
     {
       "name": "context-menu-example",
       "title": "Context Menu",
-      "dropped": ["ContextMenuWithRadio", "ContextMenuWithInset"]
+      "dropped": []
     },
     {
       "name": "demo",
       "title": "Demo",
-      "dropped": ["Demo"]
+      "dropped": []
     },
     {
       "name": "dialog-example",
       "title": "Dialog",
-      "dropped": ["DialogChatSettings"]
+      "dropped": []
     },
     {
       "name": "drawer-example",
@@ -1206,11 +1202,7 @@
     {
       "name": "input-group-example",
       "title": "Input Group",
-      "dropped": [
-        "InputGroupExample",
-        "InputGroupWithAddons",
-        "InputGroupWithTooltip"
-      ]
+      "dropped": []
     },
     {
       "name": "item-example",
@@ -1230,17 +1222,17 @@
     {
       "name": "marker-example",
       "title": "Marker",
-      "dropped": ["MarkerExample"]
+      "dropped": []
     },
     {
       "name": "menubar-example",
       "title": "Menubar",
-      "dropped": ["MenubarWithRadio", "MenubarWithInset"]
+      "dropped": []
     },
     {
       "name": "message-example",
       "title": "Message",
-      "dropped": ["messagePartsChat", "MessageTextPart"]
+      "dropped": []
     },
     {
       "name": "native-select-example",
@@ -1265,7 +1257,7 @@
     {
       "name": "progress-example",
       "title": "Progress",
-      "dropped": ["ProgressControlled", "FileUploadList"]
+      "dropped": []
     },
     {
       "name": "radio-group-example",
@@ -1295,7 +1287,7 @@
     {
       "name": "sidebar-example",
       "title": "Sidebar",
-      "dropped": ["SidebarExample"]
+      "dropped": []
     },
     {
       "name": "sidebar-floating-example",
@@ -1305,7 +1297,7 @@
     {
       "name": "sidebar-icon-example",
       "title": "Sidebar (Icon)",
-      "dropped": ["SidebarIconExample"]
+      "dropped": []
     },
     {
       "name": "sidebar-inset-example",
@@ -1320,7 +1312,7 @@
     {
       "name": "slider-example",
       "title": "Slider",
-      "dropped": ["SliderControlled"]
+      "dropped": []
     },
     {
       "name": "spinner-example",
@@ -1350,7 +1342,7 @@
     {
       "name": "toast-example",
       "title": "Toast",
-      "dropped": ["ToastBasic", "ToastWithAction", "ToastPromise"]
+      "dropped": []
     },
     {
       "name": "toggle-example",
@@ -1360,12 +1352,12 @@
     {
       "name": "toggle-group-example",
       "title": "Toggle Group",
-      "dropped": ["ToggleGroupFontWeightSelector"]
+      "dropped": []
     },
     {
       "name": "tooltip-example",
       "title": "Tooltip",
-      "dropped": ["TooltipOnLink"]
+      "dropped": []
     }
   ]
 }
