@@ -376,15 +376,18 @@ export function applyOverride(
 /** Removes unused imports and merges imports of the same module. */
 export function tidyImports(text: string): string {
   const sf = parseSource(text, "tidy.tsx")
-  const body = sf
-    .getStatements()
-    .filter((statement) => !Node.isImportDeclaration(statement))
-    .map((statement) => statement.getText())
-    .join("\n")
-  const used = (local: string) =>
-    new RegExp(`(?<![\\w$.])${local.replace(/\$/g, "\\$")}(?![\\w$])`).test(
-      body
-    )
+  // Identifiers of the code, so comments and attribute names such as
+  // `data-toast-trigger` do not keep an import (`toast`).
+  const identifiers = new Set(
+    sf
+      .getStatements()
+      .filter((statement) => !Node.isImportDeclaration(statement))
+      .flatMap((statement) =>
+        statement.getDescendantsOfKind(SyntaxKind.Identifier)
+      )
+      .map((identifier) => identifier.getText())
+  )
+  const used = (local: string) => identifiers.has(local)
   const byModule = new Map<
     string,
     {

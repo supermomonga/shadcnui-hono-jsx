@@ -5,6 +5,7 @@ import { THEME_SCRIPT } from "@/components/mode-switcher"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { SiteScript } from "@/components/site-script"
+import { Toaster } from "@/components/ui/toast"
 import { siteConfig } from "@/lib/site"
 
 /**
@@ -69,6 +70,8 @@ export default jsxRenderer(({ children, title, description, bare }, c) => {
             <SiteFooter />
           </div>
         )}
+        {/* For the examples' toasts, as in the layout of upstream's website. */}
+        <Toaster />
       </body>
     </html>
   )

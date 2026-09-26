@@ -141,6 +141,34 @@ export function ArchiveIcon({
   )
 }
 
+/** Lucide `arrow-left` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function ArrowLeftIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-arrow-left", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="m12 19-7-7 7-7" />
+      <path d="M19 12H5" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `arrow-right` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function ArrowRightIcon({
   class: className,
@@ -257,6 +285,33 @@ export function AudioLinesIcon({
   )
 }
 
+/** Lucide `audio-waveform` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function AudioWaveform({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-audio-waveform", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0V4a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0v-4a2 2 0 0 1 2-2" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `badge-check` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function BadgeCheck({
   class: className,
@@ -308,6 +363,34 @@ export function BadgeCheckIcon({
     >
       <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
       <path d="m16 9-5.5 5.5L8 12" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `bell` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Bell({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-bell", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+      <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
       {children}
     </svg>
   )
@@ -449,6 +532,34 @@ export function BookmarkIcon({
   )
 }
 
+/** Lucide `book-open` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function BookOpen({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-book-open", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M12 5v16" />
+      <path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `book-open-check` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function BookOpenCheck({
   class: className,
@@ -473,6 +584,38 @@ export function BookOpenCheck({
       <path d="M12 5v16" />
       <path d="m16 12 2 2 4-4" />
       <path d="M22 6V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2h4.001A2 2 0 0022 17v-1.344" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `bot` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Bot({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-bot", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M12 8V4H8" />
+      <rect width="16" height="12" x="4" y="8" rx="2" />
+      <path d="M2 14h2" />
+      <path d="M20 14h2" />
+      <path d="M15 13v2" />
+      <path d="M9 13v2" />
       {children}
     </svg>
   )
@@ -505,6 +648,69 @@ export function BotIcon({
       <path d="M20 14h2" />
       <path d="M15 13v2" />
       <path d="M9 13v2" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `building-complex` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Building2Icon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-building-complex lucide-building-2", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M10 12h4" />
+      <path d="M10 8h4" />
+      <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
+      <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2" />
+      <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `calendar-plus` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function CalendarPlusIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-calendar-plus", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M16 18h6" />
+      <path d="M16 2v3" />
+      <path d="M19 15v6" />
+      <path d="M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3" />
+      <path d="M3 9h18" />
+      <path d="M8 2v3" />
       {children}
     </svg>
   )
@@ -593,6 +799,33 @@ export function ChevronDownIcon({
 }
 
 /** Lucide `chevron-right` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function ChevronRight({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-chevron-right", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="m9 18 6-6-6-6" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `chevron-right` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function ChevronRightIcon({
   class: className,
   children,
@@ -614,6 +847,34 @@ export function ChevronRightIcon({
       {...props}
     >
       <path d="m9 18 6-6-6-6" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `chevrons-up-down` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function ChevronsUpDown({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-chevrons-up-down", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="m7 15 5 5 5-5" />
+      <path d="m7 9 5-5 5 5" />
       {children}
     </svg>
   )
@@ -863,6 +1124,33 @@ export function CodeIcon({
   )
 }
 
+/** Lucide `command` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Command({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-command", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `copy` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function CopyIcon({
   class: className,
@@ -886,6 +1174,35 @@ export function CopyIcon({
     >
       <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
       <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `credit-card` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function CreditCard({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-credit-card", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <rect width="20" height="14" x="2" y="5" rx="2" />
+      <line x1="2" x2="22" y1="10" y2="10" />
+      <path d="M6 14h2" />
       {children}
     </svg>
   )
@@ -1000,6 +1317,34 @@ export function ExternalLinkIcon({
       <path d="M15 3h6v6" />
       <path d="M10 14 21 3" />
       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `eye` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function EyeIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-eye", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+      <circle cx="12" cy="12" r="3" />
       {children}
     </svg>
   )
@@ -1187,6 +1532,33 @@ export function FileWarningIcon({
 }
 
 /** Lucide `folder` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Folder({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-folder", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `folder` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function FolderIcon({
   class: className,
   children,
@@ -1208,6 +1580,149 @@ export function FolderIcon({
       {...props}
     >
       <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `folder-open` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function FolderOpenIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-folder-open", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `folder-search` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function FolderSearchIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-folder-search", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M10.7 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v4.1" />
+      <path d="m21 21-1.9-1.9" />
+      <circle cx="17" cy="17" r="3" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `forward` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Forward({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-forward", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="m15 17 5-5-5-5" />
+      <path d="M4 18v-2a4 4 0 0 1 4-4h12" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `frame` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Frame({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-frame", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <line x1="22" x2="2" y1="6" y2="6" />
+      <line x1="22" x2="2" y1="18" y2="18" />
+      <line x1="6" x2="6" y1="2" y2="22" />
+      <line x1="18" x2="18" y1="2" y2="22" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `gallery-vertical-end` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function GalleryVerticalEnd({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-gallery-vertical-end", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M7 2h10" />
+      <path d="M5 6h14" />
+      <rect width="18" height="12" x="3" y="10" rx="2" />
       {children}
     </svg>
   )
@@ -1396,6 +1911,32 @@ export function IconBrandJavascript({
       <path d="M20 4l-2 14.5l-6 2l-6 -2l-2 -14.5l16 0" />
       <path d="M7.5 8h3v8l-2 -1" />
       <path d="M16.5 8h-2.5a.5 .5 0 0 0 -.5 .5v3a.5 .5 0 0 0 .5 .5h1.423a.5 .5 0 0 1 .495 .57l-.418 2.93l-2 .5" />
+      {children}
+    </svg>
+  )
+}
+
+/** Tabler `check` icon, inlined (MIT License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function IconCheck({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("tabler-icon tabler-icon-check", className)}
+      {...props}
+    >
+      <path d="M5 12l5 5l10 -10" />
       {children}
     </svg>
   )
@@ -1651,6 +2192,32 @@ export function IconRefresh({
   )
 }
 
+/** Tabler `star` icon, inlined (MIT License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function IconStar({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("tabler-icon tabler-icon-star", className)}
+      {...props}
+    >
+      <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `inbox` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function InboxIcon({
   class: className,
@@ -1766,6 +2333,131 @@ export function ItalicIcon({
   )
 }
 
+/** Lucide `keyboard` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function KeyboardIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-keyboard", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M10 8h.01" />
+      <path d="M12 12h.01" />
+      <path d="M14 8h.01" />
+      <path d="M16 12h.01" />
+      <path d="M18 8h.01" />
+      <path d="M6 8h.01" />
+      <path d="M7 16h10" />
+      <path d="M8 12h.01" />
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `languages` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function LanguagesIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-languages", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="m5 8 6 6" />
+      <path d="m4 14 6-6 2-3" />
+      <path d="M2 5h12" />
+      <path d="M7 2h1" />
+      <path d="m22 22-5-10-5 10" />
+      <path d="M14 18h6" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `panels-top-left` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function LayoutIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-panels-top-left lucide-layout", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M3 9h18" />
+      <path d="M9 21V9" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `list-filter` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function ListFilterIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-list-filter", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M2 5h20" />
+      <path d="M6 12h12" />
+      <path d="M9 19h6" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `loader` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function LoaderIcon({
   class: className,
@@ -1801,6 +2493,35 @@ export function LoaderIcon({
 }
 
 /** Lucide `log-out` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function LogOut({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-log-out", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="m16 17 5-5-5-5" />
+      <path d="M21 12H9" />
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `log-out` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function LogOutIcon({
   class: className,
   children,
@@ -1824,6 +2545,35 @@ export function LogOutIcon({
       <path d="m16 17 5-5-5-5" />
       <path d="M21 12H9" />
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `mail-check` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function MailCheckIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-mail-check", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      <path d="m16 19 2 2 4-4" />
       {children}
     </svg>
   )
@@ -1857,6 +2607,122 @@ export function MailIcon({
   )
 }
 
+/** Lucide `map` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Map({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-map", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z" />
+      <path d="M15 5.764v15" />
+      <path d="M9 3.236v15" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `maximize` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function MaximizeIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-maximize", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+      <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+      <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+      <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `message-square` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function MessageSquareIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-message-square", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `minimize` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function MinimizeIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-minimize", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+      <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+      <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+      <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `minus` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function MinusIcon({
   class: className,
@@ -1879,6 +2745,62 @@ export function MinusIcon({
       {...props}
     >
       <path d="M5 12h14" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `monitor` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function MonitorIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-monitor", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <rect width="20" height="14" x="2" y="3" rx="2" />
+      <line x1="8" x2="16" y1="21" y2="21" />
+      <line x1="12" x2="12" y1="17" y2="21" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `moon` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function MoonIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-moon", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
       {children}
     </svg>
   )
@@ -1942,6 +2864,37 @@ export function MoreHorizontalIcon({
   )
 }
 
+/** Lucide `palette` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function PaletteIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-palette", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z" />
+      <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+      <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+      <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+      <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `pencil` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function PencilIcon({
   class: className,
@@ -1965,6 +2918,34 @@ export function PencilIcon({
     >
       <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
       <path d="m15 5 4 4" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `chart-pie` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function PieChart({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-chart-pie lucide-pie-chart", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z" />
+      <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
       {children}
     </svg>
   )
@@ -2086,6 +3067,62 @@ export function RefreshCwIcon({
   )
 }
 
+/** Lucide `rotate-ccw` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function RotateCcwIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-rotate-ccw", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `rotate-cw` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function RotateCwIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-rotate-cw", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `save` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function SaveIcon({
   class: className,
@@ -2202,6 +3239,36 @@ export function SearchIcon({
   )
 }
 
+/** Lucide `settings-2` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Settings2({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-settings-2", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M14 17H5" />
+      <path d="M19 7h-9" />
+      <circle cx="17" cy="17" r="3" />
+      <circle cx="7" cy="7" r="3" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `settings` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function SettingsIcon({
   class: className,
@@ -2288,6 +3355,95 @@ export function ShieldAlertIcon({
   )
 }
 
+/** Lucide `shield` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function ShieldIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-shield", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `sparkles` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Sparkles({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-sparkles lucide-stars", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" />
+      <path d="M20 2v4" />
+      <path d="M22 4h-4" />
+      <circle cx="4" cy="20" r="2" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `square-terminal` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function SquareTerminal({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn(
+        "lucide lucide-square-terminal lucide-terminal-square",
+        className
+      )}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="m7 11 2-2-2-2" />
+      <path d="M11 13h4" />
+      <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+      {children}
+    </svg>
+  )
+}
+
 /** Lucide `star` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 export function StarIcon({
   class: className,
@@ -2310,6 +3466,41 @@ export function StarIcon({
       {...props}
     >
       <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `sun` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function SunIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-sun", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.93 4.93 1.41 1.41" />
+      <path d="m17.66 17.66 1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m6.34 17.66-1.41 1.41" />
+      <path d="m19.07 4.93-1.41 1.41" />
       {children}
     </svg>
   )
@@ -2340,6 +3531,34 @@ export function TableIcon({
       <rect width="18" height="18" x="3" y="3" rx="2" />
       <path d="M3 9h18" />
       <path d="M3 15h18" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `tag` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function TagIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-tag", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+      <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
       {children}
     </svg>
   )
@@ -2396,6 +3615,37 @@ export function ThumbsUpIcon({
     >
       <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
       <path d="M7 10v12" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `trash` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function Trash2({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-trash lucide-trash-2", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+      <path d="M3 6h18" />
+      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
       {children}
     </svg>
   )
@@ -2603,6 +3853,34 @@ export function VolumeOffIcon({
       <path d="m2 2 20 20" />
       <path d="m7 7-.587.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298V11" />
       <path d="M9.828 4.172A.686.686 0 0 1 11 4.657v.686" />
+      {children}
+    </svg>
+  )
+}
+
+/** Lucide `wallet` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
+export function WalletIcon({
+  class: className,
+  children,
+  ...props
+}: ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide lucide-wallet", className)}
+      aria-hidden={children || hasA11yProp(props) ? undefined : "true"}
+      {...props}
+    >
+      <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+      <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
       {children}
     </svg>
   )
