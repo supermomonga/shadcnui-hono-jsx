@@ -8,6 +8,8 @@ links:
   kind: amendedby
 - target: 15
   kind: amendedby
+- target: 29
+  kind: supersededby
 ---
 
 # Distribute components as universal items from a GitHub source registry

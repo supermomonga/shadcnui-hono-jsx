@@ -3,6 +3,9 @@ number: 9
 title: Vendor shadcn tailwind.css in the theme item
 status: accepted
 date: 2026-09-25
+links:
+- target: 29
+  kind: amendedby
 ---
 
 # Vendor shadcn tailwind.css in the theme item

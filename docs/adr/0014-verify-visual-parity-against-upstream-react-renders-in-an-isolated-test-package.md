@@ -3,6 +3,9 @@ number: 14
 title: Verify visual parity against upstream React renders in an isolated test package
 status: accepted
 date: 2026-09-25
+links:
+- target: 30
+  kind: amendedby
 ---
 
 

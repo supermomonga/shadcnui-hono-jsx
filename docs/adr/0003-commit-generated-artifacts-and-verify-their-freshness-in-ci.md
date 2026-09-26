@@ -6,6 +6,8 @@ date: 2026-09-25
 links:
 - target: 28
   kind: amendedby
+- target: 30
+  kind: amendedby
 ---
 
 # Commit generated artifacts and verify their freshness in CI

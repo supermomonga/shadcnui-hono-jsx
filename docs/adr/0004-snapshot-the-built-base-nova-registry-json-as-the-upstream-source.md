@@ -3,6 +3,9 @@ number: 4
 title: Snapshot the built base-nova registry JSON as the upstream source
 status: accepted
 date: 2026-09-25
+links:
+- target: 30
+  kind: amendedby
 ---
 
 # Snapshot the built base-nova registry JSON as the upstream source
