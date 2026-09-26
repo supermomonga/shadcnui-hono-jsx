@@ -253,11 +253,17 @@ export function translateExample(
     }
   }
 
-  // `React.ElementType` (icons passed as data) is a Hono JSX component here.
-  for (const ref of sf.getDescendantsOfKind(SyntaxKind.TypeReference)) {
-    if (ref.getTypeName().getText() === "React.ElementType") {
+  // `React.ElementType` (icons passed as data) is a Hono JSX component here,
+  // and React's synthetic events are DOM events.
+  for (const ref of sf
+    .getDescendantsOfKind(SyntaxKind.TypeReference)
+    .reverse()) {
+    const typeName = ref.getTypeName().getText()
+    if (typeName === "React.ElementType") {
       ref.replaceWithText("FC")
       ctx.honoTypes.add("FC" as never)
+    } else if (/^React\.\w*Event$/.test(typeName)) {
+      ref.replaceWithText("Event")
     }
   }
   reactTypes.run(ctx)

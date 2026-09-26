@@ -12,6 +12,7 @@
 import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs"
 import path from "node:path"
 import { OVERRIDES, SKIPPED } from "../../../site/examples/overrides"
+import { REGISTRY_OVERRIDES } from "../../../site/examples/registry-overrides"
 import { formatWithBiome } from "../emit/format"
 import { ROOT } from "../paths"
 import { previewNames, SiteSourcesStore } from "../upstream/site-sources"
@@ -230,13 +231,13 @@ export function generateSite(): SiteOutput {
       )
       continue
     }
-    const override = OVERRIDES[`registry/${name}`]
+    const override = REGISTRY_OVERRIDES[name]
     let text = result.text
     if (override) {
       text = applyOverride(
         text,
         readFileSync(
-          path.join(OVERRIDES_DIR, "registry", `${name}.tsx`),
+          path.join(SITE_DIR, "examples", "registry-overrides", `${name}.tsx`),
           "utf8"
         ),
         Object.keys(override.functions)
