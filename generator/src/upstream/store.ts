@@ -47,6 +47,25 @@ export class UpstreamStore {
     return path.join(this.styleDir, "shadcn-tailwind.css")
   }
 
+  /** The pinned `shadcn` package's `shadcn/preset` module, as one file. */
+  get presetModuleFile(): string {
+    return path.join(this.dir, "shadcn-package", "preset.js")
+  }
+
+  get presetTypesFile(): string {
+    return path.join(this.dir, "shadcn-package", "preset.d.ts")
+  }
+
+  /** Named presets of the pinned shadcn CLI (`--preset nova`). */
+  get namedPresetsFile(): string {
+    return path.join(this.dir, "shadcn-package", "named-presets.json")
+  }
+
+  /** A `registry:font` item the theme depends on. */
+  fontFile(name: string): string {
+    return path.join(this.styleDir, "fonts", `${name}.json`)
+  }
+
   /** Upstream repository LICENSE.md (monitored only). */
   get licenseFile(): string {
     return path.join(this.dir, "licenses", "shadcn-ui.LICENSE.md")
@@ -110,6 +129,14 @@ export class UpstreamStore {
     const value: unknown = JSON.parse(readFileSync(this.themeFile, "utf8"))
     assertThemeItem(value, this.themeFile)
     return value
+  }
+
+  readFont(name: string): unknown {
+    return JSON.parse(readFileSync(this.fontFile(name), "utf8"))
+  }
+
+  readNamedPresets(): Record<string, Record<string, string>> {
+    return JSON.parse(readFileSync(this.namedPresetsFile, "utf8"))
   }
 
   readTailwindCss(): string {

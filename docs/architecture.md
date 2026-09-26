@@ -11,8 +11,14 @@ ui.shadcn.com registry (base-nova)
   → upstream:sync      → upstream/ (committed snapshot + lock.json)
   → analyzer           → facts + classification (direct / native-adapter / script-adapter / custom-adapter / unsupported)
   → transformers       → Hono JSX source (ts-morph, adapters)
-  → emit               → components/ui/*.tsx, styles/shadcn/*.css (Biome-formatted)
-  → registry/manifest  → registry.json, compatibility.json, README table
+  → emit               → cli/generated/templates/<style>/*.tsx (Biome-formatted),
+                         vendored tailwind.css and shadcn/preset, license notice
+  → catalog/manifest   → cli/generated/catalog.json, compatibility.json, README table
+
+shadcnui-hono-jsx CLI (cli/, in the user's project)
+  init/apply           → theme.css from the preset's /init response on ui.shadcn.com,
+                         fonts, tailwind.css, notice, shadcnui-hono-jsx.json
+  add/apply            → components/ui/*.tsx = finalize(template), public/shadcn/*.js
 ```
 
 ## Directory ownership
@@ -21,11 +27,13 @@ ui.shadcn.com registry (base-nova)
 | --- | --- |
 | `generator/` | hand-written generator code |
 | `generator/src/adapters/` | hand-written translation rules (primitive table, primitive families, component adapters) |
-| `public/shadcn/` | hand-written optional client scripts, installed as they are ([ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)) |
+| `cli/src/` | hand-written CLI: presets, theme builder, `finalize`, install commands ([ADR 0029](./adr/0029-distribute-components-through-a-shadcnui-hono-jsx-cli-that-applies-shadcn-ui-presets.md), [ADR 0030](./adr/0030-generate-templates-for-every-base-ui-style-and-finalize-them-at-install-time.md)) |
+| `cli/client/` | hand-written optional client scripts, installed as they are into `public/shadcn/` ([ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)) |
 | `lite/`, `generator/src/lite.ts` | hand-written lite alternatives in upstream's style and their record of upstream bases ([ADR 0028](./adr/0028-offer-hand-written-lite-alternatives-with-a-lite-suffix-for-components-without-a-port.md)) |
 | `upstream/` | `upstream:sync` only |
 | `generator/src/licenses.ts` | hand-written, reviewed licensing record and notice text |
-| `components/ui/`, `styles/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `registry.json`, `compatibility.json` | `generate` only |
+| `cli/generated/`, `compatibility.json` | `generate` only |
+| `components/ui/`, `styles/shadcn/`, `public/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `shadcnui-hono-jsx.json` (git-ignored) | `dev:install` only: the default preset installed into the repository root for tests and examples |
 | `examples/` | hand-written demo apps |
 
 ## Investigation results
@@ -94,15 +102,14 @@ minimum needed to reproduce a generated file is the style, the item URL, and
 `contentSha256`, the best-effort commit, and the `shadcn` package version whose
 `tailwind.css` is vendored.
 
-### How should universal registry targets be configured for Hono/HonoX?
+### Where are components installed in Hono/HonoX projects?
 
-Every item is `registry:item` and every file a `registry:file` whose `target`
-is `~/` plus its repository path, so installed projects mirror this repository:
-`~/components/ui/<name>.tsx` and `~/styles/shadcn/{theme,tailwind}.css`. The
-`~/` prefix is the only target form the CLI resolves without components.json.
-Generated components import only npm packages (`cn`,
-`class-variance-authority`) and `hono/jsx` types, so the CLI's missing import
-rewriting for universal items does not matter. Consumers:
+The `shadcnui-hono-jsx` CLI writes `components/ui/<name>.tsx`,
+`styles/shadcn/{theme,tailwind}.css`, `public/shadcn/<script>.js`, the notice
+and `shadcnui-hono-jsx.json` relative to the project root, and never creates
+`components.json`. Generated components import only npm packages (`cn`,
+`class-variance-authority`), `hono/jsx` types and sibling components
+(`./<name>`), so no import rewriting is needed. Consumers:
 
 - import `@/components/ui/button` with a `paths` alias (`"@/*": ["./*"]`) or a
   relative path;
@@ -111,8 +118,12 @@ rewriting for universal items does not matter. Consumers:
 - make Tailwind scan `components/ui` (HonoX's `source("../app")` needs
   `@source "../components";`).
 
-See [ADR 0008](./adr/0008-distribute-components-as-universal-items-from-a-github-source-registry.md)
-and [ADR 0009](./adr/0009-vendor-shadcn-tailwind-css-in-the-theme-item.md).
+The components were first distributed as universal items of a GitHub source
+registry installed with `shadcn add`
+([ADR 0008](./adr/0008-distribute-components-as-universal-items-from-a-github-source-registry.md));
+presets moved installation to the CLI
+([ADR 0029](./adr/0029-distribute-components-through-a-shadcnui-hono-jsx-cli-that-applies-shadcn-ui-presets.md)).
+See also [ADR 0009](./adr/0009-vendor-shadcn-tailwind-css-in-the-theme-item.md).
 
 ### What is the cleanest Hono type for intrinsic element props?
 
@@ -246,21 +257,21 @@ Nothing is merged or released automatically
 ([ADR 0010](./adr/0010-automate-upstream-synchronization-through-reviewed-pull-requests.md),
 [ADR 0011](./adr/0011-dispatch-ci-for-upstream-sync-pull-requests-instead-of-using-a-bot-token.md)).
 The repository allows GitHub Actions to create pull requests, and `main`
-requires the `check`, `examples`, `registry-install`, and `visual` checks on pull
-requests.
+requires the `check`, `examples`, `registry-install` (now the CLI install
+test), and `visual` checks on pull requests.
 Syncs are idempotent, so an unchanged upstream produces no pull request.
 
 ## Test layers
 
 | Layer | Location | Runs in |
 | --- | --- | --- |
-| Generator unit tests (policy, sync, report, analyzer, transformer steps, theme, registry, manifest) | `generator/tests/` | `bun run test` |
+| Generator unit tests (policy, sync, report, analyzer, transformer steps, catalog, manifest) | `generator/tests/` | `bun run test` |
+| CLI unit tests (presets against the pinned `shadcn/preset`, `/init` URLs, theme and fonts, finalize, `init`/`add`/`apply` with a stand-in for ui.shadcn.com) | `cli/tests/` | `bun run test` |
 | Render tests (targeted HTML assertions per component) | `tests/render/` | `bun run test` |
 | Dependency policy (no React/Base UI imports, allowlisted packages) | `tests/deps/` | `bun run test` |
 | Type tests (valid usage and `@ts-expect-error` misuse, strict variant) | `tests/types/` | `bun run typecheck` |
 | Freshness of generated files | `bun run generate --check` | `bun run verify`, CI |
-| Registry validation | `shadcn registry validate` | `bun run verify`, CI |
-| Registry install into a clean Hono project | `tests/registry/` | `bun run test:registry`, CI |
+| CLI install into a clean Hono project (`init`, `add` for every item, `apply`, with a local stand-in for ui.shadcn.com) | `tests/install/` | `bun run test:install`, CI `registry-install` |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
 | Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts`, `tests/visual/tabs.spec.ts`, `tests/visual/menu.spec.ts`, `tests/visual/hover.spec.ts`, `tests/visual/slider.spec.ts`, `tests/visual/input-group.spec.ts`, `tests/visual/combobox.spec.ts`, `tests/visual/navigation-menu.spec.ts`, `tests/visual/avatar.spec.ts`, `tests/visual/scroll-area.spec.ts`, `tests/visual/drawer.spec.ts`, `tests/visual/toast.spec.ts`, `tests/visual/sidebar.spec.ts` and `tests/visual/lite.spec.ts` (step-by-step behavior against Base UI) | `bun run test:visual`, CI `visual` |
@@ -276,8 +287,8 @@ installed in that package
 
 ## Licensing
 
-- Every registry item lists `LICENSE-shadcnui-hono-jsx.txt` (target
-  `~/LICENSE-shadcnui-hono-jsx.txt`), a fixed notice built from
+- The CLI installs `LICENSE-shadcnui-hono-jsx.txt` at the project root with
+  every `init`, `add` and `apply`, a fixed notice built from
   `generator/src/licenses.ts`: scope, unofficial-project statement, the shadcn
   and supermomonga copyright notices, and the full MIT text. Generated headers
   stay short and point to it.
@@ -305,5 +316,9 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
   field state) are not reproduced.
 - Upstream items that import non-generated registry items, hooks, or icons
   remain unsupported until those are generated or mapped.
-- The theme covers the `base-nova` preset with the neutral base color; fonts
-  from the preset are not installed.
+- Presets can choose colors, radius, fonts, the menu accent and the pointer
+  cursor. Other styles than Nova, other icon libraries than Lucide, other
+  menu colors and right-to-left layout are planned
+  ([ADR 0030](./adr/0030-generate-templates-for-every-base-ui-style-and-finalize-them-at-install-time.md),
+  [ADR 0031](./adr/0031-inline-icons-of-every-shadcn-ui-icon-library-at-generation-time.md)).
+- The CLI is not published to npm yet.

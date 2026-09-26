@@ -14,9 +14,9 @@ import { type GeneratorConfig, itemUrl } from "./config"
 import { formatWithBiome } from "./emit/format"
 import { renderLiteHeader } from "./emit/header"
 import {
-  componentPath,
   type GeneratedComponent,
   GenerationError,
+  templatePath,
 } from "./generate"
 import { lucideVersion } from "./icons/lucide"
 import { ROOT } from "./paths"
@@ -117,7 +117,7 @@ export function generateLite(
     })),
     icons: { names: output.icons, version: lucideVersion() },
   })
-  const file = componentPath(name)
+  const file = templatePath(deps.config.style, name)
   return {
     name,
     classification,

@@ -20,6 +20,7 @@ jobs:
         with:
           bun-version-file: package.json
       - run: bun install --frozen-lockfile
+      - run: bun run dev:install
       - run: bun run lint
       - run: bun run typecheck
       - run: bun run test
@@ -28,7 +29,6 @@ jobs:
           bun run generate
           git diff --exit-code
           test -z "$(git status --porcelain)"
-      - run: bun run registry:validate
 
   examples:
     runs-on: ubuntu-latest
@@ -38,10 +38,13 @@ jobs:
         with:
           bun-version-file: package.json
       - run: bun install --frozen-lockfile
+      - run: bun run dev:install
       - run: bun run examples:build
       - run: bun run examples:typecheck
       - run: bun run examples:test
 
+  # Installs with the CLI into a clean Hono project (tests/install). The job
+  # keeps its old name because branch protection requires it.
   registry-install:
     runs-on: ubuntu-latest
     steps:
@@ -50,7 +53,7 @@ jobs:
         with:
           bun-version-file: package.json
       - run: bun install --frozen-lockfile
-      - run: bun run test:registry
+      - run: bun run test:install
 
   # Screenshots generated components against upstream shadcn/ui (React) with the
   # same theme. React lives only in tests/visual, never in generated output.
@@ -65,6 +68,8 @@ jobs:
         with:
           bun-version-file: package.json
       - run: bun install --frozen-lockfile
+        working-directory: .
+      - run: bun run dev:install
         working-directory: .
       - run: bun install --frozen-lockfile
       - run: bunx playwright install --with-deps chromium

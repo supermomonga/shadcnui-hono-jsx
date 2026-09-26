@@ -10,3 +10,9 @@ tests/visual/.upstream/
 tests/visual/.output/
 tests/visual/test-results/
 tests/visual/playwright-report/
+# Development install of the CLI's default preset (bun run dev:install).
+/components/ui/
+/styles/shadcn/
+/public/shadcn/
+/LICENSE-shadcnui-hono-jsx.txt
+/shadcnui-hono-jsx.json

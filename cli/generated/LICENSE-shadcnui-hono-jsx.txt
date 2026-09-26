@@ -1,7 +1,7 @@
 shadcnui-hono-jsx - https://github.com/supermomonga/shadcnui-hono-jsx
 
-This notice applies to the component and stylesheet sources installed from the
-shadcnui-hono-jsx registry (for example components/ui/*.tsx and
+This notice applies to the component and stylesheet sources installed by the
+shadcnui-hono-jsx CLI (for example components/ui/*.tsx and
 styles/shadcn/*.css) and to their derivative portions. It does not apply to
 unrelated code in the project that receives them.
 

@@ -9,18 +9,23 @@ import {
   packageNameOf,
 } from "../../generator/src/policy"
 
-const componentsDir = path.join(ROOT, "components", "ui")
-const components = readdirSync(componentsDir)
-  .filter((f) => f.endsWith(".tsx"))
+// Templates of every style, which the CLI installs as components (docs/adr/0030).
+const templatesDir = path.join(ROOT, "cli", "generated", "templates")
+const components = readdirSync(templatesDir)
+  .flatMap((style) =>
+    readdirSync(path.join(templatesDir, style))
+      .filter((f) => f.endsWith(".tsx"))
+      .map((f) => path.join(style, f))
+  )
   .sort()
 
-describe("generated components", () => {
+describe("generated templates", () => {
   test("exist", () => {
     expect(components.length).toBeGreaterThan(0)
   })
 
   test.each(components)("%s imports no prohibited modules", (file) => {
-    const source = readFileSync(path.join(componentsDir, file), "utf8")
+    const source = readFileSync(path.join(templatesDir, file), "utf8")
     expect(findProhibitedImports(source)).toEqual([])
     expect(source).not.toMatch(/\bReact\b/)
     expect(source).not.toContain("use client")
@@ -29,11 +34,13 @@ describe("generated components", () => {
   test.each(components)(
     "%s only imports hono, allowlisted packages and sibling components",
     (file) => {
-      const source = readFileSync(path.join(componentsDir, file), "utf8")
+      const source = readFileSync(path.join(templatesDir, file), "utf8")
       for (const specifier of findImports(source)) {
         const sibling = specifier.match(/^\.\/([a-z0-9-]+)$/)?.[1]
         if (sibling) {
-          expect(components).toContain(`${sibling}.tsx`)
+          expect(components).toContain(
+            path.join(path.dirname(file), `${sibling}.tsx`)
+          )
           continue
         }
         const pkg = packageNameOf(specifier)

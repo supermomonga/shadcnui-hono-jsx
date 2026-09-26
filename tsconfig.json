@@ -19,11 +19,12 @@
     "allowJs": true,
     "checkJs": true
   },
-  "include": ["generator", "tests", "components", "public/shadcn", "*.ts"],
+  "include": ["generator", "tests", "cli", "components", "*.ts"],
   "exclude": [
+    "cli/generated/shadcn-preset.js",
     "examples",
     "node_modules",
-    "tests/registry/fixture",
+    "tests/install/fixture",
     "tests/types",
     "tests/visual"
   ]

@@ -5,8 +5,6 @@ export interface GeneratorConfig {
   style: string
   /** Base URL of the upstream shadcn/ui registry. */
   registryBaseUrl: string
-  /** URL of the upstream theme (`registry:base`) item for the style. */
-  themeUrl: string
   /** URL of the upstream repository's license, snapshotted for review (never redistributed as-is). */
   licenseUrl: string
   /** Upstream item types that are snapshotted and classified. */

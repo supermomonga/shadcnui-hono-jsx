@@ -5,7 +5,7 @@ import { Layout } from "./layout"
 
 export const app = new Hono()
 
-// The registry installs client scripts into ./public/shadcn; this example
+// The CLI installs client scripts into ./public/shadcn; this example
 // serves the repository's copy.
 app.use("/shadcn/*", serveStatic({ root: "../../public" }))
 

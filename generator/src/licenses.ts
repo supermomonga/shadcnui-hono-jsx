@@ -1,7 +1,7 @@
 /**
- * Licensing of the distributed (registry) files.
+ * Licensing of the distributed files.
  *
- * The notice shipped with every registry item is fixed, reviewed text. It is
+ * The notice the CLI installs with the components is fixed, reviewed text. It is
  * never assembled from upstream license files: a change in upstream licensing
  * can change whether and how its code may be redistributed, so it needs a human
  * decision. `upstream:sync` only snapshots the upstream license texts, and
@@ -80,7 +80,7 @@ SOFTWARE.
 /** This project's notice for its own additions and modifications. */
 export const PROJECT_COPYRIGHT = "Copyright (c) 2026 supermomonga"
 
-/** Notice file installed next to every registry item (`~/<path>`). */
+/** Notice file the CLI installs at the project root (docs/adr/0029). */
 export const LICENSE_NOTICE_PATH = "LICENSE-shadcnui-hono-jsx.txt"
 
 const MIT_PERMISSION_NOTICE = `Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -105,8 +105,8 @@ SOFTWARE.`
 export function buildLicenseNotice(repository: string): string {
   return `shadcnui-hono-jsx - https://github.com/${repository}
 
-This notice applies to the component and stylesheet sources installed from the
-shadcnui-hono-jsx registry (for example components/ui/*.tsx and
+This notice applies to the component and stylesheet sources installed by the
+shadcnui-hono-jsx CLI (for example components/ui/*.tsx and
 styles/shadcn/*.css) and to their derivative portions. It does not apply to
 unrelated code in the project that receives them.
 

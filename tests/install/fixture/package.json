@@ -1,5 +1,5 @@
 {
-  "name": "registry-install-fixture",
+  "name": "cli-install-fixture",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.3.13",

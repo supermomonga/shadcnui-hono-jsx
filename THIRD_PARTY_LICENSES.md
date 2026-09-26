@@ -5,12 +5,13 @@ maintained by, or endorsed by shadcn or the shadcn/ui project.
 
 ## shadcn/ui
 
-The generated components in `components/ui/`, the theme in `styles/shadcn/`,
-and the upstream snapshot in `upstream/` are derived from
+The component templates and the vendored files in `cli/generated/`, the themes
+the CLI builds, and the upstream snapshot in `upstream/` are derived from
 [shadcn/ui](https://github.com/shadcn-ui/ui) (including the `shadcn` package's
-`tailwind.css`). They are translated to Hono JSX by this project's generator.
+`tailwind.css` and `shadcn/preset` module). The components are translated to
+Hono JSX by this project's generator.
 
-Every registry item also installs `LICENSE-shadcnui-hono-jsx.txt`, which
+The CLI installs `LICENSE-shadcnui-hono-jsx.txt` with the components, which
 carries this notice (and this project's MIT notice for its own additions and
 modifications) into the receiving project. `upstream/licenses/` holds snapshots
 of the upstream license texts; they are monitored for changes and are not used
@@ -46,8 +47,8 @@ SOFTWARE.
 Generated components that show icons inline SVG from
 [Lucide](https://lucide.dev) (ISC; some icons derive from Feather, MIT). The
 generator reads them from the pinned `lucide` package at generation time; the
-full Lucide license is reproduced in `LICENSE-shadcnui-hono-jsx.txt`, which is
-installed with every registry item.
+full Lucide license is reproduced in `LICENSE-shadcnui-hono-jsx.txt`, which the
+CLI installs with the components.
 
 ## Base UI
 
@@ -55,10 +56,12 @@ installed with every registry item.
 reference for the DOM attributes that generated components emit. No Base UI
 source code is distributed.
 
-## Runtime dependencies installed by registry items
+## Runtime dependencies installed by the CLI
 
 These packages are installed from npm into the consuming project; they are not
-redistributed by this repository.
+redistributed by this repository. The CLI also installs the
+`@fontsource-variable/*` packages of the preset's fonts (each under its own
+license, mostly the SIL Open Font License), as the shadcn CLI does.
 
 | Package | License |
 | --- | --- |

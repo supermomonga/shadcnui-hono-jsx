@@ -63,9 +63,12 @@ describe("buildLicenseNotice", () => {
 
   test("is deterministic and matches the generated file", () => {
     expect(buildLicenseNotice("owner/repo")).toBe(notice)
-    expect(readFileSync(path.join(ROOT, LICENSE_NOTICE_PATH), "utf8")).toBe(
-      buildLicenseNotice(config.repository)
-    )
+    expect(
+      readFileSync(
+        path.join(ROOT, "cli", "generated", LICENSE_NOTICE_PATH),
+        "utf8"
+      )
+    ).toBe(buildLicenseNotice(config.repository))
   })
 })
 

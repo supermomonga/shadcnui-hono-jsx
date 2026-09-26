@@ -16,6 +16,8 @@ const empty: SyncResult = {
   unchanged: [],
   indexChanged: false,
   themeChanged: false,
+  fontsChanged: [],
+  presetChanged: false,
   tailwindCssChanged: false,
   theme: null,
   tailwindCss: null,

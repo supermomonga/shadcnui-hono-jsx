@@ -17,11 +17,11 @@ export default defineConfig({
     build(),
   ],
   resolve: {
-    // In a real project the registry installs components into ./components/ui.
+    // In a real project the CLI installs components into ./components/ui.
     alias: { "@/components": path.join(repositoryRoot, "components") },
   },
   server: { fs: { allow: [repositoryRoot] } },
-  // The registry installs client scripts into ./public/shadcn; this example
+  // The CLI installs client scripts into ./public/shadcn; this example
   // serves the repository's copy.
   publicDir: path.join(repositoryRoot, "public"),
 })

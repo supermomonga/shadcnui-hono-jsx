@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs"
+import { existsSync, readFileSync, rmSync } from "node:fs"
 import { type GeneratorConfig, indexUrl, itemUrl } from "../config"
 import { type FetchLike, fetchText } from "./fetch"
 import { resolveUpstreamHead } from "./github"
@@ -12,7 +12,7 @@ import {
   type UpstreamIndex,
   type UpstreamItem,
 } from "./types"
-import type { PackageLicenseSource } from "./vendored"
+import type { PackageLicenseSource, PresetModuleSource } from "./vendored"
 
 export interface VendoredSource {
   package: string
@@ -28,6 +28,10 @@ export interface VendoredSource {
 export interface SyncOptions {
   config: GeneratorConfig
   store: UpstreamStore
+  /** The `/init` URL of the default preset, as the CLI requests it (docs/adr/0029). */
+  themeUrl: string
+  /** `shadcn/preset` and the named presets of the pinned `shadcn` package. */
+  preset?: PresetModuleSource
   /** The `tailwind.css` shipped by the pinned `shadcn` package. */
   tailwindCss: VendoredSource
   /** Licensing of the pinned icon package (`lucide`). */
@@ -56,6 +60,9 @@ export interface SyncResult {
   unchanged: string[]
   indexChanged: boolean
   themeChanged: boolean
+  /** Font items that were added, changed or removed. */
+  fontsChanged: string[]
+  presetChanged: boolean
   tailwindCssChanged: boolean
   /** Canonical theme JSON before/after, when it changed. */
   theme: TextChange | null
@@ -202,13 +209,14 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
   // Theme.
   let themeChanged = false
   let themeChange: TextChange | null = null
-  const themeResult = await fetchText(config.themeUrl, {
+  const themeUrl = options.themeUrl
+  const themeResult = await fetchText(themeUrl, {
     etag: etagFor(lock.theme, store.themeFile),
     fetchImpl,
   })
   if (themeResult.status === 200) {
     const value: unknown = JSON.parse(themeResult.text)
-    assertThemeItem(value, config.themeUrl)
+    assertThemeItem(value, themeUrl)
     const text = toJsonText(value)
     const hash = sha256(text)
     if (lock.theme?.sha256 !== hash || !existsSync(store.themeFile)) {
@@ -218,14 +226,54 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
       themeChange = { before, after: text }
       store.writeText(store.themeFile, text)
       lock.theme = {
-        url: config.themeUrl,
+        url: themeUrl,
         sha256: hash,
         etag: themeResult.etag,
         lastModified: themeResult.lastModified,
         fetchedAt: now,
       }
       themeChanged = true
+    } else if (lock.theme.url !== themeUrl) {
+      lock.theme = { ...lock.theme, url: themeUrl }
     }
+  }
+
+  // Font items of the theme, which the CLI turns into @fontsource packages.
+  const fontsChanged: string[] = []
+  const fontNames = (store.readTheme().registryDependencies ?? [])
+    .filter((name): name is string => typeof name === "string")
+    .filter((name) => name.startsWith("font-"))
+    .sort()
+  for (const name of fontNames) {
+    const url = `${config.registryBaseUrl}/styles/${config.style}/${name}.json`
+    const file = store.fontFile(name)
+    const result = await fetchText(url, {
+      etag: etagFor(lock.fonts[name], file),
+      fetchImpl,
+    })
+    if (result.status === 304) continue
+    const value = JSON.parse(result.text) as { type?: unknown }
+    if (value.type !== "registry:font") {
+      throw new Error(`${url} is not a registry:font item`)
+    }
+    const text = toJsonText(value)
+    const hash = sha256(text)
+    if (lock.fonts[name]?.sha256 === hash && existsSync(file)) continue
+    store.writeText(file, text)
+    lock.fonts[name] = {
+      url,
+      sha256: hash,
+      etag: result.etag,
+      lastModified: result.lastModified,
+      fetchedAt: now,
+    }
+    fontsChanged.push(name)
+  }
+  for (const name of Object.keys(lock.fonts)) {
+    if (fontNames.includes(name)) continue
+    rmSync(store.fontFile(name), { force: true })
+    delete lock.fonts[name]
+    fontsChanged.push(name)
   }
 
   // Upstream repository license: snapshotted for review, never redistributed.
@@ -335,6 +383,29 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     }
   }
 
+  // shadcn/preset and the named presets from the pinned `shadcn` package.
+  let presetChanged = false
+  if (options.preset) {
+    const preset = options.preset
+    const named = toJsonText(preset.named)
+    const hash = sha256(`${preset.module}\0${preset.types}\0${named}`)
+    if (
+      lock.preset?.sha256 !== hash ||
+      lock.preset.version !== preset.version ||
+      !existsSync(store.presetModuleFile)
+    ) {
+      store.writeText(store.presetModuleFile, preset.module)
+      store.writeText(store.presetTypesFile, preset.types)
+      store.writeText(store.namedPresetsFile, named)
+      lock.preset = {
+        package: preset.package,
+        version: preset.version,
+        sha256: hash,
+      }
+      presetChanged = true
+    }
+  }
+
   const lockChanged = store.writeLock(lock)
   return {
     added: added.sort(byName),
@@ -343,6 +414,8 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     unchanged: unchanged.sort(),
     indexChanged,
     themeChanged,
+    fontsChanged: fontsChanged.sort(),
+    presetChanged,
     tailwindCssChanged,
     theme: themeChange,
     tailwindCss: tailwindCssChange,

@@ -1,5 +1,5 @@
 @import "tailwindcss";
 @import "../../../styles/shadcn/theme.css";
 
-/* Components installed from the registry live outside this example's source root. */
+/* Components installed by the CLI live outside this example's source root. */
 @source "../../../components/ui";

@@ -1,0 +1,98 @@
+{
+  "nova": {
+    "style": "nova",
+    "baseColor": "neutral",
+    "theme": "neutral",
+    "chartColor": "neutral",
+    "iconLibrary": "lucide",
+    "font": "geist",
+    "fontHeading": "inherit",
+    "radius": "default",
+    "menuAccent": "subtle",
+    "menuColor": "default"
+  },
+  "vega": {
+    "style": "vega",
+    "baseColor": "neutral",
+    "theme": "neutral",
+    "chartColor": "neutral",
+    "iconLibrary": "lucide",
+    "font": "inter",
+    "fontHeading": "inherit",
+    "radius": "default",
+    "menuAccent": "subtle",
+    "menuColor": "default"
+  },
+  "maia": {
+    "style": "maia",
+    "baseColor": "neutral",
+    "theme": "neutral",
+    "chartColor": "neutral",
+    "iconLibrary": "hugeicons",
+    "font": "figtree",
+    "fontHeading": "inherit",
+    "radius": "default",
+    "menuAccent": "subtle",
+    "menuColor": "default"
+  },
+  "lyra": {
+    "style": "lyra",
+    "baseColor": "neutral",
+    "theme": "neutral",
+    "chartColor": "neutral",
+    "iconLibrary": "phosphor",
+    "font": "jetbrains-mono",
+    "fontHeading": "inherit",
+    "radius": "default",
+    "menuAccent": "subtle",
+    "menuColor": "default"
+  },
+  "mira": {
+    "style": "mira",
+    "baseColor": "neutral",
+    "theme": "neutral",
+    "chartColor": "neutral",
+    "iconLibrary": "hugeicons",
+    "font": "inter",
+    "fontHeading": "inherit",
+    "radius": "default",
+    "menuAccent": "subtle",
+    "menuColor": "default"
+  },
+  "luma": {
+    "style": "luma",
+    "baseColor": "neutral",
+    "theme": "neutral",
+    "chartColor": "neutral",
+    "iconLibrary": "lucide",
+    "font": "inter",
+    "fontHeading": "inherit",
+    "radius": "default",
+    "menuAccent": "subtle",
+    "menuColor": "default"
+  },
+  "sera": {
+    "style": "sera",
+    "baseColor": "taupe",
+    "theme": "taupe",
+    "chartColor": "taupe",
+    "iconLibrary": "lucide",
+    "font": "noto-sans",
+    "fontHeading": "playfair-display",
+    "radius": "default",
+    "menuAccent": "subtle",
+    "menuColor": "default"
+  },
+  "rhea": {
+    "style": "rhea",
+    "baseColor": "neutral",
+    "theme": "neutral",
+    "chartColor": "neutral",
+    "iconLibrary": "lucide",
+    "font": "inter",
+    "fontHeading": "inherit",
+    "radius": "default",
+    "menuAccent": "subtle",
+    "menuColor": "default"
+  }
+}

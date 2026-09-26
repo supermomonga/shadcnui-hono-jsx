@@ -66,7 +66,7 @@ export function findFamilyRule(
 }
 
 /** Directory of the optional client scripts (docs/adr/0025), installed at the same path. */
-export const BEHAVIORS_DIR = "public/shadcn"
+export const BEHAVIORS_DIR = "cli/client"
 
 /**
  * Client scripts a component needs, from its mapped Base UI primitives

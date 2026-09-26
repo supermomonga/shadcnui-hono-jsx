@@ -37,17 +37,28 @@ export interface PackageLock {
   licenseSha256: string | null
 }
 
+/** The `shadcn/preset` module and named presets vendored from the pinned package. */
+export interface PresetLock {
+  package: string
+  version: string
+  /** sha256 of the module, its types and the named presets as stored. */
+  sha256: string
+}
+
 export interface UpstreamLock {
   schemaVersion: 1
   style: string
   registryBaseUrl: string
   index: ResourceLock | null
   theme: ResourceLock | null
+  /** `registry:font` items the theme depends on, by name. */
+  fonts: Record<string, ResourceLock>
   /** Upstream repository license (monitored, see generator/src/licenses.ts). */
   license: ResourceLock | null
   tailwindCss: VendoredLock | null
   /** Icon package inlined by the generator (lucide). */
   icons: PackageLock | null
+  preset: PresetLock | null
   items: Record<string, ItemLock>
 }
 
@@ -61,9 +72,11 @@ export function emptyLock(
     registryBaseUrl,
     index: null,
     theme: null,
+    fonts: {},
     license: null,
     tailwindCss: null,
     icons: null,
+    preset: null,
     items: {},
   }
 }
@@ -71,6 +84,8 @@ export function emptyLock(
 export function readLock(file: string): UpstreamLock | null {
   if (!existsSync(file)) return null
   const lock = JSON.parse(readFileSync(file, "utf8")) as UpstreamLock
+  lock.fonts ??= {}
+  lock.preset ??= null
   if (lock.schemaVersion !== 1) {
     throw new Error(`Unsupported upstream lock schemaVersion in ${file}`)
   }
@@ -100,6 +115,11 @@ export function serializeLock(lock: UpstreamLock): string {
     registryBaseUrl: lock.registryBaseUrl,
     index: lock.index,
     theme: lock.theme,
+    fonts: Object.fromEntries(
+      Object.keys(lock.fonts ?? {})
+        .sort()
+        .map((name) => [name, lock.fonts[name]])
+    ),
     license: lock.license ?? null,
     tailwindCss: lock.tailwindCss
       ? {
@@ -112,6 +132,7 @@ export function serializeLock(lock: UpstreamLock): string {
         }
       : null,
     icons: lock.icons ?? null,
+    preset: lock.preset ?? null,
     items,
   })
 }

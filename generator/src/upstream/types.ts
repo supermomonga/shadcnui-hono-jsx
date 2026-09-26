@@ -1,3 +1,5 @@
+import type { ThemeItem } from "../../../cli/src/theme"
+
 export interface UpstreamFile {
   path: string
   type: string
@@ -28,16 +30,7 @@ export interface UpstreamIndex {
   items: IndexEntry[]
 }
 
-export type CssVars = Record<string, string>
-
-/** The upstream `registry:base` theme item for a style. */
-export interface ThemeItem {
-  name: string
-  type: string
-  cssVars: { theme?: CssVars; light?: CssVars; dark?: CssVars }
-  css?: Record<string, unknown>
-  [key: string]: unknown
-}
+export type { CssVars, ThemeItem } from "../../../cli/src/theme"
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value)

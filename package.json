@@ -1,33 +1,36 @@
 {
-  "name": "shadcnui-hono-jsx",
+  "name": "shadcnui-hono-jsx-workspace",
   "version": "0.0.0",
   "private": true,
-  "description": "shadcn/ui-compatible components for Hono JSX, without React.",
+  "description": "Generator, tests and examples of shadcnui-hono-jsx (the CLI package is in cli/).",
   "license": "MIT",
   "type": "module",
   "packageManager": "bun@1.3.13",
   "workspaces": [
+    "cli",
     "examples/*"
   ],
   "scripts": {
     "upstream:sync": "bun generator/src/cli/sync.ts",
     "analyze": "bun generator/src/cli/analyze.ts",
     "generate": "bun generator/src/cli/generate.ts",
+    "dev:install": "bun generator/src/cli/dev-install.ts",
+    "cli": "bun cli/src/index.ts",
     "format": "biome format --write .",
     "lint": "biome ci .",
     "typecheck": "tsc -p tsconfig.json && tsc -p tests/types/tsconfig.json && tsc -p tests/types/tsconfig.strict.json",
-    "test": "bun test ./generator ./tests/render ./tests/deps",
-    "test:registry": "bun test ./tests/registry",
+    "test": "bun test ./generator ./cli ./tests/render ./tests/deps",
+    "test:install": "bun test ./tests/install",
     "test:visual": "cd tests/visual && bun install --frozen-lockfile && bun run test",
-    "registry:validate": "shadcn registry validate ./registry.json",
     "examples:build": "bun run --filter './examples/*' build",
     "examples:typecheck": "bun run --filter './examples/*' typecheck",
     "examples:test": "bun run --filter example-hono test && bun run --filter example-honox smoke",
-    "verify": "bun run lint && bun run typecheck && bun run test && bun run generate --check && bun run registry:validate",
-    "verify:full": "bun run verify && bun run examples:build && bun run examples:typecheck && bun run examples:test && bun run test:registry && bun run test:visual"
+    "verify": "bun run dev:install && bun run lint && bun run typecheck && bun run test && bun run generate --check",
+    "verify:full": "bun run verify && bun run examples:build && bun run examples:typecheck && bun run examples:test && bun run test:install && bun run test:visual"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
+    "@fontsource-variable/geist": "5.3.0",
     "@types/bun": "1.4.2",
     "class-variance-authority": "0.7.1",
     "cn": "0.4.0",

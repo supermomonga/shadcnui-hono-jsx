@@ -9,7 +9,8 @@
     "includes": [
       "**",
       "!upstream",
-      "!styles/shadcn",
+      "!cli/generated/shadcn-preset.*",
+      "!cli/generated/tailwind.css",
       "!**/dist",
       "!examples/*/public"
     ]
@@ -48,7 +49,7 @@
   },
   "overrides": [
     {
-      "includes": ["components/ui/**"],
+      "includes": ["cli/generated/templates/**"],
       "linter": {
         "rules": {
           "a11y": {

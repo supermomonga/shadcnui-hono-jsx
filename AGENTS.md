@@ -14,15 +14,22 @@ generator (transformer, adapter, or config) and regenerate.
 | Path | Written by |
 | --- | --- |
 | `upstream/**` | `bun run upstream:sync` |
-| `components/ui/**` | `bun run generate` |
-| `styles/shadcn/**` | `bun run generate` |
-| `LICENSE-shadcnui-hono-jsx.txt` | `bun run generate` (text lives in `generator/src/licenses.ts`) |
-| `registry.json`, `compatibility.json` | `bun run generate` |
+| `cli/generated/**` (templates, `catalog.json`, vendored `tailwind.css` and `shadcn/preset`, the license notice) | `bun run generate` (notice text lives in `generator/src/licenses.ts`) |
+| `compatibility.json` | `bun run generate` |
 | README compatibility table (between markers) | `bun run generate` |
+| `components/ui/`, `styles/shadcn/`, `public/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `shadcnui-hono-jsx.json` at the root (git-ignored) | `bun run dev:install` |
 
-Client scripts in `public/shadcn/` are hand-written (Base UI's behavior is
-React code) and distributed as they are; see docs/adr/0025. Keep them
-dependency-free ES modules that find components by `data-slot`.
+Components reach users through the `shadcnui-hono-jsx` CLI in `cli/`
+(docs/adr/0029): it builds the theme from a shadcn/ui preset and installs the
+templates of `cli/generated/templates/<style>/` through `finalize`
+(docs/adr/0030). The CLI sources in `cli/src/` are hand-written; use Node APIs
+only, so the package runs under Node as well as Bun. The repository root is a
+development install of the default preset, which tests, type checking, the
+visual tests and the examples use; run `bun run dev:install` after generating.
+
+Client scripts in `cli/client/` are hand-written (Base UI's behavior is React
+code) and installed as they are into `public/shadcn/`; see docs/adr/0025. Keep
+them dependency-free ES modules that find components by `data-slot`.
 
 Lite alternatives (`<upstream>-lite`, docs/adr/0028) are hand-written in
 `lite/` in upstream's style and generated like ports. When `generate` reports
@@ -36,9 +43,11 @@ item and then update its hash in `generator/src/lite.ts`.
 | `bun run upstream:sync [--report file]` | Update the upstream snapshot |
 | `bun run analyze [name...]` | Classify upstream components |
 | `bun run generate [name...] [--check]` | Regenerate generated outputs |
-| `bun run verify` | Lint, type-check, test, freshness check, registry validation |
+| `bun run dev:install` | Install the default preset and every component into the repository root |
+| `bun run cli <command>` | Run the CLI from the repository |
+| `bun run verify` | Development install, lint, type-check, test, freshness check |
 | `bun run test:visual` | Visual parity against upstream React (`tests/visual`, Playwright) |
-| `bun run verify:full` | `verify` plus examples, the network registry install test and visual parity |
+| `bun run verify:full` | `verify` plus examples, the network CLI install test and visual parity |
 
 To support another upstream component, add it to `components` in
 `generator.config.ts`, add at least one case to `tests/visual/cases.ts` (or a
@@ -75,6 +84,7 @@ the new terms still allow redistribution and how. See docs/adr/0013.
   generated files (docs/adr/0016). Its license is gated like upstream's.
 - React and Base UI may only be installed in `tests/visual`, which renders
   upstream for comparison. Never add them to the root or example packages.
-- Registry items may only depend on the allowlisted npm packages in
-  `generator/src/policy.ts`. Adding one requires an ADR.
+- Installed components and the theme may only depend on the allowlisted npm
+  packages in `generator/src/policy.ts`, besides the `@fontsource-variable/*`
+  packages of a preset's fonts (docs/adr/0029). Adding one requires an ADR.
 - Minimum supported Hono version: 4.12.34 (JSX security fixes).

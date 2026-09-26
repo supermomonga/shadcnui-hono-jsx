@@ -12,7 +12,8 @@ import { transformSource } from "./transformers/pipeline"
 import type { UpstreamLock } from "./upstream/lock"
 import type { UpstreamStore } from "./upstream/store"
 
-export const COMPONENTS_DIR = "components/ui"
+/** Templates of every style, installed by the CLI (docs/adr/0030). */
+export const TEMPLATES_DIR = "cli/generated/templates"
 
 export interface GeneratedComponent {
   name: string
@@ -25,11 +26,11 @@ export interface GeneratedComponent {
 
 export class GenerationError extends Error {}
 
-export function componentPath(name: string): string {
-  return `${COMPONENTS_DIR}/${name}.tsx`
+export function templatePath(style: string, name: string): string {
+  return `${TEMPLATES_DIR}/${style}/${name}.tsx`
 }
 
-/** Translates one snapshotted upstream component into a formatted Hono JSX file. */
+/** Translates one snapshotted upstream component into a formatted Hono JSX template. */
 export function generateComponent(
   name: string,
   deps: { config: GeneratorConfig; store: UpstreamStore; lock: UpstreamLock }
@@ -72,7 +73,7 @@ export function generateComponent(
       (script) => script !== "core"
     ),
   })
-  const path = componentPath(name)
+  const path = templatePath(deps.config.style, name)
   return {
     name,
     classification,

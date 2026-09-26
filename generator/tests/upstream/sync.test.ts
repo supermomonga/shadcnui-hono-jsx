@@ -7,6 +7,7 @@ import type { FetchLike } from "../../src/upstream/fetch"
 import { contentSha256, sha256 } from "../../src/upstream/hash"
 import { UpstreamStore } from "../../src/upstream/store"
 import { syncUpstream, type VendoredSource } from "../../src/upstream/sync"
+import type { PresetModuleSource } from "../../src/upstream/vendored"
 
 const BASE = "https://registry.test/r"
 const THEME_URL = "https://registry.test/init"
@@ -18,7 +19,6 @@ const config: GeneratorConfig = {
   repository: "owner/repo",
   style: "test-style",
   registryBaseUrl: BASE,
-  themeUrl: THEME_URL,
   licenseUrl: LICENSE_URL,
   trackedTypes: ["registry:ui"],
   components: ["button"],
@@ -31,6 +31,20 @@ const tailwindCss: VendoredSource = {
   text: "@custom-variant data-open (&[data-open]);\n",
   license: "MIT",
   licenseText: MIT_TEXT,
+}
+
+const preset: PresetModuleSource = {
+  package: "shadcn",
+  version: "1.0.0",
+  module: "export{}\n",
+  types: "export {}\n",
+  named: { nova: { style: "nova" } },
+}
+
+const FONT = {
+  name: "font-test",
+  type: "registry:font",
+  font: { family: "'Test Variable', sans-serif", variable: "--font-sans" },
 }
 
 function item(name: string, content: string) {
@@ -103,8 +117,13 @@ function registry(items: Record<string, { content: string; etag?: string }>) {
     body: {
       name: "test-style",
       type: "registry:base",
+      registryDependencies: ["utils", "font-test"],
       cssVars: { light: { background: "oklch(1 0 0)" } },
     },
+  })
+  resources.set(`${BASE}/styles/test-style/font-test.json`, {
+    body: FONT,
+    etag: '"font"',
   })
   return resources
 }
@@ -127,6 +146,8 @@ const run = (fetchImpl: FetchLike) =>
   syncUpstream({
     config,
     store,
+    themeUrl: THEME_URL,
+    preset,
     tailwindCss,
     fetchImpl,
     now: () => {
@@ -174,6 +195,45 @@ describe("syncUpstream", () => {
     expect(lock?.license?.sha256).toBe(sha256(MIT_TEXT))
     expect(store.readOptional(store.licenseFile)).toBe(MIT_TEXT)
     expect(store.readOptional(store.packageLicenseFile)).toBe(MIT_TEXT)
+
+    expect(result.fontsChanged).toEqual(["font-test"])
+    expect(store.readFont("font-test")).toEqual(FONT)
+    expect(lock?.fonts["font-test"]?.url).toBe(
+      `${BASE}/styles/test-style/font-test.json`
+    )
+    expect(result.presetChanged).toBe(true)
+    expect(store.readOptional(store.presetModuleFile)).toBe(preset.module)
+    expect(store.readNamedPresets()).toEqual(preset.named)
+    expect(lock?.preset).toMatchObject({ package: "shadcn", version: "1.0.0" })
+  })
+
+  test("records a new theme URL even when the theme content is the same", async () => {
+    const resources = registry({ button: { content: "button v1" } })
+    await run(fakeRegistry(resources).fetchImpl)
+    const moved = `${THEME_URL}?preset=b0`
+    resources.set(moved, resources.get(THEME_URL) as Resource)
+    const result = await syncUpstream({
+      config,
+      store,
+      themeUrl: moved,
+      tailwindCss,
+      fetchImpl: fakeRegistry(resources).fetchImpl,
+    })
+    expect(result.themeChanged).toBe(false)
+    expect(store.readLock()?.theme?.url).toBe(moved)
+  })
+
+  test("drops fonts the theme no longer depends on", async () => {
+    const resources = registry({ button: { content: "button v1" } })
+    await run(fakeRegistry(resources).fetchImpl)
+    const theme = resources.get(THEME_URL) as Resource
+    resources.set(THEME_URL, {
+      body: { ...(theme.body as object), registryDependencies: ["utils"] },
+    })
+    const result = await run(fakeRegistry(resources).fetchImpl)
+    expect(result.fontsChanged).toEqual(["font-test"])
+    expect(existsSync(store.fontFile("font-test"))).toBe(false)
+    expect(store.readLock()?.fonts).toEqual({})
   })
 
   test("is idempotent: a second run without upstream changes writes nothing", async () => {
@@ -193,6 +253,8 @@ describe("syncUpstream", () => {
     expect(result.changed).toEqual([])
     expect(result.unchanged).toEqual(["button", "card"])
     expect(result.lockChanged).toBe(false)
+    expect(result.fontsChanged).toEqual([])
+    expect(result.presetChanged).toBe(false)
     expect(readFileSync(store.lockFile, "utf8")).toBe(lockBefore)
     // Conditional requests are sent for resources with an ETag.
     expect(
@@ -280,6 +342,7 @@ describe("syncUpstream", () => {
     const result = await syncUpstream({
       config,
       store,
+      themeUrl: THEME_URL,
       tailwindCss: {
         ...tailwindCss,
         license: "BUSL-1.1",

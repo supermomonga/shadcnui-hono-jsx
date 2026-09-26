@@ -19,7 +19,9 @@ describe("lite alternatives (docs/adr/0028)", () => {
       expect(config.components).not.toContain(name)
       const generated = generateLite(name, { config, lock })
       expect(generated.mode).toBe("lite")
-      expect(generated.file.path).toBe(`components/ui/${name}.tsx`)
+      expect(generated.file.path).toBe(
+        `cli/generated/templates/${config.style}/${name}.tsx`
+      )
       expect(generated.file.text).toContain("not a port of upstream code")
     }
   )

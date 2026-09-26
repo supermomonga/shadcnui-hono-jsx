@@ -10,11 +10,20 @@
     "fetchedAt": "2026-09-25T11:42:51.028Z"
   },
   "theme": {
-    "url": "https://ui.shadcn.com/init?base=base&style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=geist&rtl=false&menuAccent=subtle&menuColor=default&radius=default",
+    "url": "https://ui.shadcn.com/init?base=base&style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=geist&rtl=false&menuAccent=subtle&menuColor=default&radius=default&preset=b2fA",
     "sha256": "2fa48e8348e90bcacf263e237393057b761f943ceff6ff69aa783d7909259c9d",
     "etag": null,
     "lastModified": null,
     "fetchedAt": "2026-09-25T11:42:51.028Z"
+  },
+  "fonts": {
+    "font-geist": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/font-geist.json",
+      "sha256": "a1a697d468200a44ae20d62dfa29be16f726489ac983342eb36b489e715eddb6",
+      "etag": "\"ddb283dfe37e0f00c6378e515d29e135\"",
+      "lastModified": "Sat, 26 Sep 2026 02:21:11 GMT",
+      "fetchedAt": "2026-09-26T09:57:51.171Z"
+    }
   },
   "license": {
     "url": "https://raw.githubusercontent.com/shadcn-ui/ui/main/LICENSE.md",
@@ -36,6 +45,11 @@
     "version": "1.48.0",
     "license": "ISC",
     "licenseSha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+  },
+  "preset": {
+    "package": "shadcn",
+    "version": "4.21.0",
+    "sha256": "b1ec6e24a2d54fd0ee29543583b3849b7f86cc2ce2677c915c7d307198af2991"
   },
   "items": {
     "accordion": {

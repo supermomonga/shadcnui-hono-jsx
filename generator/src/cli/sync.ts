@@ -1,5 +1,7 @@
 import { appendFileSync, writeFileSync } from "node:fs"
 import { parseArgs } from "node:util"
+import { encodePreset, type PresetConfig } from "shadcn/preset"
+import { DEFAULT_PRESET, initUrl } from "../../../cli/src/shadcn"
 import { config } from "../../../generator.config"
 import { COMPONENT_ADAPTERS } from "../adapters/components"
 import { type ClassificationKind, classify } from "../analyzer/classify"
@@ -9,7 +11,11 @@ import { ROOT } from "../paths"
 import { type ClassificationChange, renderSyncReport } from "../upstream/report"
 import { UpstreamStore } from "../upstream/store"
 import { syncUpstream } from "../upstream/sync"
-import { readLucidePackage, readShadcnTailwindCss } from "../upstream/vendored"
+import {
+  readLucidePackage,
+  readShadcnPreset,
+  readShadcnTailwindCss,
+} from "../upstream/vendored"
 
 const { values } = parseArgs({
   args: Bun.argv.slice(2),
@@ -27,10 +33,21 @@ const classifyAll = () =>
     ])
   )
 
+// The theme snapshot is what the CLI fetches for its default preset.
+const preset = readShadcnPreset(ROOT)
+const defaults = preset.named[DEFAULT_PRESET] as PresetConfig | undefined
+if (!defaults) throw new Error(`The shadcn CLI has no ${DEFAULT_PRESET} preset`)
+const themeUrl = initUrl(
+  { code: encodePreset(defaults), config: defaults },
+  { rtl: false, pointer: false }
+)
+
 const before = classifyAll()
 const result = await syncUpstream({
   config,
   store,
+  themeUrl,
+  preset,
   tailwindCss: readShadcnTailwindCss(ROOT),
   icons: readLucidePackage(ROOT),
   githubToken: process.env.GITHUB_TOKEN,
@@ -56,6 +73,9 @@ list(
 console.log(`unchanged: ${result.unchanged.length}`)
 if (result.indexChanged) console.log("index changed")
 if (result.themeChanged) console.log("theme changed")
+if (result.fontsChanged.length > 0)
+  console.log(`fonts changed: ${result.fontsChanged.join(", ")}`)
+if (result.presetChanged) console.log("vendored shadcn/preset changed")
 if (result.tailwindCssChanged) console.log("vendored tailwind.css changed")
 console.log(
   result.lockChanged

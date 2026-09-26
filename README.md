@@ -16,7 +16,9 @@ A React-free port and code-generation pipeline for using the
 
 Components are generated from the upstream shadcn/ui (Base UI variant) registry
 and translated into plain `hono/jsx` function components. You install their
-source into your project with the shadcn CLI, just like shadcn/ui.
+source into your project with the `shadcnui-hono-jsx` CLI, styled by a preset
+from [ui.shadcn.com/create](https://ui.shadcn.com/create), much like
+`shadcn init --preset`.
 
 ## What it is not
 
@@ -28,7 +30,8 @@ Base UI, or Radix runtime in the generated components.
 - React-free, native `hono/jsx` components (SSR-first)
 - Works with plain Hono and HonoX
 - Tailwind CSS v4 and the shadcn/ui design tokens
-- Source-code ownership via a shadcn-compatible registry
+- Source-code ownership: components are copied into your project, like shadcn/ui
+- Presets from ui.shadcn.com/create (colors, radius, fonts, menu accent)
 - Regenerated from upstream shadcn/ui instead of hand-maintained forks
 - JavaScript only where the browser lacks the behavior: most components (including Dialog, Popover, Select and Accordion) ship none, and the rest use small optional module scripts
 
@@ -38,21 +41,31 @@ Base UI, or Radix runtime in the generated components.
   recommended), with `"jsx": "react-jsx"` and `"jsxImportSource": "hono/jsx"`
   in `tsconfig.json`
 - [Tailwind CSS](https://tailwindcss.com) v4
-- The [shadcn CLI](https://ui.shadcn.com/docs/cli) (run with `bunx`/`npx`; it is
-  not added to your dependencies)
+- Bun (or Node.js) to run the CLI; it is not added to your dependencies
 
 ## Installation
 
-Components are installed as source files from the GitHub registry at
-`supermomonga/shadcnui-hono-jsx`. No `components.json` is required.
+> [!NOTE]
+> The CLI is not published to npm yet. Until the first release, run it from a
+> clone of this repository: replace `bunx shadcnui-hono-jsx` with
+> `bun <path to the clone>/cli/src/index.ts`.
 
-1. Install the theme once. It adds `styles/shadcn/theme.css`,
-   `styles/shadcn/tailwind.css`, the license notice
-   `LICENSE-shadcnui-hono-jsx.txt`, and the `tw-animate-css` package:
+1. Set up the theme once, in the root of your Hono project. `init` writes
+   `shadcnui-hono-jsx.json`, `styles/shadcn/theme.css`,
+   `styles/shadcn/tailwind.css` and the license notice
+   `LICENSE-shadcnui-hono-jsx.txt`, and installs `tw-animate-css` and the
+   preset's fonts with your package manager:
 
    ```sh
-   bunx shadcn@latest add supermomonga/shadcnui-hono-jsx/theme
+   bunx shadcnui-hono-jsx init                      # the nova preset
+   bunx shadcnui-hono-jsx init --preset b0          # a preset code from ui.shadcn.com/create
    ```
+
+   `--pointer` adds the pointer cursor to buttons. The theme comes from
+   ui.shadcn.com, like with `shadcn init`, so the command needs network access.
+   Presets choose colors, radius, fonts and the menu accent; presets with
+   another style than Nova, another icon library than Lucide, another menu
+   color or right-to-left layout are not supported yet.
 
 2. Import the theme after Tailwind CSS in your stylesheet, and make sure
    Tailwind scans `components/ui`:
@@ -71,22 +84,29 @@ Components are installed as source files from the GitHub registry at
    @source "../components";
    ```
 
-3. Add components. They are written to `components/ui/<name>.tsx` and install
-   their npm dependencies (`cn`, `class-variance-authority`):
+3. Add components. They are written to `components/ui/<name>.tsx`, together
+   with the components they import, and install their npm dependencies
+   (`cn`, `class-variance-authority`):
 
    ```sh
-   bunx shadcn@latest add supermomonga/shadcnui-hono-jsx/button supermomonga/shadcnui-hono-jsx/card
+   bunx shadcnui-hono-jsx add button card
    ```
 
-   Append `#<tag-or-commit>` to an address to pin a revision.
+   Files you have edited are not replaced unless you pass `--overwrite`.
 
 4. Import them with a path alias (`"paths": { "@/*": ["./*"] }`) or a relative
    path.
 
-Every item installs the same `LICENSE-shadcnui-hono-jsx.txt` at your project
-root; later installs skip it because it is identical. It carries the MIT notices
-for the installed sources, so keep it with them when you copy or redistribute
-the files.
+To change the preset later, run `apply`. It rewrites the theme and every
+installed component (edits to them are lost); `--only theme` or `--only font`
+takes only those parts of the new preset and leaves components alone:
+
+```sh
+bunx shadcnui-hono-jsx apply --preset <code>
+```
+
+`LICENSE-shadcnui-hono-jsx.txt` carries the MIT notices for the installed
+sources, so keep it with them when you copy or redistribute the files.
 
 ## Usage
 
@@ -115,8 +135,8 @@ These are plain `hono/jsx` components: render them with `c.html(...)`,
 ## Client scripts
 
 A few components need behavior the browser does not provide (for example
-keyboard navigation in Tabs). Their registry items also install small module
-scripts into `public/shadcn/` (no dependencies), and the "Client JS" column
+keyboard navigation in Tabs). `add` also installs their small module scripts
+into `public/shadcn/` (no dependencies), and the "Client JS" column
 of the compatibility table names the script to load. Without it, the
 server-rendered state stays visible.
 
@@ -163,8 +183,6 @@ toast.add({ title: "Saved", description: "Your changes were saved." })
   them up to date (Tabs).
 - `Button` renders `type="button"` by default, like Base UI; pass
   `type="submit"` inside forms.
-- The upstream preset font (Geist) is not installed; `font-heading` uses your
-  `--font-sans`.
 - Icons are inlined SVG from Lucide (identical to lucide-react's output), not
   a runtime icon package.
 - Dialog, AlertDialog and Sheet are native `<dialog>` elements opened with
@@ -285,12 +303,14 @@ Lite alternatives approximate a component that has no port yet, without JavaScri
 - [`examples/honox`](./examples/honox): HonoX with the standard Hono JSX
   renderer and `@tailwindcss/vite`
 
-Both import the generated components from this repository through an
-`@/components/*` alias and render the same demo page without client
+Both import the components that `bun run dev:install` installs into the
+repository root (the default preset, as `init` and `add` would) through an
+`@/components/*` alias, and render the same demo page without client
 JavaScript.
 
 ```sh
 bun install
+bun run dev:install
 bun run examples:build
 cd examples/hono && bun run dev    # http://localhost:3000
 cd examples/honox && bun run dev   # Vite dev server
@@ -303,9 +323,12 @@ cd examples/honox && bun run dev   # Vite dev server
 2. `bun run generate` classifies each upstream component and translates the
    supported ones with ts-morph: React types become Hono JSX types, `className`
    becomes `class`, stateless Base UI primitives become the HTML they render,
-   and the output is formatted with Biome. It also writes the theme, the
-   registry, and the compatibility manifest.
-3. A weekly workflow syncs upstream and opens a pull request with the diff;
+   and the output is formatted with Biome. The results are templates in
+   `cli/generated/`, together with the catalog the CLI installs from and the
+   compatibility manifest.
+3. The CLI builds the theme from the preset's `/init` response on
+   ui.shadcn.com and installs the templates into the user's project.
+4. A weekly workflow syncs upstream and opens a pull request with the diff;
    nothing is merged automatically.
 
 Generated files are never edited by hand. See
@@ -318,17 +341,19 @@ Generated files are never edited by hand. See
 | --- | --- |
 | `bun run upstream:sync [--report file]` | Update the upstream snapshot |
 | `bun run analyze [name...]` | Classify upstream components |
-| `bun run generate [name...] [--check]` | Regenerate components, theme, registry, manifest |
-| `bun run verify` | Lint, type-check, test, check generated files, validate the registry |
+| `bun run generate [name...] [--check]` | Regenerate the templates, the CLI catalog and the manifest |
+| `bun run dev:install` | Install the default preset and every component into the repository root (for tests and examples) |
+| `bun run cli <command>` | Run the CLI from the repository |
+| `bun run verify` | Install for development, lint, type-check, test, check generated files |
 | `bun run test:visual` | Compare screenshots with upstream shadcn/ui (React, Playwright; separate package in `tests/visual`) |
-| `bun run verify:full` | `verify` plus examples, the registry install test (network) and visual parity |
+| `bun run verify:full` | `verify` plus examples, the CLI install test (network) and visual parity |
 
 ## License
 
 [MIT](./LICENSE). Derived from [shadcn/ui](https://github.com/shadcn-ui/ui)
 (MIT, Copyright (c) 2023 shadcn); see
 [THIRD_PARTY_LICENSES.md](./THIRD_PARTY_LICENSES.md). Installed files point to
-`LICENSE-shadcnui-hono-jsx.txt`, which is installed with every registry item.
+`LICENSE-shadcnui-hono-jsx.txt`, which the CLI installs with them.
 This is an unofficial community project and is not affiliated with or endorsed
 by shadcn.
 

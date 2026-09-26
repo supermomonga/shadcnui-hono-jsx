@@ -2,13 +2,15 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 import { parseArgs } from "node:util"
 import { config } from "../../../generator.config"
+import { buildCatalog } from "../catalog/build"
 import { formatWithBiome } from "../emit/format"
+import { buildVendoredPreset, buildVendoredTailwindCss } from "../emit/vendored"
 import { type OutputFile, writeOutputs } from "../emit/write"
 import {
-  COMPONENTS_DIR,
   type GeneratedComponent,
   GenerationError,
   generateComponent,
+  TEMPLATES_DIR,
 } from "../generate"
 import {
   buildLicenseNotice,
@@ -22,9 +24,10 @@ import {
   replaceReadmeRegion,
 } from "../manifest/build"
 import { ROOT } from "../paths"
-import { buildRegistry, STYLES_DIR } from "../registry/build"
-import { buildThemeCss, buildVendoredTailwindCss } from "../theme/build"
 import { UpstreamStore } from "../upstream/store"
+
+/** Everything the CLI package reads besides its sources and client scripts. */
+const CLI_GENERATED = "cli/generated"
 
 const { values, positionals } = parseArgs({
   args: Bun.argv.slice(2),
@@ -43,7 +46,7 @@ if (unknown.length > 0) {
 
 const store = new UpstreamStore(ROOT, config.style)
 const lock = store.readLock()
-if (!lock?.theme || !lock.tailwindCss) {
+if (!lock?.theme || !lock.tailwindCss || !lock.preset) {
   console.error(
     "upstream/lock.json is incomplete; run `bun run upstream:sync` first."
   )
@@ -68,7 +71,7 @@ if (licenseProblems.length > 0) {
   process.exit(1)
 }
 
-// Every configured component is generated in memory because registry.json
+// Every configured component is generated in memory because the catalog
 // depends on all of them; only the selected ones are written.
 const components: GeneratedComponent[] = []
 const errors: string[] = []
@@ -101,27 +104,45 @@ const files: OutputFile[] = components
   .filter((c) => selected.has(c.name))
   .map((c) => c.file)
 
-// Repository-level outputs are always rebuilt from the config and snapshot.
+// Package- and repository-level outputs are always rebuilt from the config
+// and the snapshot.
 const json = (value: unknown, file: string) => ({
   path: file,
   text: formatWithBiome(JSON.stringify(value), file),
 })
 files.push({
-  path: `${STYLES_DIR}/theme.css`,
-  text: buildThemeCss(store.readTheme(), {
-    url: lock.theme.url,
-    sha256: lock.theme.sha256,
-  }),
-})
-files.push({
-  path: `${STYLES_DIR}/tailwind.css`,
+  path: `${CLI_GENERATED}/tailwind.css`,
   text: buildVendoredTailwindCss(store.readTailwindCss(), lock.tailwindCss),
 })
 files.push({
-  path: LICENSE_NOTICE_PATH,
+  path: `${CLI_GENERATED}/${LICENSE_NOTICE_PATH}`,
   text: buildLicenseNotice(config.repository),
 })
-files.push(json(buildRegistry({ config, lock, components }), "registry.json"))
+files.push({
+  path: `${CLI_GENERATED}/shadcn-preset.js`,
+  text: buildVendoredPreset(
+    readFileSync(store.presetModuleFile, "utf8"),
+    lock.preset,
+    "index.js"
+  ),
+})
+files.push({
+  path: `${CLI_GENERATED}/shadcn-preset.d.ts`,
+  text: buildVendoredPreset(
+    readFileSync(store.presetTypesFile, "utf8"),
+    lock.preset,
+    "index.d.ts"
+  ),
+})
+files.push(
+  json(store.readNamedPresets(), `${CLI_GENERATED}/named-presets.json`)
+)
+files.push(
+  json(
+    buildCatalog({ config, theme: store.readTheme(), components }),
+    `${CLI_GENERATED}/catalog.json`
+  )
+)
 const manifest = buildManifest({ config, store, lock })
 files.push(json(manifest, "compatibility.json"))
 const readme = readFileSync(path.join(ROOT, "README.md"), "utf8")
@@ -134,10 +155,7 @@ const result = writeOutputs(ROOT, files, {
   check: values.check,
   prune:
     positionals.length === 0
-      ? [
-          { dir: COMPONENTS_DIR, extension: ".tsx" },
-          { dir: STYLES_DIR, extension: ".css" },
-        ]
+      ? [{ dir: `${TEMPLATES_DIR}/${config.style}`, extension: ".tsx" }]
       : [],
 })
 

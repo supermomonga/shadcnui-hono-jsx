@@ -1,0 +1,16 @@
+{
+  "name": "shadcnui-hono-jsx",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Installs shadcn/ui components ported to Hono JSX, with shadcn/ui presets.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "shadcnui-hono-jsx": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "client",
+    "generated"
+  ]
+}
