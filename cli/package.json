@@ -19,7 +19,7 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "shadcnui-hono-jsx": "./dist/bin.js"
+    "shadcnui-hono-jsx": "dist/bin.js"
   },
   "files": [
     "dist",
