@@ -104,12 +104,15 @@ export async function ComponentPreview({
             className
           )}
         >
-          <iframe
-            src={`/view/${name}`}
-            title={name}
-            loading="lazy"
-            class="size-full bg-background"
-          />
+          {/* Wide enough for the desktop layout, clipped as on ui.shadcn.com. */}
+          <div class="absolute inset-0 w-[1600px] bg-background">
+            <iframe
+              src={`/view/${name}`}
+              title={name}
+              loading="lazy"
+              class="size-full"
+            />
+          </div>
         </div>
         {caption && (
           <figcaption class="text-center text-sm text-muted-foreground">
