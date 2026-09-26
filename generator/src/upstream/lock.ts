@@ -45,11 +45,18 @@ export interface PresetLock {
   sha256: string
 }
 
-export interface UpstreamLock {
-  schemaVersion: 1
-  style: string
-  registryBaseUrl: string
+/** The snapshot of one style: its index and items. */
+export interface StyleLock {
   index: ResourceLock | null
+  items: Record<string, ItemLock>
+}
+
+export interface UpstreamLock {
+  schemaVersion: 2
+  registryBaseUrl: string
+  /** Snapshotted styles (`base-nova`, …), by name. */
+  styles: Record<string, StyleLock>
+  /** Theme of the CLI's default preset (docs/adr/0029). */
   theme: ResourceLock | null
   /** `registry:font` items the theme depends on, by name. */
   fonts: Record<string, ResourceLock>
@@ -59,46 +66,70 @@ export interface UpstreamLock {
   /** Icon package inlined by the generator (lucide). */
   icons: PackageLock | null
   preset: PresetLock | null
-  items: Record<string, ItemLock>
 }
 
-export function emptyLock(
-  style: string,
-  registryBaseUrl: string
-): UpstreamLock {
+export function emptyLock(registryBaseUrl: string): UpstreamLock {
   return {
-    schemaVersion: 1,
-    style,
+    schemaVersion: 2,
     registryBaseUrl,
-    index: null,
+    styles: {},
     theme: null,
     fonts: {},
     license: null,
     tailwindCss: null,
     icons: null,
     preset: null,
-    items: {},
   }
+}
+
+/** The lock of one style, created empty when the style is new. */
+export function styleLock(lock: UpstreamLock, style: string): StyleLock {
+  let entry = lock.styles[style]
+  if (!entry) {
+    entry = { index: null, items: {} }
+    lock.styles[style] = entry
+  }
+  return entry
+}
+
+/** The single-style lock written before styles were snapshotted together. */
+interface UpstreamLockV1
+  extends Omit<UpstreamLock, "schemaVersion" | "styles"> {
+  schemaVersion: 1
+  style: string
+  index: ResourceLock | null
+  items: Record<string, ItemLock>
 }
 
 export function readLock(file: string): UpstreamLock | null {
   if (!existsSync(file)) return null
-  const lock = JSON.parse(readFileSync(file, "utf8")) as UpstreamLock
-  lock.fonts ??= {}
-  lock.preset ??= null
-  if (lock.schemaVersion !== 1) {
+  const value = JSON.parse(readFileSync(file, "utf8")) as
+    | UpstreamLock
+    | UpstreamLockV1
+  if (value.schemaVersion === 1) {
+    const { style, index, items, schemaVersion: _, ...shared } = value
+    return {
+      ...shared,
+      schemaVersion: 2,
+      styles: { [style]: { index, items } },
+      fonts: shared.fonts ?? {},
+      preset: shared.preset ?? null,
+    }
+  }
+  if (value.schemaVersion !== 2) {
     throw new Error(`Unsupported upstream lock schemaVersion in ${file}`)
   }
-  return lock
+  return value
 }
 
-/** Serializes the lock with a stable key order so unchanged syncs produce no diff. */
-export function serializeLock(lock: UpstreamLock): string {
-  const items: Record<string, ItemLock> = {}
-  for (const name of Object.keys(lock.items).sort()) {
-    const item = lock.items[name]
+function serializeItems(
+  items: Record<string, ItemLock>
+): Record<string, ItemLock> {
+  const sorted: Record<string, ItemLock> = {}
+  for (const name of Object.keys(items).sort()) {
+    const item = items[name]
     if (!item) continue
-    items[name] = {
+    sorted[name] = {
       url: item.url,
       type: item.type,
       sha256: item.sha256,
@@ -109,11 +140,14 @@ export function serializeLock(lock: UpstreamLock): string {
       upstreamCommit: item.upstreamCommit,
     }
   }
+  return sorted
+}
+
+/** Serializes the lock with a stable key order so unchanged syncs produce no diff. */
+export function serializeLock(lock: UpstreamLock): string {
   return toJsonText({
     schemaVersion: lock.schemaVersion,
-    style: lock.style,
     registryBaseUrl: lock.registryBaseUrl,
-    index: lock.index,
     theme: lock.theme,
     fonts: Object.fromEntries(
       Object.keys(lock.fonts ?? {})
@@ -133,6 +167,16 @@ export function serializeLock(lock: UpstreamLock): string {
       : null,
     icons: lock.icons ?? null,
     preset: lock.preset ?? null,
-    items,
+    styles: Object.fromEntries(
+      Object.keys(lock.styles)
+        .sort()
+        .map((style) => {
+          const entry = lock.styles[style] as StyleLock
+          return [
+            style,
+            { index: entry.index, items: serializeItems(entry.items) },
+          ]
+        })
+    ),
   })
 }

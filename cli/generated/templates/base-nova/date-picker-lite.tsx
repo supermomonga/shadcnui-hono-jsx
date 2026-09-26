@@ -31,6 +31,9 @@ type ComponentProps<
  * calendar icon. The browser draws and positions the calendar popup (it
  * cannot be styled, but follows `color-scheme` in dark mode), handles the
  * keyboard and submits an ISO date (`2026-09-26`).
+ *
+ * `lite:<key>` class tokens place the icon in the Input's inline padding of
+ * each style (datePickerClasses in generator/src/lite.ts).
  */
 function DatePickerLite({
   class: className,

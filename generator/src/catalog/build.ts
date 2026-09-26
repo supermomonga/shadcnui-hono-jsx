@@ -79,14 +79,38 @@ export function collectThemeDependencies(theme: ThemeItem): string[] {
 
 /**
  * Builds `cli/generated/catalog.json`: what the CLI installs for each item
- * (docs/adr/0029).
+ * (docs/adr/0029). Styles share one DOM structure (docs/adr/0030), so every
+ * style must install the same components, packages and scripts per item.
  */
 export function buildCatalog(deps: {
   config: GeneratorConfig
   theme: ThemeItem
-  components: ComponentEntry[]
+  /** Generated components by style. */
+  components: ReadonlyMap<string, readonly ComponentEntry[]>
 }): Catalog {
-  const byName = new Map(deps.components.map((c) => [c.name, c]))
+  const [first, ...others] = deps.config.styles.map((style) => {
+    const components = deps.components.get(style)
+    if (!components) throw new Error(`${style} was not generated`)
+    return { style, items: catalogItems(components) }
+  })
+  if (!first) throw new Error("No styles are configured")
+  for (const other of others) {
+    if (JSON.stringify(first.items) !== JSON.stringify(other.items)) {
+      throw new Error(
+        `${other.style} installs other components, packages or scripts than ${first.style}`
+      )
+    }
+  }
+  return {
+    styles: [...deps.config.styles],
+    items: first.items,
+    themeDependencies: collectThemeDependencies(deps.theme),
+    noticeLines: derivedNoticeLines(),
+  }
+}
+
+function catalogItems(components: readonly ComponentEntry[]): CatalogItem[] {
+  const byName = new Map(components.map((c) => [c.name, c]))
   /** The component plus every sibling component it imports, transitively. */
   const closure = (name: string, seen = new Set<string>()): Set<string> => {
     const component = byName.get(name)
@@ -98,7 +122,7 @@ export function buildCatalog(deps: {
     }
     return seen
   }
-  const items = [...deps.components]
+  return [...components]
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((component): CatalogItem => {
       const siblings = [...closure(component.name)]
@@ -126,10 +150,4 @@ export function buildCatalog(deps: {
         ].sort(),
       }
     })
-  return {
-    styles: [deps.config.style],
-    items,
-    themeDependencies: collectThemeDependencies(deps.theme),
-    noticeLines: derivedNoticeLines(),
-  }
 }

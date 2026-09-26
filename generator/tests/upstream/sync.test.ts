@@ -18,6 +18,7 @@ const HEAD = "a".repeat(40)
 const config: GeneratorConfig = {
   repository: "owner/repo",
   style: "test-style",
+  styles: ["test-style"],
   registryBaseUrl: BASE,
   licenseUrl: LICENSE_URL,
   trackedTypes: ["registry:ui"],
@@ -178,7 +179,7 @@ describe("syncUpstream", () => {
     expect(store.readTailwindCss()).toBe(tailwindCss.text)
 
     const lock = store.readLock()
-    expect(lock?.items.button).toMatchObject({
+    expect(lock?.styles["test-style"]?.items.button).toMatchObject({
       url: `${BASE}/styles/test-style/button.json`,
       etag: '"b1"',
       contentSha256: contentSha256(item("button", "button v1")),
@@ -251,7 +252,7 @@ describe("syncUpstream", () => {
 
     expect(result.added).toEqual([])
     expect(result.changed).toEqual([])
-    expect(result.unchanged).toEqual(["button", "card"])
+    expect(result.unchanged).toEqual(["test-style/button", "test-style/card"])
     expect(result.lockChanged).toBe(false)
     expect(result.fontsChanged).toEqual([])
     expect(result.presetChanged).toBe(false)
@@ -272,7 +273,7 @@ describe("syncUpstream", () => {
       fakeRegistry(registry({ button: { content: "v1", etag: '"e2"' } }))
         .fetchImpl
     )
-    expect(result.unchanged).toEqual(["button"])
+    expect(result.unchanged).toEqual(["test-style/button"])
     expect(readFileSync(store.lockFile, "utf8")).toBe(lockBefore)
   })
 
@@ -300,10 +301,9 @@ describe("syncUpstream", () => {
     expect(result.added.map((c) => c.name)).toEqual(["dialog"])
     expect(result.removed.map((c) => c.name)).toEqual(["card"])
     expect(existsSync(store.itemFile("card"))).toBe(false)
-    expect(Object.keys(store.readLock()?.items ?? {})).toEqual([
-      "button",
-      "dialog",
-    ])
+    expect(
+      Object.keys(store.readLock()?.styles["test-style"]?.items ?? {})
+    ).toEqual(["button", "dialog"])
   })
 
   test("records a null upstream commit when GitHub is unavailable", async () => {
@@ -312,7 +312,9 @@ describe("syncUpstream", () => {
       null
     )
     await run(fetchImpl)
-    expect(store.readLock()?.items.button?.upstreamCommit).toBeNull()
+    expect(
+      store.readLock()?.styles["test-style"]?.items.button?.upstreamCommit
+    ).toBeNull()
   })
 
   test("accepts placeholder items without files", async () => {
@@ -361,5 +363,47 @@ describe("syncUpstream", () => {
       toLicense: "BUSL-1.1",
     })
     expect(store.readLock()?.tailwindCss?.license).toBe("BUSL-1.1")
+  })
+
+  test("snapshots every configured style and drops styles no longer configured", async () => {
+    const resources = registry({ button: { content: "button v1" } })
+    resources.set(`${BASE}/styles/other-style/registry.json`, {
+      body: { items: [{ name: "button", type: "registry:ui" }] },
+    })
+    resources.set(`${BASE}/styles/other-style/button.json`, {
+      body: item("button", "other button"),
+    })
+    const both = { ...config, styles: ["test-style", "other-style"] }
+    const result = await syncUpstream({
+      config: both,
+      store,
+      themeUrl: THEME_URL,
+      tailwindCss,
+      fetchImpl: fakeRegistry(resources).fetchImpl,
+    })
+    expect(result.added.map((c) => `${c.style}/${c.name}`)).toEqual([
+      "test-style/button",
+      "other-style/button",
+    ])
+    expect(
+      store.forStyle("other-style").readItem("button").files?.[0]?.content
+    ).toBe("other button")
+    expect(Object.keys(store.readLock()?.styles ?? {})).toEqual([
+      "other-style",
+      "test-style",
+    ])
+
+    const again = await syncUpstream({
+      config,
+      store,
+      themeUrl: THEME_URL,
+      tailwindCss,
+      fetchImpl: fakeRegistry(resources).fetchImpl,
+    })
+    expect(again.removed.map((c) => `${c.style}/${c.name}`)).toEqual([
+      "other-style/button",
+    ])
+    expect(existsSync(store.forStyle("other-style").styleDir)).toBe(false)
+    expect(Object.keys(store.readLock()?.styles ?? {})).toEqual(["test-style"])
   })
 })

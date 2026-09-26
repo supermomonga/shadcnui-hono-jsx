@@ -24,9 +24,11 @@ type ComponentProps<
  * A lite alternative to shadcn/ui's InputOTP that needs no JavaScript, in the
  * way of daisyUI's OTP: one native text input lies over the slot boxes, its
  * characters spaced to one per box. The browser handles typing, pasting,
- * one-time-code autofill and form validation. The slot and group classes
- * follow upstream's InputOTPGroup and InputOTPSlot; the whole group is
- * highlighted while focused (upstream highlights the active slot).
+ * one-time-code autofill and form validation. The whole group is highlighted
+ * while focused (upstream highlights the active slot).
+ *
+ * `lite:<key>` class tokens are computed per style from upstream's InputOTP,
+ * InputOTPGroup and InputOTPSlot (inputOtpClasses in generator/src/lite.ts).
  */
 function InputOTPLite({
   maxLength = 6,
@@ -43,7 +45,7 @@ function InputOTPLite({
     <div
       data-slot="input-otp-lite"
       class={cn(
-        "group/input-otp relative flex w-fit items-center rounded-lg has-disabled:opacity-50 has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20 has-focus-visible:ring-3 has-focus-visible:ring-ring/50 dark:has-aria-invalid:ring-destructive/40",
+        "group/input-otp relative w-fit flex items-center has-disabled:opacity-50 rounded-lg has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40 has-focus-visible:ring-3 has-focus-visible:ring-ring/50",
         containerClassName
       )}
       style={
@@ -61,7 +63,7 @@ function InputOTPLite({
           <div
             key={index}
             data-slot="input-otp-slot"
-            class="relative flex size-8 items-center justify-center border-y border-r border-input text-sm transition-all outline-none first:rounded-l-lg first:border-l last:rounded-r-lg group-has-focus-visible/input-otp:border-ring group-has-aria-invalid/input-otp:border-destructive dark:bg-input/30"
+            class="relative flex size-8 items-center justify-center border-y border-r border-input text-sm transition-all outline-none first:rounded-l-lg first:border-l last:rounded-r-lg group-has-aria-invalid/input-otp:border-destructive group-has-focus-visible/input-otp:border-ring dark:bg-input/30"
           />
         ))}
       </div>

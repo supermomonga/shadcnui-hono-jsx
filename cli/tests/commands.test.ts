@@ -122,10 +122,24 @@ describe("init", () => {
     expect(read("styles/shadcn/theme.css")).toContain("var(--test-blue)")
   })
 
+  test("installs the templates of the preset's style", async () => {
+    const lyra = resolvePreset("b3ZgkpTRjc")
+    expect(lyra.config.style).toBe("lyra")
+    await init(ctx, {
+      ...initDefaults,
+      preset: lyra.code,
+      components: ["button"],
+    })
+    expect(read("components/ui/button.tsx").split("\n").slice(1)).toEqual(
+      readTemplate("base-lyra", "button").split("\n").slice(1)
+    )
+  })
+
   test("rejects presets this version cannot install, before writing", async () => {
+    const tabler = encodePreset({ ...nova, iconLibrary: "tabler" })
     await expect(
-      init(ctx, { ...initDefaults, preset: "b3ZgkpTRjc" })
-    ).rejects.toThrow(/style "lyra"/)
+      init(ctx, { ...initDefaults, preset: tabler })
+    ).rejects.toThrow(/iconLibrary "tabler"/)
     await expect(init(ctx, { ...initDefaults, rtl: true })).rejects.toThrow(
       UsageError
     )

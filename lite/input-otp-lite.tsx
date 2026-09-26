@@ -5,9 +5,11 @@ import type * as React from "react"
  * A lite alternative to shadcn/ui's InputOTP that needs no JavaScript, in the
  * way of daisyUI's OTP: one native text input lies over the slot boxes, its
  * characters spaced to one per box. The browser handles typing, pasting,
- * one-time-code autofill and form validation. The slot and group classes
- * follow upstream's InputOTPGroup and InputOTPSlot; the whole group is
- * highlighted while focused (upstream highlights the active slot).
+ * one-time-code autofill and form validation. The whole group is highlighted
+ * while focused (upstream highlights the active slot).
+ *
+ * `lite:<key>` class tokens are computed per style from upstream's InputOTP,
+ * InputOTPGroup and InputOTPSlot (inputOtpClasses in generator/src/lite.ts).
  */
 function InputOTPLite({
   maxLength = 6,
@@ -23,10 +25,7 @@ function InputOTPLite({
   return (
     <div
       data-slot="input-otp-lite"
-      className={cn(
-        "group/input-otp relative flex w-fit items-center rounded-lg has-disabled:opacity-50 has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20 has-focus-visible:ring-3 has-focus-visible:ring-ring/50 dark:has-aria-invalid:ring-destructive/40",
-        containerClassName
-      )}
+      className={cn("lite:root", containerClassName)}
       style={
         {
           "--input-otp-length": maxLength,
@@ -36,14 +35,10 @@ function InputOTPLite({
       <div
         aria-hidden="true"
         data-slot="input-otp-group"
-        className="flex items-center rounded-lg"
+        className="lite:group"
       >
         {Array.from({ length: maxLength }, (_, index) => (
-          <div
-            key={index}
-            data-slot="input-otp-slot"
-            className="relative flex size-8 items-center justify-center border-y border-r border-input text-sm transition-all outline-none first:rounded-l-lg first:border-l last:rounded-r-lg group-has-focus-visible/input-otp:border-ring group-has-aria-invalid/input-otp:border-destructive dark:bg-input/30"
-          />
+          <div key={index} data-slot="input-otp-slot" className="lite:slot" />
         ))}
       </div>
       {/*
@@ -51,7 +46,7 @@ function InputOTPLite({
         Tabular digits are 1ch wide: the spacing and padding center one per
         slot, and pb-px lines the text up with upstream's slots.
       */}
-      <div className="absolute inset-0 overflow-hidden rounded-lg">
+      <div className="lite:clip">
         <input
           data-slot="input-otp-lite-input"
           type="text"
@@ -60,10 +55,7 @@ function InputOTPLite({
           spellCheck={false}
           maxLength={maxLength}
           minLength={maxLength}
-          className={cn(
-            "h-full w-[calc((var(--input-otp-length)+1)*--spacing(8))] border-0 bg-transparent pb-px pl-[calc((--spacing(8)-1ch)/2)] text-sm tracking-[calc(--spacing(8)-1ch)] text-foreground tabular-nums outline-none disabled:cursor-not-allowed",
-            className
-          )}
+          className={cn("lite:input", className)}
           style={style}
           {...props}
         />

@@ -1,9 +1,9 @@
 import { existsSync, readFileSync, rmSync } from "node:fs"
-import { type GeneratorConfig, indexUrl, itemUrl } from "../config"
+import { forStyle, type GeneratorConfig, indexUrl, itemUrl } from "../config"
 import { type FetchLike, fetchText } from "./fetch"
 import { resolveUpstreamHead } from "./github"
 import { contentSha256, sha256, toJsonText } from "./hash"
-import { emptyLock, type ResourceLock } from "./lock"
+import { emptyLock, type ResourceLock, type StyleLock, styleLock } from "./lock"
 import type { UpstreamStore } from "./store"
 import {
   assertThemeItem,
@@ -43,6 +43,7 @@ export interface SyncOptions {
 }
 
 export interface ItemChange {
+  style: string
   name: string
   before: UpstreamItem | null
   after: UpstreamItem | null
@@ -107,24 +108,18 @@ async function mapLimit<T>(
 const byName = (a: { name: string }, b: { name: string }) =>
   a.name.localeCompare(b.name)
 
-/**
- * Updates the committed upstream snapshot. Lock entries change only when the
- * canonical content of a resource changes, so repeated syncs without upstream
- * changes produce no diff.
- */
-export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
-  const { config, store, fetchImpl } = options
-  const now = (options.now ?? (() => new Date()))().toISOString()
-  const lock =
-    store.readLock() ?? emptyLock(config.style, config.registryBaseUrl)
-  lock.style = config.style
-  lock.registryBaseUrl = config.registryBaseUrl
-
-  let head: Promise<string | null> | undefined
-  const upstreamHead = () => {
-    head ??= resolveUpstreamHead({ fetchImpl, token: options.githubToken })
-    return head
-  }
+/** Syncs the index and items of one style. */
+async function syncStyle(deps: {
+  config: GeneratorConfig
+  store: UpstreamStore
+  lock: StyleLock
+  fetchImpl: FetchLike | undefined
+  now: string
+  upstreamHead: () => Promise<string | null>
+  concurrency: number
+}) {
+  const { config, store, lock, fetchImpl, now } = deps
+  const style = config.style
 
   // Index: the tracked subset of the style's registry.json.
   const idxUrl = indexUrl(config)
@@ -140,7 +135,7 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     const entries = parseIndex(JSON.parse(idxResult.text), idxUrl)
       .filter((entry) => config.trackedTypes.includes(entry.type))
       .sort(byName)
-    index = { style: config.style, items: entries }
+    index = { style, items: entries }
     const text = toJsonText(index)
     const hash = sha256(text)
     if (lock.index?.sha256 !== hash || !existsSync(store.indexFile)) {
@@ -160,7 +155,7 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
   const added: ItemChange[] = []
   const changed: ItemChange[] = []
   const unchanged: string[] = []
-  await mapLimit(index.items, options.concurrency ?? 6, async ({ name }) => {
+  await mapLimit(index.items, deps.concurrency, async ({ name }) => {
     const url = itemUrl(config, name)
     const file = store.itemFile(name)
     const result = await fetchText(url, {
@@ -168,7 +163,7 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
       fetchImpl,
     })
     if (result.status === 304) {
-      unchanged.push(name)
+      unchanged.push(`${style}/${name}`)
       return
     }
     const value: unknown = JSON.parse(result.text)
@@ -176,7 +171,7 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     const text = toJsonText(value)
     const hash = sha256(text)
     if (lock.items[name]?.sha256 === hash && existsSync(file)) {
-      unchanged.push(name)
+      unchanged.push(`${style}/${name}`)
       return
     }
     const before = existsSync(file) ? store.readItem(name) : null
@@ -189,9 +184,9 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
       etag: result.etag,
       lastModified: result.lastModified,
       fetchedAt: now,
-      upstreamCommit: await upstreamHead(),
+      upstreamCommit: await deps.upstreamHead(),
     }
-    ;(before ? changed : added).push({ name, before, after: value })
+    ;(before ? changed : added).push({ style, name, before, after: value })
   })
 
   // Items that disappeared upstream (or are no longer tracked).
@@ -203,7 +198,70 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     const before = store.hasItem(name) ? store.readItem(name) : null
     store.removeItem(name)
     delete lock.items[name]
-    removed.push({ name, before, after: null })
+    removed.push({ style, name, before, after: null })
+  }
+  return {
+    added: added.sort(byName),
+    changed: changed.sort(byName),
+    removed,
+    unchanged: unchanged.sort(),
+    indexChanged,
+  }
+}
+
+/**
+ * Updates the committed upstream snapshot. Lock entries change only when the
+ * canonical content of a resource changes, so repeated syncs without upstream
+ * changes produce no diff.
+ */
+export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
+  const { config, store, fetchImpl } = options
+  const now = (options.now ?? (() => new Date()))().toISOString()
+  const lock = store.readLock() ?? emptyLock(config.registryBaseUrl)
+  lock.registryBaseUrl = config.registryBaseUrl
+
+  let head: Promise<string | null> | undefined
+  const upstreamHead = () => {
+    head ??= resolveUpstreamHead({ fetchImpl, token: options.githubToken })
+    return head
+  }
+
+  const added: ItemChange[] = []
+  const changed: ItemChange[] = []
+  const removed: ItemChange[] = []
+  const unchanged: string[] = []
+  let indexChanged = false
+  for (const style of config.styles) {
+    const result = await syncStyle({
+      config: forStyle(config, style),
+      store: store.forStyle(style),
+      lock: styleLock(lock, style),
+      fetchImpl,
+      now,
+      upstreamHead,
+      concurrency: options.concurrency ?? 6,
+    })
+    added.push(...result.added)
+    changed.push(...result.changed)
+    removed.push(...result.removed)
+    unchanged.push(...result.unchanged)
+    indexChanged ||= result.indexChanged
+  }
+  // Styles that are no longer configured.
+  for (const style of Object.keys(lock.styles)) {
+    if (config.styles.includes(style)) continue
+    const styleStore = store.forStyle(style)
+    for (const name of styleStore.listItems()) {
+      removed.push({
+        style,
+        name,
+        before: styleStore.readItem(name),
+        after: null,
+      })
+    }
+    rmSync(styleStore.styleDir, { recursive: true, force: true })
+    delete lock.styles[style]
+    indexChanged = true
   }
 
   // Theme.

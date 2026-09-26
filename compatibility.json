@@ -673,6 +673,7 @@
       "clientJs": "none",
       "knownDifferences": [
         "Accepts `class` instead of `className`.",
+        "Selectors for checkbox and radio roles (`[role=checkbox]`) match the generated controls by `data-slot`, as their roots carry no role.",
         "Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls."
       ],
       "reasons": [
@@ -681,6 +682,7 @@
         "component-dependency:separator",
         "component-import:label",
         "component-import:separator",
+        "control-state-class:[&>[role=checkbox],[role=radio]]",
         "control-state-class:has-data-checked",
         "memo-hook:useMemo",
         "react-type-rewrite:React.ComponentProps",
@@ -1297,7 +1299,7 @@
         "react-runtime-api:React.useEffect",
         "react-runtime-api:React.useState",
         "registry-dependency:use-mobile",
-        "registry-import:@/registry/base-nova/hooks/use-mobile",
+        "registry-import:@/registry/<style>/hooks/use-mobile",
         "base-ui-use-render",
         "classname-to-class",
         "cn-marker:cn-rtl-flip",
@@ -1451,9 +1453,13 @@
       "apiParity": "partial",
       "accessibility": "static-markup",
       "clientJs": "none",
-      "knownDifferences": ["Accepts `class` instead of `className`."],
+      "knownDifferences": [
+        "Accepts `class` instead of `className`.",
+        "Selectors for checkbox and radio roles (`[role=checkbox]`) match the generated controls by `data-slot`, as their roots carry no role."
+      ],
       "reasons": [
         "classname-to-class",
+        "control-state-class:[&:has([role=checkbox])]",
         "react-type-rewrite:React.ComponentProps",
         "use-client-directive"
       ]
@@ -1631,7 +1637,7 @@
       "basedOn": [
         {
           "name": "input-otp",
-          "contentSha256": "54f6dd46b5a450592778d4e3b238b92bfe5f9062b6be5ea6a28ae573a84d4d4a"
+          "contentSha256": "7a3862c3defe6ee3f4bbf245e78f252ece22f09c41df6e2e50c16904ea9feea4"
         }
       ],
       "visualParity": "approximate",
@@ -1649,11 +1655,11 @@
       "basedOn": [
         {
           "name": "calendar",
-          "contentSha256": "71d0ae1a4beb00d5f0b5f6bc574e811a575f6654d727e49ad5b508867a4b1b98"
+          "contentSha256": "cd8e16afe351f60f76c59620fe5695869c6f2e5d66d078f68197589dbe189726"
         },
         {
           "name": "input",
-          "contentSha256": "31a57ec736d9c75d16f81eb1486098944782f4f565c597f715b8a1334e28f5d0"
+          "contentSha256": "bb21d2cffdf31492bb4b2e681bd4d5b385ece08af6b395b1bd598a0b99823d65"
         }
       ],
       "visualParity": "not-compared",

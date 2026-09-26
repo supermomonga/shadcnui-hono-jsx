@@ -1,5 +1,14 @@
 {
-  "styles": ["base-nova"],
+  "styles": [
+    "base-nova",
+    "base-vega",
+    "base-maia",
+    "base-lyra",
+    "base-mira",
+    "base-luma",
+    "base-sera",
+    "base-rhea"
+  ],
   "items": [
     {
       "name": "accordion",

@@ -4,13 +4,17 @@ import type { ItemChange, SyncResult, TextChange } from "./sync"
 import type { UpstreamItem } from "./types"
 
 export interface ClassificationChange {
+  /** `<style>/<name>`. */
   name: string
   before: ClassificationKind | null
   after: ClassificationKind | null
 }
 
 export interface ReportInput {
+  /** The default style, whose item diffs are shown in full. */
   style: string
+  /** Every synced style. */
+  styles: readonly string[]
   result: SyncResult
   classifications: ClassificationChange[]
   /** Items translated by the generator, highlighted in the report. */
@@ -52,10 +56,34 @@ function details(summary: string, body: string): string {
 
 function itemSection(change: ItemChange, generated: readonly string[]): string {
   const mark = generated.includes(change.name) ? " (generated)" : ""
+  const label = `${change.style}/${change.name}`
   return details(
-    `${change.name}${mark}`,
-    patch(change.name, itemText(change.before), itemText(change.after))
+    `${label}${mark}`,
+    patch(label, itemText(change.before), itemText(change.after))
   )
+}
+
+/**
+ * Component names, each with the styles it changed in when that is not every
+ * style: `` `button` ``, `` `card` (base-lyra, base-mira) ``.
+ */
+function changedNames(
+  changes: readonly ItemChange[],
+  styles: readonly string[]
+): string {
+  const byName = new Map<string, string[]>()
+  for (const change of changes) {
+    byName.set(change.name, [...(byName.get(change.name) ?? []), change.style])
+  }
+  if (byName.size === 0) return "none"
+  return [...byName]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([name, changed]) =>
+      styles.every((style) => changed.includes(style))
+        ? `\`${name}\``
+        : `\`${name}\` (${changed.join(", ")})`
+    )
+    .join(", ")
 }
 
 function textSection(name: string, change: TextChange): string {
@@ -65,16 +93,17 @@ function textSection(name: string, change: TextChange): string {
 /** Markdown summary of an upstream sync, used as the upstream-check PR body. */
 export function renderSyncReport(input: ReportInput): string {
   const { result, generated } = input
-  const names = (changes: ItemChange[]) =>
-    changes.length === 0
-      ? "none"
-      : changes.map((c) => `\`${c.name}\``).join(", ")
-  const affected = [...result.added, ...result.changed, ...result.removed]
-    .map((c) => c.name)
-    .filter((name) => generated.includes(name))
+  const names = (changes: ItemChange[]) => changedNames(changes, input.styles)
+  const affected = [
+    ...new Set(
+      [...result.added, ...result.changed, ...result.removed]
+        .map((c) => c.name)
+        .filter((name) => generated.includes(name))
+    ),
+  ].sort()
 
   const licenseProblems = input.licenseProblems ?? []
-  const lines = [`## Upstream sync: shadcn/ui ${input.style}`, ""]
+  const lines = [`## Upstream sync: shadcn/ui ${input.styles.join(", ")}`, ""]
   if (licenseProblems.length > 0) {
     lines.push(
       "> [!CAUTION]",
@@ -99,7 +128,7 @@ export function renderSyncReport(input: ReportInput): string {
     }`,
     `- Upstream license: ${result.license || result.packageLicense || result.iconLicense ? "changed" : "unchanged"}`,
     "",
-    "Review the diffs below. Upstream changes can alter behavior; this PR is never merged automatically."
+    `Review the diffs below (of ${input.style}, and of other styles where only they changed). Upstream changes can alter behavior; this PR is never merged automatically.`
   )
 
   const reclassified = input.classifications.filter((c) => c.before !== c.after)
@@ -137,6 +166,13 @@ export function renderSyncReport(input: ReportInput): string {
         ]
       : []),
     ...[...result.changed, ...result.added, ...result.removed]
+      .filter((change) => {
+        const all = [...result.changed, ...result.added, ...result.removed]
+        return (
+          change.style === input.style ||
+          !all.some((c) => c.name === change.name && c.style === input.style)
+        )
+      })
       .sort(
         (a, b) =>
           Number(generated.includes(b.name)) -

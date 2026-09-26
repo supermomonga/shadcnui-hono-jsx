@@ -31,7 +31,7 @@ Base UI, or Radix runtime in the generated components.
 - Works with plain Hono and HonoX
 - Tailwind CSS v4 and the shadcn/ui design tokens
 - Source-code ownership: components are copied into your project, like shadcn/ui
-- Presets from ui.shadcn.com/create (colors, radius, fonts, menu accent)
+- Presets from ui.shadcn.com/create (every Base UI style, colors, radius, fonts, menu accent)
 - Regenerated from upstream shadcn/ui instead of hand-maintained forks
 - JavaScript only where the browser lacks the behavior: most components (including Dialog, Popover, Select and Accordion) ship none, and the rest use small optional module scripts
 
@@ -63,9 +63,10 @@ Base UI, or Radix runtime in the generated components.
 
    `--pointer` adds the pointer cursor to buttons. The theme comes from
    ui.shadcn.com, like with `shadcn init`, so the command needs network access.
-   Presets choose colors, radius, fonts and the menu accent; presets with
-   another style than Nova, another icon library than Lucide, another menu
-   color or right-to-left layout are not supported yet.
+   Presets choose the style (Nova, Vega, Maia, Lyra, Mira, Luma, Sera or
+   Rhea), colors, radius, fonts and the menu accent; presets with another icon
+   library than Lucide, another menu color or right-to-left layout are not
+   supported yet.
 
 2. Import the theme after Tailwind CSS in your stylesheet, and make sure
    Tailwind scans `components/ui`:
@@ -213,7 +214,7 @@ Per-component details are in the table below.
 ## Compatibility
 
 <!-- compatibility-table:start -->
-Generated from `compatibility.json` (upstream style `base-nova`). Every component is server-rendered Hono JSX; the "Client JS" column names the optional script a component needs for its behavior (see "Client scripts" above). "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the `tests/visual` CI job.
+Generated from `compatibility.json` (upstream style `base-nova`; every Base UI style is generated from the same sources and compared the same way). Every component is server-rendered Hono JSX; the "Client JS" column names the optional script a component needs for its behavior (see "Client scripts" above). "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the `tests/visual` CI job.
 
 | Component | Status | Conversion | Visual parity | Client JS | Known differences |
 | --- | --- | --- | --- | --- | --- |
@@ -238,7 +239,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | drawer | experimental | generated | verified | `/shadcn/drawer.js` | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`), like Dialog: opening, closing, Escape and outside clicks need no JavaScript (Baseline 2025 browsers). The overlay is the dialog's `::backdrop` (the overlay component renders nothing), and the viewport renders nothing. Swiping to close needs the client script `/shadcn/drawer.js` (`<script type="module" src="/shadcn/drawer.js">`). Snap points, nested drawer stacking, swipe areas and `modal={false}` are not supported (the drawer always opens as a modal dialog). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported. Accepts `class` instead of `className`. |
 | dropdown-menu | experimental | generated | verified | `/shadcn/menu.js` | The menu is a native popover placed with CSS anchor positioning, so it opens without JavaScript (placement needs Chrome 135, Firefox 147 or Safari 26.2). The client script `/shadcn/menu.js` (`<script type="module" src="/shadcn/menu.js">`) adds the menu behavior: focus handling, arrow keys, typeahead, checkbox and radio items, submenus and closing after a choice. Items have no `onClick` on the server: use `render` for links (`render={<a href="/settings" />}`) or form buttons. Controlled state (`open`, `onOpenChange`, `checked`/`onCheckedChange`, `value`/`onValueChange`), `modal` (page scroll is not locked) and `openOnHover` on the root are not supported. Accepts `class` instead of `className`. |
 | empty | experimental | generated | verified | none | Accepts `class` instead of `className`. |
-| field | experimental | generated | verified | none | Accepts `class` instead of `className`. Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls. |
+| field | experimental | generated | verified | none | Accepts `class` instead of `className`. Selectors for checkbox and radio roles (`[role=checkbox]`) match the generated controls by `data-slot`, as their roots carry no role. Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls. |
 | hover-card | experimental | generated | verified | `/shadcn/hover.js` | Opening on hover or keyboard focus needs the client script `/shadcn/hover.js` (`<script type="module" src="/shadcn/hover.js">`); without it the card does not open and the trigger works as a plain link. The card is a native popover placed with CSS anchor positioning. Controlled state (`open`, `onOpenChange`) is not supported. Accepts `class` instead of `className`. |
 | input | experimental | generated | verified | none | Client-side field state attributes (`data-dirty`, `data-touched`, `data-focused`, `data-filled`, `data-valid`) and the auto-generated `id` are not rendered. Accepts `class` instead of `className`. |
 | input-group | experimental | generated-with-adapter | verified | `/shadcn/input-group.js` | Accepts `class` instead of `className`. Clicking an addon focuses the input with the client script `/shadcn/input-group.js` (`<script type="module" src="/shadcn/input-group.js">`); without it the addon is not clickable. |
@@ -263,7 +264,7 @@ Generated from `compatibility.json` (upstream style `base-nova`). Every componen
 | slider | experimental | generated | verified | `/shadcn/slider.js` | Each thumb holds a native `<input type="range">` (focusable, keyboard-operable and submitted with `name`). Pointer dragging, keeping range thumbs in order and moving the thumbs as values change need the client script `/shadcn/slider.js` (`<script type="module" src="/shadcn/slider.js">`); without it the initial values are shown and submitted. Controlled state (`onValueChange`), `format`, `locale` and `largeStep` are not supported (Page Up and Page Down use the browser's step). Accepts `class` instead of `className`. |
 | spinner | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | switch | experimental | generated | verified | none | Built on a native `<input type="checkbox" role="switch">` inside the styled root: no JavaScript, and the value is submitted with forms. `id`, `name`, `value`, `disabled`, `required`, `form` and `aria-*` go to the input, so `<Label for>` works as usual. `checked`/`defaultChecked` set the initial state; `onCheckedChange`, `readOnly` and `render` are not supported. Accepts `class` instead of `className`. |
-| table | experimental | generated | verified | none | Accepts `class` instead of `className`. |
+| table | experimental | generated | verified | none | Accepts `class` instead of `className`. Selectors for checkbox and radio roles (`[role=checkbox]`) match the generated controls by `data-slot`, as their roots carry no role. |
 | tabs | experimental | generated | verified | `/shadcn/tabs.js` | Switching tabs needs the client script `/shadcn/tabs.js` (`<script type="module" src="/shadcn/tabs.js">`); without it the selected panel is shown. Pointer, Enter, Space, arrow keys, Home and End work like Base UI. Inactive panels are rendered with `hidden` (Base UI does not render them). Controlled state (`onValueChange`) and `render` are not supported; `value`/`defaultValue` set the selected tab. Accepts `class` instead of `className`. |
 | textarea | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | toast | experimental | generated-with-adapter | verified | `/shadcn/toast.js` | Toasts are added in the browser with `toast` from the client script (`import { toast } from "/shadcn/toast.js"`, then `toast.add({ title, description, type, actionProps })`), or declaratively with `data-toast-trigger` buttons (`data-toast-title`, `data-toast-description`, `data-toast-type`). The script copies the toast markup from templates that `<Toaster>` renders, so edit the components as usual. On the server, pass toasts to `<Toaster toasts={[{ title: "Saved" }]} />` (for example flash messages after a form post) or use a per-response `createToastManager()` with `<Toaster toastManager={manager}>`; they show without JavaScript, and the script times them out. The exported `toast` is shared by every request on the server, so its `add()` throws there. Action `onClick` and other function props, and `useToastManager()` state updates, work only through `/shadcn/toast.js`. Accepts `class` instead of `className`. |
@@ -318,14 +319,15 @@ cd examples/honox && bun run dev   # Vite dev server
 
 ## How it works
 
-1. `bun run upstream:sync` snapshots the shadcn/ui `base-nova` registry
-   (`upstream/`), recording a content hash per item in `upstream/lock.json`.
+1. `bun run upstream:sync` snapshots the shadcn/ui registries of every Base UI
+   style (`upstream/base-<style>/`), recording a content hash per item in
+   `upstream/lock.json`.
 2. `bun run generate` classifies each upstream component and translates the
    supported ones with ts-morph: React types become Hono JSX types, `className`
    becomes `class`, stateless Base UI primitives become the HTML they render,
-   and the output is formatted with Biome. The results are templates in
-   `cli/generated/`, together with the catalog the CLI installs from and the
-   compatibility manifest.
+   and the output is formatted with Biome. The results are templates of every
+   style in `cli/generated/templates/<style>/`, together with the catalog the
+   CLI installs from and the compatibility manifest.
 3. The CLI builds the theme from the preset's `/init` response on
    ui.shadcn.com and installs the templates into the user's project.
 4. A weekly workflow syncs upstream and opens a pull request with the diff;
@@ -346,6 +348,7 @@ Generated files are never edited by hand. See
 | `bun run cli <command>` | Run the CLI from the repository |
 | `bun run verify` | Install for development, lint, type-check, test, check generated files |
 | `bun run test:visual` | Compare screenshots with upstream shadcn/ui (React, Playwright; separate package in `tests/visual`) |
+| `bun run test:visual:styles [--style <style>]` | The same in every Base UI style (restores the default install afterwards) |
 | `bun run verify:full` | `verify` plus examples, the CLI install test (network) and visual parity |
 
 ## License

@@ -50,7 +50,7 @@ export function generateComponent(
   const [file] = item.files ?? []
   const [fileFacts] = facts.files
   if (!file || !fileFacts) throw new GenerationError(`${name} has no files`)
-  const lockEntry = deps.lock.items[name]
+  const lockEntry = deps.lock.styles[deps.config.style]?.items[name]
   if (!lockEntry)
     throw new GenerationError(`${name} is missing from upstream/lock.json`)
 

@@ -3,6 +3,17 @@ import type { GeneratorConfig } from "./generator/src/config"
 export const config: GeneratorConfig = {
   repository: "supermomonga/shadcnui-hono-jsx",
   style: "base-nova",
+  // The styles of shadcn/preset (PRESET_STYLES), default first.
+  styles: [
+    "base-nova",
+    "base-vega",
+    "base-maia",
+    "base-lyra",
+    "base-mira",
+    "base-luma",
+    "base-sera",
+    "base-rhea",
+  ],
   registryBaseUrl: "https://ui.shadcn.com/r",
   licenseUrl: "https://raw.githubusercontent.com/shadcn-ui/ui/main/LICENSE.md",
   trackedTypes: ["registry:ui"],

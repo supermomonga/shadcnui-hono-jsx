@@ -108,7 +108,13 @@ function fileReasons(
         reason("component-import", module.match(REGISTRY_UI_IMPORT)?.[1])
       )
     } else if (module.startsWith("@/")) {
-      reasons.push(reason("registry-import", module))
+      // The same for every style: `@/registry/<style>/hooks/use-mobile`.
+      reasons.push(
+        reason(
+          "registry-import",
+          module.replace(/^@\/registry\/[^/]+\//, "@/registry/<style>/")
+        )
+      )
     } else {
       reasons.push(reason("unknown-import", module))
     }

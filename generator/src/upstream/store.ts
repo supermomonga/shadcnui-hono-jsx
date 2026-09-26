@@ -27,6 +27,11 @@ export class UpstreamStore {
     this.dir = path.join(root, "upstream")
   }
 
+  /** A store for another style, sharing the snapshot directory. */
+  forStyle(style: string): UpstreamStore {
+    return new UpstreamStore(path.dirname(this.dir), style)
+  }
+
   get lockFile(): string {
     return path.join(this.dir, "lock.json")
   }

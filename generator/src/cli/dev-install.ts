@@ -6,9 +6,16 @@
  * this install. The theme and fonts come from the upstream snapshot instead of
  * ui.shadcn.com, and no packages are installed: the root package.json lists
  * them.
+ *
+ * `--style <style>` installs the default preset with another style, for the
+ * visual tests of that style (`bun run test:visual:styles`). Every style uses
+ * the snapshotted theme, which suits comparisons with upstream in the same
+ * theme.
  */
 import { rmSync } from "node:fs"
 import path from "node:path"
+import { parseArgs } from "node:util"
+import { encodePreset } from "../../../cli/generated/shadcn-preset.js"
 import { readCatalog } from "../../../cli/src/catalog"
 import { init } from "../../../cli/src/commands"
 import {
@@ -18,10 +25,21 @@ import {
   SCRIPTS_DIR,
   STYLES_DIR,
 } from "../../../cli/src/paths"
-import type { FetchJson } from "../../../cli/src/shadcn"
+import { readNamedPresets } from "../../../cli/src/preset"
+import { DEFAULT_PRESET, type FetchJson } from "../../../cli/src/shadcn"
 import { config } from "../../../generator.config"
 import { ROOT } from "../paths"
 import { UpstreamStore } from "../upstream/store"
+
+const { values } = parseArgs({
+  args: Bun.argv.slice(2),
+  options: { style: { type: "string", default: config.style } },
+})
+const style = values.style
+if (!config.styles.includes(style)) {
+  console.error(`--style takes one of ${config.styles.join(", ")}`)
+  process.exit(1)
+}
 
 const store = new UpstreamStore(ROOT, config.style)
 const lock = store.readLock()
@@ -31,7 +49,9 @@ if (!lock?.theme) {
 }
 
 const snapshot: FetchJson = async (url) => {
-  if (url === lock.theme?.url) return store.readTheme()
+  if (url === lock.theme?.url || new URL(url).pathname === "/init") {
+    return store.readTheme()
+  }
   const font = Object.entries(lock.fonts).find(([, entry]) => entry.url === url)
   if (font) return store.readFont(font[0])
   throw new Error(
@@ -63,6 +83,13 @@ await init(
     log: () => {},
   },
   {
+    preset:
+      style === config.style
+        ? undefined
+        : encodePreset({
+            ...readNamedPresets()[DEFAULT_PRESET],
+            style: style.replace(/^base-/, "") as never,
+          }),
     rtl: false,
     pointer: false,
     force: true,
@@ -70,5 +97,5 @@ await init(
   }
 )
 console.log(
-  `Installed the default preset and ${catalog.items.length} components into the repository root.`
+  `Installed the default preset${style === config.style ? "" : ` in ${style}`} and ${catalog.items.length} components into the repository root.`
 )

@@ -142,7 +142,7 @@ export { Tag }`
     ],
     [
       `import { Button } from "@/registry/base-nova/ui/button"\nexport function C() { return <Button /> }`,
-      "registry-import:@/registry/base-nova/ui/button",
+      "registry-import:@/registry/<style>/ui/button",
     ],
     [
       `import { Command } from "cmdk"\nexport function C() { return <Command /> }`,

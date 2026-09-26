@@ -338,7 +338,7 @@ export const sidebarAdapter: ComponentAdapter = {
     "react-runtime-api:React.useEffect",
     "react-runtime-api:React.useState",
     "registry-dependency:use-mobile",
-    "registry-import:@/registry/base-nova/hooks/use-mobile",
+    "registry-import:@/registry/<style>/hooks/use-mobile",
   ],
   notes: [
     'Toggling (the trigger, the rail and Ctrl/Cmd+B), remembering the state in the `sidebar_state` cookie and the mobile sheet need the client script `/shadcn/sidebar.js` (`<script type="module" src="/shadcn/sidebar.js">`); without it the sidebar shows in its initial state on wide screens and not at all on narrow ones.',

@@ -1,6 +1,6 @@
 import { Node, type SourceFile, SyntaxKind } from "ts-morph"
 import { splitVariants } from "../adapters/families/util"
-import { CONTROL_STATE_VARIANTS } from "../transformers/steps/control-state"
+import { isControlStateVariant } from "../transformers/steps/control-state"
 import type { UpstreamItem } from "../upstream/types"
 import { parseSource } from "./source"
 
@@ -35,7 +35,7 @@ export interface FileFacts {
   jsx: JsxFact[]
   /** `cn-*` placeholder classes found in string literals. */
   cnMarkers: string[]
-  /** Variants reacting to Base UI control state (`has-data-checked`, ...). */
+  /** Variants reacting to Base UI control state or roles (`has-data-checked`, `[&>[role=checkbox]]`, ...). */
   controlStateVariants: string[]
   /** Whether a component parameter destructures `className`. */
   classNameProp: boolean
@@ -208,8 +208,7 @@ function collectFileFacts(path: string, type: string, text: string): FileFacts {
     for (const token of literal.getLiteralText().split(/\s+/)) {
       if (/^cn-[a-z-]+$/.test(token)) cnMarkers.push(token)
       for (const variant of splitVariants(token).slice(0, -1)) {
-        if (variant in CONTROL_STATE_VARIANTS)
-          controlStateVariants.push(variant)
+        if (isControlStateVariant(variant)) controlStateVariants.push(variant)
       }
     }
   }

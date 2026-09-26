@@ -25,6 +25,7 @@ const catalog = readCatalog()
 const store = new UpstreamStore(ROOT, config.style)
 const nova = resolvePreset("nova")
 const blue = encodePreset({ ...nova.config, theme: "blue" })
+const lyra = encodePreset({ ...nova.config, style: "lyra" })
 
 function serveSnapshot() {
   return Bun.serve({
@@ -218,5 +219,17 @@ describe.skipIf(!enabled)("the CLI in a clean Hono project", () => {
       `// Installed by shadcnui-hono-jsx for the shadcn/ui preset ${blue};`
     )
     expect(outputs.apply).toContain("updated components/ui/button.tsx")
+  })
+
+  test("apply switches the style of the installed components", async () => {
+    await run(["bun", CLI, "apply", "--preset", lyra])
+    expect(read("components/ui/button.tsx")).toBe(
+      finalize(readTemplate("base-lyra", "button"), {
+        iconLibrary: "lucide",
+        menuColor: "default",
+        rtl: false,
+        preset: lyra,
+      })
+    )
   })
 })

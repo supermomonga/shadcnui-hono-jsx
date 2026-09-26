@@ -12,6 +12,7 @@ import {
   copyFileSync,
   mkdirSync,
   readdirSync,
+  readFileSync,
   rmSync,
   writeFileSync,
 } from "node:fs"
@@ -19,6 +20,7 @@ import path from "node:path"
 import { jsx } from "hono/jsx"
 import { createElement, type ReactNode } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
+import { resolvePreset } from "../../cli/src/preset"
 import { COMPONENT_ADAPTERS } from "../../generator/src/adapters/components"
 import { findFamilyRule } from "../../generator/src/adapters/families"
 import { collectFacts } from "../../generator/src/analyzer/facts"
@@ -39,6 +41,20 @@ const ROOT = path.resolve(HERE, "../..")
 const OUT = path.join(HERE, ".output")
 const UPSTREAM = path.join(HERE, ".upstream")
 const MODES = ["light", "dark"] as const
+
+/**
+ * The style of the development install in the repository root (`bun run
+ * dev:install [--style <style>]`), which upstream is rendered in.
+ */
+const STYLE = `base-${
+  resolvePreset(
+    (
+      JSON.parse(
+        readFileSync(path.join(ROOT, "shadcnui-hono-jsx.json"), "utf8")
+      ) as { preset: string }
+    ).preset
+  ).config.style
+}`
 
 type Exports = Record<string, unknown>
 
@@ -88,7 +104,7 @@ export function IconPlaceholder(props: Record<string, unknown>) {
 `
 
 function writeUpstreamSources(): void {
-  const store = new UpstreamStore(ROOT, config.style)
+  const store = new UpstreamStore(ROOT, STYLE)
   rmSync(UPSTREAM, { recursive: true, force: true })
   mkdirSync(UPSTREAM, { recursive: true })
   writeFileSync(path.join(UPSTREAM, "icon-placeholder.tsx"), ICON_PLACEHOLDER)
@@ -230,7 +246,7 @@ function section(
  * only pixels and icons are compared.
  */
 function nativeStructureComponents(): Set<string> {
-  const store = new UpstreamStore(ROOT, config.style)
+  const store = new UpstreamStore(ROOT, STYLE)
   return new Set(
     config.components.filter(
       (name) =>
@@ -312,7 +328,7 @@ async function main(): Promise<void> {
   if (tailwind.exitCode !== 0) throw new Error(tailwind.stderr.toString())
   await renderDemoPages()
   console.log(
-    `Rendered ${ids.length} cases to ${path.relative(process.cwd(), OUT)}`
+    `Rendered ${ids.length} cases in ${STYLE} to ${path.relative(process.cwd(), OUT)}`
   )
 }
 

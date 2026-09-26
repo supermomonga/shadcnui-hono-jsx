@@ -51,7 +51,9 @@ describe("buildManifest", () => {
           name in COMPONENT_ADAPTERS ? "generated-with-adapter" : "generated",
         clientJs: SCRIPTED.has(name) ? "required" : "none",
         visualParity: "verified",
-        upstream: { contentSha256: lock.items[name]?.contentSha256 },
+        upstream: {
+          contentSha256: lock.styles[config.style]?.items[name]?.contentSha256,
+        },
       })
       // Every component that styles an element takes `class`.
       if (byName.get(name)?.reasons.includes("classname-to-class")) {

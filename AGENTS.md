@@ -22,7 +22,10 @@ generator (transformer, adapter, or config) and regenerate.
 Components reach users through the `shadcnui-hono-jsx` CLI in `cli/`
 (docs/adr/0029): it builds the theme from a shadcn/ui preset and installs the
 templates of `cli/generated/templates/<style>/` through `finalize`
-(docs/adr/0030). The CLI sources in `cli/src/` are hand-written; use Node APIs
+(docs/adr/0030). Every Base UI style in `generator.config.ts` is snapshotted
+and translated, and a component must translate in all of them; styles differ
+only in classes, so translation rules must not depend on class strings. The
+CLI sources in `cli/src/` are hand-written; use Node APIs
 only, so the package runs under Node as well as Bun. The repository root is a
 development install of the default preset, which tests, type checking, the
 visual tests and the examples use; run `bun run dev:install` after generating.
@@ -32,9 +35,12 @@ code) and installed as they are into `public/shadcn/`; see docs/adr/0025. Keep
 them dependency-free ES modules that find components by `data-slot`.
 
 Lite alternatives (`<upstream>-lite`, docs/adr/0028) are hand-written in
-`lite/` in upstream's style and generated like ports. When `generate` reports
-that an upstream base changed, review the alternative against the new upstream
-item and then update its hash in `generator/src/lite.ts`.
+`lite/` in upstream's style and generated like ports, once per style. Their
+style-dependent classes are `lite:<key>` tokens computed from upstream parts
+by the recipes in `generator/src/lite.ts` (docs/adr/0030). When `generate`
+reports that an upstream base changed, review the alternative against the new
+upstream item in every style and then update its revision in
+`generator/src/lite.ts`.
 
 ## Commands
 
@@ -47,6 +53,7 @@ item and then update its hash in `generator/src/lite.ts`.
 | `bun run cli <command>` | Run the CLI from the repository |
 | `bun run verify` | Development install, lint, type-check, test, freshness check |
 | `bun run test:visual` | Visual parity against upstream React (`tests/visual`, Playwright) |
+| `bun run test:visual:styles` | Visual parity in every Base UI style |
 | `bun run verify:full` | `verify` plus examples, the network CLI install test and visual parity |
 
 To support another upstream component, add it to `components` in

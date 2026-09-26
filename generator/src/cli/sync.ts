@@ -23,14 +23,22 @@ const { values } = parseArgs({
 })
 
 const store = new UpstreamStore(ROOT, config.style)
+/** Classification of every snapshotted item, keyed `<style>/<name>`. */
 const classifyAll = () =>
   new Map<string, ClassificationKind>(
-    store.listItems().map((name) => [
-      name,
-      classify(collectFacts(store.readItem(name)), COMPONENT_ADAPTERS, {
-        available: new Set(config.components),
-      }).kind,
-    ])
+    config.styles.flatMap((style) => {
+      const styleStore = store.forStyle(style)
+      return styleStore
+        .listItems()
+        .map((name) => [
+          `${style}/${name}`,
+          classify(
+            collectFacts(styleStore.readItem(name)),
+            COMPONENT_ADAPTERS,
+            { available: new Set(config.components) }
+          ).kind,
+        ])
+    })
   )
 
 // The theme snapshot is what the CLI fetches for its default preset.
@@ -60,15 +68,15 @@ const list = (label: string, names: string[]) => {
 }
 list(
   "added",
-  result.added.map((c) => c.name)
+  result.added.map((c) => `${c.style}/${c.name}`)
 )
 list(
   "changed",
-  result.changed.map((c) => c.name)
+  result.changed.map((c) => `${c.style}/${c.name}`)
 )
 list(
   "removed",
-  result.removed.map((c) => c.name)
+  result.removed.map((c) => `${c.style}/${c.name}`)
 )
 console.log(`unchanged: ${result.unchanged.length}`)
 if (result.indexChanged) console.log("index changed")
@@ -114,6 +122,7 @@ if (values.report) {
     values.report,
     renderSyncReport({
       style: config.style,
+      styles: config.styles,
       result,
       classifications,
       generated: config.components,

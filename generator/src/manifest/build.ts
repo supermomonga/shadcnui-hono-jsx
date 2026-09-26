@@ -73,7 +73,9 @@ function knownDifferences(
     if (common) notes.push(common)
     if (key.startsWith("control-state-class:")) {
       notes.push(
-        "Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls."
+        key.includes("[role=")
+          ? "Selectors for checkbox and radio roles (`[role=checkbox]`) match the generated controls by `data-slot`, as their roots carry no role."
+          : "Checked-state styles (`has-data-checked:`) follow the native `:checked` state of the generated controls."
       )
     }
     if (key.startsWith("base-ui-primitive-mapped:")) {
@@ -107,7 +109,7 @@ export function buildManifest(deps: {
       { available: new Set(deps.config.components) }
     )
     const reasons = classification.reasons.map(reasonKey)
-    const lockEntry = deps.lock.items[name]
+    const lockEntry = deps.lock.styles[deps.config.style]?.items[name]
     const upstream = {
       url: itemUrl(deps.config, name),
       contentSha256: lockEntry?.contentSha256 ?? null,
@@ -214,7 +216,7 @@ export function renderCompatibilityTable(manifest: Manifest): string {
   const generated = manifest.components.filter((c) => c.conversion !== null)
   const others = manifest.components.filter((c) => c.conversion === null)
   const lines = [
-    `Generated from \`compatibility.json\` (upstream style \`${manifest.style}\`). Every component is server-rendered Hono JSX; the "Client JS" column names the optional script a component needs for its behavior (see "Client scripts" above). "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the \`tests/visual\` CI job.`,
+    `Generated from \`compatibility.json\` (upstream style \`${manifest.style}\`; every Base UI style is generated from the same sources and compared the same way). Every component is server-rendered Hono JSX; the "Client JS" column names the optional script a component needs for its behavior (see "Client scripts" above). "Visual parity: verified" means screenshots match upstream shadcn/ui (React) in light and dark mode in the \`tests/visual\` CI job.`,
     "",
     "| Component | Status | Conversion | Visual parity | Client JS | Known differences |",
     "| --- | --- | --- | --- | --- | --- |",

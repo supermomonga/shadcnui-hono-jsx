@@ -7,7 +7,7 @@ investigation. Individual decisions are recorded as ADRs in [`adr/`](./adr/).
 ## Data flow
 
 ```
-ui.shadcn.com registry (base-nova)
+ui.shadcn.com registries (every Base UI style: base-nova, base-vega, …)
   → upstream:sync      → upstream/ (committed snapshot + lock.json)
   → analyzer           → facts + classification (direct / native-adapter / script-adapter / custom-adapter / unsupported)
   → transformers       → Hono JSX source (ts-morph, adapters)
@@ -206,10 +206,13 @@ a hand-written approximation without JavaScript, named `<upstream>-lite`
 name. The sources in `lite/` are written like upstream components (React TSX,
 `className`, `IconPlaceholder`, `@/registry/...` imports) and translated by the
 same pipeline, so they get the usual header, inlined icons, sibling
-components and registry dependencies. `generator/src/lite.ts` records the
-upstream items each alternative is based on with their content hashes;
+components and registry dependencies. They are generated once per style:
+classes that depend on the style are `lite:<key>` tokens, computed from the
+upstream parts of each style by recipes in `generator/src/lite.ts` (for
+example the slot of `input-otp`). `generator/src/lite.ts` records the
+upstream items each alternative is based on with a revision over every style;
 `generate` fails when one changes until the alternative is reviewed and the
-hash updated. `compatibility.json` lists them under `alternatives`, and
+revision updated. `compatibility.json` lists them under `alternatives`, and
 `tests/visual/lite.spec.ts` compares them with upstream where an upstream
 rendering exists (at a looser tolerance) and checks their native behavior.
 
@@ -316,9 +319,9 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
   field state) are not reproduced.
 - Upstream items that import non-generated registry items, hooks, or icons
   remain unsupported until those are generated or mapped.
-- Presets can choose colors, radius, fonts, the menu accent and the pointer
-  cursor. Other styles than Nova, other icon libraries than Lucide, other
-  menu colors and right-to-left layout are planned
+- Presets can choose the style, colors, radius, fonts, the menu accent and
+  the pointer cursor. Other icon libraries than Lucide, other menu colors and
+  right-to-left layout are planned
   ([ADR 0030](./adr/0030-generate-templates-for-every-base-ui-style-and-finalize-them-at-install-time.md),
   [ADR 0031](./adr/0031-inline-icons-of-every-shadcn-ui-icon-library-at-generation-time.md)).
 - The CLI is not published to npm yet.

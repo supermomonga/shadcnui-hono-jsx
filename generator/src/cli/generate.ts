@@ -3,6 +3,7 @@ import path from "node:path"
 import { parseArgs } from "node:util"
 import { config } from "../../../generator.config"
 import { buildCatalog } from "../catalog/build"
+import { forStyle } from "../config"
 import { formatWithBiome } from "../emit/format"
 import { buildVendoredPreset, buildVendoredTailwindCss } from "../emit/vendored"
 import { type OutputFile, writeOutputs } from "../emit/write"
@@ -71,25 +72,33 @@ if (licenseProblems.length > 0) {
   process.exit(1)
 }
 
-// Every configured component is generated in memory because the catalog
-// depends on all of them; only the selected ones are written.
-const components: GeneratedComponent[] = []
+// Every configured component is generated in memory for every style
+// (docs/adr/0030) because the catalog depends on all of them; only the
+// selected ones are written.
+const byStyle = new Map<string, GeneratedComponent[]>()
 const errors: string[] = []
-for (const name of config.components) {
+const attempt = (style: string, run: () => GeneratedComponent) => {
   try {
-    components.push(generateComponent(name, { config, store, lock }))
+    byStyle.get(style)?.push(run())
   } catch (error) {
     if (!(error instanceof GenerationError)) throw error
-    errors.push(error.message)
+    errors.push(`${style}: ${error.message}`)
   }
 }
-// Lite alternatives (docs/adr/0028) follow the ports they may import.
-for (const name of liteNames) {
-  try {
-    components.push(generateLite(name, { config, lock }))
-  } catch (error) {
-    if (!(error instanceof GenerationError)) throw error
-    errors.push(error.message)
+for (const style of config.styles) {
+  const styleConfig = forStyle(config, style)
+  const styleStore = store.forStyle(style)
+  byStyle.set(style, [])
+  for (const name of config.components) {
+    attempt(style, () =>
+      generateComponent(name, { config: styleConfig, store: styleStore, lock })
+    )
+  }
+  // Lite alternatives (docs/adr/0028) follow the ports they may import.
+  for (const name of liteNames) {
+    attempt(style, () =>
+      generateLite(name, { config: styleConfig, lock, store: styleStore })
+    )
   }
 }
 if (errors.length > 0) {
@@ -100,7 +109,8 @@ if (errors.length > 0) {
 const selected = new Set(
   positionals.length > 0 ? positionals : [...config.components, ...liteNames]
 )
-const files: OutputFile[] = components
+const files: OutputFile[] = [...byStyle.values()]
+  .flat()
   .filter((c) => selected.has(c.name))
   .map((c) => c.file)
 
@@ -139,7 +149,7 @@ files.push(
 )
 files.push(
   json(
-    buildCatalog({ config, theme: store.readTheme(), components }),
+    buildCatalog({ config, theme: store.readTheme(), components: byStyle }),
     `${CLI_GENERATED}/catalog.json`
   )
 )
@@ -155,7 +165,10 @@ const result = writeOutputs(ROOT, files, {
   check: values.check,
   prune:
     positionals.length === 0
-      ? [{ dir: `${TEMPLATES_DIR}/${config.style}`, extension: ".tsx" }]
+      ? config.styles.map((style) => ({
+          dir: `${TEMPLATES_DIR}/${style}`,
+          extension: ".tsx",
+        }))
       : [],
 })
 

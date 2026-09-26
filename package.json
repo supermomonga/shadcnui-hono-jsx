@@ -22,6 +22,7 @@
     "test": "bun test ./generator ./cli ./tests/render ./tests/deps",
     "test:install": "bun test ./tests/install",
     "test:visual": "cd tests/visual && bun install --frozen-lockfile && bun run test",
+    "test:visual:styles": "cd tests/visual && bun install --frozen-lockfile && cd ../.. && bun tests/visual/styles.ts",
     "examples:build": "bun run --filter './examples/*' build",
     "examples:typecheck": "bun run --filter './examples/*' typecheck",
     "examples:test": "bun run --filter example-hono test && bun run --filter example-honox smoke",

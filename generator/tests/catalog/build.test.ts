@@ -18,15 +18,15 @@ const catalog = JSON.parse(
   readFileSync(path.join(ROOT, "cli/generated/catalog.json"), "utf8")
 ) as Catalog
 
-const template = (name: string) =>
-  path.join(TEMPLATES_DIR, config.style, `${name}.tsx`)
+const template = (name: string, style = config.style) =>
+  path.join(TEMPLATES_DIR, style, `${name}.tsx`)
 
 describe("catalog.json", () => {
   test("lists every configured component and every lite alternative, once each", () => {
     expect(catalog.items.map((item) => item.name)).toEqual(
       [...config.components, ...Object.keys(LITE_COMPONENTS)].sort()
     )
-    expect(catalog.styles).toEqual([config.style])
+    expect(catalog.styles).toEqual([...config.styles])
     expect(catalog.themeDependencies).toEqual(["tw-animate-css"])
     expect(catalog.noticeLines).toEqual(derivedNoticeLines())
   })
@@ -36,8 +36,10 @@ describe("catalog.json", () => {
     (name, item) => {
       expect(item.kind).toBe(LITE_COMPONENTS[name] ? "lite" : "port")
       expect(item.components[0]).toBe(name)
-      for (const component of item.components) {
-        expect(existsSync(template(component))).toBe(true)
+      for (const style of config.styles) {
+        for (const component of item.components) {
+          expect(existsSync(template(component, style))).toBe(true)
+        }
       }
       for (const script of item.scripts) {
         expect(existsSync(path.join(CLIENT_DIR, `${script}.js`))).toBe(true)

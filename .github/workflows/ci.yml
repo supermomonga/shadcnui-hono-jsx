@@ -80,3 +80,39 @@ jobs:
         with:
           name: visual-parity-report
           path: tests/visual/playwright-report
+
+  # The same comparisons in the other Base UI styles (docs/adr/0030): the
+  # repository root is installed with the default preset in each style.
+  visual-styles:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        style:
+          - base-vega
+          - base-maia
+          - base-lyra
+          - base-mira
+          - base-luma
+          - base-sera
+          - base-rhea
+    defaults:
+      run:
+        working-directory: tests/visual
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - run: bun install --frozen-lockfile
+        working-directory: .
+      - run: bun run dev:install --style ${{ matrix.style }}
+        working-directory: .
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install --with-deps chromium
+      - run: bun run test
+      - if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: visual-parity-report-${{ matrix.style }}
+          path: tests/visual/playwright-report
