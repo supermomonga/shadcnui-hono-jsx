@@ -1,0 +1,47 @@
+---
+title: Icons
+description: How components and examples use icons.
+---
+
+## In components
+
+Components inline the icons they use as SVG, from the icon library of your preset: Lucide, Tabler Icons, Hugeicons, Phosphor Icons or Remix Icon. They render the same SVG as the library's React package, without a runtime icon package. `apply` swaps them when you change the icon library.
+
+Remix Icon is under the Remix Icon License v1.0, which is not an open source license; the installed `LICENSE-shadcnui-hono-jsx.txt` reproduces it.
+
+## In examples
+
+The examples on this site import icons from `@/components/icons`, where upstream imports them from `lucide-react`:
+
+```tsx
+import { ArrowUpIcon } from "@/components/icons"
+```
+
+That module is not installed by the CLI. Write icons in your project as small Hono JSX components with the SVG of your icon library, for example from [lucide.dev](https://lucide.dev):
+
+```tsx title="components/icons.tsx"
+import type { JSX } from "hono/jsx"
+
+export function ArrowUpIcon(props: JSX.IntrinsicElements["svg"]) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="m5 12 7-7 7 7" />
+      <path d="M12 19V5" />
+    </svg>
+  )
+}
+```
+
+The components style icons through their `svg` selectors (for example `[&_svg:not([class*='size-'])]:size-4`), so any inline SVG fits.

@@ -1,0 +1,30 @@
+---
+title: Differences from shadcn/ui
+description: What changes when shadcn/ui components are rendered by Hono JSX instead of React.
+---
+
+The components keep upstream's markup, classes, `data-slot` attributes and props where Hono JSX allows. These are the differences that apply to every component; each component page lists its own under Notes.
+
+## Props
+
+- Components accept `class`, not `className`: Hono JSX renders `class`.
+- Base UI's `render` prop works on the server, for example `<Button render={<a href="/docs" />}>Docs</Button>`. Links rendered this way stay links (no `role="button"`).
+- `asChild` is not supported, and refs are not forwarded.
+- `Button` renders `type="button"` by default, like Base UI; pass `type="submit"` inside forms.
+
+## Rendering
+
+- Everything is server-rendered. Client-side state attributes from Base UI (for example `data-focused`) are not rendered, except where a client script keeps them up to date (Tabs).
+- Icons are inlined SVG from the preset's icon library, identical to what its React package renders. See [Icons](/docs/icons).
+
+## Native elements
+
+- Dialog, Alert Dialog and Sheet are native `<dialog>` elements opened with Invoker Commands. They need no JavaScript but require Chrome 135, Firefox 144 or Safari 26.2 or later, and have no controlled `open` state. Use `<DialogTrigger render={<Button variant="outline" />}>` as upstream does.
+- Accordion and Collapsible are native `<details>`/`<summary>` elements: no JavaScript and no open/close animation. `CollapsibleTrigger` must be the first child of `Collapsible` and is styled with `class` instead of `render`.
+- Checkbox, Switch, Radio Group, Toggle and Toggle Group are native inputs inside upstream's styled elements. They work and submit with forms without JavaScript, and `id`, `name`, `value` and `aria-*` go to the input.
+- Popover uses the native `popover` attribute and CSS anchor positioning. It opens next to its trigger in Chrome 135, Firefox 147 and Safari 26.2 or later, and centered in older browsers. Near the edge of the viewport a popup flips to the other side but does not slide along the edge as Base UI does.
+- Select is a customizable native `<select>`. It works and submits without JavaScript, and Chrome 135, Firefox 149 and Safari 27 or later show upstream's design; older browsers show a classic select styled like the trigger.
+
+## Components
+
+Some upstream components are built on React libraries (react-day-picker, embla-carousel, recharts, cmdk, input-otp). They are not available yet, and some have [lite alternatives](/docs/components) instead. See [Compatibility](/docs/compatibility).

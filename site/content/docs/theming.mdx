@@ -1,0 +1,121 @@
+---
+title: Theming
+description: Presets, CSS variables and theme tokens.
+---
+
+<Callout>
+
+Want to build your theme visually? Use [Create](/create) to preview colors, radius, fonts and icons, then install the preset in your project.
+
+</Callout>
+
+The theme is a set of CSS variables. Components use semantic tokens like `background`, `foreground` and `primary`, so you change the look of your app by changing the variables, not the component classes.
+
+```tsx
+<div class="bg-background text-foreground" />
+```
+
+`init` writes the variables of your preset to `styles/shadcn/theme.css`, and Tailwind maps them to utilities like `bg-background`, `text-foreground`, `border-border` and `ring-ring`. Dark mode overrides the same tokens inside a `.dark` selector; see [Dark Mode](/docs/dark-mode).
+
+## Presets
+
+A preset chooses everything about the design system at once:
+
+| Part | Options |
+| --- | --- |
+| Style | Nova, Vega, Maia, Lyra, Mira, Luma, Sera, Rhea |
+| Base color | Neutral, Stone, Zinc, Gray, Mauve, Olive, Mist, Taupe |
+| Theme and chart color | The base colors and the Tailwind palette |
+| Fonts | A body font and a heading font |
+| Icon library | Lucide, Tabler Icons, Hugeicons, Phosphor Icons, Remix Icon |
+| Radius | Default, None, Small, Medium, Large |
+| Menu | The menu color (default, inverted, translucent) and accent (subtle, bold) |
+
+Presets are the same codes as on [ui.shadcn.com/create](https://ui.shadcn.com/create), and `init` also takes the named presets `nova`, `vega`, `maia`, `lyra`, `mira`, `luma`, `sera` and `rhea`.
+
+The style, icon library and menu color change the components' source; the colors, radius, fonts and menu accent change only the theme.
+
+## Changing the preset
+
+`apply` switches an existing project to another preset. It rewrites the theme and every installed component, so edits to the components are lost:
+
+```bash
+npx shadcnui-hono-jsx@latest apply --preset b0
+```
+
+`--only theme` or `--only font` takes only the colors and radius, or only the fonts, of the new preset, and leaves the components alone:
+
+```bash
+npx shadcnui-hono-jsx@latest apply --preset b0 --only theme
+```
+
+## Token Convention
+
+Tokens come in background and foreground pairs. The base token is the surface color and the `-foreground` token is the text and icon color on that surface; for example, `primary` pairs with `primary-foreground`.
+
+```css
+--primary: oklch(0.205 0 0);
+--primary-foreground: oklch(0.985 0 0);
+```
+
+```tsx
+<div class="bg-primary text-primary-foreground">Hello</div>
+```
+
+## Theme Tokens
+
+| Token | What it controls |
+| --- | --- |
+| `background` / `foreground` | The default page background and text color. |
+| `card` / `card-foreground` | Elevated surfaces such as `Card`. |
+| `popover` / `popover-foreground` | Floating surfaces such as `Popover` and `DropdownMenu`. |
+| `primary` / `primary-foreground` | High-emphasis actions such as the default `Button`. |
+| `secondary` / `secondary-foreground` | Lower-emphasis filled actions. |
+| `muted` / `muted-foreground` | Subtle surfaces, descriptions and placeholders. |
+| `accent` / `accent-foreground` | Hover, focus and selected surfaces, such as menu items. |
+| `destructive` | Destructive actions and errors. |
+| `border` | Borders and separators. |
+| `input` | Borders of form controls. |
+| `ring` | Focus rings. |
+| `chart-1` ... `chart-5` | The chart palette. |
+| `sidebar-*` | The same pairs for the `Sidebar`. |
+| `radius` | The base corner radius. |
+
+## Radius Scale
+
+`--radius` is the base radius. `theme.css` derives the scale from it, so changing `--radius` changes every radius:
+
+```css
+@theme inline {
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+```
+
+## Adding New Tokens
+
+Define a token under `:root` and `.dark` in your own stylesheet, after the theme, and expose it to Tailwind with `@theme inline`:
+
+```css
+:root {
+  --warning: oklch(0.84 0.16 84);
+  --warning-foreground: oklch(0.28 0.07 46);
+}
+
+.dark {
+  --warning: oklch(0.41 0.11 46);
+  --warning-foreground: oklch(0.99 0.02 95);
+}
+
+@theme inline {
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+}
+```
+
+Keep your additions out of `styles/shadcn/theme.css`: `apply` rewrites that file.

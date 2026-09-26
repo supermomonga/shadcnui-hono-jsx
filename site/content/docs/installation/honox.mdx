@@ -1,0 +1,92 @@
+---
+title: HonoX
+description: Install shadcnui-hono-jsx in a HonoX project.
+---
+
+<Steps>
+
+<Step>Create a project</Step>
+
+Create a HonoX project with the `x-basic` template, or use your own:
+
+```bash
+npm create hono@latest my-app
+```
+
+<Step>Add Tailwind CSS</Step>
+
+```bash
+npm install tailwindcss @tailwindcss/vite
+```
+
+Add the plugin and the stylesheet to `vite.config.ts`:
+
+```ts title="vite.config.ts"
+import tailwindcss from "@tailwindcss/vite"
+import honox from "honox/vite"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [
+    honox({
+      client: { input: ["/app/client.ts", "/app/style.css"] },
+    }),
+    tailwindcss(),
+  ],
+  // The CLI installs components into ./components/ui.
+  resolve: { alias: { "@": import.meta.dirname } },
+})
+```
+
+<Step>Run the CLI</Step>
+
+```bash
+npx shadcnui-hono-jsx@latest init --preset b0
+```
+
+<Step>Import the theme</Step>
+
+```css title="app/style.css"
+@import "tailwindcss" source("../app");
+@import "../styles/shadcn/theme.css";
+@source "../components";
+```
+
+Load the stylesheet in your renderer:
+
+```tsx title="app/routes/_renderer.tsx"
+import { jsxRenderer } from "hono/jsx-renderer"
+import { Link, Script } from "honox/server"
+
+export default jsxRenderer(({ children }) => (
+  <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <Link href="/app/style.css" rel="stylesheet" />
+      <Script src="/app/client.ts" async />
+    </head>
+    <body>{children}</body>
+  </html>
+))
+```
+
+<Step>Add components</Step>
+
+```bash
+npx shadcnui-hono-jsx@latest add button
+```
+
+<Step>Use them</Step>
+
+```tsx title="app/routes/index.tsx"
+import { createRoute } from "honox/factory"
+import { Button } from "@/components/ui/button"
+
+export default createRoute((c) =>
+  c.render(<Button>Click me</Button>)
+)
+```
+
+Add the same alias to `tsconfig.json` (`"paths": { "@/*": ["./*"] }`) for type checking. HonoX serves `public/` already, so the client scripts that `add` installs in `public/shadcn/` are available at `/shadcn/`.
+
+</Steps>

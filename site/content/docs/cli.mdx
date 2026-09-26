@@ -1,0 +1,77 @@
+---
+title: CLI
+description: Use the shadcnui-hono-jsx CLI to set up the theme, add components and change the preset.
+---
+
+The CLI runs with `npx`, `pnpm dlx`, `yarn dlx` or `bunx`, in the root of your project. It needs Bun or Node.js 20 or newer and is not added to your dependencies.
+
+## init
+
+Use the `init` command to set up the theme for a preset, and optionally add components.
+
+```bash
+npx shadcnui-hono-jsx@latest init --preset b0
+```
+
+It writes `shadcnui-hono-jsx.json`, `styles/shadcn/theme.css`, `styles/shadcn/tailwind.css` and `LICENSE-shadcnui-hono-jsx.txt`, and installs `tw-animate-css` and the preset's fonts. See [Installation](/docs/installation).
+
+```text
+Usage: shadcnui-hono-jsx init [components...] [options]
+
+Options:
+  --preset <code|name>   preset code or name (default: nova)
+  --rtl                  right-to-left components
+  --pointer              pointer cursor on buttons
+  --force                replace an existing setup and files
+```
+
+## add
+
+Use the `add` command to add components and their dependencies to your project.
+
+```bash
+npx shadcnui-hono-jsx@latest add button card
+```
+
+Components go to `components/ui/`, with the components they import, and their client scripts to `public/shadcn/`. Files you have edited are not replaced unless you pass `--overwrite`.
+
+```text
+Usage: shadcnui-hono-jsx add <components...> [options]
+
+Options:
+  --overwrite            replace existing files with other content
+```
+
+## apply
+
+Use the `apply` command to switch the project to another preset. It rewrites the theme and every installed component; edits to the components are lost.
+
+```bash
+npx shadcnui-hono-jsx@latest apply --preset b0
+```
+
+`--only theme` or `--only font` takes only those parts of the new preset and leaves the components alone.
+
+```text
+Usage: shadcnui-hono-jsx apply [options]
+
+Options:
+  --preset <code|name>   the new preset
+  --only <parts>         take only theme and/or font from the new preset
+                         (comma-separated), leaving components alone
+  --rtl, --no-rtl        switch right-to-left components
+  --pointer, --no-pointer
+```
+
+## Options
+
+Every command takes these options:
+
+```text
+  --cwd <dir>            project root (default: the current directory)
+  --no-install           print npm packages to install instead of installing
+  -h, --help             show this help
+  -v, --version          show the version
+```
+
+Without `--no-install`, the CLI installs npm packages with the package manager of the nearest lockfile.

@@ -12,7 +12,11 @@
       "!cli/generated/shadcn-preset.*",
       "!cli/generated/tailwind.css",
       "!**/dist",
-      "!examples/*/public"
+      "!examples/*/public",
+      "!site/app/styles/typeset.css",
+      "!site/public/shadcn",
+      "!site/.installs",
+      "!site/.cache"
     ]
   },
   "formatter": {

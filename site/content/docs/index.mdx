@@ -1,0 +1,43 @@
+---
+title: Introduction
+description: shadcnui-hono-jsx is shadcn/ui for Hono JSX. The same components, design tokens and presets, rendered on the server without React.
+---
+
+**This is not a component library. It is how you build your component library, in Hono JSX.**
+
+[shadcn/ui](https://ui.shadcn.com) hands you the source of beautifully designed, accessible components instead of a package to import. shadcnui-hono-jsx brings that approach to [Hono JSX](https://hono.dev/docs/guides/jsx) and [HonoX](https://github.com/honojs/honox): the components are translated from the upstream shadcn/ui registry into plain `hono/jsx` function components, and a CLI copies them into your project, styled by a preset from [Create](/create).
+
+<Callout title="Experimental">
+
+This is an unofficial community project. It is not affiliated with, maintained by, or endorsed by shadcn or the shadcn/ui project. Compatibility with shadcn/ui is partial; see [Compatibility](/docs/compatibility).
+
+</Callout>
+
+It is built around the same principles as shadcn/ui:
+
+- **Open Code:** The components are copied into your project. Edit them like any other file.
+- **Composition:** Every component keeps upstream's composable API: the same parts, props and `data-slot` attributes.
+- **Distribution:** A CLI installs components and their dependencies, and rewrites them when you change the preset.
+- **Beautiful Defaults:** The styles are upstream's, in every Base UI style of shadcn/ui.
+
+## Hono JSX, not React on Hono
+
+There is no React, React DOM, Base UI or Radix runtime anywhere in the installed code. Components render HTML on the server:
+
+- **Server-rendered:** Render them with `c.html(...)`, `jsxRenderer` or HonoX routes.
+- **The platform first:** Dialog is a native `<dialog>`, Popover uses the `popover` attribute, Select is a customizable native `<select>`, and Accordion is `<details>`. Most components need no JavaScript at all.
+- **Optional scripts:** Where the browser lacks a behavior (keyboard navigation in Tabs, menus, toasts), a small dependency-free module script adds it. See [Client Scripts](/docs/client-scripts).
+
+## Generated from upstream
+
+The components are not a hand-maintained fork. A generator translates the upstream shadcn/ui registry into Hono JSX for every Base UI style, and a weekly workflow proposes upstream changes as pull requests. The examples on this site are translated the same way from the shadcn/ui documentation.
+
+## Presets from Create
+
+Pick a style, colors, radius, fonts, an icon library and the menu color on the [Create](/create) page, or on [ui.shadcn.com/create](https://ui.shadcn.com/create): preset codes are the same. Then install it with one command:
+
+```bash
+npx shadcnui-hono-jsx@latest init --preset b0
+```
+
+Continue with [Installation](/docs/installation).
