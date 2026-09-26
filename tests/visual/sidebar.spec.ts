@@ -123,6 +123,45 @@ for (const [layout, viewport, steps] of [
   })
 }
 
+test("a sidebar inserted later hides its tooltips in the mobile sheet", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    viewport: { width: 1024, height: 600 },
+  })
+  const page = await context.newPage()
+  await page.goto(pageUrl("sidebar-hono.html"))
+  await trigger(page)
+  await settle(page)
+  // What the server renders for a collapsed sidebar.
+  const wrapper = page.locator('[data-slot="sidebar-wrapper"]')
+  const html = await wrapper.evaluate((element) => element.outerHTML)
+  await page.setViewportSize({ width: 500, height: 700 })
+  // The script has handled the resize, before the swap.
+  await expect(page.locator("[data-sidebar-tooltip]").first()).toHaveAttribute(
+    "hidden",
+    ""
+  )
+  // Swapped in on a narrow screen, like htmx does.
+  await wrapper.evaluate((element, html) => {
+    const template = document.createElement("template")
+    template.innerHTML = html
+    element.replaceWith(template.content)
+  }, html)
+  await trigger(page)
+  await settle(page)
+  // Hidden tooltips never open, however long a menu button is hovered.
+  const tooltips = page.locator(
+    '[data-slot="sidebar"][data-mobile="true"] [data-sidebar-tooltip]'
+  )
+  await expect(tooltips).toHaveCount(4)
+  expect(
+    await tooltips.evaluateAll((all) =>
+      all.every((tooltip) => (tooltip as HTMLElement).hidden)
+    )
+  ).toBe(true)
+})
+
 const SCENES: [
   name: string,
   viewport: { width: number; height: number },

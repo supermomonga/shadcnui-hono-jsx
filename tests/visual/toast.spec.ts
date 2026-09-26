@@ -163,6 +163,55 @@ test("toasts behave like upstream Base UI", async ({ browser }) => {
   }
 })
 
+/** Texts of the open toasts. */
+const openToasts = (page: Page) =>
+  page.evaluate(() =>
+    [...document.querySelectorAll('[data-slot="toast"]')]
+      .filter((root) => root.closest("template") === null)
+      .filter((root) => !root.hasAttribute("data-ending-style"))
+      .map(
+        (root) => root.querySelector('[data-slot="toast-title"]')?.textContent
+      )
+  )
+
+test("server-rendered toasts inserted later behave like the first ones", async ({
+  page,
+}) => {
+  await page.goto(pageUrl("toast-server-hono.html"))
+  await page.locator("main").waitFor()
+  // Like htmx, swap in the <Toaster> of a later response: its toast has the
+  // id of the one on the page and stays until it is closed.
+  await page.evaluate(async () => {
+    const html = await (await fetch(location.href)).text()
+    const next = new DOMParser()
+      .parseFromString(html, "text/html")
+      .querySelector("[data-toast-viewport]")
+    const toast = next?.querySelector(":scope > [data-toast]")
+    if (!next || !(toast instanceof HTMLElement)) throw new Error("no toast")
+    toast.dataset.toastTimeout = "0"
+    toast.querySelector('[data-slot="toast-title"]')?.replaceChildren("Kept")
+    const brief = toast.cloneNode(true)
+    if (!(brief instanceof HTMLElement)) throw new Error("no toast")
+    brief.dataset.toastTimeout = "300"
+    brief.querySelector('[data-slot="toast-title"]')?.replaceChildren("Brief")
+    document
+      .querySelector("[data-toast-viewport]")
+      ?.replaceWith(document.importNode(next, true))
+    // A toast with the same id added to the swapped-in <Toaster>.
+    await new Promise((resolve) => setTimeout(resolve))
+    document
+      .querySelector("[data-toast-viewport]")
+      ?.prepend(document.importNode(brief, true))
+  })
+  // Both are adopted: "Brief" times out and "Kept" closes with its button.
+  await expect.poll(() => openToasts(page)).toEqual(["Kept"])
+  await page
+    .locator('[data-slot="toast"]:not([data-ending-style])')
+    .locator('[data-slot="toast-close"]')
+    .click()
+  await expect.poll(() => openToasts(page)).toEqual([])
+})
+
 const SCENES: [
   name: string,
   file: string,

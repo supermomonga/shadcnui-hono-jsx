@@ -101,6 +101,8 @@ function toggle(wrapper) {
   if (sheet.open) {
     sheet.close()
   } else {
+    // The server renders the tooltips for wide screens.
+    updateTooltips(wrapper)
     moveContent(wrapper, true)
     sheet.showModal()
   }
@@ -156,10 +158,6 @@ window.addEventListener("resize", () => {
     updateTooltips(wrapper)
   }
 })
-
-for (const wrapper of document.querySelectorAll(WRAPPER)) {
-  if (wrapper instanceof HTMLElement) updateTooltips(wrapper)
-}
 
 // A module: its declarations stay local.
 export {}

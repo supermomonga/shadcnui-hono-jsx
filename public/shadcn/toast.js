@@ -48,10 +48,10 @@ let focused = false
 /** @type {Element | null} */
 let previousFocus = null
 
+const VIEWPORT = "[data-toast-viewport]"
+
 const viewportOf = () =>
-  /** @type {HTMLElement | null} */ (
-    document.querySelector("[data-toast-viewport]")
-  )
+  /** @type {HTMLElement | null} */ (document.querySelector(VIEWPORT))
 
 /** @param {HTMLElement} viewport */
 const rootsOf = (viewport) =>
@@ -293,7 +293,8 @@ export const toast = {
         root.getAnimations().map((a) => a.finished.catch(() => undefined))
       ).then(() => {
         root.remove()
-        entries.delete(id)
+        // A toast added again with this id meanwhile keeps its entry.
+        if (entries.get(id) === entry) entries.delete(id)
         entry.options.onRemove?.()
         if (entries.size === 0) {
           hovering = false
@@ -402,11 +403,23 @@ function moveFocusFrom(root, viewport) {
 
 // Server-rendered toasts time out and stack like added ones.
 function adopt() {
+  // Toasts removed with their `<Toaster>` (an htmx swap) stop their timers.
+  for (const [id, entry] of entries) {
+    if (entry.root.isConnected) continue
+    clearTimeout(entry.timer)
+    entries.delete(id)
+  }
   const viewport = viewportOf()
   if (!viewport) return
+  let adopted = false
   for (const root of rootsOf(viewport)) {
-    const id = root.dataset.toast ?? `toast-server-${++count}`
-    if (entries.has(id)) continue
+    const known = entries.get(root.dataset.toast ?? "")
+    if (known?.root === root) continue
+    // Every response numbers its toasts from 1, so an id can be taken.
+    const id =
+      root.dataset.toast && !known
+        ? root.dataset.toast
+        : `toast-server-${++count}`
     root.dataset.toast = id
     const timeout = root.dataset.toastTimeout
     /** @type {Entry} */
@@ -423,10 +436,23 @@ function adopt() {
     }
     entries.set(id, entry)
     resetTimer(entry, viewport)
+    adopted = true
   }
-  layout(viewport)
+  if (adopted) layout(viewport)
 }
 adopt()
+// Toasters and toasts rendered later (htmx swaps, streaming).
+new MutationObserver((records) => {
+  const inserted = records.some((record) =>
+    [...record.addedNodes].some(
+      (node) =>
+        node instanceof Element &&
+        (node.matches(`${VIEWPORT}, ${VIEWPORT} > [data-toast]`) ||
+          node.querySelector(VIEWPORT) !== null)
+    )
+  )
+  if (inserted) adopt()
+}).observe(document.documentElement, { childList: true, subtree: true })
 
 // Hovering or keyboard focus expands the stack and pauses the timers.
 document.addEventListener("mouseover", (event) => {
