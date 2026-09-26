@@ -10,6 +10,11 @@ import {
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 import { Separator } from "../../components/ui/separator"
+import {
+  SidebarGroupLabel,
+  SidebarMenuButton,
+  SidebarMenuSubButton,
+} from "../../components/ui/sidebar"
 import { Skeleton } from "../../components/ui/skeleton"
 import {
   Table,
@@ -60,3 +65,17 @@ export const badgeLink = <Badge render={<a href="/" />}>Link</Badge>
 export const e4 = <Card render={<section />} />
 // @ts-expect-error className is not accepted.
 export const e5 = <Textarea className="x" />
+
+// Sidebar parts take Base UI's render prop (upstream intersects
+// useRender.ComponentProps with React.ComponentProps).
+export const sidebarLink = (
+  <SidebarMenuButton isActive render={<a href="/docs" />}>
+    Docs
+  </SidebarMenuButton>
+)
+export const sidebarLabel = (
+  <SidebarGroupLabel render={<span />}>Group</SidebarGroupLabel>
+)
+export const sidebarSubLink = (
+  <SidebarMenuSubButton render={<a href="/" />}>Home</SidebarMenuSubButton>
+)

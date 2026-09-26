@@ -428,7 +428,7 @@ function SidebarGroupLabel({
   class: className,
   render,
   ...props
-}: ComponentProps<"div", RenderProp> & ComponentProps<"div">) {
+}: ComponentProps<"div", RenderProp>) {
   return renderElement(
     <div
       data-slot="sidebar-group-label"
@@ -447,7 +447,7 @@ function SidebarGroupAction({
   class: className,
   render,
   ...props
-}: ComponentProps<"button", RenderProp> & ComponentProps<"button">) {
+}: ComponentProps<"button", RenderProp>) {
   return renderElement(
     <button
       data-slot="sidebar-group-action"
@@ -528,11 +528,10 @@ function SidebarMenuButton({
   tooltip,
   class: className,
   ...props
-}: ComponentProps<"button", RenderProp> &
-  ComponentProps<"button"> & {
-    isActive?: boolean
-    tooltip?: string | Parameters<typeof TooltipContent>[0]
-  } & VariantProps<typeof sidebarMenuButtonVariants>) {
+}: ComponentProps<"button", RenderProp> & {
+  isActive?: boolean
+  tooltip?: string | Parameters<typeof TooltipContent>[0]
+} & VariantProps<typeof sidebarMenuButtonVariants>) {
   const { isMobile, state } = useSidebar()
   const comp = renderElement(
     <button
@@ -575,10 +574,9 @@ function SidebarMenuAction({
   render,
   showOnHover = false,
   ...props
-}: ComponentProps<"button", RenderProp> &
-  ComponentProps<"button"> & {
-    showOnHover?: boolean
-  }) {
+}: ComponentProps<"button", RenderProp> & {
+  showOnHover?: boolean
+}) {
   return renderElement(
     <button
       data-slot="sidebar-menu-action"
@@ -684,11 +682,10 @@ function SidebarMenuSubButton({
   isActive = false,
   class: className,
   ...props
-}: ComponentProps<"a", RenderProp> &
-  ComponentProps<"a"> & {
-    size?: "sm" | "md"
-    isActive?: boolean
-  }) {
+}: ComponentProps<"a", RenderProp> & {
+  size?: "sm" | "md"
+  isActive?: boolean
+}) {
   return renderElement(
     <a
       data-slot="sidebar-menu-sub-button"

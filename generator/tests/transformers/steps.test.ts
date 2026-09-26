@@ -156,6 +156,18 @@ type C = { icon: Child; style: CSSProperties }`)
     expect([...ctx.honoTypes].sort()).toEqual(["CSSProperties", "Child"])
   })
 
+  test("drops React.ComponentProps next to useRender.ComponentProps of the same tag", () => {
+    const { text } = apply(
+      `type A = useRender.ComponentProps<"button"> & React.ComponentProps<"button"> & { isActive?: boolean }
+type B = useRender.ComponentProps<"a"> & React.ComponentProps<"div">`,
+      reactTypes
+    )
+    expect(
+      text
+    ).toBe(`type A = ComponentProps<"button", RenderProp> & { isActive?: boolean }
+type B = ComponentProps<"a", RenderProp> & ComponentProps<"div">`)
+  })
+
   test("rejects React types without a Hono equivalent", () => {
     expect(() => apply(`type E = React.KeyboardEvent`, reactTypes)).toThrow(
       /no Hono JSX equivalent for React.KeyboardEvent/
