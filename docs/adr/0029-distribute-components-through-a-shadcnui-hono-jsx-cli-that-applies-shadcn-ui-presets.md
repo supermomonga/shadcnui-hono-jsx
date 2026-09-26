@@ -10,6 +10,8 @@ links:
   kind: amends
 - target: 13
   kind: amends
+- target: 32
+  kind: amendedby
 ---
 
 # Distribute components through a shadcnui-hono-jsx CLI that applies shadcn/ui presets

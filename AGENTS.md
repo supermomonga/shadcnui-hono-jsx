@@ -78,9 +78,10 @@ generic transformer step, or a component adapter
   (`adrs new --no-edit "<title>"`, then fill in the MADR sections,
   `adrs status <n> accepted`, `adrs generate toc > docs/adr/README.md`).
 - See `docs/architecture.md` for the pipeline and its invariants.
-- To release the CLI, bump `version` in `cli/package.json`, run
-  `bun run verify:full`, commit and push, then run `npm publish` in `cli/`
-  (`prepack` bundles `dist/bin.js`).
+- To release the CLI, run the Version Bump workflow (patch, minor, major or
+  an explicit version). Merging its release pull request makes the Release
+  workflow tag `v<version>`, publish to npm with trusted publishing and create
+  a GitHub release (docs/adr/0032). Do not bump `cli/package.json` otherwise.
 
 ## Upstream licensing
 

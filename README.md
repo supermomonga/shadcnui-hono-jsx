@@ -270,6 +270,10 @@ Generated files are never edited by hand. See
 | `bun run test:visual:styles [--style <style>] [--variant <variant>]` | The same in every Base UI style, in the menu color and RTL variants and with every icon library (restores the default install afterwards) |
 | `bun run verify:full` | `verify` plus examples, the CLI install test (network) and visual parity |
 
+Releases are cut with the Version Bump workflow in GitHub Actions: it opens a
+release pull request, and merging it tags the version and publishes the CLI
+to npm ([ADR 0032](docs/adr/0032-release-the-cli-from-version-bump-pull-requests-with-npm-trusted-publishing.md)).
+
 ## License
 
 [MIT](./LICENSE). Derived from [shadcn/ui](https://github.com/shadcn-ui/ui)

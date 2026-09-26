@@ -38,6 +38,7 @@ shadcnui-hono-jsx CLI (cli/, in the user's project)
 | `generator/src/licenses.ts` | hand-written, reviewed licensing record and notice text |
 | `cli/generated/`, `cli/LICENSE`, `compatibility.json`, `docs/compatibility.md` | `generate` only |
 | `cli/dist/` (git-ignored) | `cli/build.ts`, run by `prepack`: the CLI bundled for Node, the package's executable |
+| `version` in `cli/package.json` | the Version Bump workflow; the Release workflow tags and publishes each new version ([ADR 0032](./adr/0032-release-the-cli-from-version-bump-pull-requests-with-npm-trusted-publishing.md)) |
 | `components/ui/`, `styles/shadcn/`, `public/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `shadcnui-hono-jsx.json` (git-ignored) | `dev:install` only: the default preset installed into the repository root for tests and examples |
 | `examples/` | hand-written demo apps |
 

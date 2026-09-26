@@ -1,0 +1,59 @@
+name: Release
+
+# When a push to main changes the version in cli/package.json, tags it,
+# publishes the package to npm with trusted publishing (OIDC, no token) and
+# creates a GitHub release (docs/adr/0032).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  # npm trusted publishing and provenance.
+  id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+
+      - name: Detect and tag new version
+        id: new-version
+        uses: salsify/action-detect-and-tag-new-version@b1778166f13188a9d478e2d1198f993011ba9864 # v2.0.3
+        with:
+          version-command: node -p "require('./cli/package.json').version"
+
+      # prepack bundles dist/bin.js with Bun.
+      - if: steps.new-version.outputs.tag != ''
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+
+      # Trusted publishing needs npm 11.5.1 or later and Node 22.14 or later.
+      - if: steps.new-version.outputs.tag != ''
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+
+      - name: Publish to npm
+        if: steps.new-version.outputs.tag != ''
+        working-directory: cli
+        run: npm publish
+
+      - name: Create GitHub release
+        if: steps.new-version.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.new-version.outputs.tag }}
+        run: gh release create "$RELEASE_TAG" --verify-tag --generate-notes

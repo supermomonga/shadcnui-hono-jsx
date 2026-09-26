@@ -1,0 +1,73 @@
+name: Version Bump
+
+# Bumps the CLI version in a release pull request. Merging it makes the
+# Release workflow tag the version and publish it (docs/adr/0032).
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "Release type"
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      version:
+        description: "Explicit version (overrides release_type if set, e.g. 1.2.3)"
+        required: false
+        type: string
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: version-bump
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    name: Bump version and open a release PR
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Bump version
+        id: bump-version
+        uses: supermomonga/action-bump-cli@a943766ed866fd8c33faeb65c67e4d5f5b683efd # v1.0.0
+        with:
+          file: cli/package.json
+          pattern: '"version":\s*"(\d+\.\d+\.\d+)"'
+          release_type: ${{ inputs.version == '' && inputs.release_type || '' }}
+          version: ${{ inputs.version }}
+
+      - name: Create pull request
+        id: cpr
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          base: main
+          branch: release/v${{ steps.bump-version.outputs.version }}
+          add-paths: cli/package.json
+          commit-message: "chore: release shadcnui-hono-jsx ${{ steps.bump-version.outputs.version }}"
+          title: "Release v${{ steps.bump-version.outputs.version }}"
+          body: |
+            Bumps the `shadcnui-hono-jsx` CLI to **${{ steps.bump-version.outputs.version }}**.
+
+            Merging this pull request makes the Release workflow tag `v${{ steps.bump-version.outputs.version }}`, publish the package to npm and create a GitHub release. Confirm that CI passes before merging.
+
+            This pull request was created by the Version Bump workflow.
+
+      # Pull requests opened with GITHUB_TOKEN do not trigger CI by themselves
+      # (docs/adr/0011).
+      - name: Run CI on the release PR
+        if: steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_BRANCH: ${{ steps.cpr.outputs.pull-request-branch }}
+        run: gh workflow run ci.yml --ref "$PR_BRANCH"

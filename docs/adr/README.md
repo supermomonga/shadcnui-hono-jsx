@@ -29,3 +29,4 @@
 * [29. Distribute components through a shadcnui-hono-jsx CLI that applies shadcn/ui presets](0029-distribute-components-through-a-shadcnui-hono-jsx-cli-that-applies-shadcn-ui-presets.md)
 * [30. Generate templates for every Base UI style and finalize them at install time](0030-generate-templates-for-every-base-ui-style-and-finalize-them-at-install-time.md)
 * [31. Inline icons of every shadcn/ui icon library at generation time](0031-inline-icons-of-every-shadcn-ui-icon-library-at-generation-time.md)
+* [32. Release the CLI from version bump pull requests with npm trusted publishing](0032-release-the-cli-from-version-bump-pull-requests-with-npm-trusted-publishing.md)
