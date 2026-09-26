@@ -33,9 +33,12 @@ const data = JSON.parse(
 ) as { items: string[] }
 
 const frame = document.querySelector<HTMLIFrameElement>("[data-preview-frame]")
-const defaultItem = new URL(frame?.src ?? location.href).pathname
-  .split("/")
-  .pop() as string
+const defaultItem = (frame?.dataset.item ?? data.items[0]) as string
+
+/** The prerendered preview of a style and menu color (scripts/previews.ts). */
+function previewUrl(): string {
+  return `/previews/${state.config.style}-${state.config.menuColor}/${state.item}.html`
+}
 
 function presetFrom(value: string | null): PresetConfig | null {
   if (!value) return null
@@ -115,6 +118,7 @@ function post() {
     {
       type: "design-system",
       code: code(config),
+      iconLibrary: config.iconLibrary,
       dark: document.documentElement.classList.contains("dark"),
       rtl: state.rtl,
       pointer: state.pointer,
@@ -170,8 +174,8 @@ function render() {
   }
   history.replaceState(null, "", url)
   writeCommands()
-  if (frame && !frame.src.endsWith(`/create/preview/${state.item}`)) {
-    frame.src = `/create/preview/${state.item}`
+  if (frame && new URL(frame.src, location.href).pathname !== previewUrl()) {
+    frame.src = previewUrl()
   } else {
     post()
   }
@@ -222,7 +226,15 @@ document.addEventListener("pointerover", (event) => {
     "[data-picker-option]"
   )
   const param = option?.dataset.param
-  if (!option || !param || param === "item" || !option.dataset.value) return
+  // The style and the menu color are other pages; they preview when chosen.
+  if (
+    !option ||
+    !param ||
+    ["item", "style", "menuColor"].includes(param) ||
+    !option.dataset.value
+  ) {
+    return
+  }
   preview = { [param]: option.dataset.value } as Partial<PresetConfig>
   post()
 })

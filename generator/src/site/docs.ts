@@ -140,7 +140,9 @@ function translateLines(
     }
     if (marker && fence) {
       const code = fence.lines.join("\n")
-      const translated = ["tsx", "jsx", "ts", "js"].includes(fence.language)
+      const translated = ["tsx", "jsx", "ts", "js", "diff"].includes(
+        fence.language
+      )
         ? translateSnippet(code)
         : ["bash", "sh", "shell"].includes(fence.language)
           ? translateCommand(code)

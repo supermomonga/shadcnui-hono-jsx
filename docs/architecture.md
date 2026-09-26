@@ -340,11 +340,21 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
 ui.shadcn.com ([ADR 0033](./adr/0033-build-the-documentation-site-with-honox-as-static-pages-and-a-worker-for-presets.md)).
 
 ```text
-bun run site:install  → site/.installs/<id>/   CLI init with the upstream snapshot (nova, nova-rtl, rhea)
-bun run site:build    → site/dist/             HonoX SSG: pages, MDX docs, Shiki at build time
-site/worker/index.ts  → /api/preset            a preset's theme.css, built by cli/src/preset-theme.ts
-site-deploy.yml       → Cloudflare Workers     static assets + the Worker, custom domain
+bun run upstream:sync   → upstream/site/          shadcn/ui's docs pages, examples, home cards, registry examples
+bun run site:generate   → site/generated/         those translated into Hono JSX (docs/adr/0034)
+bun run site:install    → site/.installs/<id>/    CLI init with the upstream snapshot (nova, nova-rtl, rhea)
+bun run site:build      → site/dist/              HonoX SSG: pages, MDX docs, Shiki at build time,
+                                                  then scripts/previews.ts: the create page's previews
+site/worker/index.ts    → /api/preset             a preset's theme.css, built by cli/src/preset-theme.ts
+site-deploy.yml         → Cloudflare Workers      static assets + the Worker, custom domain
 ```
+
+The create page previews the registry examples in every style and menu
+color: `scripts/previews.ts` installs each combination (with the RTL
+components, which render both directions) and renders the examples to
+static pages. The frame applies the rest at runtime: the preset's colors,
+radius and fonts from `/api/preset`, the direction, dark mode, and the icon
+library, swapping each marked icon for the library's SVG.
 
 The site imports components only from its installs (`@/components/ui/*` for
 the default preset), so it shows what `init` and `add` produce. The Worker

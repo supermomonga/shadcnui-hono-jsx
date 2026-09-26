@@ -8,7 +8,8 @@
 @import "tw-animate-css";
 @import "../.installs/nova/styles/shadcn/tailwind.css";
 
-@source "../.installs/*/components/ui";
+/* Every style, menu color and direction of the components (scripts/previews.ts). */
+@source "../../cli/generated/templates";
 @source "../generated/create";
 
 @custom-variant dark (&:is(.dark *));

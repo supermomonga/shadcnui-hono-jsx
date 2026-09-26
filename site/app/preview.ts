@@ -6,6 +6,7 @@
 interface DesignSystemMessage {
   type: "design-system"
   code: string
+  iconLibrary: string
   dark: boolean
   rtl: boolean
   pointer: boolean
@@ -46,6 +47,91 @@ function declarations(vars: Record<string, string> | undefined): string {
     .join("")
 }
 
+/** The icons of a library by id (scripts/previews.ts renders them). */
+const iconSets = new Map<string, Promise<Record<string, string>>>()
+
+function iconSet(library: string): Promise<Record<string, string>> {
+  let found = iconSets.get(library)
+  if (!found) {
+    found = fetch(`/previews/icons/${library}.json`).then((response) =>
+      response.json()
+    )
+    iconSets.set(library, found)
+  }
+  return found
+}
+
+/** The rendered Lucide icons, to swap back to. */
+const lucide = new WeakMap<
+  Element,
+  { attributes: [string, string][]; html: string }
+>()
+
+/** SVG attributes that come from the icon library, not from the component. */
+const LIBRARY_ATTRIBUTES = new Set([
+  "xmlns",
+  "width",
+  "height",
+  "viewBox",
+  "viewbox",
+  "fill",
+  "stroke",
+  "stroke-width",
+  "stroke-linecap",
+  "stroke-linejoin",
+  "color",
+  "class",
+  "data-preview-icon",
+])
+
+async function swapIcons(library: string) {
+  const svgs = [...document.querySelectorAll("svg[data-preview-icon]")]
+  for (const svg of svgs) {
+    if (!lucide.has(svg)) {
+      lucide.set(svg, {
+        attributes: [...svg.attributes].map((a) => [a.name, a.value]),
+        html: svg.innerHTML,
+      })
+    }
+  }
+  const set = library === "lucide" ? null : await iconSet(library)
+  const template = document.createElement("template")
+  for (const svg of svgs) {
+    const original = lucide.get(svg)
+    if (!original) continue
+    const id = (svg as SVGElement).dataset.previewIcon ?? ""
+    const source = set?.[id]
+    let attributes = original.attributes
+    let html = original.html
+    if (source) {
+      template.innerHTML = source
+      const replacement = template.content.firstElementChild
+      if (!replacement) continue
+      const own = original.attributes.filter(
+        ([name]) => !LIBRARY_ATTRIBUTES.has(name)
+      )
+      const classes = (
+        original.attributes.find(([name]) => name === "class")?.[1] ?? ""
+      )
+        .split(/\s+/)
+        .filter((c) => c && c !== "lucide" && !c.startsWith("lucide-"))
+      const ownClass = replacement.getAttribute("class") ?? ""
+      attributes = [
+        ...[...replacement.attributes]
+          .filter((a) => a.name !== "class")
+          .map((a) => [a.name, a.value] as [string, string]),
+        ["class", [ownClass, ...classes].filter(Boolean).join(" ")],
+        ["data-preview-icon", id],
+        ...own,
+      ]
+      html = replacement.innerHTML
+    }
+    for (const name of svg.getAttributeNames()) svg.removeAttribute(name)
+    for (const [name, value] of attributes) svg.setAttribute(name, value)
+    svg.innerHTML = html
+  }
+}
+
 const style = document.createElement("style")
 document.head.append(style)
 const fonts = new Set<string>()
@@ -57,6 +143,7 @@ async function apply(message: DesignSystemMessage) {
   root.dir = message.rtl ? "rtl" : "ltr"
   root.toggleAttribute("data-pointer", message.pointer)
   const request = ++latest
+  void swapIcons(message.iconLibrary)
   try {
     const { cssVars, fontPackages } = await theme(message.code, message.pointer)
     if (request !== latest) return

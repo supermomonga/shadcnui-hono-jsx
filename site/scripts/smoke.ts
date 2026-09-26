@@ -40,6 +40,8 @@ for (const file of files) {
 
 const pages = [
   "/index.html",
+  "/previews/nova-default/button-example.html",
+  "/previews/icons/tabler.json",
   "/404.html",
   "/docs.html",
   "/docs/components.html",
@@ -50,11 +52,43 @@ for (const page of pages) {
   if (!relative.has(page)) failures.push(`missing ${page}`)
 }
 
+/** Internal links of a page, and whether it renders React's className. */
+async function inspect(html: string) {
+  const links: string[] = []
+  const inExamples: string[] = []
+  let className = false
+  await new HTMLRewriter()
+    .on("*", {
+      element(element) {
+        if (element.hasAttribute("classname")) className = true
+      },
+    })
+    .on("a[href^='/']", {
+      element(element) {
+        links.push(element.getAttribute("href") ?? "")
+      },
+    })
+    // Examples keep upstream's links, which point into ui.shadcn.com.
+    .on("[data-slot='preview'] a[href^='/']", {
+      element(element) {
+        inExamples.push(element.getAttribute("href") ?? "")
+      },
+    })
+    .transform(new Response(html))
+    .text()
+  for (const link of inExamples) links.splice(links.indexOf(link), 1)
+  return { links, className }
+}
+
 for (const file of files.filter((f) => f.endsWith(".html"))) {
   const html = readFileSync(file, "utf8")
   const name = path.relative(dist, file)
-  if (/\sclassName=/.test(html)) failures.push(`${name} renders className`)
-  for (const [, href] of html.matchAll(/\shref="(\/[^"#?]*)/g)) {
+  const { links, className } = await inspect(html)
+  if (className) failures.push(`${name} renders className`)
+  // The create page's previews are upstream's examples.
+  if (name.startsWith("previews/")) continue
+  for (const link of links) {
+    const href = link.replace(/[#?].*$/, "")
     if (href && !href.startsWith("/api/") && !resolves(href)) {
       failures.push(`${name} links to missing ${href}`)
     }
