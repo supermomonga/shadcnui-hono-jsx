@@ -16,7 +16,7 @@ ui.shadcn.com registries (every Base UI style: base-nova, base-vega, …)
   → emit               → cli/generated/templates/<style>/[<variant>/]*.tsx (Biome-formatted,
                          Lucide icons marked for swapping), icons/<library>.json,
                          vendored tailwind.css and shadcn/preset, notices/<library>.txt
-  → catalog/manifest   → cli/generated/catalog.json, compatibility.json, README table
+  → catalog/manifest   → cli/generated/catalog.json, compatibility.json, docs/compatibility.md
 
 shadcnui-hono-jsx CLI (cli/, in the user's project)
   init/apply           → theme.css from the preset's /init response on ui.shadcn.com,
@@ -36,7 +36,7 @@ shadcnui-hono-jsx CLI (cli/, in the user's project)
 | `lite/`, `generator/src/lite.ts` | hand-written lite alternatives in upstream's style and their record of upstream bases ([ADR 0028](./adr/0028-offer-hand-written-lite-alternatives-with-a-lite-suffix-for-components-without-a-port.md)) |
 | `upstream/` | `upstream:sync` only |
 | `generator/src/licenses.ts` | hand-written, reviewed licensing record and notice text |
-| `cli/generated/`, `cli/LICENSE`, `compatibility.json` | `generate` only |
+| `cli/generated/`, `cli/LICENSE`, `compatibility.json`, `docs/compatibility.md` | `generate` only |
 | `cli/dist/` (git-ignored) | `cli/build.ts`, run by `prepack`: the CLI bundled for Node, the package's executable |
 | `components/ui/`, `styles/shadcn/`, `public/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `shadcnui-hono-jsx.json` (git-ignored) | `dev:install` only: the default preset installed into the repository root for tests and examples |
 | `examples/` | hand-written demo apps |

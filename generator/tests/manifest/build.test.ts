@@ -3,11 +3,7 @@ import { config } from "../../../generator.config"
 import { BROWSER_SPECS, VISUAL_CASES } from "../../../tests/visual/cases"
 import { COMPONENT_ADAPTERS } from "../../src/adapters/components"
 import { LITE_COMPONENTS } from "../../src/lite"
-import {
-  buildManifest,
-  renderCompatibilityTable,
-  replaceReadmeRegion,
-} from "../../src/manifest/build"
+import { buildManifest, renderCompatibilityDoc } from "../../src/manifest/build"
 import { ROOT } from "../../src/paths"
 import { UpstreamStore } from "../../src/upstream/store"
 
@@ -86,7 +82,7 @@ describe("buildManifest", () => {
       })
       expect(alternative.knownDifferences[0]).toContain("not a port")
     }
-    expect(renderCompatibilityTable(manifest)).toContain(
+    expect(renderCompatibilityDoc(manifest)).toContain(
       "| input-otp-lite | input-otp | experimental | approximate |"
     )
   })
@@ -109,18 +105,9 @@ describe("buildManifest", () => {
   })
 })
 
-describe("README region", () => {
-  test("replaces only the marked region", () => {
-    const readme =
-      "# Title\n<!-- compatibility-table:start -->\nold\n<!-- compatibility-table:end -->\nafter\n"
-    expect(replaceReadmeRegion(readme, "new")).toBe(
-      "# Title\n<!-- compatibility-table:start -->\nnew\n<!-- compatibility-table:end -->\nafter\n"
-    )
-    expect(() => replaceReadmeRegion("# no markers", "x")).toThrow(/markers/)
-  })
-
+describe("docs/compatibility.md", () => {
   test("renders generated components before the collapsed unsupported list", () => {
-    const table = renderCompatibilityTable(manifest)
+    const table = renderCompatibilityDoc(manifest)
     expect(table.indexOf("| button | experimental | generated |")).toBeLessThan(
       table.indexOf("\n<details>\n")
     )

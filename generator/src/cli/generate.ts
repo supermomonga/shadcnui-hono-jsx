@@ -17,11 +17,7 @@ import {
   checkUpstreamLicenses,
 } from "../licenses"
 import { LITE_COMPONENTS } from "../lite"
-import {
-  buildManifest,
-  renderCompatibilityTable,
-  replaceReadmeRegion,
-} from "../manifest/build"
+import { buildManifest, renderCompatibilityDoc } from "../manifest/build"
 import { ROOT } from "../paths"
 import { UpstreamStore } from "../upstream/store"
 
@@ -175,10 +171,9 @@ files.push(
 )
 const manifest = buildManifest({ config, store, lock })
 files.push(json(manifest, "compatibility.json"))
-const readme = readFileSync(path.join(ROOT, "README.md"), "utf8")
 files.push({
-  path: "README.md",
-  text: replaceReadmeRegion(readme, renderCompatibilityTable(manifest)),
+  path: "docs/compatibility.md",
+  text: renderCompatibilityDoc(manifest),
 })
 
 const result = writeOutputs(ROOT, files, {
