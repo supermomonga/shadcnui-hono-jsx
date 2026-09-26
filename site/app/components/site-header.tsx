@@ -6,6 +6,7 @@ import { GitHubIcon, Icon } from "./icon"
 import { MainNav } from "./main-nav"
 import { MobileNav } from "./mobile-nav"
 import { ModeSwitcher } from "./mode-switcher"
+import { Search } from "./search"
 
 export function SiteHeader({ pathname }: { pathname: string }) {
   return (
@@ -22,6 +23,9 @@ export function SiteHeader({ pathname }: { pathname: string }) {
           </a>
           <MainNav pathname={pathname} class="hidden lg:flex" />
           <div class="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
+            <div class="hidden w-full flex-1 md:flex md:w-auto md:flex-none">
+              <Search />
+            </div>
             <Separator orientation="vertical" class="ml-2 hidden lg:block" />
             <Button
               size="sm"
