@@ -1161,14 +1161,7 @@
     {
       "name": "combobox-example",
       "title": "Combobox",
-      "dropped": [
-        "ComboboxWithForm",
-        "ComboboxMultiple",
-        "ComboboxMultipleDisabled",
-        "ComboboxMultipleInvalid",
-        "ComboboxMultipleNoRemove",
-        "ComboboxInDialog"
-      ]
+      "dropped": ["ComboboxWithForm", "ComboboxInDialog"]
     },
     {
       "name": "component-example",

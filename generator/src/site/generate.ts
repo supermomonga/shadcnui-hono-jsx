@@ -234,6 +234,18 @@ export function generateSite(): SiteOutput {
     const override = REGISTRY_OVERRIDES[name]
     let text = result.text
     if (override) {
+      for (const [fn, sha256] of Object.entries(override.functions)) {
+        const upstream = result.hashes.get(fn)
+        if (!upstream) {
+          output.stale.push(
+            `registry/${name}#${fn}: the upstream function is gone`
+          )
+        } else if (upstream !== sha256) {
+          output.stale.push(
+            `registry/${name}#${fn}: upstream changed (now sha256 ${upstream}); review the override`
+          )
+        }
+      }
       text = applyOverride(
         text,
         readFileSync(
@@ -243,9 +255,15 @@ export function generateSite(): SiteOutput {
         Object.keys(override.functions)
       )
     }
-    const dropped = result.issues
-      .map((issue) => issue.name)
-      .filter((fn) => !override?.functions[fn])
+    const uncovered = result.issues.filter(
+      (issue) => !override?.functions[issue.name]
+    )
+    for (const issue of uncovered) {
+      output.warnings.push(
+        `create/${name}#${issue.name} is left out (sha256 ${issue.sha256}): ${issue.reasons.join("; ")}`
+      )
+    }
+    const dropped = uncovered.map((issue) => issue.name)
     if (dropped.length > 0) text = dropFunctions(text, dropped)
     if (name !== "example") {
       manifest.create.push({ name, title: item.title ?? name, dropped })

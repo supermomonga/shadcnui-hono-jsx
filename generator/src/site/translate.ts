@@ -55,8 +55,11 @@ const ICON_PACKAGES: Record<string, IconSource> = {
   "@hugeicons/react": "hugeicons",
 }
 
-/** Hooks a translated function may call: the site provides them. */
-const SUPPORTED_HOOKS = new Set(["useTranslation"])
+/**
+ * Hooks a translated function may call: the site provides `useTranslation`,
+ * and Combobox's anchor works on the server (`ref={anchor}` included).
+ */
+const SUPPORTED_HOOKS = new Set(["useTranslation", "useComboboxAnchor"])
 
 /** Inputs whose `defaultValue` is their initial `value` (Hono JSX renders `defaultValue` as is). */
 const VALUE_INPUTS = new Set([
@@ -229,6 +232,17 @@ export function translateExample(
         reasons.add(`calls ${callee}`)
       }
     }
+    // Combobox's anchor (`const anchor = useComboboxAnchor()`, `ref={anchor}`).
+    const anchors = new Set(
+      node
+        .getDescendantsOfKind(SyntaxKind.VariableDeclaration)
+        .filter((declaration) =>
+          /^useComboboxAnchor\(/.test(
+            declaration.getInitializer()?.getText() ?? ""
+          )
+        )
+        .map((declaration) => declaration.getName())
+    )
     for (const attribute of node.getDescendantsOfKind(
       SyntaxKind.JsxAttribute
     )) {
@@ -236,7 +250,10 @@ export function translateExample(
       if (/^on[A-Z]/.test(attributeName)) {
         reasons.add(`handles ${attributeName}`)
       }
-      if (attributeName === "ref") reasons.add("uses a ref")
+      const value = attribute.getInitializer()?.getText() ?? ""
+      if (attributeName === "ref" && !anchors.has(value.slice(1, -1))) {
+        reasons.add("uses a ref")
+      }
     }
     for (const identifier of node.getDescendantsOfKind(SyntaxKind.Identifier)) {
       const module = unsupported.get(identifier.getText())

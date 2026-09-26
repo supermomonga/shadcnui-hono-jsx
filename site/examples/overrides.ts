@@ -134,22 +134,6 @@ export const OVERRIDES: Record<string, Override> = {
     reason:
       "The collapsible script toggles it instead of React state; the trigger (styled with buttonVariants) shows the icon for its state with data-panel-open variants.",
   },
-  "combobox-multiple": {
-    functions: {
-      ComboboxMultiple:
-        "d51027e6e1bc2c2d5a521b8bb7835a6a9b16880bf48bab3d82408050522edfca",
-    },
-    reason:
-      "Upstream's code as is: useComboboxAnchor() here returns a CSS anchor name that the chips take as ref, and the combobox script adds the behavior.",
-  },
-  "combobox-rtl": {
-    functions: {
-      ComboboxRtl:
-        "a56fc39a3e0696ae72d0d99ee8c92f74efad10e350dd3458d647fdd98a900a5f",
-    },
-    reason:
-      "Upstream's code as is: useComboboxAnchor() here returns a CSS anchor name that the chips take as ref, and the combobox script adds the behavior.",
-  },
   "context-menu-radio": {
     functions: {
       ContextMenuRadio:
