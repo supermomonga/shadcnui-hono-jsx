@@ -8,9 +8,10 @@ export interface DocModule {
   toc: TocItem[]
 }
 
-const modules = import.meta.glob<DocModule>("/content/docs/**/*.mdx", {
-  eager: true,
-})
+const modules = import.meta.glob<DocModule>(
+  ["/content/docs/**/*.mdx", "!/content/docs/components/*.mdx"],
+  { eager: true }
+)
 
 /** Hand-written pages by URL path, e.g. `/docs/installation/honox`. */
 export const docPages = new Map<string, DocModule>(
@@ -21,6 +22,31 @@ export const docPages = new Map<string, DocModule>(
     mod,
   ])
 )
+
+const generatedComponentPages = import.meta.glob<DocModule>(
+  "/generated/docs/*.mdx",
+  { eager: true }
+)
+const writtenComponentPages = import.meta.glob<DocModule>(
+  "/content/docs/components/*.mdx",
+  { eager: true }
+)
+
+const byName = (pages: Record<string, DocModule>) =>
+  Object.entries(pages).map(
+    ([file, mod]) =>
+      [file.replace(/^.*\//, "").replace(/\.mdx$/, ""), mod] as const
+  )
+
+/**
+ * Component pages by name: translated from shadcn/ui's docs
+ * (site/generated/docs/, `bun run site:generate`), or hand-written in
+ * site/content/docs/components/, which take precedence.
+ */
+export const componentPages = new Map<string, DocModule>([
+  ...byName(generatedComponentPages),
+  ...byName(writtenComponentPages),
+])
 
 export interface NavItem {
   title: string

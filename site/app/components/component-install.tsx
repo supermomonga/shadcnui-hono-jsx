@@ -1,4 +1,4 @@
-import { type ComponentEntry, release } from "@/lib/catalog"
+import { findComponent, release } from "@/lib/catalog"
 import { commandVariants, type PackageManager } from "@/lib/commands"
 import { highlight } from "@/lib/highlight"
 import { CLI } from "@/lib/site"
@@ -6,7 +6,9 @@ import { Callout } from "./callout"
 import { CodeBlock, CodeBlockCommand } from "./code-block"
 
 /** The `add` command of an item and the client scripts it needs. */
-export async function ComponentInstall({ entry }: { entry: ComponentEntry }) {
+export async function ComponentInstall({ name }: { name: string }) {
+  const entry = findComponent(name)
+  if (!entry) throw new Error(`No catalog item ${name}`)
   const commands = commandVariants(`npx ${CLI} add ${entry.name}`) as Record<
     PackageManager,
     string

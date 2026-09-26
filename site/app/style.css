@@ -189,7 +189,7 @@
   [data-line] {
     padding-top: calc(var(--spacing) * 0.25);
     padding-bottom: calc(var(--spacing) * 0.25);
-    min-height: calc(var(--spacing) * 0.875);
+    min-height: 1lh;
     width: 100%;
     display: inline-block;
   }

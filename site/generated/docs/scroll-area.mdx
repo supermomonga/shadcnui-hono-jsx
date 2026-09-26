@@ -1,0 +1,60 @@
+---
+title: Scroll Area
+description: Augments native scroll functionality for custom, cross-browser styling.
+upstream: https://ui.shadcn.com/docs/components/base/scroll-area
+api: https://base-ui.com/react/components/scroll-area#api-reference
+---
+
+<ComponentPreview
+  name="scroll-area-demo"
+  previewClassName="h-96"
+/>
+
+## Installation
+
+<ComponentInstall name="scroll-area" />
+
+## Usage
+
+```tsx showLineNumbers
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+```
+
+```tsx showLineNumbers
+<ScrollArea class="h-[200px] w-[350px] rounded-md border p-4">
+  Your scrollable content here.
+</ScrollArea>
+```
+
+## Composition
+
+Use the following composition to build a `ScrollArea`:
+
+```text
+ScrollArea
+└── ScrollBar
+```
+
+## Horizontal
+
+Use `ScrollBar` with `orientation="horizontal"` for horizontal scrolling.
+
+<ComponentPreview name="scroll-area-horizontal-demo" />
+
+## RTL
+
+To enable RTL support in shadcn/ui, see the [RTL configuration guide](/docs/rtl).
+
+<ComponentPreview
+  name="scroll-area-rtl"
+  direction="rtl"
+  previewClassName="h-auto"
+/>
+
+## Notes
+
+<ComponentNotes name="scroll-area" />
+
+## API Reference
+
+See the [Base UI Scroll Area](https://base-ui.com/react/components/scroll-area#api-reference) documentation.

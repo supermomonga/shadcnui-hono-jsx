@@ -16,7 +16,10 @@
       "@/ui/nova-rtl/*": ["./.installs/nova-rtl/components/ui/*"],
       "@/ui/rhea/*": ["./.installs/rhea/components/ui/*"],
       "@/components/icons": ["./generated/icons.tsx"],
-      "@/*": ["./app/*"]
+      "@/*": ["./app/*"],
+      "@/components/language-selector": [
+        "./app/components/language-selector.tsx"
+      ]
     },
     "allowImportingTsExtensions": true
   },
@@ -25,6 +28,8 @@
     "scripts",
     "worker",
     "tests",
+    "generated",
+    "examples",
     "vite.config.ts",
     ".installs/*/components/ui"
   ]

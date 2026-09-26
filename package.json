@@ -27,7 +27,7 @@
     "examples:build": "bun run --filter './examples/*' build",
     "examples:typecheck": "bun run --filter './examples/*' typecheck",
     "examples:test": "bun run --filter example-hono test && bun run --filter example-honox smoke",
-    "verify": "bun run dev:install && bun run site:install && bun run lint && bun run typecheck && bun run site:typecheck && bun run test && bun run site:test && bun run generate --check",
+    "verify": "bun run dev:install && bun run site:install && bun run lint && bun run typecheck && bun run site:typecheck && bun run test && bun run site:test && bun run generate --check && bun run site:generate --check",
     "verify:full": "bun run verify && bun run site:build && bun run site:smoke && bun run examples:build && bun run examples:typecheck && bun run examples:test && bun run test:install && bun run test:visual",
     "site:install": "bun site/scripts/install.ts",
     "site:dev": "bun run site:install && cd site && bunx vite",
@@ -36,7 +36,8 @@
     "site:test": "bun test ./site/tests",
     "site:smoke": "bun site/scripts/smoke.ts",
     "site:serve": "bun site/scripts/serve.ts",
-    "site:deploy": "bun run site:build && bun run site:smoke && cd site && bunx wrangler@4.141.0 deploy"
+    "site:deploy": "bun run site:build && bun run site:smoke && cd site && bunx wrangler@4.141.0 deploy",
+    "site:generate": "bun generator/src/cli/generate-site.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",

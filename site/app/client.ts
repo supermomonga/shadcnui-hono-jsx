@@ -29,6 +29,25 @@ document.addEventListener("click", async (event) => {
   setTimeout(() => delete button.dataset.copied, 2000)
 })
 
+// Component previews: expand the code, and switch the language of RTL examples.
+document.addEventListener("click", (event) => {
+  const button = (event.target as Element).closest("[data-view-code]")
+  button
+    ?.closest<HTMLElement>('[data-slot="code"]')
+    ?.setAttribute("data-open", "")
+})
+
+document.addEventListener("change", (event) => {
+  const select = event.target as HTMLSelectElement
+  if (!select.matches("[data-rtl-language]")) return
+  const preview = select.closest('[data-slot="component-preview"]')
+  for (const variant of preview?.querySelectorAll<HTMLElement>(
+    '[data-slot="preview"][data-lang]'
+  ) ?? []) {
+    variant.hidden = variant.dataset.lang !== select.value
+  }
+})
+
 // Package manager tabs: remember the choice and show it in every command.
 const PM_KEY = "packageManager"
 

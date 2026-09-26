@@ -139,6 +139,7 @@ jobs:
           bun-version-file: package.json
       - run: bun install --frozen-lockfile
       - run: bun run site:install
+      - run: bun run site:generate --check
       - run: bun run site:typecheck
       - run: bun run site:test
       - run: bun run site:build

@@ -7,6 +7,26 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteScript } from "@/components/site-script"
 import { siteConfig } from "@/lib/site"
 
+/**
+ * The components' client scripts (public/shadcn/): the docs render every
+ * component, and the scripts only listen on the document.
+ */
+const CLIENT_SCRIPTS = [
+  "avatar",
+  "collapsible",
+  "combobox",
+  "drawer",
+  "hover",
+  "input-group",
+  "menu",
+  "navigation-menu",
+  "scroll-area",
+  "sidebar",
+  "slider",
+  "tabs",
+  "toast",
+]
+
 export default jsxRenderer(({ children, title, description, bare }, c) => {
   const pageTitle = title ? `${title} - ${siteConfig.name}` : siteConfig.name
   const pageDescription = description ?? siteConfig.description
@@ -32,7 +52,9 @@ export default jsxRenderer(({ children, title, description, bare }, c) => {
         <script>{raw(THEME_SCRIPT)}</script>
         <Link href="/app/style.css" rel="stylesheet" />
         <SiteScript src="/app/client.ts" />
-        <script type="module" src="/shadcn/tabs.js" />
+        {CLIENT_SCRIPTS.map((name) => (
+          <script type="module" src={`/shadcn/${name}.js`} />
+        ))}
       </head>
       <body class="group/body overscroll-none bg-background font-sans text-foreground antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)]">
         {bare ? (

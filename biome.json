@@ -68,6 +68,27 @@
           }
         }
       }
+    },
+    {
+      "includes": ["site/generated/**"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "noRedundantAlt": "off",
+            "noSvgWithoutTitle": "off",
+            "useButtonType": "off",
+            "useSemanticElements": "off",
+            "useValidAnchor": "off"
+          },
+          "complexity": {
+            "noUselessFragments": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedFunctionParameters": "off"
+          }
+        }
+      }
     }
   ]
 }

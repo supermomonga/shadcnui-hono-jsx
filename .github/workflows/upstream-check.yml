@@ -59,6 +59,13 @@ jobs:
         continue-on-error: true
         run: bun run generate
 
+      # The documentation site's examples (docs/adr/0034): a new or changed
+      # upstream example that needs React gets a hand-written override.
+      - name: Regenerate site examples
+        id: site
+        continue-on-error: true
+        run: bun run site:generate
+
       - name: Verify
         id: verify
         continue-on-error: true
@@ -71,6 +78,7 @@ jobs:
         env:
           GENERATE: ${{ steps.generate.outcome }}
           VERIFY: ${{ steps.verify.outcome }}
+          SITE: ${{ steps.site.outcome }}
           LICENSE_REVIEW: ${{ steps.sync.outputs.license_review }}
         run: |
           labels="upstream"
@@ -85,6 +93,10 @@ jobs:
               labels="$labels,needs-adapter"
             fi
           fi
+          if [ "$SITE" != "success" ]; then
+            labels="$labels,needs-example-override"
+            draft="true"
+          fi
           echo "labels=$labels" >> "$GITHUB_OUTPUT"
           echo "draft=$draft" >> "$GITHUB_OUTPUT"
           {
@@ -92,6 +104,7 @@ jobs:
             echo "### Checks"
             echo
             echo "- \`bun run generate\`: $GENERATE"
+            echo "- \`bun run site:generate\`: $SITE"
             echo "- \`bun run verify\`: $VERIFY"
             if [ "$LICENSE_REVIEW" = "true" ]; then
               echo
@@ -99,6 +112,10 @@ jobs:
             elif [ "$GENERATE" != "success" ] || [ "$VERIFY" != "success" ]; then
               echo
               echo "Generation or verification failed. Add or update a transformer, adapter, or config rule before merging; see the workflow logs."
+            fi
+            if [ "$SITE" != "success" ]; then
+              echo
+              echo "The site's examples need hand-written overrides (site/examples/overrides.ts); see the \`site:generate\` log."
             fi
           } >> "$RUNNER_TEMP/report.md"
           cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"

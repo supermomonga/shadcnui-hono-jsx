@@ -1,11 +1,12 @@
-import { raw } from "hono/html"
 import { ssgParams } from "hono/ssg"
 import { createRoute } from "honox/factory"
 import { ComponentInstall } from "@/components/component-install"
+import { ComponentNotes } from "@/components/component-notes"
 import { DocsPage, StatusBadge } from "@/components/docs-page"
 import { DocsLayout } from "@/components/docs-sidebar"
+import { mdxComponents } from "@/components/mdx-components"
 import { components, findComponent, titleOf } from "@/lib/catalog"
-import { inlineMarkdown } from "@/lib/inline-markdown"
+import { componentPages } from "@/lib/docs"
 
 export default createRoute(
   ssgParams(() => components.map((entry) => ({ name: entry.name }))),
@@ -13,23 +14,27 @@ export default createRoute(
     const entry = findComponent(c.req.param("name") ?? "")
     if (!entry) return c.notFound()
     const href = `/docs/components/${entry.name}`
+    const page = componentPages.get(entry.name)
     const basedOn = entry.compatibility?.basedOn?.map((b) => b.name) ?? []
-    const upstreamName = entry.kind === "lite" ? basedOn[0] : entry.name
+    const title = page?.frontmatter.title ?? entry.title
     const description =
-      entry.kind === "lite"
+      page?.frontmatter.description ??
+      (entry.kind === "lite"
         ? `A hand-written alternative to the shadcn/ui ${basedOn.map(titleOf).join(" and ")} component, without JavaScript.`
-        : `The shadcn/ui ${entry.title} component for Hono JSX.`
-    const toc = [
-      { depth: 2, title: "Installation", id: "installation" },
-      { depth: 2, title: "Notes", id: "notes" },
-    ]
+        : `The shadcn/ui ${entry.title} component for Hono JSX.`)
+    const Content = page?.default
     return c.render(
       <DocsLayout pathname={href}>
         <DocsPage
           href={href}
-          title={entry.title}
+          title={title}
           description={description}
-          toc={toc}
+          toc={
+            page?.toc ?? [
+              { depth: 2, title: "Installation", id: "installation" },
+              { depth: 2, title: "Notes", id: "notes" },
+            ]
+          }
           badges={
             <>
               {entry.kind === "lite" && <StatusBadge>Lite</StatusBadge>}
@@ -38,28 +43,19 @@ export default createRoute(
             </>
           }
         >
-          <h2 id="installation">Installation</h2>
-          <ComponentInstall entry={entry} />
-          <h2 id="notes">Notes</h2>
-          <ul>
-            {(entry.compatibility?.knownDifferences ?? []).map((note) => (
-              <li>{raw(inlineMarkdown(note))}</li>
-            ))}
-            {upstreamName && (
-              <li>
-                Upstream documentation:{" "}
-                <a
-                  href={`https://ui.shadcn.com/docs/components/base/${upstreamName}`}
-                >
-                  shadcn/ui {titleOf(upstreamName)}
-                </a>
-                .
-              </li>
-            )}
-          </ul>
+          {Content ? (
+            <Content components={mdxComponents} />
+          ) : (
+            <>
+              <h2 id="installation">Installation</h2>
+              <ComponentInstall name={entry.name} />
+              <h2 id="notes">Notes</h2>
+              <ComponentNotes name={entry.name} />
+            </>
+          )}
         </DocsPage>
       </DocsLayout>,
-      { title: entry.title, description }
+      { title, description }
     )
   }
 )
