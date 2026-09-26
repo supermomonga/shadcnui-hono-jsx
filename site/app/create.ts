@@ -37,7 +37,7 @@ const defaultItem = (frame?.dataset.item ?? data.items[0]) as string
 
 /** The prerendered preview of a style and menu color (scripts/previews.ts). */
 function previewUrl(): string {
-  return `/previews/${state.config.style}-${state.config.menuColor}/${state.item}.html`
+  return `/previews/${state.config.style}-${state.config.menuColor}/${state.item}`
 }
 
 function presetFrom(value: string | null): PresetConfig | null {

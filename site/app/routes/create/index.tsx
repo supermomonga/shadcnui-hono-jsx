@@ -321,7 +321,7 @@ export default createRoute((c) =>
             <iframe
               data-preview-frame=""
               data-item={DEFAULT_ITEM}
-              src={`/previews/${DEFAULT_CONFIG.style}-${DEFAULT_CONFIG.menuColor}/${DEFAULT_ITEM}.html`}
+              src={`/previews/${DEFAULT_CONFIG.style}-${DEFAULT_CONFIG.menuColor}/${DEFAULT_ITEM}`}
               class="z-10 size-full flex-1"
               title="Preview"
             />
