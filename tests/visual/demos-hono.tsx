@@ -50,6 +50,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "../../components/ui/context-menu"
+import { DatePickerLite } from "../../components/ui/date-picker-lite"
 import {
   Dialog,
   DialogContent,
@@ -99,6 +100,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "../../components/ui/input-group"
+import { InputOTPLite } from "../../components/ui/input-otp-lite"
 import { Label } from "../../components/ui/label"
 import {
   Menubar,
@@ -845,6 +847,28 @@ function SidebarDemo() {
   )
 }
 
+/** Lite alternatives (docs/adr/0028); tests/visual/lite.spec.ts. */
+function LiteDemo() {
+  return (
+    <main class="flex flex-col items-start gap-6 p-8">
+      <InputOTPLite maxLength={6} aria-label="Empty" />
+      <InputOTPLite maxLength={6} value="123456" aria-label="Filled" />
+      <InputOTPLite maxLength={4} value="12" aria-label="Partial" />
+      <InputOTPLite
+        maxLength={6}
+        value="1234"
+        aria-invalid="true"
+        aria-label="Invalid"
+      />
+      <InputOTPLite maxLength={6} disabled aria-label="Disabled" />
+      <form id="lite-form" class="flex w-64 flex-col gap-4">
+        <InputOTPLite maxLength={6} name="code" aria-label="Code" />
+        <DatePickerLite name="date" aria-label="Date" />
+      </form>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main class="flex w-96 flex-col gap-6 p-8">
@@ -938,6 +962,7 @@ export const DEMOS = {
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
+  lite: () => <LiteDemo />,
   sidebar: () => <SidebarDemo />,
   toast: () => <ToastDemo />,
   "toast-server": () => <ToastServerDemo />,

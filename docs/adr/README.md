@@ -25,3 +25,4 @@
 * [25. Ship optional client scripts for behavior the browser does not provide](0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)
 * [26. Toggle a Collapsible with a script when its trigger is not the first child](0026-toggle-a-collapsible-with-a-script-when-its-trigger-is-not-the-first-child.md)
 * [27. Add toasts from the toast script in the browser and from Toaster props on the server](0027-add-toasts-from-the-toast-script-in-the-browser-and-from-toaster-props-on-the-server.md)
+* [28. Offer hand-written lite alternatives with a -lite suffix for components without a port](0028-offer-hand-written-lite-alternatives-with-a-lite-suffix-for-components-without-a-port.md)

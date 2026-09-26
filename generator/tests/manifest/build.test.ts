@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test"
 import { config } from "../../../generator.config"
 import { BROWSER_SPECS, VISUAL_CASES } from "../../../tests/visual/cases"
 import { COMPONENT_ADAPTERS } from "../../src/adapters/components"
+import { LITE_COMPONENTS } from "../../src/lite"
 import {
   buildManifest,
   renderCompatibilityTable,
@@ -67,6 +68,25 @@ describe("buildManifest", () => {
       ...Object.keys(BROWSER_SPECS),
     ])
     expect(config.components.filter((name) => !covered.has(name))).toEqual([])
+  })
+
+  test("lite alternatives are listed apart from the upstream items", () => {
+    expect(manifest.alternatives.map((a) => a.name)).toEqual(
+      Object.keys(LITE_COMPONENTS)
+    )
+    for (const alternative of manifest.alternatives) {
+      expect(byName.has(alternative.name)).toBe(false)
+      expect(alternative).toMatchObject({
+        kind: "lite",
+        status: "experimental",
+        clientJs: "none",
+        visualParity: LITE_COMPONENTS[alternative.name]?.visualParity,
+      })
+      expect(alternative.knownDifferences[0]).toContain("not a port")
+    }
+    expect(renderCompatibilityTable(manifest)).toContain(
+      "| input-otp-lite | input-otp | experimental | approximate |"
+    )
   })
 
   test("unsupported items list their blocking reasons", () => {

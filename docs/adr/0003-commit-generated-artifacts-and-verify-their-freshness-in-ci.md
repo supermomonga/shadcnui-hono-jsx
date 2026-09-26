@@ -3,6 +3,9 @@ number: 3
 title: Commit generated artifacts and verify their freshness in CI
 status: accepted
 date: 2026-09-25
+links:
+- target: 28
+  kind: amendedby
 ---
 
 # Commit generated artifacts and verify their freshness in CI

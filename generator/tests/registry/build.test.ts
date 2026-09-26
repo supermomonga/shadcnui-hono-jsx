@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { config } from "../../../generator.config"
 import { LICENSE_NOTICE_PATH } from "../../src/licenses"
+import { LITE_COMPONENTS } from "../../src/lite"
 import { ROOT } from "../../src/paths"
 import { ALLOWED_REGISTRY_DEPENDENCIES } from "../../src/policy"
 import {
@@ -16,9 +17,12 @@ const registry = JSON.parse(
 ) as Registry
 
 describe("registry.json", () => {
-  test("contains the theme and every configured component, once each", () => {
+  test("contains the theme, every configured component and every lite alternative, once each", () => {
     const names = registry.items.map((item) => item.name)
-    expect(names).toEqual(["theme", ...[...config.components].sort()])
+    expect(names).toEqual([
+      "theme",
+      ...[...config.components, ...Object.keys(LITE_COMPONENTS)].sort(),
+    ])
   })
 
   test.each(registry.items.map((item) => [item.name, item] as const))(

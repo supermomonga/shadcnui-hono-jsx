@@ -1622,5 +1622,47 @@
         "use-client-directive"
       ]
     }
+  ],
+  "alternatives": [
+    {
+      "name": "input-otp-lite",
+      "kind": "lite",
+      "status": "experimental",
+      "basedOn": [
+        {
+          "name": "input-otp",
+          "contentSha256": "54f6dd46b5a450592778d4e3b238b92bfe5f9062b6be5ea6a28ae573a84d4d4a"
+        }
+      ],
+      "visualParity": "approximate",
+      "clientJs": "none",
+      "knownDifferences": [
+        "A lite alternative to `input-otp` (not a port), with no JavaScript: one native text input over the slots, as in daisyUI, so typing, pasting, one-time-code autofill (`autocomplete=\"one-time-code\"`) and form validation (`minlength`, `pattern`, `required`) come from the browser.",
+        "One component with `maxLength` slots instead of `InputOTPGroup`, `InputOTPSlot` and `InputOTPSeparator`; the whole group is highlighted while focused (upstream highlights the active slot, with a blinking caret). Characters are aligned with tabular digits: set a monospace font (`class=\"font-mono\"`) for letters.",
+        "Accepts `class` instead of `className`."
+      ]
+    },
+    {
+      "name": "date-picker-lite",
+      "kind": "lite",
+      "status": "experimental",
+      "basedOn": [
+        {
+          "name": "calendar",
+          "contentSha256": "71d0ae1a4beb00d5f0b5f6bc574e811a575f6654d727e49ad5b508867a4b1b98"
+        },
+        {
+          "name": "input",
+          "contentSha256": "31a57ec736d9c75d16f81eb1486098944782f4f565c597f715b8a1334e28f5d0"
+        }
+      ],
+      "visualParity": "not-compared",
+      "clientJs": "none",
+      "knownDifferences": [
+        "A lite alternative to a date picker built from `calendar` (not a port), with no JavaScript: upstream's Input as a native date input (`type` can also be `datetime-local`, `month` or `week`) with a calendar icon, submitting ISO values.",
+        "The browser draws the calendar popup, which cannot be styled (it follows `color-scheme` in dark mode) and differs between browsers; the field shows the browser's date format rather than a placeholder. Date ranges and several months are not supported.",
+        "Accepts `class` instead of `className`."
+      ]
+    }
   ]
 }

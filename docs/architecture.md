@@ -22,6 +22,7 @@ ui.shadcn.com registry (base-nova)
 | `generator/` | hand-written generator code |
 | `generator/src/adapters/` | hand-written translation rules (primitive table, primitive families, component adapters) |
 | `public/shadcn/` | hand-written optional client scripts, installed as they are ([ADR 0025](./adr/0025-ship-optional-client-scripts-for-behavior-the-browser-does-not-provide.md)) |
+| `lite/`, `generator/src/lite.ts` | hand-written lite alternatives in upstream's style and their record of upstream bases ([ADR 0028](./adr/0028-offer-hand-written-lite-alternatives-with-a-lite-suffix-for-components-without-a-port.md)) |
 | `upstream/` | `upstream:sync` only |
 | `generator/src/licenses.ts` | hand-written, reviewed licensing record and notice text |
 | `components/ui/`, `styles/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `registry.json`, `compatibility.json` | `generate` only |
@@ -185,6 +186,22 @@ with the pinned Biome (`biome check --write`, which also sorts imports):
 | `imports` | removes `react` and `@base-ui/*`; adds `hono/jsx` type imports |
 | `guard` | fails on any leftover React/Base UI construct, unresolved JSX component, or export change |
 
+## Lite alternatives
+
+Components that have no port yet can get a lite alternative
+([ADR 0028](./adr/0028-offer-hand-written-lite-alternatives-with-a-lite-suffix-for-components-without-a-port.md)):
+a hand-written approximation without JavaScript, named `<upstream>-lite`
+(item, file and `…Lite` exports) so that a later port can take the upstream
+name. The sources in `lite/` are written like upstream components (React TSX,
+`className`, `IconPlaceholder`, `@/registry/...` imports) and translated by the
+same pipeline, so they get the usual header, inlined icons, sibling
+components and registry dependencies. `generator/src/lite.ts` records the
+upstream items each alternative is based on with their content hashes;
+`generate` fails when one changes until the alternative is reviewed and the
+hash updated. `compatibility.json` lists them under `alternatives`, and
+`tests/visual/lite.spec.ts` compares them with upstream where an upstream
+rendering exists (at a looser tolerance) and checks their native behavior.
+
 ## Determinism
 
 - Generation reads only `upstream/` and the generator source.
@@ -246,7 +263,7 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Registry install into a clean Hono project | `tests/registry/` | `bun run test:registry`, CI |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
-| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts`, `tests/visual/tabs.spec.ts`, `tests/visual/menu.spec.ts`, `tests/visual/hover.spec.ts`, `tests/visual/slider.spec.ts`, `tests/visual/input-group.spec.ts`, `tests/visual/combobox.spec.ts`, `tests/visual/navigation-menu.spec.ts`, `tests/visual/avatar.spec.ts`, `tests/visual/scroll-area.spec.ts`, `tests/visual/drawer.spec.ts`, `tests/visual/toast.spec.ts` and `tests/visual/sidebar.spec.ts` (step-by-step behavior against Base UI) | `bun run test:visual`, CI `visual` |
+| Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts`, `tests/visual/tabs.spec.ts`, `tests/visual/menu.spec.ts`, `tests/visual/hover.spec.ts`, `tests/visual/slider.spec.ts`, `tests/visual/input-group.spec.ts`, `tests/visual/combobox.spec.ts`, `tests/visual/navigation-menu.spec.ts`, `tests/visual/avatar.spec.ts`, `tests/visual/scroll-area.spec.ts`, `tests/visual/drawer.spec.ts`, `tests/visual/toast.spec.ts`, `tests/visual/sidebar.spec.ts` and `tests/visual/lite.spec.ts` (step-by-step behavior against Base UI) | `bun run test:visual`, CI `visual` |
 
 `tests/visual` renders the same case data with the generated components and
 with the upstream React sources from the snapshot, shares one Tailwind build,

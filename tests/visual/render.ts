@@ -31,6 +31,9 @@ import {
   VISUAL_CASES,
 } from "./cases"
 
+/** Unported upstream components that lite alternatives (docs/adr/0028) are compared with. */
+const LITE_REFERENCES = ["input-otp"]
+
 const HERE = import.meta.dir
 const ROOT = path.resolve(HERE, "../..")
 const OUT = path.join(HERE, ".output")
@@ -93,7 +96,8 @@ function writeUpstreamSources(): void {
   for (const hook of readdirSync(path.join(HERE, "hooks"))) {
     copyFileSync(path.join(HERE, "hooks", hook), path.join(UPSTREAM, hook))
   }
-  for (const name of config.components) {
+  // Upstream components that lite alternatives are compared with.
+  for (const name of [...config.components, ...LITE_REFERENCES]) {
     const [file] = store.readItem(name).files ?? []
     if (!file) throw new Error(`${name} has no upstream file`)
     writeFileSync(

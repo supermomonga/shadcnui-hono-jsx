@@ -15,6 +15,7 @@ import {
   checkUpstreamLicenses,
   LICENSE_NOTICE_PATH,
 } from "../licenses"
+import { generateLite, LITE_COMPONENTS } from "../lite"
 import {
   buildManifest,
   renderCompatibilityTable,
@@ -31,7 +32,10 @@ const { values, positionals } = parseArgs({
   allowPositionals: true,
 })
 
-const unknown = positionals.filter((name) => !config.components.includes(name))
+const liteNames = Object.keys(LITE_COMPONENTS)
+const unknown = positionals.filter(
+  (name) => !config.components.includes(name) && !liteNames.includes(name)
+)
 if (unknown.length > 0) {
   console.error(`Not configured in generator.config.ts: ${unknown.join(", ")}`)
   process.exit(1)
@@ -76,13 +80,22 @@ for (const name of config.components) {
     errors.push(error.message)
   }
 }
+// Lite alternatives (docs/adr/0028) follow the ports they may import.
+for (const name of liteNames) {
+  try {
+    components.push(generateLite(name, { config, lock }))
+  } catch (error) {
+    if (!(error instanceof GenerationError)) throw error
+    errors.push(error.message)
+  }
+}
 if (errors.length > 0) {
   for (const message of errors) console.error(message)
   process.exit(1)
 }
 
 const selected = new Set(
-  positionals.length > 0 ? positionals : config.components
+  positionals.length > 0 ? positionals : [...config.components, ...liteNames]
 )
 const files: OutputFile[] = components
   .filter((c) => selected.has(c.name))

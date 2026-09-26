@@ -597,6 +597,42 @@
       }
     },
     {
+      "name": "date-picker-lite",
+      "type": "registry:item",
+      "title": "Date Picker Lite",
+      "description": "Lite alternative to the shadcn/ui base-nova calendar and input components without JavaScript (not a port).",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/date-picker-lite.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/date-picker-lite.tsx"
+        },
+        {
+          "path": "components/ui/input.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/input.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "lite": {
+          "style": "base-nova",
+          "basedOn": {
+            "calendar": "71d0ae1a4beb00d5f0b5f6bc574e811a575f6654d727e49ad5b508867a4b1b98",
+            "input": "31a57ec736d9c75d16f81eb1486098944782f4f565c597f715b8a1334e28f5d0"
+          }
+        },
+        "classification": "direct",
+        "mode": "lite"
+      }
+    },
+    {
       "name": "dialog",
       "type": "registry:item",
       "title": "Dialog",
@@ -934,6 +970,36 @@
         },
         "classification": "script-adapter",
         "mode": "adapter"
+      }
+    },
+    {
+      "name": "input-otp-lite",
+      "type": "registry:item",
+      "title": "Input Otp Lite",
+      "description": "Lite alternative to the shadcn/ui base-nova input-otp component without JavaScript (not a port).",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "components/ui/input-otp-lite.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/input-otp-lite.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "lite": {
+          "style": "base-nova",
+          "basedOn": {
+            "input-otp": "54f6dd46b5a450592778d4e3b238b92bfe5f9062b6be5ea6a28ae573a84d4d4a"
+          }
+        },
+        "classification": "direct",
+        "mode": "lite"
       }
     },
     {

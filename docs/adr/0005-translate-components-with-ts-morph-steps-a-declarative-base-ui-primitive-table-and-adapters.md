@@ -3,6 +3,9 @@ number: 5
 title: Translate components with ts-morph steps, a declarative Base UI primitive table and adapters
 status: accepted
 date: 2026-09-25
+links:
+- target: 28
+  kind: amendedby
 ---
 
 # Translate components with ts-morph steps, a declarative Base UI primitive table and adapters

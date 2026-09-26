@@ -5,6 +5,7 @@ import { reasonKey } from "../analyzer/reasons"
 import type { GeneratorConfig } from "../config"
 import type { OutputFile } from "../emit/write"
 import { LICENSE_NOTICE_PATH } from "../licenses"
+import { LITE_COMPONENTS } from "../lite"
 import {
   ALLOWED_REGISTRY_DEPENDENCIES,
   findImports,
@@ -46,7 +47,7 @@ export interface ComponentEntry {
   name: string
   file: OutputFile
   classification: Classification
-  mode: "generated" | "adapter"
+  mode: "generated" | "adapter" | "lite"
 }
 
 const title = (name: string) =>
@@ -161,11 +162,15 @@ export function buildRegistry(deps: {
         ),
       ].sort()
       const scripts = behaviors.filter((name) => name !== "core")
+      const lite = LITE_COMPONENTS[component.name]
+      const bases = Object.keys(lite?.basedOn ?? {})
       return {
         name: component.name,
         type: "registry:item",
         title: title(component.name),
-        description: `Hono JSX port of the shadcn/ui ${config.style} ${component.name} component.`,
+        description: lite
+          ? `Lite alternative to the shadcn/ui ${config.style} ${bases.join(" and ")} component${bases.length > 1 ? "s" : ""} without JavaScript (not a port).`
+          : `Hono JSX port of the shadcn/ui ${config.style} ${component.name} component.`,
         dependencies: [
           ...new Set(files.flatMap((c) => collectDependencies(c.file))),
         ].sort(),
@@ -185,12 +190,16 @@ export function buildRegistry(deps: {
             : []),
         ].join(" "),
         meta: {
-          upstream: {
-            name: component.name,
-            style: config.style,
-            contentSha256: entry?.contentSha256 ?? null,
-            commit: entry?.upstreamCommit ?? null,
-          },
+          ...(lite
+            ? { lite: { style: config.style, basedOn: lite.basedOn } }
+            : {
+                upstream: {
+                  name: component.name,
+                  style: config.style,
+                  contentSha256: entry?.contentSha256 ?? null,
+                  commit: entry?.upstreamCommit ?? null,
+                },
+              }),
           classification: component.classification.kind,
           mode: component.mode,
         },

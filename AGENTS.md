@@ -24,6 +24,11 @@ Client scripts in `public/shadcn/` are hand-written (Base UI's behavior is
 React code) and distributed as they are; see docs/adr/0025. Keep them
 dependency-free ES modules that find components by `data-slot`.
 
+Lite alternatives (`<upstream>-lite`, docs/adr/0028) are hand-written in
+`lite/` in upstream's style and generated like ports. When `generate` reports
+that an upstream base changed, review the alternative against the new upstream
+item and then update its hash in `generator/src/lite.ts`.
+
 ## Commands
 
 | Command | Purpose |

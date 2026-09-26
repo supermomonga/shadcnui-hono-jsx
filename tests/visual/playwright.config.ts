@@ -22,6 +22,7 @@ export default defineConfig({
     "drawer.spec.ts",
     "toast.spec.ts",
     "sidebar.spec.ts",
+    "lite.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

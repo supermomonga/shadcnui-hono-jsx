@@ -4,7 +4,7 @@
  * components, rendered in the browser. Bundled by render.ts; the page picks a
  * demo with `<div id="root" data-demo="…">`.
  */
-import { type ReactNode, useEffect } from "react"
+import { type ReactNode, useEffect, useState } from "react"
 import { createRoot } from "react-dom/client"
 import {
   AlertDialog,
@@ -101,6 +101,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "./.upstream/input-group"
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "./.upstream/input-otp"
 import { Label } from "./.upstream/label"
 import {
   Menubar,
@@ -867,6 +868,55 @@ function SidebarDemo() {
   )
 }
 
+function ReferenceOTP({
+  length,
+  value = "",
+  invalid = false,
+  disabled = false,
+  label,
+}: {
+  length: number
+  value?: string
+  invalid?: boolean
+  disabled?: boolean
+  label: string
+}) {
+  const [current, setCurrent] = useState(value)
+  return (
+    <InputOTP
+      maxLength={length}
+      value={current}
+      onChange={setCurrent}
+      disabled={disabled}
+      aria-label={label}
+    >
+      <InputOTPGroup>
+        {Array.from({ length }, (_, index) => (
+          <InputOTPSlot
+            // biome-ignore lint/suspicious/noArrayIndexKey: slots are positional
+            key={index}
+            index={index}
+            aria-invalid={invalid || undefined}
+          />
+        ))}
+      </InputOTPGroup>
+    </InputOTP>
+  )
+}
+
+/** Upstream InputOTP for the lite alternative's comparison (tests/visual/lite.spec.ts). */
+function LiteDemo() {
+  return (
+    <main className="flex flex-col items-start gap-6 p-8">
+      <ReferenceOTP length={6} label="Empty" />
+      <ReferenceOTP length={6} value="123456" label="Filled" />
+      <ReferenceOTP length={4} value="12" label="Partial" />
+      <ReferenceOTP length={6} value="1234" invalid label="Invalid" />
+      <ReferenceOTP length={6} disabled label="Disabled" />
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main className="flex w-96 flex-col gap-6 p-8">
@@ -965,6 +1015,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
+  lite: () => <LiteDemo />,
   sidebar: () => <SidebarDemo />,
   toast: () => <ToastDemo />,
   "toast-server": () => <ToastServerDemo />,

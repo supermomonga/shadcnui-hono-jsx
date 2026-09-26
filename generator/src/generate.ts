@@ -17,7 +17,8 @@ export const COMPONENTS_DIR = "components/ui"
 export interface GeneratedComponent {
   name: string
   classification: Classification
-  mode: "generated" | "adapter"
+  /** `lite`: a hand-written lite alternative (docs/adr/0028). */
+  mode: "generated" | "adapter" | "lite"
   file: OutputFile
   log: string[]
 }
