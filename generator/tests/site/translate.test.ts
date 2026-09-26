@@ -45,6 +45,7 @@ export function Form({ className }: { className?: string }) {
       <label htmlFor="name">Name</label>
       <Input id="name" defaultValue="Pedro" />
       <Select items={items} defaultValue="a" />
+      <Select defaultValue={null} />
     </div>
   )
 }`
@@ -56,6 +57,7 @@ export function Form({ className }: { className?: string }) {
     expect(text).toContain('<label for="name">')
     expect(text).toContain('<Input id="name" value="Pedro" />')
     expect(text).toContain('<Select defaultValue="a" />')
+    expect(text).toContain("<Select />")
   })
 
   test("turns Next.js links and images into elements", () => {
@@ -100,6 +102,39 @@ export function Plain() {
         name: "Notify",
         sha256: expect.any(String),
         reasons: ["uses toast from sonner"],
+      },
+    ])
+  })
+
+  test("reports props the components do not have and types from React-only libraries", () => {
+    const { issues } = translateExample(
+      "unsupported",
+      `import type { UIMessage } from "ai"
+import { Collapsible, CollapsibleTrigger } from "@/styles/base-nova/ui/collapsible"
+import { Select } from "@/styles/base-nova/ui/select"
+type Message = UIMessage<unknown>
+export function Tree() {
+  return <Collapsible><CollapsibleTrigger render={<button type="button" />} /></Collapsible>
+}
+export function Fruits() {
+  return <Select multiple defaultValue={[]} />
+}`
+    )
+    expect(issues).toEqual([
+      {
+        name: "Message",
+        sha256: expect.any(String),
+        reasons: ["uses UIMessage from ai"],
+      },
+      {
+        name: "Tree",
+        sha256: expect.any(String),
+        reasons: ["passes render to CollapsibleTrigger"],
+      },
+      {
+        name: "Fruits",
+        sha256: expect.any(String),
+        reasons: ["passes multiple to Select"],
       },
     ])
   })

@@ -1232,7 +1232,7 @@
     {
       "name": "message-example",
       "title": "Message",
-      "dropped": []
+      "dropped": ["MessagePartsMessage"]
     },
     {
       "name": "native-select-example",
@@ -1272,7 +1272,7 @@
     {
       "name": "select-example",
       "title": "Select",
-      "dropped": []
+      "dropped": ["SelectMultiple"]
     },
     {
       "name": "separator-example",

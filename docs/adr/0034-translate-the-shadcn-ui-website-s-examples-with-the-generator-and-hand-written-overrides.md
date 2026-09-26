@@ -63,12 +63,17 @@ to what needs a person.
     differences);
   * `icons.tsx`, the icons examples import from `@/components/icons` instead
     of `lucide-react`, `@tabler/icons-react` and `@hugeicons/react`.
-* A top-level function that calls hooks, handles events, or uses a module the
-  site cannot provide is replaced by a hand-written override in
+* A top-level function that calls hooks, handles events, uses a module the
+  site cannot provide, or passes a Base UI prop the components do not have
+  is replaced by a hand-written override in
   `site/examples/overrides/<example>.tsx`, recorded in
   `site/examples/overrides.ts` with the SHA-256 of the upstream function.
   Generation fails for a function that needs an override and has none, and
   for an override whose upstream function changed.
+* The Create page's registry examples are overridden the same way
+  (`site/examples/registry-overrides/`); a section without an override is
+  left out of the preview and reported instead of failing generation, as
+  the page shows whole examples rather than one per section.
 * Hand-written pages in `site/content/docs/components/` take precedence over
   translated ones (for the lite alternatives).
 * The upstream-check workflow runs `site:generate` and labels the pull
@@ -89,8 +94,8 @@ to what needs a person.
 
 Unit tests cover the translation, the overrides and the MDX transform
 (`generator/tests/site/`); `site:generate --check` runs in `verify` and CI;
-the site's type check compiles every generated example against the installed
-components.
+the site's type check compiles every generated example, the Create page's
+included, against the installed components.
 
 ## Pros and Cons of the Options
 

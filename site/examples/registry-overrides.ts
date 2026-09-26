@@ -7,7 +7,7 @@
  *
  * The override files use the icons, constants and `./example` of the
  * translated file they are merged into (site/generated/create/), so they are
- * not type-checked on their own (`@ts-nocheck`). Toasts need no `<Toaster>`
+ * not type-checked on their own (`@ts-nocheck`) but in that file. Toasts need no `<Toaster>`
  * there: every preview page has one (scripts/previews.ts).
  */
 import type { Override } from "./overrides"
@@ -24,6 +24,16 @@ export const REGISTRY_OVERRIDES: Record<string, Override> = {
     },
     reason:
       "The collapsible renders the preview and the full text and the trigger's two labels, and the collapsible script and data-open variants show one of each instead of React state; the buttons are data-toast-trigger buttons of the toast script instead of calling sonner's toast().",
+  },
+  "button-group-example": {
+    functions: {
+      ButtonGroupWithSelect:
+        "738e064e2563257638f3ee7c4bb3e24c198f68ae59cf109c988f83098af73753",
+      ButtonGroupWithSelectAndInput:
+        "37e4be2fff6bdc2a9efd35838a621c0130f38866906dc5b4f07e04ae6120ef01",
+    },
+    reason:
+      "The selects' values are the items' value strings instead of Base UI's object values, which Select does not support.",
   },
   "card-example": {
     functions: {
@@ -43,11 +53,13 @@ export const REGISTRY_OVERRIDES: Record<string, Override> = {
   },
   "collapsible-example": {
     functions: {
+      CollapsibleFileTree:
+        "7cf381a09631ce671dd016595ea1b5178abfd2ba4ce8e01a2d6937e46ddb4b66",
       CollapsibleSettings:
         "479768e1d2393c114dd355e12744fff79b5fccb483a98fc3eef5fe51d4ddc29c",
     },
     reason:
-      "The collapsible script opens the panel, and data-panel-open variants swap the trigger's icons instead of React state; the trigger has the button's classes, as CollapsibleTrigger has no render prop.",
+      "The collapsible script opens the settings panel, and data-panel-open variants swap the trigger's icons instead of React state; the triggers have the buttons' classes (buttonVariants), as CollapsibleTrigger has no render prop.",
   },
   "combobox-example": {
     functions: {
@@ -91,6 +103,14 @@ export const REGISTRY_OVERRIDES: Record<string, Override> = {
     },
     reason:
       "The tabs and selects start from defaultValue instead of React state; the native select that switches tabs on small screens does not, as that needs React state (wide screens show the tab list).",
+  },
+  "drawer-example": {
+    functions: {
+      DrawerNonModal:
+        "cf694095e9aac8a9d82891d325689ca26912abdbc2784380460ba7ede31bbe3c",
+    },
+    reason:
+      'Drawer has no modal={false} or disablePointerDismissal: the drawer opens as a modal dialog, and closedby="closerequest" on its dialog ignores outside clicks as disablePointerDismissal does.',
   },
   "input-group-example": {
     functions: {
@@ -142,6 +162,14 @@ export const REGISTRY_OVERRIDES: Record<string, Override> = {
     reason:
       "The progress bar shows the slider's initial value and the slider starts from defaultValue, as following the thumb needs React state; the file list is a constant instead of useMemo.",
   },
+  "select-example": {
+    functions: {
+      SelectPlan:
+        "e6a286eac983e2faf686b8b146e401eb3980ee0e12372ea638d153cfd601b8c1",
+    },
+    reason:
+      "The plans' values are their names instead of Base UI's object values, and SelectValue mirrors the chosen option (its SelectPlanItem) instead of a render function; neither is supported by Select.",
+  },
   "sidebar-example": {
     functions: {
       SidebarExample:
@@ -158,6 +186,14 @@ export const REGISTRY_OVERRIDES: Record<string, Override> = {
     reason:
       "The team switcher shows the first team (switching needs React state), and the menu buttons render the collapsible triggers, as CollapsibleTrigger has no render prop.",
   },
+  "sidebar-inset-example": {
+    functions: {
+      SidebarInsetExample:
+        "38fd74205c72367a2156eaf2afffac55b438e69c16304264be238a90b80d2f4b",
+    },
+    reason:
+      "Collapsible and CollapsibleTrigger have no render prop: each Collapsible is inside its SidebarMenuItem, and the SidebarMenuAction renders the CollapsibleTrigger instead.",
+  },
   "slider-example": {
     functions: {
       SliderControlled:
@@ -165,6 +201,14 @@ export const REGISTRY_OVERRIDES: Record<string, Override> = {
     },
     reason:
       "The slider starts from defaultValue and the slider script moves it; the label shows the initial values, as following the thumbs needs React state.",
+  },
+  "table-example": {
+    functions: {
+      TableWithSelect:
+        "bdeb7101dfefff7d17837996ebe279ff1a96621cb37f30bffab7229aacea3309",
+    },
+    reason:
+      "The selects' values are the people's value strings instead of Base UI's object values, which Select does not support.",
   },
   "toast-example": {
     functions: {
@@ -182,9 +226,11 @@ export const REGISTRY_OVERRIDES: Record<string, Override> = {
     functions: {
       ToggleGroupFontWeightSelector:
         "53f7e8590e186386a3750b06becc0144fcd0af409212f1d8ae04b4ce89e4e8aa",
+      ToggleGroupWithInputAndSelect:
+        "e9b438c91045c468eb3c343800de0c5884048990580d7b55e46cb5c399193e50",
     },
     reason:
-      "The toggle group starts from defaultValue, and the description shows the pressed item's weight with :has() on its native radios instead of React state.",
+      "The toggle group starts from defaultValue, and the description shows the pressed item's weight with :has() on its native radios instead of React state; the select's value is the item's value string instead of Base UI's object value, which Select does not support.",
   },
   "tooltip-example": {
     functions: {

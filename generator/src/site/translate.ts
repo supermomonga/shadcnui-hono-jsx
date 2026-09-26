@@ -9,12 +9,14 @@
  */
 import {
   type FunctionDeclaration,
+  type InterfaceDeclaration,
   type JsxAttribute,
   type JsxOpeningElement,
   type JsxSelfClosingElement,
   Node,
   type SourceFile,
   SyntaxKind,
+  type TypeAliasDeclaration,
   type VariableStatement,
 } from "ts-morph"
 import { parseSource } from "../analyzer/source"
@@ -61,6 +63,18 @@ const ICON_PACKAGES: Record<string, IconSource> = {
  */
 const SUPPORTED_HOOKS = new Set(["useTranslation", "useComboboxAnchor"])
 
+/**
+ * Props of Base UI parts the components do not have (docs/compatibility.md),
+ * so a function passing them needs an override. Type checking the generated
+ * examples finds any others.
+ */
+const UNSUPPORTED_PROPS: Record<string, string[]> = {
+  Collapsible: ["render"],
+  CollapsibleTrigger: ["render"],
+  Drawer: ["disablePointerDismissal"],
+  Select: ["multiple"],
+}
+
 /** Inputs whose `defaultValue` is their initial `value` (Hono JSX renders `defaultValue` as is). */
 const VALUE_INPUTS = new Set([
   "input",
@@ -101,13 +115,21 @@ function attributesOf(element: Element): JsxAttribute[] {
   return element.getAttributes().filter(Node.isJsxAttribute)
 }
 
-/** Top-level functions and constants by name. */
-function topLevel(
-  sf: SourceFile
-): Map<string, FunctionDeclaration | VariableStatement> {
-  const units = new Map<string, FunctionDeclaration | VariableStatement>()
+type Unit =
+  | FunctionDeclaration
+  | VariableStatement
+  | TypeAliasDeclaration
+  | InterfaceDeclaration
+
+/** Top-level functions, constants and types by name. */
+function topLevel(sf: SourceFile): Map<string, Unit> {
+  const units = new Map<string, Unit>()
   for (const statement of sf.getStatements()) {
-    if (Node.isFunctionDeclaration(statement)) {
+    if (
+      Node.isFunctionDeclaration(statement) ||
+      Node.isTypeAliasDeclaration(statement) ||
+      Node.isInterfaceDeclaration(statement)
+    ) {
       const name = statement.getName()
       if (name) units.set(name, statement)
     } else if (Node.isVariableStatement(statement)) {
@@ -254,6 +276,12 @@ export function translateExample(
       if (attributeName === "ref" && !anchors.has(value.slice(1, -1))) {
         reasons.add("uses a ref")
       }
+      const tag = (attribute.getParent().getParent() as Element)
+        .getTagNameNode()
+        .getText()
+      if (UNSUPPORTED_PROPS[tag]?.includes(attributeName)) {
+        reasons.add(`passes ${attributeName} to ${tag}`)
+      }
     }
     for (const identifier of node.getDescendantsOfKind(SyntaxKind.Identifier)) {
       const module = unsupported.get(identifier.getText())
@@ -348,6 +376,13 @@ export function translateExample(
         attribute.setName("value")
       } else if (attributeName === "items" && tag === "Select") {
         // Base UI's labels for the value: the native select shows its option.
+        attribute.remove()
+      } else if (
+        attributeName === "defaultValue" &&
+        tag === "Select" &&
+        attribute.getInitializer()?.getText() === "{null}"
+      ) {
+        // Base UI's empty value, which is the default.
         attribute.remove()
       }
     }

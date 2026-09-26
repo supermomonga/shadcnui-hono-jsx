@@ -271,7 +271,6 @@ export function generateSite(): SiteOutput {
     output.files.set(
       `create/${name}.tsx`,
       format(
-        // Previews only: Base UI's object values (SelectItem) need not type-check.
         `${header(`registry/base-nova/${name}`, lock.commit, [
           ...(override
             ? [
@@ -281,7 +280,7 @@ export function generateSite(): SiteOutput {
           ...(dropped.length > 0
             ? [`Left out (needs React): ${dropped.join(", ")}.`]
             : []),
-        ])}\n// @ts-nocheck: a preview of the create page, not code shown to users.\n\n${tidyImports(text)}`,
+        ])}\n\n${tidyImports(text)}`,
         `create/${name}.tsx`
       )
     )

@@ -1,5 +1,14 @@
 // @ts-nocheck: a section of site/generated/create/toggle-group-example.tsx, which provides ./example.
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Example } from "./example"
 
@@ -68,6 +77,43 @@ function ToggleGroupFontWeightSelector() {
           to set the font weight.
         </FieldDescription>
       </Field>
+    </Example>
+  )
+}
+
+function ToggleGroupWithInputAndSelect() {
+  const items = [
+    { label: "All", value: "all" },
+    { label: "Active", value: "active" },
+    { label: "Archived", value: "archived" },
+  ]
+  return (
+    <Example title="With Input and Select">
+      <div class="flex items-center gap-2">
+        <Input type="search" placeholder="Search..." class="flex-1" />
+        <Select defaultValue={items[0].value}>
+          <SelectTrigger class="w-32">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {items.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <ToggleGroup defaultValue={["grid"]} variant="outline">
+          <ToggleGroupItem value="grid" aria-label="Grid view">
+            Grid
+          </ToggleGroupItem>
+          <ToggleGroupItem value="list" aria-label="List view">
+            List
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
     </Example>
   )
 }

@@ -24,13 +24,13 @@ import path from "node:path"
 import { parseArgs } from "node:util"
 import type { FC } from "hono/jsx"
 import { jsx } from "hono/jsx"
+import { readCatalog, readTemplate } from "../../cli/src/catalog"
+import { finalize } from "../../cli/src/finalize"
 import { ICON_MARKER, type IconNames } from "../../cli/src/icons"
 import { MENU_COLORS } from "../../cli/src/variants"
-import { devInstall } from "../../generator/src/dev-install"
 import { INLINED_LIBRARIES } from "../../generator/src/icons/libraries"
 import { config } from "../../generator.config"
 import { CLIENT_SCRIPTS } from "../app/lib/site"
-import site from "../package.json"
 
 const { values } = parseArgs({
   args: Bun.argv.slice(2),
@@ -101,6 +101,9 @@ async function render(file: string): Promise<string | null> {
   return String(await jsx(component, {}))
 }
 
+const components = [
+  ...new Set(readCatalog().items.flatMap((item) => item.components)),
+]
 const items = readdirSync(CREATE)
   .filter((file) => file.endsWith(".tsx") && file !== "example.tsx")
   .map((file) => file.slice(0, -".tsx".length))
@@ -117,12 +120,19 @@ for (const style of config.styles) {
     const combo = `${style.replace(/^base-/, "")}-${menuColor}`
     const dir = path.join(CACHE, combo)
     mkdirSync(dir, { recursive: true })
-    writeFileSync(
-      path.join(dir, "package.json"),
-      JSON.stringify({ private: true, dependencies: site.dependencies })
-    )
-    await devInstall({ cwd: dir, style, rtl: true, menuColor })
-    markDirectory(path.join(dir, "components/ui"))
+    // As `init` installs them, with the icons marked before `finalize`
+    // removes the markers, so that the frame can swap them.
+    mkdirSync(path.join(dir, "components/ui"), { recursive: true })
+    for (const name of components) {
+      const template = readTemplate(style, name, { rtl: true, menuColor })
+      writeFileSync(
+        path.join(dir, "components/ui", `${name}.tsx`),
+        finalize(markIcons(template), {
+          iconLibrary: "lucide",
+          preset: "preview",
+        })
+      )
+    }
     cpSync(CREATE, path.join(dir, "create"), { recursive: true })
     for (const file of readdirSync(path.join(dir, "create"))) {
       const full = path.join(dir, "create", file)
