@@ -124,12 +124,16 @@ const STEPS: Step[] = [
   [
     "a swipe down closes the front toast",
     async (page) => {
+      // Hovering expands the stack; measure the front toast once it settled.
+      const first = await toastBox(page)
+      await page.mouse.move(first.x + 40, first.y + first.height / 2)
+      await settle(page)
       const box = await toastBox(page)
       const x = box.x + 40
       const y = box.y + box.height / 2
       await page.mouse.move(x, y)
       await page.mouse.down()
-      await page.mouse.move(x, y + 60, { steps: 6 })
+      await page.mouse.move(x, y + 80, { steps: 8 })
       await page.mouse.up()
       await page.mouse.move(10, 590)
       await settle(page)

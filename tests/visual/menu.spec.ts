@@ -128,6 +128,11 @@ const OPEN_STATES: [name: string, act: (page: Page) => Promise<void>][] = [
       await page.keyboard.press("End")
       await page.keyboard.press("ArrowUp")
       await page.keyboard.press(FORWARD_KEY)
+      // Base UI moves focus into the submenu asynchronously; the trigger's
+      // background depends on it (translucent menus), so wait on both sides.
+      await expect(
+        page.getByRole("menuitem", { name: "Email", exact: true })
+      ).toBeFocused()
     },
   ],
 ]
