@@ -133,9 +133,9 @@ app.use("/shadcn/*", serveStatic({ root: "./public" }))
 ```
 
 HonoX serves `public/` already; add the script tag to
-`app/routes/_renderer.tsx`. Scripts attach one delegated listener per event
-to the document, so content inserted later (for example by htmx) works
-without initialization.
+`app/routes/_renderer.tsx`. Scripts listen on the document rather than on
+each component, and scroll areas and toasts watch for inserted markup, so
+content inserted later (for example by htmx) works without initialization.
 
 Toasts are the one component with a client API: render `<Toaster />` once
 per page, then add toasts from your own module scripts or declaratively.

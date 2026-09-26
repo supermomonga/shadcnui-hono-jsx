@@ -4,15 +4,17 @@
  * (docs/adr/0025). Components render complete, accessible markup on the
  * server; a script only adds behavior the browser does not provide.
  *
- * Every behavior attaches one delegated listener per event type to the
- * document and finds components by their `data-slot` attributes, so markup
- * rendered later (htmx swaps, streaming) works without initialization.
- * Module scripts run once per page, however many components use them.
+ * Behaviors listen on the document, never on each component, and find
+ * components by their `data-slot` attributes, so markup rendered later (htmx
+ * swaps, streaming) works without initialization. Behaviors that keep state
+ * per element (scroll area observers, toast timers) also watch the document
+ * for inserted markup. Module scripts run once per page, however many
+ * components use them.
  */
 
 /**
  * Calls `handler` for events whose target is inside an element matching
- * `selector`, with that element.
+ * `selector`, with that element. Each call adds one document listener.
  *
  * @template {keyof DocumentEventMap} T
  * @param {T} type

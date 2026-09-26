@@ -27,13 +27,15 @@ components get client scripts, and how should the scripts reach an app?
 * Upstream owns design: markup and classes stay generated from upstream.
 * Content stays usable when a script is missing or fails.
 * Content Security Policy without `unsafe-inline`.
+* Edits to an installed component's TSX also apply in the browser.
 
 ## Considered Options
 
 * Optional hand-written vanilla modules, one per behavior, installed as
   files and loaded with `<script type="module">`
 * The same code rendered inline by components
-* HonoX islands (`hono/jsx/dom`)
+* Client components with `hono/jsx/dom` (as HonoX islands or mounted by our
+  own scripts)
 * No client JavaScript
 
 ## Decision Outcome
@@ -46,10 +48,12 @@ project owner.
   attributes (for example `data-active`, `aria-selected`), and a missing
   script leaves the server-rendered state usable.
 * Scripts are hand-written ES modules in `public/shadcn/` (JSDoc-typed and
-  type-checked), not generated: Base UI's behavior is React code. Each
-  behavior attaches one delegated listener per event type to the document
-  and finds components by their `data-slot` attributes, so there is no
-  per-component initialization and markup inserted later works too. A shared
+  type-checked), not generated: Base UI's behavior is React code. Behaviors
+  listen on the document, never on each component, and find components by
+  their `data-slot` attributes, so there is no per-component initialization
+  and markup inserted later works too. Behaviors that keep state per element
+  (ScrollArea's observers, Toast's timers) set up the elements on the page
+  when they load and watch the document for inserted ones. A shared
   `core.js` holds helpers.
 * A family declares `kind: "script"` and `behaviors` (classified
   `script-adapter`). Registry items then also install `core.js` and the
@@ -62,6 +66,18 @@ project owner.
   HTTP, runs the same interaction steps on the generated component with its
   script and on Base UI, and requires equal states and matching screenshots.
 * Tabs is the first script family.
+* `hono/jsx/dom` was reconsidered on 2026-09-26. The project owner accepts
+  it as a dependency (it is part of `hono`, small, and works in plain Hono),
+  but the existing behaviors stay vanilla modules for the reasons under its
+  option below. A later component may use it where the browser renders a
+  region itself (for example a full Calendar port rendering its day grid)
+  if the region contains no server-rendered children of the app, deriving
+  the DOM from state replaces synchronization code a vanilla module would
+  need, and no DOM is updated both by a vanilla module and by `hono/jsx/dom`.
+  The first such component gets its own ADR, which decides how its code
+  reaches apps (prebuilt or built by the app), how edits to the installed
+  TSX reach the markup rendered in the browser, and how a mounted region is
+  cleaned up when a partial update removes it.
 
 ### Consequences
 
@@ -75,15 +91,18 @@ project owner.
 ### Confirmation
 
 `tests/visual/tabs.spec.ts` compares tabs behavior step by step with Base UI
-and checks the page without the script; `tests/registry` installs the
-scripts byte for byte; `examples/hono` and `examples/honox` serve and load
-them in their tests.
+and checks the page without the script; `tests/visual/toast.spec.ts` and
+`tests/visual/sidebar.spec.ts` check markup swapped in after the scripts
+loaded; `tests/registry` installs the scripts byte for byte; `examples/hono`
+and `examples/honox` serve and load them in their tests.
 
 ## Pros and Cons of the Options
 
 ### Vanilla modules as files
 
 * Good, because they are small, cacheable and independent of the framework.
+* Good, because they keep the server-rendered DOM and take new markup from
+  it (Toast and Combobox copy templates the installed TSX renders).
 * Bad, because apps must serve and include them.
 
 ### Inline scripts
@@ -91,9 +110,24 @@ them in their tests.
 * Good, because no setup is needed.
 * Bad, because they repeat on every page and instance and need CSP nonces.
 
-### HonoX islands
+### Client components with `hono/jsx/dom`
 
-* Bad, because plain Hono apps cannot use them and they add a runtime.
+* Good, because deriving markup from state suits a region the browser
+  renders itself (a calendar's day grid, results that arrive while typing).
+* Neutral, because `hono/jsx/dom` is part of `hono` and small, and plain Hono
+  apps can mount it too; HonoX islands are one way to mount it, not the only
+  one.
+* Bad, because the first render replaces the server-rendered DOM (in Hono
+  4.13.9 `hydrateRoot` is `createRoot().render()`, which replaces the
+  container's children): input and focus from before the script loaded are
+  lost, and compound components (Tabs, menus, Sidebar) would re-render the
+  app's server-rendered children in the browser.
+* Bad, because markup rendered in the browser comes from shipped JavaScript,
+  so edits to the installed TSX do not reach it unless the app builds its
+  own client code.
+* Bad, because keyboard, focus, pointer and measuring behavior is still
+  written by hand (Base UI cannot be imported), and a mounted region needs
+  cleanup when a partial update removes it.
 
 ### No client JavaScript
 
