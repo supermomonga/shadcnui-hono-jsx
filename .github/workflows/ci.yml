@@ -43,9 +43,9 @@ jobs:
       - run: bun run examples:typecheck
       - run: bun run examples:test
 
-  # Installs with the CLI into a clean Hono project (tests/install). The job
-  # keeps its old name because branch protection requires it.
-  registry-install:
+  # Packs the CLI and installs with it into a clean Hono project
+  # (tests/install).
+  cli-install:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

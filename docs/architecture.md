@@ -265,8 +265,8 @@ Nothing is merged or released automatically
 ([ADR 0010](./adr/0010-automate-upstream-synchronization-through-reviewed-pull-requests.md),
 [ADR 0011](./adr/0011-dispatch-ci-for-upstream-sync-pull-requests-instead-of-using-a-bot-token.md)).
 The repository allows GitHub Actions to create pull requests, and `main`
-requires the `check`, `examples`, `registry-install` (now the CLI install
-test), and `visual` checks on pull requests.
+requires the `check`, `examples`, `cli-install` and `visual` checks on pull
+requests.
 Syncs are idempotent, so an unchanged upstream produces no pull request.
 
 ## Test layers
@@ -279,7 +279,7 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Dependency policy (no React/Base UI imports, allowlisted packages) | `tests/deps/` | `bun run test` |
 | Type tests (valid usage and `@ts-expect-error` misuse, strict variant) | `tests/types/` | `bun run typecheck` |
 | Freshness of generated files | `bun run generate --check` | `bun run verify`, CI |
-| CLI install into a clean Hono project (`init`, `add` for every item, `apply`, with a local stand-in for ui.shadcn.com) | `tests/install/` | `bun run test:install`, CI `registry-install` |
+| CLI install into a clean Hono project (`init`, `add` for every item, `apply`, with a local stand-in for ui.shadcn.com) | `tests/install/` | `bun run test:install`, CI `cli-install` |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
 | Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts`, `tests/visual/tabs.spec.ts`, `tests/visual/menu.spec.ts`, `tests/visual/hover.spec.ts`, `tests/visual/slider.spec.ts`, `tests/visual/input-group.spec.ts`, `tests/visual/combobox.spec.ts`, `tests/visual/navigation-menu.spec.ts`, `tests/visual/avatar.spec.ts`, `tests/visual/scroll-area.spec.ts`, `tests/visual/drawer.spec.ts`, `tests/visual/toast.spec.ts`, `tests/visual/sidebar.spec.ts` and `tests/visual/lite.spec.ts` (step-by-step behavior against Base UI) | `bun run test:visual`, CI `visual` |
@@ -330,4 +330,3 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
   right-to-left components
   ([ADR 0030](./adr/0030-generate-templates-for-every-base-ui-style-and-finalize-them-at-install-time.md),
   [ADR 0031](./adr/0031-inline-icons-of-every-shadcn-ui-icon-library-at-generation-time.md)).
-- The CLI is not published to npm yet.

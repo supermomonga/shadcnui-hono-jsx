@@ -78,6 +78,9 @@ generic transformer step, or a component adapter
   (`adrs new --no-edit "<title>"`, then fill in the MADR sections,
   `adrs status <n> accepted`, `adrs generate toc > docs/adr/README.md`).
 - See `docs/architecture.md` for the pipeline and its invariants.
+- To release the CLI, bump `version` in `cli/package.json`, run
+  `bun run verify:full`, commit and push, then run `npm publish` in `cli/`
+  (`prepack` bundles `dist/bin.js`).
 
 ## Upstream licensing
 
