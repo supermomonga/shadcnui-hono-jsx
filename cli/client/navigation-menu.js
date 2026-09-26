@@ -453,15 +453,14 @@ document.addEventListener("keydown", (event) => {
     close(root, true)
     return
   }
+  const [backKey, forwardKey] = inlineKeys(root)
   if (inContent && positioner) {
     const items = tabbables(positioner)
     const index = items.indexOf(target)
-    if (
-      ["ArrowDown", "ArrowRight", "ArrowUp", "ArrowLeft"].includes(event.key)
-    ) {
+    if (["ArrowDown", "ArrowUp", backKey, forwardKey].includes(event.key)) {
       event.preventDefault()
       const step =
-        event.key === "ArrowDown" || event.key === "ArrowRight" ? 1 : -1
+        event.key === "ArrowDown" || event.key === forwardKey ? 1 : -1
       items[(index + step + items.length) % items.length]?.focus()
     } else if (event.key === "Tab" && state.item) {
       const trigger = triggerOf(state.item)
@@ -489,7 +488,7 @@ document.addEventListener("keydown", (event) => {
   if (index === -1) return
   const horizontal = root.dataset.orientation !== "vertical"
   const [back, forward] = horizontal
-    ? ["ArrowLeft", "ArrowRight"]
+    ? [backKey, forwardKey]
     : ["ArrowUp", "ArrowDown"]
   if (event.key === back || event.key === forward) {
     event.preventDefault()
@@ -498,7 +497,7 @@ document.addEventListener("keydown", (event) => {
     return
   }
   const found = triggerItem(target)
-  if (found && event.key === (horizontal ? "ArrowDown" : "ArrowRight")) {
+  if (found && event.key === (horizontal ? "ArrowDown" : forwardKey)) {
     event.preventDefault()
     open(root, found.item, "keyboard")
     return
@@ -533,6 +532,16 @@ document.addEventListener("focusout", (event) => {
     return
   close(root)
 })
+
+/**
+ * The inline arrow keys in reading order: [backward, forward].
+ *
+ * @param {Element} element
+ */
+const inlineKeys = (element) =>
+  getComputedStyle(element).direction === "rtl"
+    ? ["ArrowRight", "ArrowLeft"]
+    : ["ArrowLeft", "ArrowRight"]
 
 // A module: its declarations stay local.
 export {}

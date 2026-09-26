@@ -27,10 +27,10 @@ describe("Slider (native range inputs, /shadcn/slider.js)", () => {
     const thumbs = await query(html, '[data-slot="slider-thumb"]')
     expect(thumbs.map((t) => t.attributes.style)).toEqual([
       expect.stringContaining(
-        "inset-inline-start:20%;top:50%;translate:-20% -50%"
+        "inset-inline-start:20%;top:50%;translate:calc(var(--slider-dir, 1) * -20%) -50%"
       ),
       expect.stringContaining(
-        "inset-inline-start:80%;top:50%;translate:-80% -50%"
+        "inset-inline-start:80%;top:50%;translate:calc(var(--slider-dir, 1) * -80%) -50%"
       ),
     ])
     const inputs = await query(html, 'input[type="range"]')

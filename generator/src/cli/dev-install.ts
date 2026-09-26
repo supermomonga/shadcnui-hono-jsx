@@ -27,19 +27,30 @@ import {
 } from "../../../cli/src/paths"
 import { readNamedPresets } from "../../../cli/src/preset"
 import { DEFAULT_PRESET, type FetchJson } from "../../../cli/src/shadcn"
+import { MENU_COLORS, type MenuColor } from "../../../cli/src/variants"
 import { config } from "../../../generator.config"
 import { ROOT } from "../paths"
 import { UpstreamStore } from "../upstream/store"
 
 const { values } = parseArgs({
   args: Bun.argv.slice(2),
-  options: { style: { type: "string", default: config.style } },
+  options: {
+    style: { type: "string", default: config.style },
+    rtl: { type: "boolean", default: false },
+    "menu-color": { type: "string", default: "default" },
+  },
 })
 const style = values.style
+const menuColor = values["menu-color"] as MenuColor
 if (!config.styles.includes(style)) {
   console.error(`--style takes one of ${config.styles.join(", ")}`)
   process.exit(1)
 }
+if (!MENU_COLORS.includes(menuColor)) {
+  console.error(`--menu-color takes one of ${MENU_COLORS.join(", ")}`)
+  process.exit(1)
+}
+const custom = style !== config.style || menuColor !== "default"
 
 const store = new UpstreamStore(ROOT, config.style)
 const lock = store.readLock()
@@ -83,19 +94,24 @@ await init(
     log: () => {},
   },
   {
-    preset:
-      style === config.style
-        ? undefined
-        : encodePreset({
-            ...readNamedPresets()[DEFAULT_PRESET],
-            style: style.replace(/^base-/, "") as never,
-          }),
-    rtl: false,
+    preset: custom
+      ? encodePreset({
+          ...readNamedPresets()[DEFAULT_PRESET],
+          style: style.replace(/^base-/, "") as never,
+          menuColor,
+        })
+      : undefined,
+    rtl: values.rtl,
     pointer: false,
     force: true,
     components: catalog.items.map((item) => item.name),
   }
 )
+const options = [
+  ...(style === config.style ? [] : [style]),
+  ...(values.rtl ? ["RTL"] : []),
+  ...(menuColor === "default" ? [] : [`menu ${menuColor}`]),
+]
 console.log(
-  `Installed the default preset${style === config.style ? "" : ` in ${style}`} and ${catalog.items.length} components into the repository root.`
+  `Installed the default preset${options.length > 0 ? ` (${options.join(", ")})` : ""} and ${catalog.items.length} components into the repository root.`
 )

@@ -11,7 +11,9 @@ ui.shadcn.com registries (every Base UI style: base-nova, base-vega, …)
   → upstream:sync      → upstream/ (committed snapshot + lock.json)
   → analyzer           → facts + classification (direct / native-adapter / script-adapter / custom-adapter / unsupported)
   → transformers       → Hono JSX source (ts-morph, adapters)
-  → emit               → cli/generated/templates/<style>/*.tsx (Biome-formatted),
+  → variants           → menu color and RTL: upstream source transformed with the
+                         pinned shadcn CLI's transformMenu / transformDirection
+  → emit               → cli/generated/templates/<style>/[<variant>/]*.tsx (Biome-formatted),
                          vendored tailwind.css and shadcn/preset, license notice
   → catalog/manifest   → cli/generated/catalog.json, compatibility.json, README table
 
@@ -319,9 +321,9 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
   field state) are not reproduced.
 - Upstream items that import non-generated registry items, hooks, or icons
   remain unsupported until those are generated or mapped.
-- Presets can choose the style, colors, radius, fonts, the menu accent and
-  the pointer cursor. Other icon libraries than Lucide, other menu colors and
-  right-to-left layout are planned
+- Presets can choose the style, colors, radius, fonts, the menu color and
+  accent and the pointer cursor, and `--rtl` installs right-to-left
+  components. Other icon libraries than Lucide are planned
   ([ADR 0030](./adr/0030-generate-templates-for-every-base-ui-style-and-finalize-them-at-install-time.md),
   [ADR 0031](./adr/0031-inline-icons-of-every-shadcn-ui-icon-library-at-generation-time.md)).
 - The CLI is not published to npm yet.

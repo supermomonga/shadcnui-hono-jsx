@@ -82,7 +82,7 @@ function InputOTPLite({
           maxlength={maxLength}
           minlength={maxLength}
           class={cn(
-            "h-full w-[calc((var(--input-otp-length)+1)*--spacing(8))] border-0 bg-transparent pb-px pl-[calc((--spacing(8)-1ch)/2)] text-sm tracking-[calc(--spacing(8)-1ch)] text-foreground tabular-nums outline-none disabled:cursor-not-allowed",
+            "absolute top-0 start-0 h-full w-[calc((var(--input-otp-length)+1)*--spacing(8))] border-0 bg-transparent pb-px pl-[calc((--spacing(8)-1ch)/2)] text-sm tracking-[calc(--spacing(8)-1ch)] text-foreground tabular-nums outline-none disabled:cursor-not-allowed rtl:[unicode-bidi:bidi-override] rtl:translate-x-[calc(--spacing(8)-1ch)]",
             className
           )}
           style={style}

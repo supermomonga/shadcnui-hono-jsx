@@ -152,8 +152,12 @@ function SliderIndicatorElement({ style, ...props }: ComponentProps<"div">) {
   )
 }
 
-/** A thumb with the native range input that takes focus and holds its value. */
-function SliderThumbElement({ style, children, ...props }: ComponentProps<"div">) {
+/**
+ * A thumb with the native range input that takes focus and holds its value.
+ * \`translate\` is physical, so \`--slider-dir\` flips it in right-to-left
+ * text, where \`inset-inline-start\` measures from the right.
+ */
+function SliderThumbElement({ class: className, style, children, ...props }: ComponentProps<"div">) {
   const state = useSliderContext()
   const index = state.rendered++
   const value = state.values[index] ?? state.min
@@ -167,11 +171,16 @@ function SliderThumbElement({ style, children, ...props }: ComponentProps<"div">
       data-index={index}
       data-orientation={state.orientation}
       data-disabled={state.disabled ? "" : undefined}
+      class={cn("rtl:[--slider-dir:-1]", className)}
       style={withSliderStyle(style, {
         position: "absolute",
         ...(vertical
           ? { bottom: \`\${percent}%\`, left: "50%", translate: \`-50% \${shift}%\` }
-          : { "inset-inline-start": \`\${percent}%\`, top: "50%", translate: \`-\${shift}% -50%\` }),
+          : {
+              "inset-inline-start": \`\${percent}%\`,
+              top: "50%",
+              translate: \`calc(var(--slider-dir, 1) * -\${shift}%) -50%\`,
+            }),
       })}
       {...props}
     >

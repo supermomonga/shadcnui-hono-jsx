@@ -1,24 +1,20 @@
 import { readFileSync } from "node:fs"
 import path from "node:path"
 import { parseArgs } from "node:util"
+import { MENU_COLORS, variantDir } from "../../../cli/src/variants"
 import { config } from "../../../generator.config"
 import { buildCatalog } from "../catalog/build"
-import { forStyle } from "../config"
 import { formatWithBiome } from "../emit/format"
 import { buildVendoredPreset, buildVendoredTailwindCss } from "../emit/vendored"
 import { type OutputFile, writeOutputs } from "../emit/write"
-import {
-  type GeneratedComponent,
-  GenerationError,
-  generateComponent,
-  TEMPLATES_DIR,
-} from "../generate"
+import { TEMPLATES_DIR } from "../generate"
+import type { StyleResult } from "../generate-style"
 import {
   buildLicenseNotice,
   checkUpstreamLicenses,
   LICENSE_NOTICE_PATH,
 } from "../licenses"
-import { generateLite, LITE_COMPONENTS } from "../lite"
+import { LITE_COMPONENTS } from "../lite"
 import {
   buildManifest,
   renderCompatibilityTable,
@@ -26,6 +22,13 @@ import {
 } from "../manifest/build"
 import { ROOT } from "../paths"
 import { UpstreamStore } from "../upstream/store"
+
+/** Every variant directory a style may have (docs/adr/0030). */
+const ALL_VARIANT_DIRS = [false, true]
+  .flatMap((rtl) =>
+    MENU_COLORS.map((menuColor) => variantDir({ rtl, menuColor }))
+  )
+  .filter(Boolean)
 
 /** Everything the CLI package reads besides its sources and client scripts. */
 const CLI_GENERATED = "cli/generated"
@@ -74,45 +77,44 @@ if (licenseProblems.length > 0) {
 
 // Every configured component is generated in memory for every style
 // (docs/adr/0030) because the catalog depends on all of them; only the
-// selected ones are written.
-const byStyle = new Map<string, GeneratedComponent[]>()
-const errors: string[] = []
-const attempt = (style: string, run: () => GeneratedComponent) => {
-  try {
-    byStyle.get(style)?.push(run())
-  } catch (error) {
-    if (!(error instanceof GenerationError)) throw error
-    errors.push(`${style}: ${error.message}`)
-  }
-}
-for (const style of config.styles) {
-  const styleConfig = forStyle(config, style)
-  const styleStore = store.forStyle(style)
-  byStyle.set(style, [])
-  for (const name of config.components) {
-    attempt(style, () =>
-      generateComponent(name, { config: styleConfig, store: styleStore, lock })
-    )
-  }
-  // Lite alternatives (docs/adr/0028) follow the ports they may import.
-  for (const name of liteNames) {
-    attempt(style, () =>
-      generateLite(name, { config: styleConfig, lock, store: styleStore })
-    )
-  }
-}
+// selected ones are written. Styles are generated in parallel workers.
+const selected = new Set(
+  positionals.length > 0 ? positionals : [...config.components, ...liteNames]
+)
+const results = await Promise.all(
+  config.styles.map(
+    (style) =>
+      new Promise<StyleResult>((resolve, reject) => {
+        const worker = new Worker(
+          new URL("./generate-style.worker.ts", import.meta.url).href
+        )
+        worker.onmessage = (event: MessageEvent<StyleResult>) => {
+          resolve(event.data)
+          worker.terminate()
+        }
+        worker.onerror = (event) => {
+          reject(new Error(`${style}: ${event.message}`))
+          worker.terminate()
+        }
+        worker.postMessage({ style, selected: [...selected] })
+      })
+  )
+)
+const errors = results.flatMap((result) => result.errors)
 if (errors.length > 0) {
   for (const message of errors) console.error(message)
   process.exit(1)
 }
+const byStyle = new Map(results.map((r) => [r.style, r.components]))
+const variantFiles = results.flatMap((result) => result.variants)
 
-const selected = new Set(
-  positionals.length > 0 ? positionals : [...config.components, ...liteNames]
-)
-const files: OutputFile[] = [...byStyle.values()]
-  .flat()
-  .filter((c) => selected.has(c.name))
-  .map((c) => c.file)
+const files: OutputFile[] = [
+  ...[...byStyle.values()]
+    .flat()
+    .filter((c) => selected.has(c.name))
+    .map((c) => c.file),
+  ...variantFiles,
+]
 
 // Package- and repository-level outputs are always rebuilt from the config
 // and the snapshot.
@@ -165,10 +167,12 @@ const result = writeOutputs(ROOT, files, {
   check: values.check,
   prune:
     positionals.length === 0
-      ? config.styles.map((style) => ({
-          dir: `${TEMPLATES_DIR}/${style}`,
-          extension: ".tsx",
-        }))
+      ? config.styles.flatMap((style) =>
+          ["", ...ALL_VARIANT_DIRS].map((dir) => ({
+            dir: `${TEMPLATES_DIR}/${style}${dir ? `/${dir}` : ""}`,
+            extension: ".tsx",
+          }))
+        )
       : [],
 })
 

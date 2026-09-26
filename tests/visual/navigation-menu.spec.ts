@@ -1,6 +1,7 @@
 import { expect, type Page, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { FORWARD_KEY } from "./installed"
 import { pageUrl } from "./server-url"
 
 /**
@@ -126,7 +127,7 @@ const STEPS: Step[] = [
   ],
   [
     "ArrowRight moves between triggers without opening",
-    (page) => press(page, "ArrowRight"),
+    (page) => press(page, FORWARD_KEY),
   ],
   ["ArrowDown opens", (page) => press(page, "ArrowDown")],
   ["Tab enters the content", (page) => press(page, "Tab")],

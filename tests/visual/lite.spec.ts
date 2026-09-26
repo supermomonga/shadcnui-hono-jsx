@@ -1,6 +1,7 @@
 import { expect, type Page, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { VARIANT } from "./installed"
 import { pageUrl } from "./server-url"
 
 /**
@@ -149,10 +150,15 @@ test("date-picker-lite is a native date input", async ({ page }) => {
   expect(await scheme()).toBe("light")
   await page.evaluate(() => document.documentElement.classList.add("dark"))
   expect(await scheme()).toBe("dark")
-  // The calendar icon sits inside the field, before the text.
+  // The calendar icon sits inside the field, before the text (at its right
+  // edge in right-to-left text).
   const icon = await page
     .locator('[data-slot="date-picker-lite"] svg')
     .boundingBox()
   const field = await input.boundingBox()
-  expect(icon && field && icon.x >= field.x && icon.x < field.x + 32).toBe(true)
+  if (!icon || !field) throw new Error("date-picker-lite is not rendered")
+  const inset = VARIANT.rtl
+    ? field.x + field.width - (icon.x + icon.width)
+    : icon.x - field.x
+  expect(inset >= 0 && inset < 32).toBe(true)
 })

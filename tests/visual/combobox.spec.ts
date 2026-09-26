@@ -1,6 +1,7 @@
 import { expect, type Page, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { BACK_KEY } from "./installed"
 import { pageUrl } from "./server-url"
 
 /**
@@ -163,10 +164,7 @@ const STEPS: Step[] = [
     "Backspace removes the last chip",
     (page) => page.keyboard.press("Backspace"),
   ],
-  [
-    "ArrowLeft focuses the last chip",
-    (page) => page.keyboard.press("ArrowLeft"),
-  ],
+  ["ArrowLeft focuses the last chip", (page) => page.keyboard.press(BACK_KEY)],
   [
     "Backspace on a chip removes it",
     (page) => page.keyboard.press("Backspace"),

@@ -66,6 +66,8 @@ describe("Tooltip and HoverCard (manual popovers opened by /shadcn/hover.js)", (
     const [popup] = await query(html, '[data-slot="hover-card-content"]')
     expect(popup?.attributes).not.toHaveProperty("role")
     // align="center" with alignOffset 4 shifts the whole card.
-    expect(popup?.attributes.style).toContain("translate:4px 0")
+    // A centered popup's align offset is twice the start margin (mirrored in
+    // right-to-left text).
+    expect(popup?.attributes.style).toContain("margin-inline-start:8px")
   })
 })

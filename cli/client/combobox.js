@@ -538,7 +538,7 @@ document.addEventListener("keydown", (event) => {
         removeValue(parts, state.values.length - 1, false)
       }
       break
-    case "ArrowLeft":
+    case inlineKeys(target)[0]:
       if (
         parts.multiple &&
         target.selectionStart === 0 &&
@@ -576,7 +576,8 @@ function chipKeydown(event, chip) {
     case "ArrowLeft":
     case "ArrowRight": {
       event.preventDefault()
-      const next = chips[index + (event.key === "ArrowLeft" ? -1 : 1)]
+      const [backKey] = inlineKeys(chip)
+      const next = chips[index + (event.key === backKey ? -1 : 1)]
       if (next) next.focus()
       else parts.input.focus()
       break
@@ -743,6 +744,16 @@ document.addEventListener("focusout", (event) => {
   if (to === null) return
   close(parts)
 })
+
+/**
+ * The inline arrow keys in reading order: [backward, forward].
+ *
+ * @param {Element} element
+ */
+const inlineKeys = (element) =>
+  getComputedStyle(element).direction === "rtl"
+    ? ["ArrowRight", "ArrowLeft"]
+    : ["ArrowLeft", "ArrowRight"]
 
 // A module: its declarations stay local.
 export {}

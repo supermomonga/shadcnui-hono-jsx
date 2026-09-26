@@ -1,6 +1,7 @@
 import { expect, type Page, type TestInfo, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { BACK_KEY, FORWARD_KEY } from "./installed"
 import { pageUrl } from "./server-url"
 
 /**
@@ -75,10 +76,13 @@ const STEPS: Step[] = [
     },
   ],
   [
-    "ArrowRight enters the submenu",
-    (page) => page.keyboard.press("ArrowRight"),
+    "the forward arrow enters the submenu",
+    (page) => page.keyboard.press(FORWARD_KEY),
   ],
-  ["ArrowLeft leaves the submenu", (page) => page.keyboard.press("ArrowLeft")],
+  [
+    "the back arrow leaves the submenu",
+    (page) => page.keyboard.press(BACK_KEY),
+  ],
   [
     "choosing an item closes everything",
     (page) => item(page, "Billing").click(),
@@ -123,7 +127,7 @@ const OPEN_STATES: [name: string, act: (page: Page) => Promise<void>][] = [
     async (page) => {
       await page.keyboard.press("End")
       await page.keyboard.press("ArrowUp")
-      await page.keyboard.press("ArrowRight")
+      await page.keyboard.press(FORWARD_KEY)
     },
   ],
 ]
@@ -268,15 +272,18 @@ const MENUBAR_STEPS: Step[] = [
   ["initial", async () => {}],
   ["a trigger opens its menu", (page) => menubarTrigger(page, "File").click()],
   [
-    "ArrowRight opens the next menu",
-    (page) => page.keyboard.press("ArrowRight"),
+    "the forward arrow opens the next menu",
+    (page) => page.keyboard.press(FORWARD_KEY),
   ],
   ["ArrowDown enters the menu", (page) => page.keyboard.press("ArrowDown")],
-  ["ArrowRight from an item", (page) => page.keyboard.press("ArrowRight")],
-  ["ArrowLeft goes back", (page) => page.keyboard.press("ArrowLeft")],
+  [
+    "the forward arrow from an item",
+    (page) => page.keyboard.press(FORWARD_KEY),
+  ],
+  ["the back arrow goes back", (page) => page.keyboard.press(BACK_KEY)],
   ["Escape closes", (page) => page.keyboard.press("Escape")],
-  ["arrows move between triggers", (page) => page.keyboard.press("ArrowRight")],
-  ["and back", (page) => page.keyboard.press("ArrowLeft")],
+  ["arrows move between triggers", (page) => page.keyboard.press(FORWARD_KEY)],
+  ["and back", (page) => page.keyboard.press(BACK_KEY)],
   ["Enter opens the focused menu", (page) => page.keyboard.press("Enter")],
   [
     "hovering another trigger switches menus",

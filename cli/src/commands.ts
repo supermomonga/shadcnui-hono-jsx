@@ -33,6 +33,7 @@ import {
 } from "./preset"
 import { type FetchJson, fetchPresetTheme, type PresetFlags } from "./shadcn"
 import { applyFonts, buildThemeCss } from "./theme"
+import type { Variant } from "./variants"
 
 export interface Context {
   /** Root of the user's project. */
@@ -49,15 +50,16 @@ interface Setup {
   flags: PresetFlags
   /** Template style, e.g. `base-nova`. */
   style: string
+  variant: Variant
   finalize: FinalizeOptions
 }
 
 function setupFor(catalog: Catalog, preset: Preset, flags: PresetFlags): Setup {
   const style = `base-${preset.config.style}`
-  const finalize: FinalizeOptions = {
-    iconLibrary: preset.config.iconLibrary,
-    menuColor: preset.config.menuColor,
+  const finalize: FinalizeOptions = { iconLibrary: preset.config.iconLibrary }
+  const variant: Variant = {
     rtl: flags.rtl,
+    menuColor: preset.config.menuColor,
   }
   const problems = [
     ...(catalog.styles.includes(style)
@@ -70,7 +72,7 @@ function setupFor(catalog: Catalog, preset: Preset, flags: PresetFlags): Setup {
       `shadcnui-hono-jsx does not support ${problems.join(", ")} yet (preset ${preset.code}, ${presetUrl(preset.code)}).`
     )
   }
-  return { preset, flags, style, finalize }
+  return { preset, flags, style, variant, finalize }
 }
 
 const noticeFile = (): PlannedFile => ({
@@ -120,7 +122,7 @@ async function planTheme(
 function componentFile(setup: Setup, name: string): PlannedFile {
   return {
     path: `${COMPONENTS_DIR}/${name}.tsx`,
-    text: finalize(readTemplate(setup.style, name), {
+    text: finalize(readTemplate(setup.style, name, setup.variant), {
       ...setup.finalize,
       preset: setup.preset.code,
     }),

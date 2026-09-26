@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { UsageError } from "./errors"
 import { CLIENT_DIR, GENERATED_DIR, TEMPLATES_DIR } from "./paths"
+import { DEFAULT_VARIANT, type Variant, variantCandidates } from "./variants"
 
 export interface CatalogItem {
   name: string
@@ -42,12 +43,17 @@ export function findItem(catalog: Catalog, name: string): CatalogItem {
   return item
 }
 
-export function readTemplate(style: string, name: string): string {
-  const file = path.join(TEMPLATES_DIR, style, `${name}.tsx`)
-  if (!existsSync(file)) {
-    throw new Error(`No template for ${name} in ${style}`)
+/** The template of a component in a style, in the most specific variant stored. */
+export function readTemplate(
+  style: string,
+  name: string,
+  variant: Variant = DEFAULT_VARIANT
+): string {
+  for (const dir of variantCandidates(variant)) {
+    const file = path.join(TEMPLATES_DIR, style, dir, `${name}.tsx`)
+    if (existsSync(file)) return readFileSync(file, "utf8")
   }
-  return readFileSync(file, "utf8")
+  throw new Error(`No template for ${name} in ${style}`)
 }
 
 export function readClientScript(name: string): string {

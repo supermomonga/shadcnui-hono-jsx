@@ -298,7 +298,7 @@ function PopoverDemo() {
 
 function SelectDemo() {
   return (
-    <main class="flex items-start gap-8 p-8 pl-48">
+    <main class="flex items-start gap-8 p-8 ps-48">
       <Select name="fruit">
         <SelectTrigger id="fruit" class="w-45">
           <SelectValue placeholder="Select a fruit" />
@@ -375,7 +375,7 @@ function TabsDemo() {
 
 function DropdownMenuDemo() {
   return (
-    <main class="flex items-start gap-8 p-8 pl-48">
+    <main class="flex items-start gap-8 p-8 ps-48">
       <DropdownMenu>
         <DropdownMenuTrigger render={<Button variant="outline" class="w-24" />}>
           Open
@@ -514,7 +514,7 @@ function MenubarDemo() {
 
 function HoverDemo() {
   return (
-    <main class="flex items-center gap-24 p-24 pl-48">
+    <main class="flex items-center gap-24 p-24 ps-48">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger render={<Button variant="outline" class="w-28" />}>
@@ -896,7 +896,7 @@ function InputGroupDemo() {
 
 function SliderDemo() {
   return (
-    <main class="flex flex-col gap-10 p-8 pl-24">
+    <main class="flex flex-col gap-10 p-8 ps-24">
       <Slider
         defaultValue={[33]}
         max={100}
@@ -949,7 +949,7 @@ export const DEMOS = {
     </Page>
   ),
   popover: () => (
-    <main class="flex min-h-96 items-center gap-24 p-8 pl-48">
+    <main class="flex min-h-96 items-center gap-24 p-8 ps-48">
       <PopoverDemo />
       <button type="button" id="after">
         After

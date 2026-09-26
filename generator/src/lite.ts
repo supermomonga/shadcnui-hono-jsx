@@ -8,6 +8,7 @@
 import { readFileSync } from "node:fs"
 import path from "node:path"
 import { Node, Project, SyntaxKind } from "ts-morph"
+import { type Variant, variantDir } from "../../cli/src/variants"
 import { classify } from "./analyzer/classify"
 import { collectFacts } from "./analyzer/facts"
 import { reasonKey } from "./analyzer/reasons"
@@ -115,6 +116,11 @@ function inputOtpClasses(parts: LiteParts): Record<string, string> {
     ),
     clip: join(["absolute", "inset-0", "overflow-hidden", ...rounded]),
     input: join([
+      // Pinned to the start: the input is a slot wider than the group (for
+      // the caret) and overflows at the end in either direction.
+      "absolute",
+      "top-0",
+      "start-0",
       "h-full",
       `w-[calc((var(--input-otp-length)+1)*--spacing(${pitch}))]`,
       "border-0",
@@ -127,6 +133,12 @@ function inputOtpClasses(parts: LiteParts): Record<string, string> {
       "tabular-nums",
       "outline-none",
       "disabled:cursor-not-allowed",
+      // In right-to-left text upstream fills the slots from the right; the
+      // characters of one input follow that order only when overridden, and
+      // Chromium adds letter spacing to the right of each character, before
+      // the first one too.
+      "rtl:[unicode-bidi:bidi-override]",
+      `rtl:translate-x-[calc(--spacing(${pitch})-1ch)]`,
     ]),
   }
 }
@@ -243,10 +255,25 @@ export function resolveLiteClasses(
   return resolved
 }
 
-/** Translates one lite alternative from `lite/<name>.tsx` for `config.style`. */
+/** The source of a lite alternative with its `lite:<key>` tokens resolved for `store.style`. */
+export function liteSource(name: string, store: UpstreamStore): string {
+  const lite = LITE_COMPONENTS[name]
+  if (!lite) throw new GenerationError(`${name} is not a lite alternative`)
+  return resolveLiteClasses(
+    name,
+    readFileSync(path.join(ROOT, LITE_DIR, `${name}.tsx`), "utf8"),
+    lite.classes?.(liteParts(store)) ?? {}
+  )
+}
+
+/**
+ * Translates one lite alternative from `lite/<name>.tsx` for `config.style`.
+ * For a variant, `source` is `liteSource` transformed for it (`applyVariant`).
+ */
 export function generateLite(
   name: string,
-  deps: { config: GeneratorConfig; lock: UpstreamLock; store: UpstreamStore }
+  deps: { config: GeneratorConfig; lock: UpstreamLock; store: UpstreamStore },
+  variant?: { variant: Variant; source: string }
 ): GeneratedComponent {
   const lite = LITE_COMPONENTS[name]
   if (!lite) throw new GenerationError(`${name} is not a lite alternative`)
@@ -259,11 +286,7 @@ export function generateLite(
     }
   }
   const source = path.join(LITE_DIR, `${name}.tsx`)
-  const content = resolveLiteClasses(
-    name,
-    readFileSync(path.join(ROOT, source), "utf8"),
-    lite.classes?.(liteParts(deps.store)) ?? {}
-  )
+  const content = variant?.source ?? liteSource(name, deps.store)
   const facts = collectFacts({
     name,
     type: "registry:ui",
@@ -299,8 +322,9 @@ export function generateLite(
         "unknown",
     })),
     icons: { names: output.icons, version: lucideVersion() },
+    variant: variant ? variantDir(variant.variant) : undefined,
   })
-  const file = templatePath(deps.config.style, name)
+  const file = templatePath(deps.config.style, name, variant?.variant)
   return {
     name,
     classification,

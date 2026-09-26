@@ -114,8 +114,6 @@ describe.skipIf(!enabled)("the CLI in a clean Hono project", () => {
       expect(read(`components/ui/${name}.tsx`)).toBe(
         finalize(readTemplate(config.style, name), {
           iconLibrary: "lucide",
-          menuColor: "default",
-          rtl: false,
           preset: nova.code,
         })
       )
@@ -226,10 +224,29 @@ describe.skipIf(!enabled)("the CLI in a clean Hono project", () => {
     expect(read("components/ui/button.tsx")).toBe(
       finalize(readTemplate("base-lyra", "button"), {
         iconLibrary: "lucide",
-        menuColor: "default",
-        rtl: false,
         preset: lyra,
       })
     )
+  })
+
+  test("apply installs menu color and RTL variants that type-check", async () => {
+    const translucent = encodePreset({
+      ...nova.config,
+      menuColor: "inverted-translucent",
+    })
+    await run(["bun", CLI, "apply", "--preset", translucent, "--rtl"])
+    expect(JSON.parse(read("shadcnui-hono-jsx.json"))).toEqual({
+      preset: translucent,
+      rtl: true,
+      pointer: false,
+    })
+    expect(read("components/ui/dropdown-menu.tsx")).toContain(
+      "// variant: rtl_menu-inverted-translucent\n"
+    )
+    await run([
+      path.join(app, "node_modules", ".bin", "tsc"),
+      "-p",
+      "tsconfig.json",
+    ])
   })
 })

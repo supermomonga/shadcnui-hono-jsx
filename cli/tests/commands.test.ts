@@ -14,7 +14,6 @@ import { config } from "../../generator.config"
 import { encodePreset } from "../generated/shadcn-preset.js"
 import { readCatalog, readGenerated, readTemplate } from "../src/catalog"
 import { add, apply, type Context, init } from "../src/commands"
-import { UsageError } from "../src/errors"
 import { resolvePreset } from "../src/preset"
 import type { ThemeItem } from "../src/theme"
 
@@ -135,14 +134,36 @@ describe("init", () => {
     )
   })
 
+  test("installs the variant for the preset's menu color and direction", async () => {
+    const inverted = encodePreset({ ...nova, menuColor: "inverted" })
+    await init(ctx, {
+      ...initDefaults,
+      preset: inverted,
+      rtl: true,
+      components: ["dropdown-menu", "breadcrumb", "card"],
+    })
+    const menu = read("components/ui/dropdown-menu.tsx")
+    expect(menu).toContain("// variant: rtl_menu-inverted\n")
+    expect(menu.split("\n").slice(1)).toEqual(
+      readTemplate(config.style, "dropdown-menu", {
+        rtl: true,
+        menuColor: "inverted",
+      })
+        .split("\n")
+        .slice(1)
+    )
+    // Breadcrumb has no menu markers: its RTL variant is used. Card looks the
+    // same in both directions and has no variant.
+    expect(read("components/ui/breadcrumb.tsx")).toContain("// variant: rtl\n")
+    expect(read("components/ui/card.tsx")).not.toContain("// variant:")
+    expect(JSON.parse(read("shadcnui-hono-jsx.json")).rtl).toBe(true)
+  })
+
   test("rejects presets this version cannot install, before writing", async () => {
     const tabler = encodePreset({ ...nova, iconLibrary: "tabler" })
     await expect(
       init(ctx, { ...initDefaults, preset: tabler })
     ).rejects.toThrow(/iconLibrary "tabler"/)
-    await expect(init(ctx, { ...initDefaults, rtl: true })).rejects.toThrow(
-      UsageError
-    )
     expect(existsSync(path.join(cwd, "shadcnui-hono-jsx.json"))).toBe(false)
   })
 })

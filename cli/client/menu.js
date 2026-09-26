@@ -119,7 +119,11 @@ document.addEventListener(
     }
     const opened = /** @type {ToggleEvent} */ (event).newState === "open"
     const trigger = triggerOf(menu)
-    trigger?.setAttribute("aria-expanded", String(opened))
+    // Like Base UI, only top-level triggers report aria-expanded; submenu
+    // triggers only get data-popup-open.
+    if (trigger && !trigger.matches(SUBMENU_TRIGGER)) {
+      trigger.setAttribute("aria-expanded", String(opened))
+    }
     trigger?.toggleAttribute("data-popup-open", opened)
     menu.toggleAttribute("data-open", opened)
     if (opened) {
@@ -175,15 +179,25 @@ function rove(trigger) {
 const menuOfTrigger = (trigger) =>
   document.getElementById(trigger.getAttribute("commandfor") ?? "")
 
+/**
+ * The inline arrow keys in reading order: [backward, forward].
+ *
+ * @param {Element} element
+ */
+const inlineKeys = (element) =>
+  getComputedStyle(element).direction === "rtl"
+    ? ["ArrowRight", "ArrowLeft"]
+    : ["ArrowLeft", "ArrowRight"]
+
 // Opening from the keyboard focuses the first item (the last for ArrowUp);
-// in a menubar, the arrow keys move between the triggers.
+// in a menubar, the arrow keys move between the triggers (in reading order).
 delegate("keydown", TRIGGER, (event, trigger) => {
   const menu = menuOfTrigger(trigger)
   if (!menu) return
   const horizontal =
     trigger.closest(MENUBAR)?.getAttribute("aria-orientation") !== "vertical"
   const [previousKey, nextKey] = horizontal
-    ? ["ArrowLeft", "ArrowRight"]
+    ? inlineKeys(trigger)
     : ["ArrowUp", "ArrowDown"]
   if (
     trigger.closest(MENUBAR) &&
@@ -222,7 +236,15 @@ delegate("keydown", MENU, (event, menu) => {
     event.preventDefault()
     item?.focus()
   }
-  switch (event.key) {
+  // Submenus open toward the end of the line and close toward its start.
+  const [backward, forward] = inlineKeys(menu)
+  const key =
+    event.key === forward
+      ? "Forward"
+      : event.key === backward
+        ? "Backward"
+        : event.key
+  switch (key) {
     case "ArrowDown":
       return move(
         items[index < 0 ? 0 : index < last ? index + 1 : loop ? 0 : last]
@@ -235,7 +257,7 @@ delegate("keydown", MENU, (event, menu) => {
       return move(items[0])
     case "End":
       return move(items[last])
-    case "ArrowRight": {
+    case "Forward": {
       if (current?.matches(SUBMENU_TRIGGER) && !disabled(current)) {
         const submenu = submenuOf(current)
         if (submenu) {
@@ -247,7 +269,7 @@ delegate("keydown", MENU, (event, menu) => {
       switchMenubarMenu(event, menu, 1)
       return
     }
-    case "ArrowLeft": {
+    case "Backward": {
       const trigger = triggerOf(menu)
       if (trigger?.closest(MENU)) {
         event.preventDefault()

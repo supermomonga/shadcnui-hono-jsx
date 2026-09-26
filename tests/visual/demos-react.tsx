@@ -4,6 +4,7 @@
  * components, rendered in the browser. Bundled by render.ts; the page picks a
  * demo with `<div id="root" data-demo="…">`.
  */
+import { DirectionProvider } from "@base-ui/react/direction-provider"
 import { type ReactNode, useEffect, useState } from "react"
 import { createRoot } from "react-dom/client"
 import {
@@ -303,7 +304,7 @@ const SIZES = { small: "Small", medium: "Medium", large: "Large" }
 
 function SelectDemo() {
   return (
-    <main className="flex items-start gap-8 p-8 pl-48">
+    <main className="flex items-start gap-8 p-8 ps-48">
       <Select name="fruit" items={FRUITS}>
         <SelectTrigger id="fruit" className="w-45">
           <SelectValue placeholder="Select a fruit" />
@@ -380,7 +381,7 @@ function TabsDemo() {
 
 function DropdownMenuDemo() {
   return (
-    <main className="flex items-start gap-8 p-8 pl-48">
+    <main className="flex items-start gap-8 p-8 ps-48">
       <DropdownMenu>
         <DropdownMenuTrigger
           render={<Button variant="outline" className="w-24" />}
@@ -523,7 +524,7 @@ function MenubarDemo() {
 
 function HoverDemo() {
   return (
-    <main className="flex items-center gap-24 p-24 pl-48">
+    <main className="flex items-center gap-24 p-24 ps-48">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger
@@ -944,7 +945,7 @@ function InputGroupDemo() {
 
 function SliderDemo() {
   return (
-    <main className="flex flex-col gap-10 p-8 pl-24">
+    <main className="flex flex-col gap-10 p-8 ps-24">
       <Slider
         defaultValue={[33]}
         max={100}
@@ -1002,7 +1003,7 @@ const DEMOS: Record<string, () => ReactNode> = {
     </Page>
   ),
   popover: () => (
-    <main className="flex min-h-96 items-center gap-24 p-8 pl-48">
+    <main className="flex min-h-96 items-center gap-24 p-8 ps-48">
       <PopoverDemo />
       <button type="button" id="after">
         After
@@ -1037,4 +1038,15 @@ const DEMOS: Record<string, () => ReactNode> = {
 
 const root = document.getElementById("root")
 const demo = DEMOS[root?.dataset.demo ?? ""]
-if (root && demo) createRoot(root).render(demo())
+// Base UI takes the direction (for arrow keys, for example) from its
+// provider, as an app built with the shadcn CLI's RTL option supplies it.
+const rtl = document.documentElement.dir === "rtl"
+if (root && demo) {
+  createRoot(root).render(
+    rtl ? (
+      <DirectionProvider direction="rtl">{demo()}</DirectionProvider>
+    ) : (
+      demo()
+    )
+  )
+}

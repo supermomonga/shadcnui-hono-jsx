@@ -12,7 +12,6 @@ import {
   copyFileSync,
   mkdirSync,
   readdirSync,
-  readFileSync,
   rmSync,
   writeFileSync,
 } from "node:fs"
@@ -20,11 +19,11 @@ import path from "node:path"
 import { jsx } from "hono/jsx"
 import { createElement, type ReactNode } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
-import { resolvePreset } from "../../cli/src/preset"
 import { COMPONENT_ADAPTERS } from "../../generator/src/adapters/components"
 import { findFamilyRule } from "../../generator/src/adapters/families"
 import { collectFacts } from "../../generator/src/analyzer/facts"
 import { UpstreamStore } from "../../generator/src/upstream/store"
+import { applyVariant } from "../../generator/src/variants"
 import { config } from "../../generator.config"
 import {
   type CaseNode,
@@ -32,6 +31,7 @@ import {
   isCaseElement,
   VISUAL_CASES,
 } from "./cases"
+import { STYLE, VARIANT } from "./installed"
 
 /** Unported upstream components that lite alternatives (docs/adr/0028) are compared with. */
 const LITE_REFERENCES = ["input-otp"]
@@ -42,19 +42,8 @@ const OUT = path.join(HERE, ".output")
 const UPSTREAM = path.join(HERE, ".upstream")
 const MODES = ["light", "dark"] as const
 
-/**
- * The style of the development install in the repository root (`bun run
- * dev:install [--style <style>]`), which upstream is rendered in.
- */
-const STYLE = `base-${
-  resolvePreset(
-    (
-      JSON.parse(
-        readFileSync(path.join(ROOT, "shadcnui-hono-jsx.json"), "utf8")
-      ) as { preset: string }
-    ).preset
-  ).config.style
-}`
+// Upstream is rendered in the style, direction and menu color installed.
+const HTML = `<html lang="en"${VARIANT.rtl ? ' dir="rtl"' : ""}>`
 
 type Exports = Record<string, unknown>
 
@@ -103,7 +92,7 @@ export function IconPlaceholder(props: Record<string, unknown>) {
 }
 `
 
-function writeUpstreamSources(): void {
+async function writeUpstreamSources(): Promise<void> {
   const store = new UpstreamStore(ROOT, STYLE)
   rmSync(UPSTREAM, { recursive: true, force: true })
   mkdirSync(UPSTREAM, { recursive: true })
@@ -116,9 +105,11 @@ function writeUpstreamSources(): void {
   for (const name of [...config.components, ...LITE_REFERENCES]) {
     const [file] = store.readItem(name).files ?? []
     if (!file) throw new Error(`${name} has no upstream file`)
+    // The shadcn CLI's menu color and RTL transforms, as for the templates.
+    const source = await applyVariant(file.content, VARIANT)
     writeFileSync(
       path.join(UPSTREAM, `${name}.tsx`),
-      `/** @jsxImportSource react */\n${applyInstallMarkers(file.content)}`
+      `/** @jsxImportSource react */\n${applyInstallMarkers(source)}`
     )
   }
 }
@@ -217,7 +208,7 @@ function toReact(node: CaseNode, exports: Exports): ReactNode {
 
 function page(title: string, sections: string[]): string {
   return `<!doctype html>
-<html lang="en">
+${HTML}
 <head>
 <meta charset="utf-8">
 <title>${title}</title>
@@ -265,7 +256,7 @@ function nativeStructureComponents(): Set<string> {
 }
 
 async function main(): Promise<void> {
-  writeUpstreamSources()
+  await writeUpstreamSources()
   const hono = await loadExports(path.join(ROOT, "components", "ui"))
   const react = await loadExports(UPSTREAM)
 
@@ -328,7 +319,7 @@ async function main(): Promise<void> {
   if (tailwind.exitCode !== 0) throw new Error(tailwind.stderr.toString())
   await renderDemoPages()
   console.log(
-    `Rendered ${ids.length} cases in ${STYLE} to ${path.relative(process.cwd(), OUT)}`
+    `Rendered ${ids.length} cases in ${STYLE}${VARIANT.rtl ? ", RTL" : ""}${VARIANT.menuColor === "default" ? "" : `, menu ${VARIANT.menuColor}`} to ${path.relative(process.cwd(), OUT)}`
   )
 }
 
@@ -356,11 +347,11 @@ async function renderDemoPages(): Promise<void> {
       .join("")
     writeFileSync(
       path.join(OUT, `${name}-hono.html`),
-      `<!doctype html><html lang="en"><head>${head}${scripts}<title>${name} (Hono)</title></head><body>${String(await demo())}</body></html>\n`
+      `<!doctype html>${HTML}<head>${head}${scripts}<title>${name} (Hono)</title></head><body>${String(await demo())}</body></html>\n`
     )
     writeFileSync(
       path.join(OUT, `${name}-react.html`),
-      `<!doctype html><html lang="en"><head>${head}<title>${name} (upstream)</title></head><body><div id="root" data-demo="${name}"></div><script src="demos-react.js"></script></body></html>\n`
+      `<!doctype html>${HTML}<head>${head}<title>${name} (upstream)</title></head><body><div id="root" data-demo="${name}"></div><script src="demos-react.js"></script></body></html>\n`
     )
   }
 }

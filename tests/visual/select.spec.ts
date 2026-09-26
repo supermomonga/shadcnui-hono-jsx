@@ -1,6 +1,7 @@
 import { expect, type Page, type TestInfo, test } from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
+import { VARIANT } from "./installed"
 import { pageUrl } from "./server-url"
 
 /**
@@ -106,6 +107,10 @@ async function compare(page: Page, other: Page, testInfo: TestInfo) {
 test("select matches upstream shadcn/ui, closed and open", async ({
   browser,
 }, testInfo) => {
+  test.skip(
+    VARIANT.menuColor.startsWith("inverted"),
+    "Inverted menu colors put `dark` on the popup; the native picker is a pseudo-element of the select and keeps the page's colors (a known difference)."
+  )
   const context = await browser.newContext({
     viewport: { width: 800, height: 400 },
     deviceScaleFactor: 1,

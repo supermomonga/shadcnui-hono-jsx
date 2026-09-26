@@ -26,10 +26,21 @@ const PICKER = "[&::picker(select)]"
 /** Popup positioning handled by anchor positioning in the top layer. */
 const POPUP_POSITIONING = /^(relative|absolute|fixed|isolate|z-.*)$/
 
+/** Base UI item states on the native option. */
+const ITEM_STATES: Readonly<Record<string, string>> = {
+  "data-disabled": "disabled",
+  "data-highlighted": "focus",
+  "data-selected": "checked",
+}
+
 /**
  * Popup classes for the picker: `data-open:`/`data-closed:` become the
  * select's `open:`/`not-open:` state, `data-[side=…]:` reads the select's
  * `data-side`, and alignment with the trigger (not supported) is dropped.
+ * The picker has no pseudo-elements of its own, so a `before:` backdrop
+ * filter (translucent menus) applies to the picker itself and the rest of
+ * that layer is dropped; descendant variants (`**:`) reach the options,
+ * which are the select's descendants, with their states.
  */
 export function mapPickerClasses(classes: string): string {
   const mapped: string[] = []
@@ -38,6 +49,17 @@ export function mapPickerClasses(classes: string): string {
     const utility = parts.pop() as string
     if (parts.some((v) => v.startsWith("data-[align-trigger="))) continue
     if (parts.length === 0 && POPUP_POSITIONING.test(utility)) continue
+    const [first] = parts
+    if (first === "before" || first === "after") {
+      if (parts.length === 1 && utility.startsWith("backdrop-")) {
+        mapped.push(`${PICKER}:${utility}`)
+      }
+      continue
+    }
+    if (first === "*" || first === "**") {
+      mapped.push([...parts.map((v) => ITEM_STATES[v] ?? v), utility].join(":"))
+      continue
+    }
     const variants = parts.map((v) => POPUP_STATE_VARIANTS[v] ?? v)
     mapped.push([...variants, PICKER, utility].join(":"))
   }
@@ -70,18 +92,13 @@ export function mapTriggerClasses(classes: string): string {
 
 /** Item state on the native option; the browser's checkmark is replaced by upstream's indicator. */
 export function mapItemClasses(classes: string): string {
-  const states: Readonly<Record<string, string>> = {
-    "data-disabled": "disabled",
-    "data-highlighted": "focus",
-    "data-selected": "checked",
-  }
   const mapped = classes
     .split(/\s+/)
     .filter(Boolean)
     .map((token) => {
       const parts = splitVariants(token)
       const utility = parts.pop() as string
-      return [...parts.map((v) => states[v] ?? v), utility].join(":")
+      return [...parts.map((v) => ITEM_STATES[v] ?? v), utility].join(":")
     })
   // The browser's checkmark and disabled color give way to upstream's.
   return [...mapped, "[&::checkmark]:hidden", "disabled:text-inherit"].join(" ")
@@ -376,6 +393,7 @@ export const selectFamily: FamilyRule = {
   notes: [
     "Built on a customizable native `<select>` (`appearance: base-select`): no JavaScript, keyboard selection and typeahead are the browser's (Space and the arrow keys open it, Enter does not), and `name`/`value` are submitted with forms. Chrome 135, Firefox 149 and Safari 27 or later show upstream's design; older browsers show a classic select with the trigger's styles.",
     "`SelectTrigger` renders the `<select>` (so `id` and `aria-*` given to it reach the form control), and `<SelectContent>` must be a direct child of `<Select>`. `value`/`defaultValue` set the initial selection; `onValueChange`, `multiple`, `items`, value render functions and aligning the selected item with the trigger (`alignItemWithTrigger`) are not supported: the list opens below the trigger. Classes given to `SelectContent` are not applied to the list.",
+    "With an inverted menu color (a preset option), the list keeps the page's colors: the browser's picker cannot take upstream's `dark` class, while the other menus are inverted.",
   ],
   transform(ctx, local) {
     const step = "family:Select"

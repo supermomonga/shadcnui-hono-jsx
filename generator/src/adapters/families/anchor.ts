@@ -82,11 +82,13 @@ function anchorPlacementStyle(anchor: string, p: AnchorPlacement): Record<string
     "position-area": [p.side, span].filter(Boolean).join(" "),
     "position-try-fallbacks": block ? "flip-block" : "flip-inline",
     [toward]: \`\${p.sideOffset}px\`,
-    // A centered popup shifts as a whole (a one-sided margin would move it half as far).
+    // A centered popup is centered with its margins, so a start margin of
+    // twice the offset shifts it by the offset: toward the end of the line
+    // (mirrored in right-to-left text, like Base UI) or down.
     ...(p.alignOffset === 0
       ? {}
       : p.align === "center"
-        ? { translate: block ? \`\${p.alignOffset}px 0\` : \`0 \${p.alignOffset}px\` }
+        ? { [block ? "margin-inline-start" : "margin-block-start"]: \`\${2 * p.alignOffset}px\` }
         : { [across]: \`\${p.alignOffset}px\` }),
     "--transform-origin": origin,
     // Base UI's size variables for popup classes (\`w-(--anchor-width)\`, ...).

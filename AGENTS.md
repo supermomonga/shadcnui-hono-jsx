@@ -24,7 +24,11 @@ Components reach users through the `shadcnui-hono-jsx` CLI in `cli/`
 templates of `cli/generated/templates/<style>/` through `finalize`
 (docs/adr/0030). Every Base UI style in `generator.config.ts` is snapshotted
 and translated, and a component must translate in all of them; styles differ
-only in classes, so translation rules must not depend on class strings. The
+only in classes, so translation rules must not depend on class strings. Menu
+color and RTL variants are translated from upstream source transformed by the
+pinned shadcn package's own transforms (`generator/src/variants.ts`) and
+stored in `<style>/<variant>/` where they differ; client scripts read the CSS
+direction for arrow keys. The
 CLI sources in `cli/src/` are hand-written; use Node APIs
 only, so the package runs under Node as well as Bun. The repository root is a
 development install of the default preset, which tests, type checking, the
@@ -53,7 +57,7 @@ upstream item in every style and then update its revision in
 | `bun run cli <command>` | Run the CLI from the repository |
 | `bun run verify` | Development install, lint, type-check, test, freshness check |
 | `bun run test:visual` | Visual parity against upstream React (`tests/visual`, Playwright) |
-| `bun run test:visual:styles` | Visual parity in every Base UI style |
+| `bun run test:visual:styles` | Visual parity in every Base UI style and in the menu color and RTL variants |
 | `bun run verify:full` | `verify` plus examples, the network CLI install test and visual parity |
 
 To support another upstream component, add it to `components` in

@@ -9,14 +9,12 @@ import {
   packageNameOf,
 } from "../../generator/src/policy"
 
-// Templates of every style, which the CLI installs as components (docs/adr/0030).
+// Templates of every style and variant, which the CLI installs as components
+// (docs/adr/0030).
 const templatesDir = path.join(ROOT, "cli", "generated", "templates")
-const components = readdirSync(templatesDir)
-  .flatMap((style) =>
-    readdirSync(path.join(templatesDir, style))
-      .filter((f) => f.endsWith(".tsx"))
-      .map((f) => path.join(style, f))
-  )
+const components = readdirSync(templatesDir, { recursive: true })
+  .map(String)
+  .filter((f) => f.endsWith(".tsx"))
   .sort()
 
 describe("generated templates", () => {
@@ -38,9 +36,10 @@ describe("generated templates", () => {
       for (const specifier of findImports(source)) {
         const sibling = specifier.match(/^\.\/([a-z0-9-]+)$/)?.[1]
         if (sibling) {
-          expect(components).toContain(
-            path.join(path.dirname(file), `${sibling}.tsx`)
-          )
+          // The sibling is installed from the style's template, in a variant
+          // when there is one.
+          const style = file.split(path.sep)[0] as string
+          expect(components).toContain(path.join(style, `${sibling}.tsx`))
           continue
         }
         const pkg = packageNameOf(specifier)

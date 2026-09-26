@@ -31,7 +31,7 @@ Base UI, or Radix runtime in the generated components.
 - Works with plain Hono and HonoX
 - Tailwind CSS v4 and the shadcn/ui design tokens
 - Source-code ownership: components are copied into your project, like shadcn/ui
-- Presets from ui.shadcn.com/create (every Base UI style, colors, radius, fonts, menu accent)
+- Presets from ui.shadcn.com/create (every Base UI style, colors, radius, fonts, menu color and accent) and right-to-left layout
 - Regenerated from upstream shadcn/ui instead of hand-maintained forks
 - JavaScript only where the browser lacks the behavior: most components (including Dialog, Popover, Select and Accordion) ship none, and the rest use small optional module scripts
 
@@ -61,12 +61,13 @@ Base UI, or Radix runtime in the generated components.
    bunx shadcnui-hono-jsx init --preset b0          # a preset code from ui.shadcn.com/create
    ```
 
-   `--pointer` adds the pointer cursor to buttons. The theme comes from
+   `--pointer` adds the pointer cursor to buttons, and `--rtl` installs
+   right-to-left components (set `dir="rtl"` on your `<html>`; the components
+   follow the CSS direction and need no provider). The theme comes from
    ui.shadcn.com, like with `shadcn init`, so the command needs network access.
    Presets choose the style (Nova, Vega, Maia, Lyra, Mira, Luma, Sera or
-   Rhea), colors, radius, fonts and the menu accent; presets with another icon
-   library than Lucide, another menu color or right-to-left layout are not
-   supported yet.
+   Rhea), colors, radius, fonts, the menu color and the menu accent; presets
+   with another icon library than Lucide are not supported yet.
 
 2. Import the theme after Tailwind CSS in your stylesheet, and make sure
    Tailwind scans `components/ui`:
@@ -202,7 +203,9 @@ toast.add({ title: "Saved", description: "Your changes were saved." })
   label around a checkbox, so Space presses it and Enter does not.
 - Popover uses the native `popover` attribute and CSS anchor positioning. It
   opens next to its trigger in Chrome 135, Firefox 147 and Safari 26.2 or
-  later, and centered in older browsers.
+  later, and centered in older browsers. Near the edge of the viewport a
+  popup (popover, hover card, tooltip, menu) flips to the other side but does
+  not slide along the edge as Base UI does.
 - Select is a customizable native `<select>`: it works and submits without
   JavaScript, and Chrome 135, Firefox 149 and Safari 27 or later show
   upstream's design (older browsers show a classic select styled like the
@@ -256,7 +259,7 @@ Generated from `compatibility.json` (upstream style `base-nova`; every Base UI s
 | progress | experimental | generated | verified | none | Server-rendered: the progressbar is not linked to `ProgressLabel` (Base UI links them on the client); pass `aria-label` or `aria-labelledby`. Function children of `ProgressValue` are not supported. Accepts `class` instead of `className`. |
 | radio-group | experimental | generated | verified | none | `value`/`defaultValue` set the initial selection; `onValueChange` and `readOnly` are not supported. Built on native `<input type="radio">` elements sharing the group's `name` (generated unless given): no JavaScript, arrow keys move the selection, and the value is submitted with forms. `id`, `disabled` and `aria-*` go to the input. Accepts `class` instead of `className`. |
 | scroll-area | experimental | generated | verified | `/shadcn/scroll-area.js` | The custom scrollbars need the client script `/shadcn/scroll-area.js` (`<script type="module" src="/shadcn/scroll-area.js">`); without it the area scrolls with the browser's own scrollbar. `overflowEdgeThreshold` is not supported. Accepts `class` instead of `className`. |
-| select | experimental | generated | verified | none | Built on a customizable native `<select>` (`appearance: base-select`): no JavaScript, keyboard selection and typeahead are the browser's (Space and the arrow keys open it, Enter does not), and `name`/`value` are submitted with forms. Chrome 135, Firefox 149 and Safari 27 or later show upstream's design; older browsers show a classic select with the trigger's styles. `SelectTrigger` renders the `<select>` (so `id` and `aria-*` given to it reach the form control), and `<SelectContent>` must be a direct child of `<Select>`. `value`/`defaultValue` set the initial selection; `onValueChange`, `multiple`, `items`, value render functions and aligning the selected item with the trigger (`alignItemWithTrigger`) are not supported: the list opens below the trigger. Classes given to `SelectContent` are not applied to the list. Accepts `class` instead of `className`. |
+| select | experimental | generated | verified | none | Built on a customizable native `<select>` (`appearance: base-select`): no JavaScript, keyboard selection and typeahead are the browser's (Space and the arrow keys open it, Enter does not), and `name`/`value` are submitted with forms. Chrome 135, Firefox 149 and Safari 27 or later show upstream's design; older browsers show a classic select with the trigger's styles. `SelectTrigger` renders the `<select>` (so `id` and `aria-*` given to it reach the form control), and `<SelectContent>` must be a direct child of `<Select>`. `value`/`defaultValue` set the initial selection; `onValueChange`, `multiple`, `items`, value render functions and aligning the selected item with the trigger (`alignItemWithTrigger`) are not supported: the list opens below the trigger. Classes given to `SelectContent` are not applied to the list. With an inverted menu color (a preset option), the list keeps the page's colors: the browser's picker cannot take upstream's `dark` class, while the other menus are inverted. Accepts `class` instead of `className`. |
 | separator | experimental | generated | verified | none | Accepts `class` instead of `className`. |
 | sheet | experimental | generated | verified | none | Built on the native `<dialog>` with Invoker Commands (`command`/`commandfor`): no JavaScript, but requires Baseline 2025 browsers (Chrome 135, Firefox 144, Safari 26.2). Controlled state (`open`, `defaultOpen`, `onOpenChange`) is not supported, and the trigger does not reflect the open state (`aria-expanded`). Triggers and close buttons support `render`, e.g. `render={<Button variant="outline" />}`. The overlay is the dialog's `::backdrop` (the overlay component renders nothing); closing animates out, but only Chromium keeps the popup and backdrop in the top layer meanwhile (elsewhere the backdrop disappears at once); outside clicks close the dialog only where `closedby` is supported. Focus handling is the browser's: after the last control, Tab moves to the browser UI before wrapping (page content stays inert), where Base UI keeps focus inside the popup. Accepts `class` instead of `className`. |
 | sidebar | experimental | generated-with-adapter | verified | `/shadcn/sidebar.js` | `render` is supported on the server (element or function), like Base UI. Accepts `class` instead of `className`. Toggling (the trigger, the rail and Ctrl/Cmd+B), remembering the state in the `sidebar_state` cookie and the mobile sheet need the client script `/shadcn/sidebar.js` (`<script type="module" src="/shadcn/sidebar.js">`); without it the sidebar shows in its initial state on wide screens and not at all on narrow ones. On the server the state comes from `open` or `defaultOpen` (read the cookie to restore it); `onOpenChange` is not supported, and `useSidebar()` only reports that state (its setters throw on the server). The mobile sheet is rendered once, empty: the script moves the sidebar's content into it while it is open. |
@@ -348,7 +351,7 @@ Generated files are never edited by hand. See
 | `bun run cli <command>` | Run the CLI from the repository |
 | `bun run verify` | Install for development, lint, type-check, test, check generated files |
 | `bun run test:visual` | Compare screenshots with upstream shadcn/ui (React, Playwright; separate package in `tests/visual`) |
-| `bun run test:visual:styles [--style <style>]` | The same in every Base UI style (restores the default install afterwards) |
+| `bun run test:visual:styles [--style <style>] [--variant <variant>]` | The same in every Base UI style and in the menu color and RTL variants (restores the default install afterwards) |
 | `bun run verify:full` | `verify` plus examples, the CLI install test (network) and visual parity |
 
 ## License

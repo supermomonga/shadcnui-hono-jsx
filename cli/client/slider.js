@@ -49,7 +49,8 @@ function render(control) {
       thumb.style.translate = `-50% ${shift}%`
     } else {
       thumb.style.insetInlineStart = `${percent}%`
-      thumb.style.translate = `-${shift}% -50%`
+      // --slider-dir is -1 in right-to-left text (a class on the thumb).
+      thumb.style.translate = `calc(var(--slider-dir, 1) * -${shift}%) -50%`
     }
     if (range) {
       const index = inputs.indexOf(input)
