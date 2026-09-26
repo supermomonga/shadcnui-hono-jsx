@@ -135,13 +135,18 @@ for (const style of config.styles) {
       )
     }
     markDirectory(path.join(dir, "create"))
+    // For the examples' toasts, as in the layout of upstream's website.
+    const { Toaster } = (await import(
+      path.join(dir, "components/ui/toast.tsx")
+    )) as { Toaster: FC }
+    const toaster = String(await jsx(Toaster, {}))
     mkdirSync(path.join(OUT, combo), { recursive: true })
     for (const item of items) {
       const body = await render(path.join(dir, "create", `${item}.tsx`))
       if (body === null) continue
       writeFileSync(
         path.join(OUT, combo, `${item}.html`),
-        `<!DOCTYPE html><html lang="en" class="style-${style.replace(/^base-/, "")}"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="robots" content="noindex"/><title>Preview</title><link rel="stylesheet" href="${css}"/><script type="module" src="${js}"></script>${scripts}</head><body>${body}</body></html>`
+        `<!DOCTYPE html><html lang="en" class="style-${style.replace(/^base-/, "")}"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="robots" content="noindex"/><title>Preview</title><link rel="stylesheet" href="${css}"/><script type="module" src="${js}"></script>${scripts}</head><body>${body}${toaster}</body></html>`
       )
       pages++
     }

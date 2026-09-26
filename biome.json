@@ -70,7 +70,11 @@
       }
     },
     {
-      "includes": ["site/generated/**", "site/examples/overrides/**"],
+      "includes": [
+        "site/generated/**",
+        "site/examples/overrides/**",
+        "site/examples/registry-overrides/**"
+      ],
       "linter": {
         "rules": {
           "a11y": {
