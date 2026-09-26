@@ -3,6 +3,8 @@
 Installs [shadcn/ui](https://ui.shadcn.com) components ported to
 [Hono JSX](https://hono.dev/docs/guides/jsx), without React, styled by a
 preset from [ui.shadcn.com/create](https://ui.shadcn.com/create).
+Documentation and every component with examples:
+[shadcn-hono.omofla.sh](https://shadcn-hono.omofla.sh).
 
 > [!WARNING]
 > **Experimental.** This is an unofficial community project. It is not

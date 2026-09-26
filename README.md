@@ -2,6 +2,9 @@
 
 shadcn/ui-compatible components for Hono JSX, without React.
 
+**Documentation, components and a preset builder:
+[shadcn-hono.omofla.sh](https://shadcn-hono.omofla.sh)**
+
 > [!WARNING]
 > **Experimental.** This is an unofficial community project. It is not
 > affiliated with, maintained by, or endorsed by shadcn or the shadcn/ui
