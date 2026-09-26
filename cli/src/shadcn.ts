@@ -5,6 +5,11 @@ import type { ThemeItem } from "./theme"
 /** Used by `init` without `--preset`, like `shadcn init --defaults`. */
 export const DEFAULT_PRESET = "nova"
 
+/** The preset on ui.shadcn.com/create. */
+export function presetUrl(code: string): string {
+  return `https://ui.shadcn.com/create?preset=${code}`
+}
+
 /** `fetch`, replaceable in tests and in the repository's development install. */
 export type FetchJson = (url: string) => Promise<unknown>
 

@@ -7,7 +7,7 @@ import {
 import { readGenerated } from "./catalog"
 import { UsageError } from "./errors"
 
-export { DEFAULT_PRESET } from "./shadcn"
+export { DEFAULT_PRESET, presetUrl } from "./shadcn"
 export type { PresetConfig }
 
 export interface Preset {
@@ -58,8 +58,4 @@ export function mergePreset(
     }
   }
   return { code: encodePreset(config), config }
-}
-
-export function presetUrl(code: string): string {
-  return `https://ui.shadcn.com/create?preset=${code}`
 }
