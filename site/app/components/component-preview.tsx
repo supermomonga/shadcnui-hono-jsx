@@ -191,6 +191,7 @@ export async function ComponentPreview({
       {!hideCode && code && (
         <div
           data-slot="code"
+          data-open={code.split("\n").length <= 12 ? "" : undefined}
           class="group/code relative overflow-hidden [&_[data-code-figure]]:m-0! [&_[data-code-figure]]:rounded-none [&_[data-code-figure]]:border-t [&_pre]:max-h-72 data-[open]:[&_pre]:max-h-none"
         >
           {direction === "rtl" && (

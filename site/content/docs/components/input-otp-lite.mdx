@@ -1,0 +1,56 @@
+---
+title: Input OTP (Lite)
+description: A one-time password input with slots, without JavaScript.
+---
+
+<ComponentPreview name="input-otp-lite-demo" />
+
+## About
+
+Input OTP (Lite) is a hand-written alternative to shadcn/ui's [Input OTP](https://ui.shadcn.com/docs/components/base/input-otp), which is built on the React library [input-otp](https://github.com/guilhermerodz/input-otp). It keeps upstream's look in every style: one native text input lies over the slot boxes, its characters spaced to one per box, so typing, pasting, one-time-code autofill and form validation come from the browser.
+
+## Installation
+
+<ComponentInstall name="input-otp-lite" />
+
+## Usage
+
+```tsx
+import { InputOTPLite } from "@/components/ui/input-otp-lite"
+```
+
+```tsx
+<InputOTPLite maxLength={6} name="code" />
+```
+
+Unlike upstream, it is one component: `maxLength` sets the number of slots, and the input takes every attribute of a text input (`name`, `pattern`, `required`, `value`, `disabled`, `aria-*`).
+
+## Pattern
+
+Use `pattern` and `inputmode` for what the code accepts. Characters line up with tabular digits; set a monospace font for letters.
+
+<ComponentPreview name="input-otp-lite-pattern" />
+
+## Four Digits
+
+<ComponentPreview name="input-otp-lite-four-digits" />
+
+## Disabled
+
+<ComponentPreview name="input-otp-lite-disabled" />
+
+## Invalid
+
+Set `aria-invalid` to show the invalid state.
+
+<ComponentPreview name="input-otp-lite-invalid" />
+
+## Form
+
+It submits with the form, and the browser validates `required`, `minlength` (set to `maxLength`) and `pattern`.
+
+<ComponentPreview name="input-otp-lite-form" />
+
+## Notes
+
+<ComponentNotes name="input-otp-lite" />

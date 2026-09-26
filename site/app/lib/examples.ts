@@ -18,15 +18,15 @@ export const manifest = manifestJson as {
   create: CreateItem[]
 }
 
+// Translated examples, and hand-written ones for the hand-written (lite) pages.
 const modules = import.meta.glob<Record<string, unknown>>(
-  "/generated/examples/*.tsx",
+  ["/generated/examples/*.tsx", "/examples/lite/*.tsx"],
   { eager: true }
 )
-const sources = import.meta.glob<string>("/generated/examples/*.tsx", {
-  eager: true,
-  query: "?raw",
-  import: "default",
-})
+const sources = import.meta.glob<string>(
+  ["/generated/examples/*.tsx", "/examples/lite/*.tsx"],
+  { eager: true, query: "?raw", import: "default" }
+)
 
 const nameOf = (file: string) => file.replace(/^.*\//, "").replace(/\.tsx$/, "")
 
