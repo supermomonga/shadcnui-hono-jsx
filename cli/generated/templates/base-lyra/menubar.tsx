@@ -468,6 +468,7 @@ function MenubarSubContent({
     />
   )
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -475,6 +476,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"CheckIcon","tabler":"IconCheck","hugeicons":"Tick02Icon","phosphor":"CheckIcon","remixicon":"RiCheckLine"}
 /** Lucide `check` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function CheckIcon({
   class: className,

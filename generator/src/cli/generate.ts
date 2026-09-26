@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs"
 import path from "node:path"
 import { parseArgs } from "node:util"
+import { ICON_LIBRARIES } from "../../../cli/src/icons"
 import { MENU_COLORS, variantDir } from "../../../cli/src/variants"
 import { config } from "../../../generator.config"
 import { buildCatalog } from "../catalog/build"
@@ -9,11 +10,8 @@ import { buildVendoredPreset, buildVendoredTailwindCss } from "../emit/vendored"
 import { type OutputFile, writeOutputs } from "../emit/write"
 import { TEMPLATES_DIR } from "../generate"
 import type { StyleResult } from "../generate-style"
-import {
-  buildLicenseNotice,
-  checkUpstreamLicenses,
-  LICENSE_NOTICE_PATH,
-} from "../licenses"
+import { buildIconSets } from "../icons/sets"
+import { buildLicenseNotice, checkUpstreamLicenses } from "../licenses"
 import { LITE_COMPONENTS } from "../lite"
 import {
   buildManifest,
@@ -62,7 +60,12 @@ if (!lock?.theme || !lock.tailwindCss || !lock.preset) {
 const licenseProblems = checkUpstreamLicenses(lock, {
   repository: store.readOptional(store.licenseFile),
   package: store.readOptional(store.packageLicenseFile),
-  icons: store.readOptional(store.iconLicenseFile),
+  icons: Object.fromEntries(
+    ICON_LIBRARIES.map((library) => [
+      library,
+      store.readOptional(store.iconLicenseFile(library)),
+    ])
+  ),
 })
 if (licenseProblems.length > 0) {
   console.error(
@@ -126,10 +129,17 @@ files.push({
   path: `${CLI_GENERATED}/tailwind.css`,
   text: buildVendoredTailwindCss(store.readTailwindCss(), lock.tailwindCss),
 })
-files.push({
-  path: `${CLI_GENERATED}/${LICENSE_NOTICE_PATH}`,
-  text: buildLicenseNotice(config.repository),
-})
+for (const library of ICON_LIBRARIES) {
+  files.push({
+    path: `${CLI_GENERATED}/notices/${library}.txt`,
+    text: buildLicenseNotice(config.repository, library),
+  })
+}
+for (const set of buildIconSets(
+  [...byStyle.values()].flat().map((c) => c.file.text)
+)) {
+  files.push(json(set, `${CLI_GENERATED}/icons/${set.library}.json`))
+}
 files.push({
   path: `${CLI_GENERATED}/shadcn-preset.js`,
   text: buildVendoredPreset(

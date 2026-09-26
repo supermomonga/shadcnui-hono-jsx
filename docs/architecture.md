@@ -13,14 +13,16 @@ ui.shadcn.com registries (every Base UI style: base-nova, base-vega, …)
   → transformers       → Hono JSX source (ts-morph, adapters)
   → variants           → menu color and RTL: upstream source transformed with the
                          pinned shadcn CLI's transformMenu / transformDirection
-  → emit               → cli/generated/templates/<style>/[<variant>/]*.tsx (Biome-formatted),
-                         vendored tailwind.css and shadcn/preset, license notice
+  → emit               → cli/generated/templates/<style>/[<variant>/]*.tsx (Biome-formatted,
+                         Lucide icons marked for swapping), icons/<library>.json,
+                         vendored tailwind.css and shadcn/preset, notices/<library>.txt
   → catalog/manifest   → cli/generated/catalog.json, compatibility.json, README table
 
 shadcnui-hono-jsx CLI (cli/, in the user's project)
   init/apply           → theme.css from the preset's /init response on ui.shadcn.com,
                          fonts, tailwind.css, notice, shadcnui-hono-jsx.json
-  add/apply            → components/ui/*.tsx = finalize(template), public/shadcn/*.js
+  add/apply            → components/ui/*.tsx = finalize(template) with the preset's
+                         icon library swapped in, public/shadcn/*.js
 ```
 
 ## Directory ownership
@@ -183,7 +185,7 @@ with the pinned Biome (`biome check --write`, which also sorts imports):
 | `remove-directives` | drops `"use client"` |
 | `component-imports` | `@/registry/<style>/ui/<name>` to `./<name>` for generated sibling components ([ADR 0015](./adr/0015-ship-imported-sibling-components-inside-each-registry-item.md)) |
 | `cn-markers` | `cn-font-heading` to `font-heading`; other `cn-*` classes removed (as the shadcn CLI does at install time) |
-| `icons` | `IconPlaceholder` to a file-local component inlining the Lucide SVG exactly as lucide-react renders it ([ADR 0016](./adr/0016-inline-lucide-icons-at-generation-time.md)) |
+| `icons` | `IconPlaceholder` to a file-local component inlining the Lucide SVG exactly as lucide-react renders it, marked with the icon's names in every library (an `// icon:` line) so that the CLI swaps in the preset's library from `cli/generated/icons/<library>.json` ([ADR 0031](./adr/0031-inline-icons-of-every-shadcn-ui-icon-library-at-generation-time.md)) |
 | `use-render` | canonical `useRender({ defaultTagName, props: mergeProps(...), render, state })` to an intrinsic element wrapped in `renderElement(…, render)`; `state` entries become `data-*` attributes ([ADR 0018](./adr/0018-support-base-ui-render-props-on-the-server-and-omit-client-only-button-semantics.md)) |
 | `memo-hooks` | `useMemo(fn, deps)` to `fn()` and `useCallback(fn)` to `fn` (a server render runs once) |
 | `react-context` | `React.createContext`/`React.useContext` to the identical `hono/jsx` functions |
@@ -305,10 +307,11 @@ installed in that package
   request becomes a draft labelled `license-review` with the license diff
   first. A maintainer decides whether redistribution is still allowed and, if
   so, updates the accepted record and the notice together.
-- Inlined Lucide icons are covered the same way: the notice reproduces the
-  reviewed Lucide license (ISC, with Feather's MIT notice), and
-  `ACCEPTED_ICON_LICENSE` gates generation on the pinned `lucide` package's
-  license.
+- Inlined icons are covered the same way: `ACCEPTED_ICON_LICENSES` records
+  the reviewed license of each icon package, gates generation on the pinned
+  packages' licenses, and the notice the CLI installs
+  (`cli/generated/notices/<library>.txt`) reproduces the license of the
+  preset's icon library.
 
 See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-item-and-gate-upstream-license-changes.md).
 
@@ -321,9 +324,9 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
   field state) are not reproduced.
 - Upstream items that import non-generated registry items, hooks, or icons
   remain unsupported until those are generated or mapped.
-- Presets can choose the style, colors, radius, fonts, the menu color and
-  accent and the pointer cursor, and `--rtl` installs right-to-left
-  components. Other icon libraries than Lucide are planned
+- Presets can choose the style, colors, radius, fonts, the icon library, the
+  menu color and accent and the pointer cursor, and `--rtl` installs
+  right-to-left components
   ([ADR 0030](./adr/0030-generate-templates-for-every-base-ui-style-and-finalize-them-at-install-time.md),
   [ADR 0031](./adr/0031-inline-icons-of-every-shadcn-ui-icon-library-at-generation-time.md)).
 - The CLI is not published to npm yet.

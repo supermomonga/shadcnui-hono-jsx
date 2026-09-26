@@ -14,6 +14,7 @@ import { config } from "../../generator.config"
 import { encodePreset } from "../generated/shadcn-preset.js"
 import { readCatalog, readGenerated, readTemplate } from "../src/catalog"
 import { add, apply, type Context, init } from "../src/commands"
+import { finalize } from "../src/finalize"
 import { resolvePreset } from "../src/preset"
 import type { ThemeItem } from "../src/theme"
 
@@ -108,7 +109,7 @@ describe("init", () => {
       readGenerated("tailwind.css")
     )
     expect(read("LICENSE-shadcnui-hono-jsx.txt")).toBe(
-      readGenerated("LICENSE-shadcnui-hono-jsx.txt")
+      readGenerated("notices/lucide.txt")
     )
     expect(installs).toEqual([["@fontsource-variable/geist", "tw-animate-css"]])
   })
@@ -129,8 +130,11 @@ describe("init", () => {
       preset: lyra.code,
       components: ["button"],
     })
-    expect(read("components/ui/button.tsx").split("\n").slice(1)).toEqual(
-      readTemplate("base-lyra", "button").split("\n").slice(1)
+    expect(read("components/ui/button.tsx")).toBe(
+      finalize(readTemplate("base-lyra", "button"), {
+        iconLibrary: "lucide",
+        preset: lyra.code,
+      })
     )
   })
 
@@ -144,13 +148,14 @@ describe("init", () => {
     })
     const menu = read("components/ui/dropdown-menu.tsx")
     expect(menu).toContain("// variant: rtl_menu-inverted\n")
-    expect(menu.split("\n").slice(1)).toEqual(
-      readTemplate(config.style, "dropdown-menu", {
-        rtl: true,
-        menuColor: "inverted",
-      })
-        .split("\n")
-        .slice(1)
+    expect(menu).toBe(
+      finalize(
+        readTemplate(config.style, "dropdown-menu", {
+          rtl: true,
+          menuColor: "inverted",
+        }),
+        { iconLibrary: "lucide", preset: inverted }
+      )
     )
     // Breadcrumb has no menu markers: its RTL variant is used. Card looks the
     // same in both directions and has no variant.
@@ -159,12 +164,23 @@ describe("init", () => {
     expect(JSON.parse(read("shadcnui-hono-jsx.json")).rtl).toBe(true)
   })
 
-  test("rejects presets this version cannot install, before writing", async () => {
-    const tabler = encodePreset({ ...nova, iconLibrary: "tabler" })
-    await expect(
-      init(ctx, { ...initDefaults, preset: tabler })
-    ).rejects.toThrow(/iconLibrary "tabler"/)
-    expect(existsSync(path.join(cwd, "shadcnui-hono-jsx.json"))).toBe(false)
+  test("installs the preset's icon library and its license", async () => {
+    const remixicon = encodePreset({ ...nova, iconLibrary: "remixicon" })
+    await init(ctx, {
+      ...initDefaults,
+      preset: remixicon,
+      components: ["select"],
+    })
+    expect(read("components/ui/select.tsx")).toBe(
+      finalize(readTemplate(config.style, "select"), {
+        iconLibrary: "remixicon",
+        preset: remixicon,
+      })
+    )
+    expect(read("LICENSE-shadcnui-hono-jsx.txt")).toBe(
+      readGenerated("notices/remixicon.txt")
+    )
+    expect(lines.join("\n")).toContain("Remix Icon License v1.0")
   })
 })
 
@@ -182,8 +198,11 @@ describe("add", () => {
     const code = resolvePreset("nova").code
     for (const name of ["dialog", "button", "tabs"]) {
       const text = read(`components/ui/${name}.tsx`)
-      expect(text.split("\n").slice(1)).toEqual(
-        readTemplate(config.style, name).split("\n").slice(1)
+      expect(text).toBe(
+        finalize(readTemplate(config.style, name), {
+          iconLibrary: "lucide",
+          preset: code,
+        })
       )
       expect(text).toStartWith(
         `// Installed by shadcnui-hono-jsx for the shadcn/ui preset ${code};`

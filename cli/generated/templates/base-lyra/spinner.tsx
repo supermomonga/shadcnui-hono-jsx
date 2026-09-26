@@ -35,6 +35,7 @@ function Spinner({ class: className, ...props }: ComponentProps<"svg">) {
     />
   )
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -42,6 +43,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"Loader2Icon","tabler":"IconLoader","hugeicons":"Loading03Icon","phosphor":"SpinnerIcon","remixicon":"RiLoaderLine"}
 /** Lucide `loader-circle` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function Loader2Icon({
   class: className,

@@ -62,16 +62,20 @@ const domTree = (page: Page, selector: string, omit: typeof OMITTED) =>
  * Applies the generator's declared class rewrites to the upstream tree:
  * other components' reactions to Base UI control state read the native
  * inputs' `:checked` instead (`has-data-checked:` becomes `has-checked:`).
+ * Classes it does not rewrite keep their spacing (Remix Icon's `"remixicon "`).
  */
+const rewriteClass = (classes: string): string => {
+  const rewritten = rewriteControlState(classes)
+  return rewritten === classes.split(/\s+/).filter(Boolean).join(" ")
+    ? classes
+    : rewritten
+}
 const rewriteClasses = (node: DomNode): DomNode => ({
   ...node,
   attributes:
     node.attributes.class === undefined
       ? node.attributes
-      : {
-          ...node.attributes,
-          class: rewriteControlState(node.attributes.class),
-        },
+      : { ...node.attributes, class: rewriteClass(node.attributes.class) },
   children: node.children.map(rewriteClasses),
 })
 
@@ -112,7 +116,8 @@ for (const { id, compareDom } of cases) {
       ).toEqual(rewriteClasses(await domTree(react, selector, OMITTED)))
     }
 
-    // Icons must match lucide-react's SVG exactly (attributes and shapes).
+    // Icons must match the React icon library's SVG exactly (attributes and
+    // shapes).
     // Native-structure families map state variants in classes and keep
     // hidden parts in the page, so there only visible icons are compared,
     // without classes (left to the pixel comparison).
@@ -133,7 +138,7 @@ for (const { id, compareDom } of cases) {
       )
     expect(
       await svgs(hono),
-      "inline SVG icons must match lucide-react"
+      "inline SVG icons must match the React icon library"
     ).toEqual(await svgs(react))
 
     const actual = PNG.sync.read(a)

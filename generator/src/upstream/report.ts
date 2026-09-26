@@ -126,7 +126,7 @@ export function renderSyncReport(input: ReportInput): string {
         ? `${result.tailwindCss.fromVersion ?? "none"} -> ${result.tailwindCss.toVersion}`
         : "unchanged"
     }`,
-    `- Upstream license: ${result.license || result.packageLicense || result.iconLicense ? "changed" : "unchanged"}`,
+    `- Upstream license: ${result.license || result.packageLicense || result.iconLicenses.length > 0 ? "changed" : "unchanged"}`,
     "",
     `Review the diffs below (of ${input.style}, and of other styles where only they changed). Upstream changes can alter behavior; this PR is never merged automatically.`
   )
@@ -157,14 +157,12 @@ export function renderSyncReport(input: ReportInput): string {
           ),
         ]
       : []),
-    ...(result.iconLicense
-      ? [
-          textSection(
-            `LICENSE (lucide; license field ${result.iconLicense.fromLicense ?? "none"} -> ${result.iconLicense.toLicense ?? "none"})`,
-            result.iconLicense
-          ),
-        ]
-      : []),
+    ...result.iconLicenses.map((change) =>
+      textSection(
+        `LICENSE (${change.package}; license field ${change.fromLicense ?? "none"} -> ${change.toLicense ?? "none"})`,
+        change
+      )
+    ),
     ...[...result.changed, ...result.added, ...result.removed]
       .filter((change) => {
         const all = [...result.changed, ...result.added, ...result.removed]

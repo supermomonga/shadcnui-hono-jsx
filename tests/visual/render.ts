@@ -19,6 +19,7 @@ import path from "node:path"
 import { jsx } from "hono/jsx"
 import { createElement, type ReactNode } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
+import { ICON_LIBRARIES, type IconLibrary } from "../../cli/src/icons"
 import { COMPONENT_ADAPTERS } from "../../generator/src/adapters/components"
 import { findFamilyRule } from "../../generator/src/adapters/families"
 import { collectFacts } from "../../generator/src/analyzer/facts"
@@ -31,7 +32,7 @@ import {
   isCaseElement,
   VISUAL_CASES,
 } from "./cases"
-import { STYLE, VARIANT } from "./installed"
+import { PRESET, STYLE, VARIANT } from "./installed"
 
 /** Unported upstream components that lite alternatives (docs/adr/0028) are compared with. */
 const LITE_REFERENCES = ["input-otp"]
@@ -49,7 +50,8 @@ type Exports = Record<string, unknown>
 
 /**
  * Mirrors the shadcn CLI install step: `cn-font-heading` -> `font-heading`,
- * other `cn-*` removed, and registry imports resolved to the sibling files.
+ * other `cn-*` removed (with the `className` attribute they leave empty), and
+ * registry imports resolved to the sibling files.
  */
 function applyInstallMarkers(source: string): string {
   return source
@@ -65,38 +67,76 @@ function applyInstallMarkers(source: string): string {
               /"@\/app\/\(create\)\/components\/icon-placeholder"/,
               '"./icon-placeholder"'
             )
-        : line.replace(/\bcn-[a-z-]+\b/g, (m) =>
-            m === "cn-font-heading" ? "font-heading" : ""
-          )
+        : line
+            .replace(
+              /\s*className="(?:\s*cn-(?!font-heading\b)[a-z-]+)+\s*"/g,
+              ""
+            )
+            .replace(/\bcn-[a-z-]+\b/g, (m) =>
+              m === "cn-font-heading" ? "font-heading" : ""
+            )
     )
     .join("\n")
 }
 
 /**
- * What the shadcn CLI produces for `IconPlaceholder` with the default icon
- * library: the named lucide-react icon with the remaining props.
+ * What the shadcn CLI produces for `IconPlaceholder` with the installed icon
+ * library: the named icon of its React package with the remaining props, as
+ * its `icons/libraries` usage templates render it.
  */
-const ICON_PLACEHOLDER = `/** @jsxImportSource react */
-import * as icons from "lucide-react"
+const ICON_RENDERERS: Record<
+  IconLibrary,
+  { imports: string; element: string }
+> = {
+  lucide: {
+    imports: `import * as icons from "lucide-react"`,
+    element: "<Icon {...rest} />",
+  },
+  tabler: {
+    imports: `import * as icons from "@tabler/icons-react"`,
+    element: "<Icon {...rest} />",
+  },
+  hugeicons: {
+    imports: `import { HugeiconsIcon } from "@hugeicons/react"
+import * as icons from "@hugeicons/core-free-icons"`,
+    element: "<HugeiconsIcon icon={Icon} strokeWidth={2} {...rest} />",
+  },
+  phosphor: {
+    imports: `import * as icons from "@phosphor-icons/react"`,
+    element: "<Icon strokeWidth={2} {...rest} />",
+  },
+  remixicon: {
+    imports: `import * as icons from "@remixicon/react"`,
+    element: "<Icon {...rest} />",
+  },
+}
 
-const LIBRARIES = ["lucide", "tabler", "hugeicons", "phosphor", "remixicon"]
+function iconPlaceholder(library: IconLibrary): string {
+  const { imports, element } = ICON_RENDERERS[library]
+  return `/** @jsxImportSource react */
+${imports}
+
+const LIBRARIES = ${JSON.stringify(ICON_LIBRARIES)}
 
 export function IconPlaceholder(props: Record<string, unknown>) {
-  const Icon = (icons as Record<string, unknown>)[props.lucide as string] as (
-    p: Record<string, unknown>
-  ) => unknown
+  // biome-ignore lint/suspicious/noExplicitAny: an icon component or icon data
+  const Icon = (icons as Record<string, any>)[props.${library} as string]
   const rest = Object.fromEntries(
     Object.entries(props).filter(([key]) => !LIBRARIES.includes(key))
   )
-  return <Icon {...rest} />
+  return ${element}
 }
 `
+}
 
 async function writeUpstreamSources(): Promise<void> {
   const store = new UpstreamStore(ROOT, STYLE)
   rmSync(UPSTREAM, { recursive: true, force: true })
   mkdirSync(UPSTREAM, { recursive: true })
-  writeFileSync(path.join(UPSTREAM, "icon-placeholder.tsx"), ICON_PLACEHOLDER)
+  writeFileSync(
+    path.join(UPSTREAM, "icon-placeholder.tsx"),
+    iconPlaceholder(PRESET.iconLibrary)
+  )
   // Upstream hooks are not snapshotted; tests/visual/hooks holds copies.
   for (const hook of readdirSync(path.join(HERE, "hooks"))) {
     copyFileSync(path.join(HERE, "hooks", hook), path.join(UPSTREAM, hook))
@@ -319,7 +359,7 @@ async function main(): Promise<void> {
   if (tailwind.exitCode !== 0) throw new Error(tailwind.stderr.toString())
   await renderDemoPages()
   console.log(
-    `Rendered ${ids.length} cases in ${STYLE}${VARIANT.rtl ? ", RTL" : ""}${VARIANT.menuColor === "default" ? "" : `, menu ${VARIANT.menuColor}`} to ${path.relative(process.cwd(), OUT)}`
+    `Rendered ${ids.length} cases in ${STYLE}${VARIANT.rtl ? ", RTL" : ""}${VARIANT.menuColor === "default" ? "" : `, menu ${VARIANT.menuColor}`}${PRESET.iconLibrary === "lucide" ? "" : `, ${PRESET.iconLibrary} icons`} to ${path.relative(process.cwd(), OUT)}`
   )
 }
 

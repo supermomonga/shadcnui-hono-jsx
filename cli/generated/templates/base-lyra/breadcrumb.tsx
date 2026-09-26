@@ -178,6 +178,7 @@ function BreadcrumbEllipsis({
     </span>
   )
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -185,6 +186,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"ChevronRightIcon","tabler":"IconChevronRight","hugeicons":"ArrowRight01Icon","phosphor":"CaretRightIcon","remixicon":"RiArrowRightSLine"}
 /** Lucide `chevron-right` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function ChevronRightIcon({
   class: className,
@@ -212,6 +214,7 @@ function ChevronRightIcon({
   )
 }
 
+// icon: {"lucide":"MoreHorizontalIcon","tabler":"IconDots","hugeicons":"MoreHorizontalCircle01Icon","phosphor":"DotsThreeIcon","remixicon":"RiMoreLine"}
 /** Lucide `ellipsis` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function MoreHorizontalIcon({
   class: className,

@@ -1013,6 +1013,7 @@ function ComboboxChipsInput({
 function useComboboxAnchor() {
   return createComboboxAnchor()
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -1020,6 +1021,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"CheckIcon","tabler":"IconCheck","hugeicons":"Tick02Icon","phosphor":"CheckIcon","remixicon":"RiCheckLine"}
 /** Lucide `check` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function CheckIcon({
   class: className,
@@ -1047,6 +1049,7 @@ function CheckIcon({
   )
 }
 
+// icon: {"lucide":"ChevronDownIcon","tabler":"IconChevronDown","hugeicons":"ArrowDown01Icon","phosphor":"CaretDownIcon","remixicon":"RiArrowDownSLine"}
 /** Lucide `chevron-down` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function ChevronDownIcon({
   class: className,
@@ -1074,6 +1077,7 @@ function ChevronDownIcon({
   )
 }
 
+// icon: {"lucide":"XIcon","tabler":"IconX","hugeicons":"Cancel01Icon","phosphor":"XIcon","remixicon":"RiCloseLine"}
 /** Lucide `x` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function XIcon({
   class: className,

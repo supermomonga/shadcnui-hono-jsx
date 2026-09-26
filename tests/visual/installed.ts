@@ -1,7 +1,7 @@
 /**
  * The preset of the development install in the repository root (`bun run
- * dev:install [--style <style>] [--rtl] [--menu-color <color>]`) that the
- * pages were rendered with.
+ * dev:install [--style <style>] [--rtl] [--menu-color <color>]
+ * [--icon-library <library>]`) that the pages were rendered with.
  */
 import { readFileSync } from "node:fs"
 import path from "node:path"

@@ -66,8 +66,9 @@ Base UI, or Radix runtime in the generated components.
    follow the CSS direction and need no provider). The theme comes from
    ui.shadcn.com, like with `shadcn init`, so the command needs network access.
    Presets choose the style (Nova, Vega, Maia, Lyra, Mira, Luma, Sera or
-   Rhea), colors, radius, fonts, the menu color and the menu accent; presets
-   with another icon library than Lucide are not supported yet.
+   Rhea), colors, radius, fonts, the icon library, the menu color and the menu
+   accent. Remix Icon is under the Remix Icon License v1.0, which is not an
+   open source license; the installed notice reproduces it.
 
 2. Import the theme after Tailwind CSS in your stylesheet, and make sure
    Tailwind scans `components/ui`:
@@ -185,8 +186,9 @@ toast.add({ title: "Saved", description: "Your changes were saved." })
   them up to date (Tabs).
 - `Button` renders `type="button"` by default, like Base UI; pass
   `type="submit"` inside forms.
-- Icons are inlined SVG from Lucide (identical to lucide-react's output), not
-  a runtime icon package.
+- Icons are inlined SVG from the preset's icon library (Lucide, Tabler
+  Icons, Hugeicons, Phosphor Icons or Remix Icon), identical to what its React
+  package renders, not a runtime icon package.
 - Dialog, AlertDialog and Sheet are native `<dialog>` elements opened with
   Invoker Commands, so they need no JavaScript but require Chrome 135,
   Firefox 144 or Safari 26.2 or later, and have no controlled `open` state.
@@ -351,7 +353,7 @@ Generated files are never edited by hand. See
 | `bun run cli <command>` | Run the CLI from the repository |
 | `bun run verify` | Install for development, lint, type-check, test, check generated files |
 | `bun run test:visual` | Compare screenshots with upstream shadcn/ui (React, Playwright; separate package in `tests/visual`) |
-| `bun run test:visual:styles [--style <style>] [--variant <variant>]` | The same in every Base UI style and in the menu color and RTL variants (restores the default install afterwards) |
+| `bun run test:visual:styles [--style <style>] [--variant <variant>]` | The same in every Base UI style, in the menu color and RTL variants and with every icon library (restores the default install afterwards) |
 | `bun run verify:full` | `verify` plus examples, the CLI install test (network) and visual parity |
 
 ## License

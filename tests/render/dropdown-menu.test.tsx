@@ -113,10 +113,9 @@ describe("DropdownMenu (native popover with /shadcn/menu.js)", () => {
     expect(sub?.attributes).toMatchObject({
       role: "menuitem",
       "aria-haspopup": "menu",
+      "aria-expanded": "false",
       "aria-controls": menus[1]?.attributes.id,
     })
-    // Like Base UI, a submenu trigger has no aria-expanded.
-    expect(sub?.attributes).not.toHaveProperty("aria-expanded")
     expect(menus[1]?.attributes["aria-labelledby"]).toBe(sub?.attributes.id)
     expect(menus[1]?.attributes["data-side"]).toBe("right")
     expect(menus[1]?.attributes.style).toContain("margin-block-start:-3px")

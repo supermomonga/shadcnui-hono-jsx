@@ -29,13 +29,24 @@ jobs:
       - name: Update the pinned shadcn package
         run: bun add --dev --exact shadcn@latest
 
-      # Icons are inlined from the pinned lucide package; the visual tests
-      # compare against the lucide-react build of the same version.
-      - name: Update the pinned lucide packages
+      # Icons are inlined from the pinned icon packages (docs/adr/0031); the
+      # visual tests compare against the React packages of the same releases.
+      - name: Update the pinned icon packages
         run: |
-          version="$(npm view lucide version)"
-          bun add --dev --exact "lucide@$version"
-          (cd tests/visual && bun add --exact "lucide-react@$version")
+          latest() { npm view "$1" version; }
+          lucide="$(latest lucide)"
+          tabler="$(latest @tabler/icons)"
+          hugeicons="$(latest @hugeicons/core-free-icons)"
+          bun add --dev --exact "lucide@$lucide" "@tabler/icons@$tabler" \
+            "@hugeicons/core-free-icons@$hugeicons" \
+            "@phosphor-icons/core@$(latest @phosphor-icons/core)" \
+            "remixicon@$(latest remixicon)"
+          (cd tests/visual && bun add --exact "lucide-react@$lucide" \
+            "@tabler/icons-react@$tabler" \
+            "@hugeicons/core-free-icons@$hugeicons" \
+            "@hugeicons/react@$(latest @hugeicons/react)" \
+            "@phosphor-icons/react@$(latest @phosphor-icons/react)" \
+            "@remixicon/react@$(latest @remixicon/react)")
 
       - name: Sync upstream snapshot
         id: sync

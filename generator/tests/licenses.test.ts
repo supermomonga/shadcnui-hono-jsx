@@ -1,15 +1,16 @@
 import { describe, expect, test } from "bun:test"
 import { readFileSync } from "node:fs"
 import path from "node:path"
+import { ICON_LIBRARIES } from "../../cli/src/icons"
 import { config } from "../../generator.config"
 import {
-  ACCEPTED_ICON_LICENSE,
+  ACCEPTED_ICON_LICENSES,
   ACCEPTED_UPSTREAM_LICENSE,
   buildLicenseNotice,
   checkUpstreamLicenses,
   derivedNoticeLines,
+  iconHeaderLine,
   LICENSE_NOTICE_PATH,
-  LUCIDE_LICENSE_TEXT,
   PROJECT_COPYRIGHT,
   vendoredNoticeLines,
 } from "../src/licenses"
@@ -23,11 +24,16 @@ if (!lock) throw new Error("missing upstream lock")
 const texts = {
   repository: store.readOptional(store.licenseFile),
   package: store.readOptional(store.packageLicenseFile),
-  icons: store.readOptional(store.iconLicenseFile),
+  icons: Object.fromEntries(
+    ICON_LIBRARIES.map((library) => [
+      library,
+      store.readOptional(store.iconLicenseFile(library)),
+    ])
+  ),
 }
 
 describe("buildLicenseNotice", () => {
-  const notice = buildLicenseNotice("owner/repo")
+  const notice = buildLicenseNotice("owner/repo", "lucide")
 
   test("carries both copyright notices and the full MIT permission notice", () => {
     expect(notice).toContain(
@@ -40,10 +46,26 @@ describe("buildLicenseNotice", () => {
     expect(notice).toContain('THE SOFTWARE IS PROVIDED "AS IS"')
   })
 
-  test("reproduces the reviewed Lucide license verbatim", () => {
-    expect(sha256(LUCIDE_LICENSE_TEXT)).toBe(ACCEPTED_ICON_LICENSE.sha256)
-    expect(notice).toContain(LUCIDE_LICENSE_TEXT)
+  test.each([...ICON_LIBRARIES])(
+    "reproduces the reviewed %s license verbatim, and only that one",
+    (library) => {
+      const accepted = ACCEPTED_ICON_LICENSES[library]
+      expect(sha256(accepted.text)).toBe(accepted.sha256)
+      const text = buildLicenseNotice("owner/repo", library)
+      expect(text).toContain(accepted.text)
+      expect(text).toContain(`${accepted.title} (${accepted.url})`)
+      for (const other of ICON_LIBRARIES) {
+        if (other === library) continue
+        expect(text).not.toContain(ACCEPTED_ICON_LICENSES[other].text)
+      }
+    }
+  )
+
+  test("keeps Feather's notice for Lucide and flags the Remix Icon License", () => {
     expect(notice).toContain("Copyright (c) 2013-present Cole Bemis")
+    expect(buildLicenseNotice("owner/repo", "remixicon")).toContain(
+      "which is not an open source license"
+    )
   })
 
   test("states its scope and that the project is unofficial", () => {
@@ -61,14 +83,16 @@ describe("buildLicenseNotice", () => {
     expect(notice).toContain(permission.trim())
   })
 
-  test("is deterministic and matches the generated file", () => {
-    expect(buildLicenseNotice("owner/repo")).toBe(notice)
-    expect(
-      readFileSync(
-        path.join(ROOT, "cli", "generated", LICENSE_NOTICE_PATH),
-        "utf8"
-      )
-    ).toBe(buildLicenseNotice(config.repository))
+  test("is deterministic and matches the generated files", () => {
+    expect(buildLicenseNotice("owner/repo", "lucide")).toBe(notice)
+    for (const library of ICON_LIBRARIES) {
+      expect(
+        readFileSync(
+          path.join(ROOT, "cli", "generated", "notices", `${library}.txt`),
+          "utf8"
+        )
+      ).toBe(buildLicenseNotice(config.repository, library))
+    }
   })
 })
 
@@ -81,6 +105,12 @@ describe("notice lines", () => {
       )
     }
     expect(vendoredNoticeLines().join()).not.toContain("supermomonga")
+  })
+
+  test("name the icon package, its copyright and license", () => {
+    expect(iconHeaderLine("tabler", "3.48.0")).toBe(
+      `Icons: @tabler/icons@3.48.0 ({names}). Copyright (c) 2020-2026 Paweł Kuna. MIT License (see ${LICENSE_NOTICE_PATH}).`
+    )
   })
 })
 
@@ -121,26 +151,28 @@ describe("checkUpstreamLicenses", () => {
       checkUpstreamLicenses(lock, {
         repository: null,
         package: null,
-        icons: null,
+        icons: {},
       })
-    ).toHaveLength(3)
+    ).toHaveLength(2 + ICON_LIBRARIES.length)
   })
 
   test("rejects a changed icon package license", () => {
-    const icons = lock.icons
-    if (!icons) throw new Error("missing icon lock")
-    expect(
-      checkUpstreamLicenses(
-        { ...lock, icons: { ...icons, license: "MIT" } },
-        texts
-      )
-    ).toEqual([
-      `lucide@${icons.version} declares license "MIT", expected "ISC"`,
+    const tabler = lock.icons.tabler
+    if (!tabler) throw new Error("missing icon lock")
+    const relicensed = {
+      ...lock,
+      icons: { ...lock.icons, tabler: { ...tabler, license: "GPL-3.0" } },
+    }
+    expect(checkUpstreamLicenses(relicensed, texts)).toEqual([
+      `@tabler/icons@${tabler.version} declares license "GPL-3.0", expected "MIT"`,
     ])
     expect(
-      checkUpstreamLicenses(lock, { ...texts, icons: "changed\n" })
+      checkUpstreamLicenses(lock, {
+        ...texts,
+        icons: { ...texts.icons, tabler: "changed\n" },
+      })
     ).toEqual([
-      `lucide@${icons.version} LICENSE differs from the reviewed text`,
+      `@tabler/icons@${tabler.version} license differs from the reviewed text`,
     ])
   })
 })

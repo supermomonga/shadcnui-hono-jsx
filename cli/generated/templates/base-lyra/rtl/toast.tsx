@@ -610,6 +610,7 @@ function Toaster({
 
 const createToastManager = createServerToastManager
 const useToastManager = useServerToastManager
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -617,6 +618,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"CircleCheckIcon","tabler":"IconCircleCheck","hugeicons":"CheckmarkCircle02Icon","phosphor":"CheckCircleIcon","remixicon":"RiCheckboxCircleLine"}
 /** Lucide `circle-check` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function CircleCheckIcon({
   class: className,
@@ -645,6 +647,7 @@ function CircleCheckIcon({
   )
 }
 
+// icon: {"lucide":"InfoIcon","tabler":"IconInfoCircle","hugeicons":"InformationCircleIcon","phosphor":"InfoIcon","remixicon":"RiInformationLine"}
 /** Lucide `info` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function InfoIcon({
   class: className,
@@ -674,6 +677,7 @@ function InfoIcon({
   )
 }
 
+// icon: {"lucide":"Loader2Icon","tabler":"IconLoader","hugeicons":"Loading03Icon","phosphor":"SpinnerIcon","remixicon":"RiLoaderLine"}
 /** Lucide `loader-circle` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function Loader2Icon({
   class: className,
@@ -701,6 +705,7 @@ function Loader2Icon({
   )
 }
 
+// icon: {"lucide":"OctagonXIcon","tabler":"IconAlertOctagon","hugeicons":"MultiplicationSignCircleIcon","phosphor":"XCircleIcon","remixicon":"RiCloseCircleLine"}
 /** Lucide `octagon-x` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function OctagonXIcon({
   class: className,
@@ -730,6 +735,7 @@ function OctagonXIcon({
   )
 }
 
+// icon: {"lucide":"TriangleAlertIcon","tabler":"IconAlertTriangle","hugeicons":"Alert02Icon","phosphor":"WarningIcon","remixicon":"RiErrorWarningLine"}
 /** Lucide `triangle-alert` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function TriangleAlertIcon({
   class: className,
@@ -762,6 +768,7 @@ function TriangleAlertIcon({
   )
 }
 
+// icon: {"lucide":"XIcon","tabler":"IconX","hugeicons":"Cancel01Icon","phosphor":"XIcon","remixicon":"RiCloseLine"}
 /** Lucide `x` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function XIcon({
   class: className,

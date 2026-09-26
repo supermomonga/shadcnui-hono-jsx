@@ -1,6 +1,7 @@
 import { appendFileSync, writeFileSync } from "node:fs"
 import { parseArgs } from "node:util"
 import { encodePreset, type PresetConfig } from "shadcn/preset"
+import { ICON_LIBRARIES } from "../../../cli/src/icons"
 import { DEFAULT_PRESET, initUrl } from "../../../cli/src/shadcn"
 import { config } from "../../../generator.config"
 import { COMPONENT_ADAPTERS } from "../adapters/components"
@@ -12,7 +13,7 @@ import { type ClassificationChange, renderSyncReport } from "../upstream/report"
 import { UpstreamStore } from "../upstream/store"
 import { syncUpstream } from "../upstream/sync"
 import {
-  readLucidePackage,
+  readIconPackages,
   readShadcnPreset,
   readShadcnTailwindCss,
 } from "../upstream/vendored"
@@ -57,7 +58,7 @@ const result = await syncUpstream({
   themeUrl,
   preset,
   tailwindCss: readShadcnTailwindCss(ROOT),
-  icons: readLucidePackage(ROOT),
+  icons: readIconPackages(ROOT),
   githubToken: process.env.GITHUB_TOKEN,
 })
 const after = classifyAll()
@@ -96,7 +97,12 @@ const licenseProblems = checkUpstreamLicenses(
   {
     repository: store.readOptional(store.licenseFile),
     package: store.readOptional(store.packageLicenseFile),
-    icons: store.readOptional(store.iconLicenseFile),
+    icons: Object.fromEntries(
+      ICON_LIBRARIES.map((library) => [
+        library,
+        store.readOptional(store.iconLicenseFile(library)),
+      ])
+    ),
   }
 )
 if (licenseProblems.length > 0) {

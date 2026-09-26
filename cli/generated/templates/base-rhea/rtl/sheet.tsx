@@ -283,6 +283,7 @@ function SheetDescription({ class: className, ...props }: ComponentProps<"p">) {
     />
   )
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -290,6 +291,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"XIcon","tabler":"IconX","hugeicons":"Cancel01Icon","phosphor":"XIcon","remixicon":"RiCloseLine"}
 /** Lucide `x` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function XIcon({
   class: className,

@@ -34,8 +34,8 @@ export interface SyncOptions {
   preset?: PresetModuleSource
   /** The `tailwind.css` shipped by the pinned `shadcn` package. */
   tailwindCss: VendoredSource
-  /** Licensing of the pinned icon package (`lucide`). */
-  icons?: PackageLicenseSource
+  /** Licensing of the pinned icon packages, one per library. */
+  icons?: PackageLicenseSource[]
   fetchImpl?: FetchLike
   githubToken?: string | undefined
   now?: () => Date
@@ -73,10 +73,13 @@ export interface SyncResult {
     | null
   /** Upstream repository LICENSE.md before/after, when it changed. */
   license: TextChange | null
-  /** Icon package licensing before/after, when it changed. */
-  iconLicense:
-    | (TextChange & { fromLicense: string | null; toLicense: string | null })
-    | null
+  /** Icon package licenses that changed, before/after. */
+  iconLicenses: (TextChange & {
+    library: string
+    package: string
+    fromLicense: string | null
+    toLicense: string | null
+  })[]
   /** Vendored package licensing before/after, when it changed. */
   packageLicense:
     | (TextChange & { fromLicense: string | null; toLicense: string | null })
@@ -407,37 +410,34 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     }
   }
 
-  // Icon package licensing (icons are inlined into generated sources).
-  let iconLicenseChange: SyncResult["iconLicense"] = null
-  if (options.icons) {
-    const icons = options.icons
+  // Icon package licensing (icons are inlined into templates, docs/adr/0031).
+  const iconLicenseChanges: SyncResult["iconLicenses"] = []
+  for (const icons of options.icons ?? []) {
+    const file = store.iconLicenseFile(icons.library)
     const text = icons.licenseText ?? ""
     const hash = icons.licenseText === null ? null : sha256(icons.licenseText)
-    if (
-      lock.icons?.license !== icons.license ||
-      lock.icons?.licenseSha256 !== hash ||
-      lock.icons?.version !== icons.version ||
-      !existsSync(store.iconLicenseFile)
-    ) {
-      if (
-        lock.icons?.license !== icons.license ||
-        lock.icons?.licenseSha256 !== hash ||
-        !existsSync(store.iconLicenseFile)
-      ) {
-        iconLicenseChange = {
-          before: store.readOptional(store.iconLicenseFile),
-          after: text,
-          fromLicense: lock.icons?.license ?? null,
-          toLicense: icons.license,
-        }
-      }
-      store.writeText(store.iconLicenseFile, text)
-      lock.icons = {
+    const current = lock.icons[icons.library]
+    const licenseChanged =
+      current?.license !== icons.license ||
+      current?.licenseSha256 !== hash ||
+      !existsSync(file)
+    if (!licenseChanged && current?.version === icons.version) continue
+    if (licenseChanged) {
+      iconLicenseChanges.push({
+        library: icons.library,
         package: icons.package,
-        version: icons.version,
-        license: icons.license,
-        licenseSha256: hash,
-      }
+        before: store.readOptional(file),
+        after: text,
+        fromLicense: current?.license ?? null,
+        toLicense: icons.license,
+      })
+    }
+    store.writeText(file, text)
+    lock.icons[icons.library] = {
+      package: icons.package,
+      version: icons.version,
+      license: icons.license,
+      licenseSha256: hash,
     }
   }
 
@@ -479,7 +479,7 @@ export async function syncUpstream(options: SyncOptions): Promise<SyncResult> {
     tailwindCss: tailwindCssChange,
     license: licenseChange,
     packageLicense: packageLicenseChange,
-    iconLicense: iconLicenseChange,
+    iconLicenses: iconLicenseChanges,
     lockChanged,
   }
 }

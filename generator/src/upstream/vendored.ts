@@ -1,5 +1,7 @@
-import { existsSync, readFileSync } from "node:fs"
+import { existsSync, readdirSync, readFileSync } from "node:fs"
 import path from "node:path"
+import { ICON_LIBRARIES, type IconLibrary } from "../../../cli/src/icons"
+import { ACCEPTED_ICON_LICENSES } from "../licenses"
 import type { VendoredSource } from "./sync"
 
 /** Reads `tailwind.css` and its licensing from the installed (pinned) `shadcn` package. */
@@ -26,30 +28,36 @@ export function readShadcnTailwindCss(root: string): VendoredSource {
 }
 
 export interface PackageLicenseSource {
+  /** The icon library the package provides (docs/adr/0031). */
+  library: IconLibrary
   package: string
   version: string
   license: string | null
   licenseText: string | null
 }
 
-/** Reads the licensing of the pinned `lucide` package, whose icons are inlined. */
-export function readLucidePackage(root: string): PackageLicenseSource {
-  const dir = path.join(root, "node_modules", "lucide")
-  const pkg = JSON.parse(
-    readFileSync(path.join(dir, "package.json"), "utf8")
-  ) as {
-    version: string
-    license?: string
-  }
-  const licensePath = path.join(dir, "LICENSE")
-  return {
-    package: "lucide",
-    version: pkg.version,
-    license: pkg.license ?? null,
-    licenseText: existsSync(licensePath)
-      ? readFileSync(licensePath, "utf8")
-      : null,
-  }
+/** Reads the licensing of the pinned icon packages, whose icons are inlined. */
+export function readIconPackages(root: string): PackageLicenseSource[] {
+  return ICON_LIBRARIES.map((library) => {
+    const name = ACCEPTED_ICON_LICENSES[library].package
+    const dir = path.join(root, "node_modules", name)
+    const pkg = JSON.parse(
+      readFileSync(path.join(dir, "package.json"), "utf8")
+    ) as { version: string; license?: string }
+    const file = readdirSync(dir).find((f) =>
+      /^licen[cs]e(\.md|\.txt)?$/i.test(f)
+    )
+    return {
+      library,
+      package: name,
+      version: pkg.version,
+      license: pkg.license ?? null,
+      // Line endings as the repository stores text (some packages use CRLF).
+      licenseText: file
+        ? readFileSync(path.join(dir, file), "utf8").replace(/\r\n/g, "\n")
+        : null,
+    }
+  })
 }
 
 /** Fields of a preset configuration (`PresetConfig` of `shadcn/preset`). */

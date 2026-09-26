@@ -73,6 +73,19 @@ function rootMenu(menu) {
 /** @type {WeakMap<HTMLElement, OpenFocus>} */
 const pendingFocus = new WeakMap()
 
+/** @type {WeakSet<HTMLElement>} Submenus opened from the keyboard. */
+const keyboardOpened = new WeakSet()
+
+const platformName = (navigator.platform || "").toLowerCase()
+/**
+ * Apple platforms, where VoiceOver may run, as Base UI's production build
+ * detects them from `navigator.platform` (iPadOS included).
+ */
+const APPLE =
+  /^i(os$|p)/.test(platformName) ||
+  (platformName === "macintel" && navigator.maxTouchPoints > 1) ||
+  platformName.startsWith("mac")
+
 /**
  * @param {HTMLElement} menu
  * @param {OpenFocus} focus
@@ -119,11 +132,15 @@ document.addEventListener(
     }
     const opened = /** @type {ToggleEvent} */ (event).newState === "open"
     const trigger = triggerOf(menu)
-    // Like Base UI, only top-level triggers report aria-expanded; submenu
-    // triggers only get data-popup-open.
-    if (trigger && !trigger.matches(SUBMENU_TRIGGER)) {
-      trigger.setAttribute("aria-expanded", String(opened))
+    // Like Base UI, a submenu opened from the keyboard on Apple platforms
+    // drops its trigger's aria-expanded: VoiceOver would announce the state
+    // change instead of the submenu item that takes focus.
+    if (opened && keyboardOpened.has(menu) && APPLE) {
+      trigger?.removeAttribute("aria-expanded")
+    } else {
+      trigger?.setAttribute("aria-expanded", String(opened))
     }
+    if (!opened) keyboardOpened.delete(menu)
     trigger?.toggleAttribute("data-popup-open", opened)
     menu.toggleAttribute("data-open", opened)
     if (opened) {
@@ -262,6 +279,7 @@ delegate("keydown", MENU, (event, menu) => {
         const submenu = submenuOf(current)
         if (submenu) {
           event.preventDefault()
+          keyboardOpened.add(submenu)
           open(submenu, "first", current)
         }
         return
@@ -326,7 +344,10 @@ delegate("click", ITEM, (event, item) => {
   }
   if (item.matches(SUBMENU_TRIGGER)) {
     const submenu = submenuOf(item)
-    if (submenu) open(submenu, "first", item)
+    if (!submenu) return
+    // Enter and Space click without a pointer (detail 0).
+    if (event.detail === 0) keyboardOpened.add(submenu)
+    open(submenu, "first", item)
     return
   }
   const role = item.getAttribute("role")

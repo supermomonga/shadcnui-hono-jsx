@@ -33,10 +33,36 @@
     "licenseSha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
   },
   "icons": {
-    "package": "lucide",
-    "version": "1.48.0",
-    "license": "ISC",
-    "licenseSha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    "hugeicons": {
+      "package": "@hugeicons/core-free-icons",
+      "version": "4.3.5",
+      "license": "MIT",
+      "licenseSha256": "1658d8213209df7b9b86dfc05d724ede48d00dbc27abc15976ec7adec9601cde"
+    },
+    "lucide": {
+      "package": "lucide",
+      "version": "1.48.0",
+      "license": "ISC",
+      "licenseSha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    },
+    "phosphor": {
+      "package": "@phosphor-icons/core",
+      "version": "2.1.1",
+      "license": "MIT",
+      "licenseSha256": "b5b1f1da112d18ea2147decfd48ddc1bf2b5aeb6c265381579340e95b15a2bb2"
+    },
+    "remixicon": {
+      "package": "remixicon",
+      "version": "4.9.1",
+      "license": "Apache-2.0",
+      "licenseSha256": "6f2f21c5f8db34635d31848e9ff831d5dc421bb83ffc9d37f82651364047ae58"
+    },
+    "tabler": {
+      "package": "@tabler/icons",
+      "version": "3.48.0",
+      "license": "MIT",
+      "licenseSha256": "b740a1d46122672da62833e97f7e7c8a13fa85cbc7445b584b297cc00dde93db"
+    }
   },
   "preset": {
     "package": "shadcn",

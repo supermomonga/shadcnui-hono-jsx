@@ -10,7 +10,7 @@ import {
 import { configFile, readConfig, requireConfig } from "./config"
 import { UsageError } from "./errors"
 import { type PlannedFile, type WriteSummary, writeFiles } from "./files"
-import { type FinalizeOptions, finalize, unsupportedOptions } from "./finalize"
+import { type FinalizeOptions, finalize } from "./finalize"
 import {
   type Installer,
   missingDependencies,
@@ -61,23 +61,18 @@ function setupFor(catalog: Catalog, preset: Preset, flags: PresetFlags): Setup {
     rtl: flags.rtl,
     menuColor: preset.config.menuColor,
   }
-  const problems = [
-    ...(catalog.styles.includes(style)
-      ? []
-      : [`style "${preset.config.style}"`]),
-    ...unsupportedOptions(finalize),
-  ]
-  if (problems.length > 0) {
+  if (!catalog.styles.includes(style)) {
     throw new UsageError(
-      `shadcnui-hono-jsx does not support ${problems.join(", ")} yet (preset ${preset.code}, ${presetUrl(preset.code)}).`
+      `shadcnui-hono-jsx does not support style "${preset.config.style}" yet (preset ${preset.code}, ${presetUrl(preset.code)}).`
     )
   }
   return { preset, flags, style, variant, finalize }
 }
 
-const noticeFile = (): PlannedFile => ({
+/** The license notice, which includes the license of the preset's icons. */
+const noticeFile = (setup: Setup): PlannedFile => ({
   path: LICENSE_NOTICE_FILE,
-  text: readGenerated(LICENSE_NOTICE_FILE),
+  text: readGenerated(`notices/${setup.finalize.iconLibrary}.txt`),
 })
 
 /** `theme.css` for the preset (fetched from ui.shadcn.com) and the vendored `tailwind.css`. */
@@ -176,6 +171,14 @@ function report(ctx: Context, summary: WriteSummary): void {
   }
 }
 
+/** Remix Icon's license restricts use, so `init` and `apply` point it out. */
+function reportIconLicense(ctx: Context, setup: Setup): void {
+  if (setup.finalize.iconLibrary !== "remixicon") return
+  ctx.log(
+    `Remix Icon is licensed under the Remix Icon License v1.0, which is not an open source license; read the Icons section of ${LICENSE_NOTICE_FILE} before you ship.`
+  )
+}
+
 function reportScripts(ctx: Context, scripts: readonly string[]): void {
   const pages = scripts.filter((name) => name !== "core")
   if (pages.length === 0) return
@@ -214,13 +217,14 @@ export async function init(ctx: Context, options: InitOptions): Promise<void> {
     [
       configFile({ preset: setup.preset.code, ...flags }),
       ...theme.files,
-      noticeFile(),
+      noticeFile(setup),
       ...items.files,
     ],
     { overwrite: options.force, hint: "Pass --force to replace them." }
   )
   report(ctx, summary)
   installMissing(ctx, [...theme.dependencies, ...items.dependencies])
+  reportIconLicense(ctx, setup)
   ctx.log(
     `Import the theme after Tailwind CSS in your stylesheet (@import "tailwindcss"; @import "<path>/${STYLES_DIR}/theme.css";), and let Tailwind scan ${COMPONENTS_DIR}/ (@source "<path>/${COMPONENTS_DIR}" when it is outside your source root).`
   )
@@ -247,7 +251,7 @@ export async function add(ctx: Context, options: AddOptions): Promise<void> {
     pointer: config.pointer,
   })
   const items = planItems(ctx, setup, options.components)
-  const summary = writeFiles(ctx.cwd, [...items.files, noticeFile()], {
+  const summary = writeFiles(ctx.cwd, [...items.files, noticeFile(setup)], {
     overwrite: options.overwrite,
     hint: "Pass --overwrite to replace them.",
   })
@@ -299,7 +303,7 @@ export async function apply(
     [
       configFile({ preset: preset.code, ...flags }),
       ...theme.files,
-      noticeFile(),
+      noticeFile(setup),
       ...installed.map((name) => componentFile(setup, name)),
     ],
     { overwrite: true, hint: "" }
@@ -309,4 +313,5 @@ export async function apply(
     ...theme.dependencies,
     ...installed.flatMap((name) => findItem(ctx.catalog, name).dependencies),
   ])
+  reportIconLicense(ctx, setup)
 }

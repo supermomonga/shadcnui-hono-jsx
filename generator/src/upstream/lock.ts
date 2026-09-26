@@ -63,8 +63,8 @@ export interface UpstreamLock {
   /** Upstream repository license (monitored, see generator/src/licenses.ts). */
   license: ResourceLock | null
   tailwindCss: VendoredLock | null
-  /** Icon package inlined by the generator (lucide). */
-  icons: PackageLock | null
+  /** Icon packages inlined by the generator, by library (docs/adr/0031). */
+  icons: Record<string, PackageLock>
   preset: PresetLock | null
 }
 
@@ -77,7 +77,7 @@ export function emptyLock(registryBaseUrl: string): UpstreamLock {
     fonts: {},
     license: null,
     tailwindCss: null,
-    icons: null,
+    icons: {},
     preset: null,
   }
 }
@@ -114,11 +114,26 @@ export function readLock(file: string): UpstreamLock | null {
       styles: { [style]: { index, items } },
       fonts: shared.fonts ?? {},
       preset: shared.preset ?? null,
+      icons:
+        shared.icons && "package" in shared.icons
+          ? { lucide: shared.icons as unknown as PackageLock }
+          : (shared.icons ?? {}),
     }
   }
   if (value.schemaVersion !== 2) {
     throw new Error(`Unsupported upstream lock schemaVersion in ${file}`)
   }
+  // A single icon package (Lucide) before other libraries were inlined.
+  const icons = value.icons as unknown as
+    | PackageLock
+    | Record<string, PackageLock>
+    | null
+  value.icons =
+    icons === null
+      ? {}
+      : "package" in icons
+        ? { lucide: icons as PackageLock }
+        : icons
   return value
 }
 
@@ -165,7 +180,11 @@ export function serializeLock(lock: UpstreamLock): string {
           licenseSha256: lock.tailwindCss.licenseSha256 ?? null,
         }
       : null,
-    icons: lock.icons ?? null,
+    icons: Object.fromEntries(
+      Object.keys(lock.icons ?? {})
+        .sort()
+        .map((library) => [library, lock.icons[library]])
+    ),
     preset: lock.preset ?? null,
     styles: Object.fromEntries(
       Object.keys(lock.styles)

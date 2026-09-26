@@ -491,6 +491,7 @@ function SelectScrollUpButton(_props: ComponentProps<"div">) {
 function SelectScrollDownButton(_props: ComponentProps<"div">) {
   return null
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -498,6 +499,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"CheckIcon","tabler":"IconCheck","hugeicons":"Tick02Icon","phosphor":"CheckIcon","remixicon":"RiCheckLine"}
 /** Lucide `check` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function CheckIcon({
   class: className,
@@ -525,6 +527,7 @@ function CheckIcon({
   )
 }
 
+// icon: {"lucide":"ChevronDownIcon","tabler":"IconSelector","hugeicons":"UnfoldMoreIcon","phosphor":"CaretDownIcon","remixicon":"RiArrowDownSLine"}
 /** Lucide `chevron-down` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function ChevronDownIcon({
   class: className,

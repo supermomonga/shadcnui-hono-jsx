@@ -9,6 +9,13 @@
  * and updates the accepted record below (see docs/adr/0013).
  */
 
+import { ICON_LIBRARIES, type IconLibrary } from "../../cli/src/icons"
+import {
+  HUGEICONS_LICENSE_TEXT,
+  PHOSPHOR_LICENSE_TEXT,
+  REMIXICON_LICENSE_TEXT,
+  TABLER_LICENSE_TEXT,
+} from "./icon-license-texts"
 import { sha256 } from "./upstream/hash"
 import type { UpstreamLock } from "./upstream/lock"
 
@@ -18,16 +25,6 @@ export const ACCEPTED_UPSTREAM_LICENSE = {
   copyright: "Copyright (c) 2023 shadcn",
   /** sha256 of shadcn-ui/ui `LICENSE.md` (also shipped in the `shadcn` npm package). */
   sha256: "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f",
-  reviewedAt: "2026-09-25",
-} as const
-
-/** Lucide icon licensing as reviewed by a maintainer (icons are inlined into generated sources). */
-export const ACCEPTED_ICON_LICENSE = {
-  package: "lucide",
-  spdx: "ISC",
-  copyright: "Copyright (c) 2026 Lucide Icons and Contributors",
-  /** sha256 of the `lucide` package LICENSE, reproduced verbatim in the notice below. */
-  sha256: "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
   reviewedAt: "2026-09-25",
 } as const
 
@@ -77,6 +74,89 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 `
 
+/** Icon package licensing as reviewed by a maintainer (icons are inlined, docs/adr/0031). */
+export interface AcceptedIconLicense {
+  package: string
+  title: string
+  url: string
+  /** The `license` field of the package's package.json. */
+  license: string
+  /** The license's name in notices and headers. */
+  licenseName: string
+  copyright: string
+  /** sha256 of the package's license file, reproduced verbatim in the notice. */
+  sha256: string
+  reviewedAt: string
+  text: string
+  /** A remark for the notice, before the license text. */
+  remark?: string
+}
+
+export const ACCEPTED_ICON_LICENSES: Readonly<
+  Record<IconLibrary, AcceptedIconLicense>
+> = {
+  lucide: {
+    package: "lucide",
+    title: "Lucide",
+    url: "https://lucide.dev",
+    license: "ISC",
+    licenseName: "ISC License",
+    copyright: "Copyright (c) 2026 Lucide Icons and Contributors",
+    sha256: "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    reviewedAt: "2026-09-25",
+    text: LUCIDE_LICENSE_TEXT,
+    remark: "including the notice for icons derived from Feather",
+  },
+  tabler: {
+    package: "@tabler/icons",
+    title: "Tabler Icons",
+    url: "https://tabler.io/icons",
+    license: "MIT",
+    licenseName: "MIT License",
+    copyright: "Copyright (c) 2020-2026 Paweł Kuna",
+    sha256: "b740a1d46122672da62833e97f7e7c8a13fa85cbc7445b584b297cc00dde93db",
+    reviewedAt: "2026-09-26",
+    text: TABLER_LICENSE_TEXT,
+  },
+  hugeicons: {
+    package: "@hugeicons/core-free-icons",
+    title: "Hugeicons",
+    url: "https://hugeicons.com",
+    license: "MIT",
+    licenseName: "MIT License",
+    copyright: "Copyright (c) 2025 Hugeicons",
+    sha256: "1658d8213209df7b9b86dfc05d724ede48d00dbc27abc15976ec7adec9601cde",
+    reviewedAt: "2026-09-26",
+    text: HUGEICONS_LICENSE_TEXT,
+  },
+  phosphor: {
+    package: "@phosphor-icons/core",
+    title: "Phosphor Icons",
+    url: "https://phosphoricons.com",
+    license: "MIT",
+    licenseName: "MIT License",
+    copyright: "Copyright (c) 2023 Phosphor Icons",
+    sha256: "b5b1f1da112d18ea2147decfd48ddc1bf2b5aeb6c265381579340e95b15a2bb2",
+    reviewedAt: "2026-09-26",
+    text: PHOSPHOR_LICENSE_TEXT,
+  },
+  remixicon: {
+    package: "remixicon",
+    title: "Remix Icon",
+    url: "https://remixicon.com",
+    // The package.json still says Apache-2.0; its License file is the Remix
+    // Icon License v1.0 (since 4.9.0), accepted by the project owner.
+    license: "Apache-2.0",
+    licenseName: "Remix Icon License v1.0",
+    copyright: "Copyright (c) 2017–2026 Remix Design",
+    sha256: "6f2f21c5f8db34635d31848e9ff831d5dc421bb83ffc9d37f82651364047ae58",
+    reviewedAt: "2026-09-26",
+    text: REMIXICON_LICENSE_TEXT,
+    remark:
+      "which is not an open source license: it forbids selling the icons on their own, building a competing icon library from them and using them as a logo or brand identity",
+  },
+}
+
 /** This project's notice for its own additions and modifications. */
 export const PROJECT_COPYRIGHT = "Copyright (c) 2026 supermomonga"
 
@@ -101,8 +181,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.`
 
-/** Content of `LICENSE-shadcnui-hono-jsx.txt`. Deterministic; no dates or item lists. */
-export function buildLicenseNotice(repository: string): string {
+/**
+ * Content of `LICENSE-shadcnui-hono-jsx.txt` for a project with icons from
+ * `library`. Deterministic; no dates or item lists.
+ */
+export function buildLicenseNotice(
+  repository: string,
+  library: IconLibrary
+): string {
+  const icons = ACCEPTED_ICON_LICENSES[library]
   return `shadcnui-hono-jsx - https://github.com/${repository}
 
 This notice applies to the component and stylesheet sources installed by the
@@ -131,11 +218,11 @@ ${MIT_PERMISSION_NOTICE}
 
 Icons
 
-Some installed sources inline SVG icons from Lucide (https://lucide.dev),
-version-pinned in their headers. Lucide is licensed as follows (reproduced
-from the lucide package, including the notice for icons derived from Feather):
+Some installed sources inline SVG icons from ${icons.title} (${icons.url}),
+version-pinned in their headers. ${icons.title} is licensed as follows
+(reproduced from the ${icons.package} package${icons.remark ? `, ${icons.remark}` : ""}):
 
-${LUCIDE_LICENSE_TEXT}`
+${icons.text}`
 }
 
 /** License lines for generated sources that include this project's changes. */
@@ -148,10 +235,16 @@ export function derivedNoticeLines(): string[] {
   ]
 }
 
-/** Extra header line for sources that inline Lucide icons. */
+/** The header line of sources with icons of `library`; `{names}` lists them. */
+export function iconHeaderLine(library: IconLibrary, version: string): string {
+  const icons = ACCEPTED_ICON_LICENSES[library]
+  return `Icons: ${icons.package}@${version} ({names}). ${icons.copyright}. ${icons.licenseName} (see ${LICENSE_NOTICE_PATH}).`
+}
+
+/** Extra header line for sources that inline Lucide icons (the templates). */
 export function iconNoticeLines(names: string[], version: string): string[] {
   return [
-    `Icons: lucide@${version} (${names.join(", ")}). ${ACCEPTED_ICON_LICENSE.copyright}. ${ACCEPTED_ICON_LICENSE.spdx} License (see ${LICENSE_NOTICE_PATH}).`,
+    iconHeaderLine("lucide", version).replace("{names}", names.join(", ")),
   ]
 }
 
@@ -169,8 +262,8 @@ export interface UpstreamLicenseTexts {
   repository: string | null
   /** `LICENSE.md` of the pinned `shadcn` npm package from the snapshot. */
   package: string | null
-  /** `LICENSE` of the pinned `lucide` package from the snapshot. */
-  icons: string | null
+  /** License files of the pinned icon packages from the snapshot. */
+  icons: Partial<Record<IconLibrary, string | null>>
 }
 
 /**
@@ -213,21 +306,24 @@ export function checkUpstreamLicenses(
       )
     }
   }
-  const icons = lock.icons
-  const iconLicense = ACCEPTED_ICON_LICENSE
-  if (!icons) {
-    problems.push("icon package metadata is missing from upstream/lock.json")
-  } else {
-    if (icons.license !== iconLicense.spdx) {
+  for (const library of ICON_LIBRARIES) {
+    const accepted = ACCEPTED_ICON_LICENSES[library]
+    const icons = lock.icons[library]
+    const text = texts.icons[library] ?? null
+    if (!icons) {
+      problems.push(`${accepted.package} is missing from upstream/lock.json`)
+      continue
+    }
+    if (icons.license !== accepted.license) {
       problems.push(
-        `${icons.package}@${icons.version} declares license "${icons.license}", expected "${iconLicense.spdx}"`
+        `${icons.package}@${icons.version} declares license "${icons.license}", expected "${accepted.license}"`
       )
     }
-    if (texts.icons === null) {
-      problems.push(`${icons.package} LICENSE is missing from the snapshot`)
-    } else if (sha256(texts.icons) !== iconLicense.sha256) {
+    if (text === null) {
+      problems.push(`${icons.package} license is missing from the snapshot`)
+    } else if (sha256(text) !== accepted.sha256) {
       problems.push(
-        `${icons.package}@${icons.version} LICENSE differs from the reviewed text`
+        `${icons.package}@${icons.version} license differs from the reviewed text`
       )
     }
   }

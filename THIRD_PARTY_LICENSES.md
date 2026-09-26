@@ -42,13 +42,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## Lucide
+## Icon libraries
 
-Generated components that show icons inline SVG from
-[Lucide](https://lucide.dev) (ISC; some icons derive from Feather, MIT). The
-generator reads them from the pinned `lucide` package at generation time; the
-full Lucide license is reproduced in `LICENSE-shadcnui-hono-jsx.txt`, which the
-CLI installs with the components.
+Generated components that show icons inline SVG from the icon library of the
+preset. The generator reads them from these pinned packages at generation
+time (`upstream/licenses/` holds the reviewed license texts), and the CLI
+package carries them in `generated/templates/` (Lucide) and
+`generated/icons/`:
+
+| Library | Package | License |
+| --- | --- | --- |
+| [Lucide](https://lucide.dev) | `lucide` | ISC (some icons derive from Feather, MIT) |
+| [Tabler Icons](https://tabler.io/icons) | `@tabler/icons` | MIT |
+| [Hugeicons](https://hugeicons.com) | `@hugeicons/core-free-icons` | MIT |
+| [Phosphor Icons](https://phosphoricons.com) | `@phosphor-icons/core` | MIT |
+| [Remix Icon](https://remixicon.com) | `remixicon` | Remix Icon License v1.0 (not an open source license: no selling the icons on their own, no competing icon library, no logos or brand identity) |
+
+The CLI installs `LICENSE-shadcnui-hono-jsx.txt` with the components; it
+reproduces the full license of the preset's icon library.
 
 ## Base UI
 

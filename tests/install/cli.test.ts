@@ -5,6 +5,7 @@ import path from "node:path"
 import { encodePreset } from "../../cli/generated/shadcn-preset.js"
 import { readCatalog, readTemplate } from "../../cli/src/catalog"
 import { finalize } from "../../cli/src/finalize"
+import { ICON_LIBRARIES } from "../../cli/src/icons"
 import { resolvePreset } from "../../cli/src/preset"
 import { ROOT } from "../../generator/src/paths"
 import { findProhibitedImports } from "../../generator/src/policy"
@@ -249,4 +250,34 @@ describe.skipIf(!enabled)("the CLI in a clean Hono project", () => {
       "tsconfig.json",
     ])
   })
+
+  test.each(ICON_LIBRARIES.filter((library) => library !== "lucide"))(
+    "apply swaps in %s icons and their license, and type-checks",
+    async (iconLibrary) => {
+      const preset = encodePreset({ ...nova.config, iconLibrary })
+      const output = await run(["bun", CLI, "apply", "--preset", preset])
+      // The project stays right-to-left from the previous test.
+      const variant = { rtl: true, menuColor: "default" } as const
+      expect(read("components/ui/select.tsx")).toBe(
+        finalize(readTemplate(config.style, "select", variant), {
+          iconLibrary,
+          preset,
+        })
+      )
+      expect(read("LICENSE-shadcnui-hono-jsx.txt")).toBe(
+        readFileSync(
+          path.join(ROOT, "cli", "generated", "notices", `${iconLibrary}.txt`),
+          "utf8"
+        )
+      )
+      expect(output.includes("Remix Icon License")).toBe(
+        iconLibrary === "remixicon"
+      )
+      await run([
+        path.join(app, "node_modules", ".bin", "tsc"),
+        "-p",
+        "tsconfig.json",
+      ])
+    }
+  )
 })

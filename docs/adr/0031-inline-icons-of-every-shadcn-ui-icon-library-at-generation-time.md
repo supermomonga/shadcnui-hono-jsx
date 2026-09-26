@@ -68,11 +68,14 @@ only substitutes prepared components, as with Lucide today.
   only by the generator.
 * For every icon a template references, the generator renders one Hono JSX
   component per library that reproduces what the library's React component
-  renders (SVG attributes, classes, `aria-hidden` handling), and stores them
-  as icon data in the CLI package. Templates reference icons by upstream's
-  `IconPlaceholder` names, and finalize inserts the chosen library's
-  components as file-local components (ADR 0030). An unresolvable name in any
-  library blocks classification (`icon-unresolved`).
+  renders as the shadcn CLI uses it (SVG attributes, classes, `aria-hidden`
+  handling, `strokeWidth={2}` for Hugeicons and Phosphor), and stores them in
+  `cli/generated/icons/<library>.json`. Templates keep inlining Lucide (ADR
+  0016) and mark each icon component with its names in every library (an
+  `// icon:` line with their JSON); finalize swaps in the chosen library's
+  components under the same file-local names and rewrites the header's
+  `Icons:` line (ADR 0030). A name that any library cannot resolve fails
+  generation.
 * Each library's license is gated like Lucide's (ADR 0016) and upstream's
   (ADR 0013): `upstream:sync` snapshots the package license,
   `generator/src/licenses.ts` keeps a reviewed record per library, and
@@ -101,9 +104,11 @@ only substitutes prepared components, as with Lucide today.
 
 ### Confirmation
 
-`generator/tests/icons.test.ts` covers name resolution for every library,
-`tests/render` covers the rendered icon components, and the visual matrix
-(ADR 0030) compares pixels and SVG attributes with each React package.
+`generator/tests/icons.test.ts` covers name resolution and rendering for
+every library and finalizes every template with each of them,
+`tests/install` installs each library with the CLI and type-checks the
+result, and the visual matrix (ADR 0030) compares pixels and SVG attributes
+with each React package (`test:visual:styles --variant icons-<library>`).
 
 ## Pros and Cons of the Options
 

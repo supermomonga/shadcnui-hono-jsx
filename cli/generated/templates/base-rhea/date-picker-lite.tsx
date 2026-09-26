@@ -62,6 +62,7 @@ function DatePickerLite({
     </div>
   )
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -69,6 +70,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"CalendarIcon","tabler":"IconCalendar","hugeicons":"Calendar03Icon","phosphor":"CalendarBlankIcon","remixicon":"RiCalendarLine"}
 /** Lucide `calendar` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function CalendarIcon({
   class: className,

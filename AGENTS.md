@@ -57,7 +57,7 @@ upstream item in every style and then update its revision in
 | `bun run cli <command>` | Run the CLI from the repository |
 | `bun run verify` | Development install, lint, type-check, test, freshness check |
 | `bun run test:visual` | Visual parity against upstream React (`tests/visual`, Playwright) |
-| `bun run test:visual:styles` | Visual parity in every Base UI style and in the menu color and RTL variants |
+| `bun run test:visual:styles` | Visual parity in every Base UI style, in the menu color and RTL variants and with every icon library |
 | `bun run verify:full` | `verify` plus examples, the network CLI install test and visual parity |
 
 To support another upstream component, add it to `components` in
@@ -91,8 +91,10 @@ the new terms still allow redistribution and how. See docs/adr/0013.
 
 - Generated components must never import `react`, `react-dom`, `@base-ui/*`,
   `@radix-ui/*`, `radix-ui`, or `lucide-react`. A test enforces this.
-- `lucide` is a generation-time devDependency only; icons are inlined into
-  generated files (docs/adr/0016). Its license is gated like upstream's.
+- The icon packages (`lucide`, `@tabler/icons`, `@hugeicons/core-free-icons`,
+  `@phosphor-icons/core`, `remixicon`) are generation-time devDependencies
+  only; icons are inlined into generated files (docs/adr/0031). Their licenses
+  are gated like upstream's (`ACCEPTED_ICON_LICENSES`).
 - React and Base UI may only be installed in `tests/visual`, which renders
   upstream for comparison. Never add them to the root or example packages.
 - Installed components and the theme may only depend on the allowlisted npm

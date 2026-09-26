@@ -102,6 +102,10 @@ jobs:
           - { name: menu-inverted, install: --menu-color inverted, playwright: --grep-invert behave }
           - { name: menu-default-translucent, install: --menu-color default-translucent, playwright: --grep-invert behave }
           - { name: menu-inverted-translucent, install: --menu-color inverted-translucent, playwright: --grep-invert behave }
+          - { name: icons-tabler, install: --icon-library tabler, playwright: --grep-invert behave }
+          - { name: icons-hugeicons, install: --icon-library hugeicons, playwright: --grep-invert behave }
+          - { name: icons-phosphor, install: --icon-library phosphor, playwright: --grep-invert behave }
+          - { name: icons-remixicon, install: --icon-library remixicon, playwright: --grep-invert behave }
     name: visual-styles (${{ matrix.name }})
     defaults:
       run:

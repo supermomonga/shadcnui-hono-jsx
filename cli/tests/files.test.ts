@@ -8,9 +8,11 @@ import {
 } from "node:fs"
 import { tmpdir } from "node:os"
 import path from "node:path"
+import { readTemplate } from "../src/catalog"
 import { UsageError } from "../src/errors"
 import { uniqueFiles, writeFiles } from "../src/files"
-import { finalize, unsupportedOptions } from "../src/finalize"
+import { finalize } from "../src/finalize"
+import { ICON_LIBRARIES } from "../src/icons"
 import {
   detectPackageManager,
   installCommand,
@@ -90,14 +92,35 @@ describe("finalize", () => {
     )
   })
 
-  test("reports options it cannot produce yet", () => {
-    expect(unsupportedOptions(defaults)).toEqual([])
-    expect(unsupportedOptions({ iconLibrary: "tabler" })).toEqual([
-      'iconLibrary "tabler"',
-    ])
-    expect(() =>
-      finalize(template, { iconLibrary: "tabler", preset: "b0" })
-    ).toThrow(/tabler/)
+  const select = readTemplate("base-nova", "select")
+
+  test("keeps Lucide icons and drops the markers", () => {
+    const installed = finalize(select, { ...defaults, preset: "b0" })
+    expect(installed).not.toContain("// icon")
+    expect(installed).toContain("function hasA11yProp(")
+    expect(installed).toContain('class={cn("lucide lucide-chevron-down"')
+    expect(installed).toMatch(/^\/\/ Icons: lucide@/m)
+  })
+
+  test.each(ICON_LIBRARIES.filter((library) => library !== "lucide"))(
+    "swaps in %s icons under the same names",
+    (iconLibrary) => {
+      const installed = finalize(select, { iconLibrary, preset: "b0" })
+      expect(installed).not.toContain("// icon")
+      expect(installed).not.toContain("lucide")
+      expect(installed).not.toContain("hasA11yProp")
+      for (const name of ["CheckIcon", "ChevronDownIcon"]) {
+        expect(installed).toContain(`function ${name}(`)
+      }
+      expect(installed).not.toContain("__COMPONENT__")
+      expect(installed).toMatch(/^\/\/ Icons: \S+@[\d.]+ \(.+\)\. Copyright/m)
+    }
+  )
+
+  test("names the icons of the library in the header", () => {
+    expect(finalize(select, { iconLibrary: "tabler", preset: "b0" })).toContain(
+      "// Icons: @tabler/icons@3.48.0 (check, selector)."
+    )
   })
 })
 

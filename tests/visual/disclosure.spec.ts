@@ -54,14 +54,16 @@ test.describe("generated Accordion", () => {
     const trigger = section.locator("summary", {
       hasText: "Product Information",
     })
+    // The chevrons down and up, in any icon library.
+    const icons = trigger.locator('svg[data-slot="accordion-trigger-icon"]')
     await trigger.focus()
     await page.keyboard.press("Enter")
     expect(await isOpen(item(section, "Product Information"))).toBe(true)
-    await expect(trigger.locator("svg.lucide-chevron-up")).toBeVisible()
-    await expect(trigger.locator("svg.lucide-chevron-down")).toBeHidden()
+    await expect(icons.last()).toBeVisible()
+    await expect(icons.first()).toBeHidden()
     await page.keyboard.press("Space")
     expect(await isOpen(item(section, "Product Information"))).toBe(false)
-    await expect(trigger.locator("svg.lucide-chevron-down")).toBeVisible()
+    await expect(icons.first()).toBeVisible()
   })
 
   test("keeps items independent with multiple", async ({ page }) => {

@@ -170,6 +170,7 @@ function MenuSubmenuRootElement({ loopFocus, children }: MenuRootProps) {
       data-disabled={disabled ? "" : undefined}
       id={menu.triggerId}
       aria-haspopup="menu"
+      aria-expanded="false"
       aria-controls={menu.id}
       style={withStyle(style, { "anchor-name": menu.anchor })}
       {...props}

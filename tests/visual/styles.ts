@@ -1,16 +1,20 @@
 /**
- * Runs the visual tests in every style and in the menu color and RTL
- * variants (docs/adr/0030): installs the default preset with those options
- * into the repository root, renders and compares with upstream transformed
- * the same way, and finally restores the default install.
+ * Runs the visual tests in every style, in the menu color and RTL variants
+ * (docs/adr/0030) and with every icon library (docs/adr/0031): installs the
+ * default preset with those options into the repository root, renders and
+ * compares with upstream transformed the same way, and finally restores the
+ * default install.
  *
  * `--style <style>` and `--variant <variant>` (both repeatable; variants are
  * `rtl`, `menu-inverted`, `menu-default-translucent`,
- * `menu-inverted-translucent`) limit the run; without them everything runs.
- * Menu colors only change classes, so their runs skip the behavior tests.
+ * `menu-inverted-translucent`, `icons-tabler`, `icons-hugeicons`,
+ * `icons-phosphor`, `icons-remixicon`) limit the run; without them everything
+ * runs. Menu colors and icons only change markup, so their runs skip the
+ * behavior tests.
  */
 import path from "node:path"
 import { parseArgs } from "node:util"
+import { ICON_LIBRARIES } from "../../cli/src/icons"
 import { MENU_COLORS } from "../../cli/src/variants"
 import { config } from "../../generator.config"
 
@@ -31,6 +35,16 @@ const VARIANT_RUNS: Record<string, Run> = {
       {
         label: `${config.style}, menu ${color}`,
         install: ["--menu-color", color],
+        playwright: ["--grep-invert", "behave"],
+      },
+    ])
+  ),
+  ...Object.fromEntries(
+    ICON_LIBRARIES.filter((library) => library !== "lucide").map((library) => [
+      `icons-${library}`,
+      {
+        label: `${config.style}, ${library} icons`,
+        install: ["--icon-library", library],
         playwright: ["--grep-invert", "behave"],
       },
     ])

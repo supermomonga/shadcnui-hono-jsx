@@ -1,0 +1,64 @@
+{
+  "library": "remixicon",
+  "package": "remixicon",
+  "version": "4.9.1",
+  "headerLine": "Icons: remixicon@4.9.1 ({names}). Copyright (c) 2017–2026 Remix Design. Remix Icon License v1.0 (see LICENSE-shadcnui-hono-jsx.txt).",
+  "icons": {
+    "RiArrowDownSLine": {
+      "name": "arrow-down-s-line",
+      "source": "/** Remix Icon `arrow-down-s-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M11.9999 13.1714L16.9497 8.22168L18.3639 9.63589L11.9999 15.9999L5.63599 9.63589L7.0502 8.22168L11.9999 13.1714Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiArrowLeftSLine": {
+      "name": "arrow-left-s-line",
+      "source": "/** Remix Icon `arrow-left-s-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiArrowRightSLine": {
+      "name": "arrow-right-s-line",
+      "source": "/** Remix Icon `arrow-right-s-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiArrowUpSLine": {
+      "name": "arrow-up-s-line",
+      "source": "/** Remix Icon `arrow-up-s-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M11.9999 10.8284L7.0502 15.7782L5.63599 14.364L11.9999 8L18.3639 14.364L16.9497 15.7782L11.9999 10.8284Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiCalendarLine": {
+      "name": "calendar-line",
+      "source": "/** Remix Icon `calendar-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiCheckLine": {
+      "name": "check-line",
+      "source": "/** Remix Icon `check-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiCheckboxCircleLine": {
+      "name": "checkbox-circle-line",
+      "source": "/** Remix Icon `checkbox-circle-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiCloseCircleLine": {
+      "name": "close-circle-line",
+      "source": "/** Remix Icon `close-circle-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiCloseLine": {
+      "name": "close-line",
+      "source": "/** Remix Icon `close-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiErrorWarningLine": {
+      "name": "error-warning-line",
+      "source": "/** Remix Icon `error-warning-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiInformationLine": {
+      "name": "information-line",
+      "source": "/** Remix Icon `information-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 7H13V9H11V7ZM11 11H13V17H11V11Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiLoaderLine": {
+      "name": "loader-line",
+      "source": "/** Remix Icon `loader-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M11.9995 2C12.5518 2 12.9995 2.44772 12.9995 3V6C12.9995 6.55228 12.5518 7 11.9995 7C11.4472 7 10.9995 6.55228 10.9995 6V3C10.9995 2.44772 11.4472 2 11.9995 2ZM11.9995 17C12.5518 17 12.9995 17.4477 12.9995 18V21C12.9995 21.5523 12.5518 22 11.9995 22C11.4472 22 10.9995 21.5523 10.9995 21V18C10.9995 17.4477 11.4472 17 11.9995 17ZM20.6597 7C20.9359 7.47829 20.772 8.08988 20.2937 8.36602L17.6956 9.86602C17.2173 10.1422 16.6057 9.97829 16.3296 9.5C16.0535 9.02171 16.2173 8.41012 16.6956 8.13398L19.2937 6.63397C19.772 6.35783 20.3836 6.52171 20.6597 7ZM7.66935 14.5C7.94549 14.9783 7.78161 15.5899 7.30332 15.866L4.70525 17.366C4.22695 17.6422 3.61536 17.4783 3.33922 17C3.06308 16.5217 3.22695 15.9101 3.70525 15.634L6.30332 14.134C6.78161 13.8578 7.3932 14.0217 7.66935 14.5ZM20.6597 17C20.3836 17.4783 19.772 17.6422 19.2937 17.366L16.6956 15.866C16.2173 15.5899 16.0535 14.9783 16.3296 14.5C16.6057 14.0217 17.2173 13.8578 17.6956 14.134L20.2937 15.634C20.772 15.9101 20.9359 16.5217 20.6597 17ZM7.66935 9.5C7.3932 9.97829 6.78161 10.1422 6.30332 9.86602L3.70525 8.36602C3.22695 8.08988 3.06308 7.47829 3.33922 7C3.61536 6.52171 4.22695 6.35783 4.70525 6.63397L7.30332 8.13398C7.78161 8.41012 7.94549 9.02171 7.66935 9.5Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiMoreLine": {
+      "name": "more-line",
+      "source": "/** Remix Icon `more-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M4.5 10.5C3.675 10.5 3 11.175 3 12C3 12.825 3.675 13.5 4.5 13.5C5.325 13.5 6 12.825 6 12C6 11.175 5.325 10.5 4.5 10.5ZM19.5 10.5C18.675 10.5 18 11.175 18 12C18 12.825 18.675 13.5 19.5 13.5C20.325 13.5 21 12.825 21 12C21 11.175 20.325 10.5 19.5 10.5ZM12 10.5C11.175 10.5 10.5 11.175 10.5 12C10.5 12.825 11.175 13.5 12 13.5C12.825 13.5 13.5 12.825 13.5 12C13.5 11.175 12.825 10.5 12 10.5Z\" />\n    </svg>\n  )\n}\n"
+    },
+    "RiSideBarLine": {
+      "name": "side-bar-line",
+      "source": "/** Remix Icon `side-bar-line` icon, inlined (Remix Icon License v1.0, see LICENSE-shadcnui-hono-jsx.txt). */\nfunction __COMPONENT__({\n  class: className,\n  children,\n  ...props\n}: ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox=\"0 0 24 24\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width=\"24\"\n      height=\"24\"\n      fill=\"currentColor\"\n      {...props}\n      class={`remixicon ${className ?? \"\"}`}\n    >\n      <path d=\"M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM8 5H4V19H8V5ZM10 5V19H20V5H10Z\" />\n    </svg>\n  )\n}\n"
+    }
+  }
+}

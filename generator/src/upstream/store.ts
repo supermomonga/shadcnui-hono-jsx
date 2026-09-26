@@ -81,9 +81,9 @@ export class UpstreamStore {
     return path.join(this.dir, "licenses", "shadcn-package.LICENSE.md")
   }
 
-  /** LICENSE of the icon package (monitored only). */
-  get iconLicenseFile(): string {
-    return path.join(this.dir, "licenses", "lucide.LICENSE")
+  /** The license of an icon package (monitored only). */
+  iconLicenseFile(library: string): string {
+    return path.join(this.dir, "licenses", `${library}.LICENSE`)
   }
 
   readOptional(file: string): string | null {

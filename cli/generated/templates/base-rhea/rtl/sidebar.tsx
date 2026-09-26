@@ -701,6 +701,7 @@ function SidebarMenuSubButton({
     render
   )
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -708,6 +709,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"PanelLeftIcon","tabler":"IconLayoutSidebar","hugeicons":"SidebarLeftIcon","phosphor":"SidebarIcon","remixicon":"RiSideBarLine"}
 /** Lucide `panel-left` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function PanelLeftIcon({
   class: className,

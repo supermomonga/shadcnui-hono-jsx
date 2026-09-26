@@ -23,7 +23,7 @@ const empty: SyncResult = {
   tailwindCss: null,
   license: null,
   packageLicense: null,
-  iconLicense: null,
+  iconLicenses: [],
   lockChanged: false,
 }
 

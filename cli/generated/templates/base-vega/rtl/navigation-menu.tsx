@@ -550,6 +550,7 @@ function NavigationMenuIndicator({
     </NavigationMenuIconElement>
   )
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -557,6 +558,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"ChevronDownIcon","tabler":"IconChevronDown","hugeicons":"ArrowDown01Icon","phosphor":"CaretDownIcon","remixicon":"RiArrowDownSLine"}
 /** Lucide `chevron-down` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function ChevronDownIcon({
   class: className,

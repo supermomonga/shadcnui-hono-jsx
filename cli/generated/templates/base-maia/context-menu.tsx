@@ -249,6 +249,7 @@ function MenuSubmenuTriggerElement({
       data-disabled={disabled ? "" : undefined}
       id={menu.triggerId}
       aria-haspopup="menu"
+      aria-expanded="false"
       aria-controls={menu.id}
       style={withStyle(style, { "anchor-name": menu.anchor })}
       {...props}
@@ -749,6 +750,7 @@ function ContextMenuShortcut({
     />
   )
 }
+// icon-helper
 /** Like lucide-react, icons are hidden from assistive technology unless labelled. */
 function hasA11yProp(props: object): boolean {
   return Object.keys(props).some(
@@ -756,6 +758,7 @@ function hasA11yProp(props: object): boolean {
   )
 }
 
+// icon: {"lucide":"CheckIcon","tabler":"IconCheck","hugeicons":"Tick02Icon","phosphor":"CheckIcon","remixicon":"RiCheckLine"}
 /** Lucide `check` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function CheckIcon({
   class: className,
@@ -783,6 +786,7 @@ function CheckIcon({
   )
 }
 
+// icon: {"lucide":"ChevronRightIcon","tabler":"IconChevronRight","hugeicons":"ArrowRight01Icon","phosphor":"CaretRightIcon","remixicon":"RiArrowRightSLine"}
 /** Lucide `chevron-right` icon, inlined (ISC License, see LICENSE-shadcnui-hono-jsx.txt). */
 function ChevronRightIcon({
   class: className,

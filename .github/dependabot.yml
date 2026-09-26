@@ -10,8 +10,13 @@ updates:
     ignore:
       # Updated together with the vendored tailwind.css by the upstream-check workflow.
       - dependency-name: shadcn
-      # Inlined icons; updated with lucide-react (tests/visual) by upstream-check.
+      # Inlined icons; updated with the React packages (tests/visual) by
+      # upstream-check.
       - dependency-name: lucide
+      - dependency-name: "@tabler/icons"
+      - dependency-name: "@hugeicons/core-free-icons"
+      - dependency-name: "@phosphor-icons/core"
+      - dependency-name: remixicon
       # TypeScript 7 no longer ships the JS compiler API that honox's
       # @typescript-eslint/typescript-estree needs (peer typescript <6.1.0).
       # See docs/adr/0012-keep-typescript-6-until-honox-supports-typescript-7.md.
@@ -25,8 +30,13 @@ updates:
       minor-and-patch:
         update-types: [minor, patch]
     ignore:
-      # Must match the root lucide version; updated by upstream-check.
+      # Must match the root icon packages; updated by upstream-check.
       - dependency-name: lucide-react
+      - dependency-name: "@tabler/icons-react"
+      - dependency-name: "@hugeicons/core-free-icons"
+      - dependency-name: "@hugeicons/react"
+      - dependency-name: "@phosphor-icons/react"
+      - dependency-name: "@remixicon/react"
       # See docs/adr/0012-keep-typescript-6-until-honox-supports-typescript-7.md.
       - dependency-name: typescript
         update-types: ["version-update:semver-major"]
