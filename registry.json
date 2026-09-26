@@ -632,6 +632,36 @@
       }
     },
     {
+      "name": "direction",
+      "type": "registry:item",
+      "title": "Direction",
+      "description": "Hono JSX port of the shadcn/ui base-nova direction component.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/direction.tsx",
+          "type": "registry:file",
+          "target": "~/components/ui/direction.tsx"
+        },
+        {
+          "path": "LICENSE-shadcnui-hono-jsx.txt",
+          "type": "registry:file",
+          "target": "~/LICENSE-shadcnui-hono-jsx.txt"
+        }
+      ],
+      "docs": "Requires hono >= 4.12.34 with \"jsxImportSource\": \"hono/jsx\", and the supermomonga/shadcnui-hono-jsx/theme item for styles.",
+      "meta": {
+        "upstream": {
+          "name": "direction",
+          "style": "base-nova",
+          "contentSha256": "adc52fbbfec1ce5d59d435639959cfb47200ecdd95fb960eb64b4daedd6bec2a",
+          "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
+        },
+        "classification": "custom-adapter",
+        "mode": "adapter"
+      }
+    },
+    {
       "name": "drawer",
       "type": "registry:item",
       "title": "Drawer",

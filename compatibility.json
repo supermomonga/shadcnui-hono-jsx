@@ -553,22 +553,25 @@
     },
     {
       "name": "direction",
-      "status": "unsupported",
-      "conversion": null,
-      "classification": "unsupported",
+      "status": "experimental",
+      "conversion": "generated-with-adapter",
+      "classification": "custom-adapter",
       "upstream": {
         "url": "https://ui.shadcn.com/r/styles/base-nova/direction.json",
         "contentSha256": "adc52fbbfec1ce5d59d435639959cfb47200ecdd95fb960eb64b4daedd6bec2a",
         "commit": "98a1fe67b439324ddc857f47fbdce056600a4329"
       },
-      "visualParity": "not-applicable",
-      "apiParity": "none",
-      "accessibility": "not-applicable",
-      "clientJs": "not-applicable",
-      "knownDifferences": [],
+      "visualParity": "verified",
+      "apiParity": "partial",
+      "accessibility": "static-markup",
+      "clientJs": "none",
+      "knownDifferences": [
+        "`DirectionProvider` carries the direction through Hono context and renders no element, like Base UI; set `dir` on an element too. The generated components follow the CSS direction, so they do not need it."
+      ],
       "reasons": [
         "base-ui-primitive-unmapped:@base-ui/react/direction-provider#DirectionProvider",
-        "base-ui-primitive-unmapped:@base-ui/react/direction-provider#useDirection"
+        "base-ui-primitive-unmapped:@base-ui/react/direction-provider#useDirection",
+        "use-client-directive"
       ]
     },
     {

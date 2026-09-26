@@ -653,6 +653,19 @@ export const VISUAL_CASES: VisualCase[] = [
     ],
   },
   {
+    id: "direction/rtl",
+    component: "direction",
+    node: [
+      "div",
+      { dir: "rtl" },
+      [
+        "DirectionProvider",
+        { direction: "rtl" },
+        row(["Button", {}, "Primary"], ["Badge", {}, "New"]),
+      ],
+    ],
+  },
+  {
     id: "avatar/fallbacks",
     component: "avatar",
     node: row(

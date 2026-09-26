@@ -4,6 +4,7 @@
  * and document why it exists.
  */
 import { comboboxAdapter } from "./combobox"
+import { directionAdapter } from "./direction"
 import { inputGroupAdapter } from "./input-group"
 import { toastAdapter } from "./toast"
 import type { ComponentAdapter } from "./types"
@@ -12,6 +13,7 @@ export type { ComponentAdapter } from "./types"
 
 export const COMPONENT_ADAPTERS: Readonly<Record<string, ComponentAdapter>> = {
   combobox: comboboxAdapter,
+  direction: directionAdapter,
   "input-group": inputGroupAdapter,
   toast: toastAdapter,
 }

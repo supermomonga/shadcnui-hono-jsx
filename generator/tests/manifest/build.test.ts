@@ -51,9 +51,12 @@ describe("buildManifest", () => {
         visualParity: "verified",
         upstream: { contentSha256: lock.items[name]?.contentSha256 },
       })
-      expect(byName.get(name)?.knownDifferences).toContain(
-        "Accepts `class` instead of `className`."
-      )
+      // Every component that styles an element takes `class`.
+      if (byName.get(name)?.reasons.includes("classname-to-class")) {
+        expect(byName.get(name)?.knownDifferences).toContain(
+          "Accepts `class` instead of `className`."
+        )
+      }
     }
   )
 
@@ -66,12 +69,10 @@ describe("buildManifest", () => {
   })
 
   test("unsupported items list their blocking reasons", () => {
-    const direction = byName.get("direction")
-    expect(direction?.status).toBe("unsupported")
-    expect(direction?.conversion).toBeNull()
-    expect(direction?.reasons).toContain(
-      "base-ui-primitive-unmapped:@base-ui/react/direction-provider#DirectionProvider"
-    )
+    const calendar = byName.get("calendar")
+    expect(calendar?.status).toBe("unsupported")
+    expect(calendar?.conversion).toBeNull()
+    expect(calendar?.reasons).toContain("unknown-import:react-day-picker")
   })
 
   test("primitive notes flow into known differences", () => {
@@ -100,6 +101,6 @@ describe("README region", () => {
     expect(table.indexOf("| button | experimental | generated |")).toBeLessThan(
       table.indexOf("\n<details>\n")
     )
-    expect(table).toContain("| direction | unsupported |")
+    expect(table).toContain("| calendar | unsupported |")
   })
 })

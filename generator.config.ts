@@ -26,6 +26,7 @@ export const config: GeneratorConfig = {
     "combobox",
     "context-menu",
     "dialog",
+    "direction",
     "drawer",
     "dropdown-menu",
     "empty",

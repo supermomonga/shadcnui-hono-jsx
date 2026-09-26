@@ -249,6 +249,9 @@ describe("classification of the committed upstream snapshot", () => {
     "tooltip",
   ])
 
+  // Hand-written translations without browser behavior (component adapters).
+  const CUSTOM = new Set(["direction"])
+
   test.each([...config.components])(
     "%s (generation target) is direct, natively adapted or scripted",
     (name) => {
@@ -257,7 +260,9 @@ describe("classification of the committed upstream snapshot", () => {
           ? "script-adapter"
           : NATIVE.has(name)
             ? "native-adapter"
-            : "direct"
+            : CUSTOM.has(name)
+              ? "custom-adapter"
+              : "direct"
       )
     }
   )
