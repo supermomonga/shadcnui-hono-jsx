@@ -98,3 +98,25 @@ describe("Select (customizable native select, no JavaScript)", () => {
     ).toThrow("<SelectContent> must be a child of <Select>")
   })
 })
+
+describe("Select with a null item", () => {
+  // Upstream's placeholder items (`{ label: "MM", value: null }`) are shown
+  // while nothing is selected, as Base UI's empty value.
+  test("renders it with an empty value, selected without a default", async () => {
+    const html = await render(
+      <Select name="month">
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={null}>MM</SelectItem>
+          <SelectItem value="01">01</SelectItem>
+        </SelectContent>
+      </Select>
+    )
+    const [empty, first] = await query(html, 'option[data-slot="select-item"]')
+    expect(empty?.attributes).toMatchObject({ value: "", selected: "" })
+    expect(first?.attributes.value).toBe("01")
+    expect(first?.attributes).not.toHaveProperty("selected")
+  })
+})

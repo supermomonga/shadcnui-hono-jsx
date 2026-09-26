@@ -113,7 +113,10 @@ type SelectPositionerProps = {
 
 type SelectValueProps = ComponentProps<"span"> & { placeholder?: Child }
 
-type SelectItemProps = ComponentProps<"option"> & { value: string }
+/** `null` is Base UI's empty value: the item shown while nothing is selected. */
+type SelectItemProps = Omit<ComponentProps<"option">, "value"> & {
+  value: string | null
+}
 
 interface SelectContextValue {
   name: string | undefined
@@ -322,8 +325,8 @@ function SelectItemElement({ value, ...props }: SelectItemProps) {
   const select = useContext(SelectContext)
   return (
     <option
-      value={value}
-      selected={select?.value === value || undefined}
+      value={value ?? ""}
+      selected={(select?.value ?? null) === value || undefined}
       {...props}
     />
   )

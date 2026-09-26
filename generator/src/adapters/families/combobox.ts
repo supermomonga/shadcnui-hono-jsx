@@ -18,19 +18,22 @@ import {
   replacePartTypes,
 } from "./util"
 
-const HELPERS = `/** Renders list content for each item (\`ComboboxList\`, \`ComboboxCollection\`). */
+const HELPERS = `/** Renders list content for each item (\`ComboboxList\`, \`ComboboxCollection\`); items are typed as Base UI types them. */
 type ComboboxItemRenderer = {
-  bivarianceHack(item: unknown, index: number): Child
+  // biome-ignore lint/suspicious/noExplicitAny: Base UI's render functions take any items
+  bivarianceHack(item: any, index: number): Child
 }["bivarianceHack"]
 
 /** Renders the selected value(s) (\`ComboboxValue\`). */
 type ComboboxValueRenderer = {
-  bivarianceHack(value: unknown): Child
+  // biome-ignore lint/suspicious/noExplicitAny: Base UI's value render function takes any value
+  bivarianceHack(value: any): Child
 }["bivarianceHack"]
 
 /** Converts an item to a string (\`itemToStringLabel\`, \`itemToStringValue\`). */
 type ComboboxItemToString = {
-  bivarianceHack(item: unknown): string
+  // biome-ignore lint/suspicious/noExplicitAny: Base UI's converters take any items
+  bivarianceHack(item: any): string
 }["bivarianceHack"]
 
 type ComboboxRootProps = {
