@@ -149,4 +149,25 @@ export function Pick() {
     expect(text).toContain('<NativeSelect defaultValue="a" />')
     expect(text).toContain("<Button>ok</Button>")
   })
+
+  test("attribute names and comments do not keep an import", () => {
+    const text = tidyImports(`import { Button } from "@/components/ui/button"
+import { toast } from "@/components/ui/toast"
+import { Progress, ProgressValue } from "@/components/ui/progress"
+
+export function Show() {
+  return (
+    <>
+      {/* ProgressValue takes no render function. */}
+      <Progress value={50} />
+      <Button data-toast-trigger="">Show</Button>
+    </>
+  )
+}`)
+    expect(text).toContain('import { Button } from "@/components/ui/button"')
+    expect(text).toContain(
+      'import { Progress } from "@/components/ui/progress"'
+    )
+    expect(text).not.toContain("@/components/ui/toast")
+  })
 })

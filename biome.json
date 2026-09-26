@@ -70,7 +70,7 @@
       }
     },
     {
-      "includes": ["site/generated/**"],
+      "includes": ["site/generated/**", "site/examples/overrides/**"],
       "linter": {
         "rules": {
           "a11y": {
@@ -87,6 +87,9 @@
           "correctness": {
             "noUnusedVariables": "off",
             "noUnusedFunctionParameters": "off"
+          },
+          "suspicious": {
+            "noShadowRestrictedNames": "off"
           }
         }
       }

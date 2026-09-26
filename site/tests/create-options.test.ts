@@ -32,7 +32,7 @@ describe("the create page's options", () => {
   })
 
   test("have a picker each, and labels", () => {
-    expect(PICKERS.map((p) => p.param).sort()).toEqual(
+    expect(PICKERS.map((p) => p.param as string).sort()).toEqual(
       Object.keys(OPTIONS).sort()
     )
     for (const options of Object.values(OPTIONS)) {
