@@ -1,11 +1,7 @@
 {
   "worktree": {
-    "setup": [
-      "mise trust",
-      "bun install --frozen-lockfile"
-    ],
-    "teardown": [
-    ]
+    "setup": ["mise trust", "bun install --frozen-lockfile"],
+    "teardown": []
   },
   "metadataGeneration": {
     "title": {
