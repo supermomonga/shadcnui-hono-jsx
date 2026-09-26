@@ -271,7 +271,9 @@ Generated files are never edited by hand. See
 | `bun run verify` | Install for development, lint, type-check, test, check generated files |
 | `bun run test:visual` | Compare screenshots with upstream shadcn/ui (React, Playwright; separate package in `tests/visual`) |
 | `bun run test:visual:styles [--style <style>] [--variant <variant>]` | The same in every Base UI style, in the menu color and RTL variants and with every icon library (restores the default install afterwards) |
-| `bun run verify:full` | `verify` plus examples, the CLI install test (network) and visual parity |
+| `bun run verify:full` | `verify` plus the site build, examples, the CLI install test (network) and visual parity |
+| `bun run site:generate [--check]` | Translate shadcn/ui's docs examples and pages for the documentation site (`site/`) |
+| `bun run site:dev` / `bun run site:build` | Run or build the documentation site (HonoX); `site-deploy.yml` deploys it from main |
 
 Releases are cut with the Version Bump workflow in GitHub Actions: it opens a
 release pull request, and merging it tags the version and publishes the CLI
