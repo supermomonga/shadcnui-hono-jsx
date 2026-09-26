@@ -38,6 +38,7 @@ export const BROWSER_SPECS: Readonly<Record<string, string>> = {
   dialog: "modals.spec.ts",
   drawer: "drawer.spec.ts",
   sheet: "modals.spec.ts",
+  sidebar: "sidebar.spec.ts",
 }
 
 /** A prop value may itself be an element (for `render={<a />}`) or a list of strings. */
@@ -662,6 +663,91 @@ export const VISUAL_CASES: VisualCase[] = [
         "DirectionProvider",
         { direction: "rtl" },
         row(["Button", {}, "Primary"], ["Badge", {}, "New"]),
+      ],
+    ],
+  },
+  {
+    id: "sidebar/static",
+    component: "sidebar",
+    width: 320,
+    node: [
+      "SidebarProvider",
+      { class: "min-h-0" },
+      [
+        "Sidebar",
+        { collapsible: "none", class: "h-auto" },
+        ["SidebarHeader", {}, ["SidebarInput", { placeholder: "Search" }]],
+        [
+          "SidebarContent",
+          {},
+          [
+            "SidebarGroup",
+            {},
+            ["SidebarGroupLabel", {}, "Application"],
+            ["SidebarGroupAction", { title: "Add project" }, "+"],
+            [
+              "SidebarGroupContent",
+              {},
+              [
+                "SidebarMenu",
+                {},
+                [
+                  "SidebarMenuItem",
+                  {},
+                  [
+                    "SidebarMenuButton",
+                    { isActive: true },
+                    ["span", {}, "Inbox"],
+                  ],
+                  ["SidebarMenuBadge", {}, "24"],
+                ],
+                [
+                  "SidebarMenuItem",
+                  {},
+                  ["SidebarMenuButton", { size: "sm" }, ["span", {}, "Drafts"]],
+                  ["SidebarMenuAction", {}, "…"],
+                ],
+                [
+                  "SidebarMenuItem",
+                  {},
+                  [
+                    "SidebarMenuButton",
+                    { variant: "outline", size: "lg" },
+                    ["span", {}, "Projects"],
+                  ],
+                  [
+                    "SidebarMenuSub",
+                    {},
+                    [
+                      "SidebarMenuSubItem",
+                      {},
+                      [
+                        "SidebarMenuSubButton",
+                        { href: "#design", isActive: true },
+                        ["span", {}, "Design"],
+                      ],
+                    ],
+                    [
+                      "SidebarMenuSubItem",
+                      {},
+                      [
+                        "SidebarMenuSubButton",
+                        { href: "#research", size: "sm" },
+                        ["span", {}, "Research"],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ],
+        ["SidebarSeparator", {}],
+        [
+          "SidebarFooter",
+          {},
+          ["SidebarMenuButton", {}, ["span", {}, "Settings"]],
+        ],
       ],
     ],
   },

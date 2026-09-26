@@ -34,6 +34,7 @@ describe("buildManifest", () => {
     "menubar",
     "navigation-menu",
     "scroll-area",
+    "sidebar",
     "slider",
     "tabs",
     "toast",

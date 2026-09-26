@@ -14,6 +14,11 @@ export interface ComponentAdapter {
   resolves: readonly string[]
   /** User-visible differences introduced by the adapter. */
   notes: readonly string[]
+  /**
+   * `native-structure`: the markup differs from upstream's (for example
+   * attributes a client script reads), so visual tests compare only pixels.
+   */
+  domParity?: "exact" | "native-structure"
   /** Extra transform steps, each inserted after the named pipeline step. */
   steps?: readonly { after: string; step: TransformStep }[]
 }

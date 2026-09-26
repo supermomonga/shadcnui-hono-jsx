@@ -104,7 +104,10 @@ function isTypePosition(node: Node): boolean {
  */
 function useRenderShape(call: Node): "canonical" | "other" {
   if (!Node.isCallExpression(call)) return "other"
-  if (!Node.isReturnStatement(call.getParent())) return "other"
+  // Returned directly, or kept in a variable (`const comp = useRender(...)`).
+  const parent = call.getParent()
+  if (!Node.isReturnStatement(parent) && !Node.isVariableDeclaration(parent))
+    return "other"
   const [arg, ...rest] = call.getArguments()
   if (!arg || rest.length > 0 || !Node.isObjectLiteralExpression(arg))
     return "other"

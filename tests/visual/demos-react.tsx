@@ -155,6 +155,21 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./.upstream/sheet"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarTrigger,
+} from "./.upstream/sidebar"
 import { Slider } from "./.upstream/slider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./.upstream/tabs"
 import { Toaster, toast } from "./.upstream/toast"
@@ -805,6 +820,53 @@ function ToastServerDemo() {
   )
 }
 
+const SIDEBAR_ITEMS = ["Inbox", "Drafts", "Sent", "Archive"]
+
+function SidebarDemo() {
+  return (
+    <SidebarProvider>
+      <Sidebar collapsible="icon">
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg">
+                <span>Acme Inc.</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Mail</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {SIDEBAR_ITEMS.map((item) => (
+                  <SidebarMenuItem key={item}>
+                    <SidebarMenuButton
+                      tooltip={item}
+                      isActive={item === "Inbox"}
+                    >
+                      <span>{item}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarRail />
+      </Sidebar>
+      <SidebarInset>
+        <header className="flex h-12 items-center gap-2 border-b px-4">
+          <SidebarTrigger />
+          <span className="text-sm">Inbox</span>
+        </header>
+        <div className="p-4 text-sm">Messages</div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main className="flex w-96 flex-col gap-6 p-8">
@@ -903,6 +965,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   combobox: () => <ComboboxDemo />,
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
+  sidebar: () => <SidebarDemo />,
   toast: () => <ToastDemo />,
   "toast-server": () => <ToastServerDemo />,
   drawer: () => <DrawerDemo />,

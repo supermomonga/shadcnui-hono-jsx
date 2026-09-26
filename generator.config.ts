@@ -50,6 +50,7 @@ export const config: GeneratorConfig = {
     "select",
     "separator",
     "sheet",
+    "sidebar",
     "skeleton",
     "slider",
     "spinner",

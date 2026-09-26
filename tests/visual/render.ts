@@ -8,11 +8,18 @@
  *
  * Output: .output/{hono,react}.html, .output/style.css, .output/cases.json
  */
-import { mkdirSync, rmSync, writeFileSync } from "node:fs"
+import {
+  copyFileSync,
+  mkdirSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs"
 import path from "node:path"
 import { jsx } from "hono/jsx"
 import { createElement, type ReactNode } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
+import { COMPONENT_ADAPTERS } from "../../generator/src/adapters/components"
 import { findFamilyRule } from "../../generator/src/adapters/families"
 import { collectFacts } from "../../generator/src/analyzer/facts"
 import { UpstreamStore } from "../../generator/src/upstream/store"
@@ -42,7 +49,10 @@ function applyInstallMarkers(source: string): string {
     .map((line) =>
       line.startsWith("import ") || line.startsWith("} from ")
         ? line
-            .replace(/"@\/registry\/[^/]+\/ui\/([a-z0-9-]+)"/, '"./$1"')
+            .replace(
+              /"@\/registry\/[^/]+\/(?:ui|hooks)\/([a-z0-9-]+)"/,
+              '"./$1"'
+            )
             .replace(
               /"@\/app\/\(create\)\/components\/icon-placeholder"/,
               '"./icon-placeholder"'
@@ -79,6 +89,10 @@ function writeUpstreamSources(): void {
   rmSync(UPSTREAM, { recursive: true, force: true })
   mkdirSync(UPSTREAM, { recursive: true })
   writeFileSync(path.join(UPSTREAM, "icon-placeholder.tsx"), ICON_PLACEHOLDER)
+  // Upstream hooks are not snapshotted; tests/visual/hooks holds copies.
+  for (const hook of readdirSync(path.join(HERE, "hooks"))) {
+    copyFileSync(path.join(HERE, "hooks", hook), path.join(UPSTREAM, hook))
+  }
   for (const name of config.components) {
     const [file] = store.readItem(name).files ?? []
     if (!file) throw new Error(`${name} has no upstream file`)
@@ -207,22 +221,25 @@ function section(
 }
 
 /**
- * Components built on a `native-structure` family (docs/adr/0019): native
- * elements replace Base UI's markup, so only pixels and icons are compared.
+ * Components built on a `native-structure` family (docs/adr/0019), or whose
+ * component adapter declares it: their markup differs from upstream's, so
+ * only pixels and icons are compared.
  */
 function nativeStructureComponents(): Set<string> {
   const store = new UpstreamStore(ROOT, config.style)
   return new Set(
-    config.components.filter((name) =>
-      collectFacts(store.readItem(name)).files.some((file) =>
-        file.imports.some((imp) =>
-          imp.named.some(
-            (named) =>
-              findFamilyRule(imp.module, named.name)?.domParity ===
-              "native-structure"
+    config.components.filter(
+      (name) =>
+        COMPONENT_ADAPTERS[name]?.domParity === "native-structure" ||
+        collectFacts(store.readItem(name)).files.some((file) =>
+          file.imports.some((imp) =>
+            imp.named.some(
+              (named) =>
+                findFamilyRule(imp.module, named.name)?.domParity ===
+                "native-structure"
+            )
           )
         )
-      )
     )
   )
 }

@@ -21,6 +21,7 @@ export default defineConfig({
     "scroll-area.spec.ts",
     "drawer.spec.ts",
     "toast.spec.ts",
+    "sidebar.spec.ts",
   ],
   outputDir: "test-results",
   fullyParallel: false,

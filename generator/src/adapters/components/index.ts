@@ -6,6 +6,7 @@
 import { comboboxAdapter } from "./combobox"
 import { directionAdapter } from "./direction"
 import { inputGroupAdapter } from "./input-group"
+import { sidebarAdapter } from "./sidebar"
 import { toastAdapter } from "./toast"
 import type { ComponentAdapter } from "./types"
 
@@ -15,5 +16,6 @@ export const COMPONENT_ADAPTERS: Readonly<Record<string, ComponentAdapter>> = {
   combobox: comboboxAdapter,
   direction: directionAdapter,
   "input-group": inputGroupAdapter,
+  sidebar: sidebarAdapter,
   toast: toastAdapter,
 }
