@@ -1,11 +1,13 @@
 /**
- * Checks the built site (dist/): every page exists, internal links resolve,
- * no React prop leaks into the HTML, and the output stays within Cloudflare's
- * static asset limits (20,000 files, 25 MiB per file on the Free plan).
+ * Checks the built site (dist/): every page exists, internal links and the
+ * head's links (icons, social image, oEmbed) resolve, no React prop leaks
+ * into the HTML, and the output stays within Cloudflare's static asset limits
+ * (20,000 files, 25 MiB per file on the Free plan).
  */
 import { readdirSync, readFileSync, statSync } from "node:fs"
 import path from "node:path"
 import catalog from "../../cli/generated/catalog.json"
+import { siteConfig } from "../app/lib/site"
 
 const dist = path.resolve(import.meta.dirname, "../dist")
 const failures: string[] = []
@@ -46,18 +48,46 @@ const pages = [
   "/docs.html",
   "/docs/components.html",
   "/create.html",
+  "/og.png",
+  "/favicon.ico",
+  "/apple-touch-icon.png",
+  "/manifest.webmanifest",
+  "/embed/button.html",
+  "/oembed/button.json",
   ...catalog.items.map((item) => `/docs/components/${item.name}.html`),
 ]
+if (relative.has("/og-image.html"))
+  failures.push("the dev-only /og-image is built")
 for (const page of pages) {
   if (!relative.has(page)) failures.push(`missing ${page}`)
 }
 
-/** Internal links of a page, and whether it renders React's className. */
+/** The path of a URL on the site, or undefined for other sites. */
+function sitePath(url: string): string | undefined {
+  const parsed = new URL(url, siteConfig.url)
+  return parsed.origin === siteConfig.url ? parsed.pathname : undefined
+}
+
+/**
+ * Internal links of a page, the head's links (icons, canonical, oEmbed, the
+ * social image), and whether it renders React's className.
+ */
 async function inspect(html: string) {
   const links: string[] = []
+  const head: string[] = []
   const inExamples: string[] = []
   let className = false
   await new HTMLRewriter()
+    .on("head link[href]", {
+      element(element) {
+        head.push(element.getAttribute("href") ?? "")
+      },
+    })
+    .on("meta[property='og:image']", {
+      element(element) {
+        head.push(element.getAttribute("content") ?? "")
+      },
+    })
     .on("*", {
       element(element) {
         if (element.hasAttribute("classname")) className = true
@@ -77,21 +107,42 @@ async function inspect(html: string) {
     .transform(new Response(html))
     .text()
   for (const link of inExamples) links.splice(links.indexOf(link), 1)
-  return { links, className }
+  return { links, head, className }
 }
 
 for (const file of files.filter((f) => f.endsWith(".html"))) {
   const html = readFileSync(file, "utf8")
   const name = path.relative(dist, file)
-  const { links, className } = await inspect(html)
+  const { links, head, className } = await inspect(html)
   if (className) failures.push(`${name} renders className`)
   // The create page's previews are upstream's examples.
   if (name.startsWith("previews/")) continue
+  for (const url of head) {
+    const href = sitePath(url)
+    if (href && !resolves(href))
+      failures.push(`${name} links to missing ${url}`)
+  }
   for (const link of links) {
     const href = link.replace(/[#?].*$/, "")
     if (href && !href.startsWith("/api/") && !resolves(href)) {
       failures.push(`${name} links to missing ${href}`)
     }
+  }
+}
+
+// The oEmbed responses embed pages that exist.
+for (const file of files.filter((f) =>
+  f.includes(`${path.sep}oembed${path.sep}`)
+)) {
+  const name = path.relative(dist, file)
+  const response = JSON.parse(readFileSync(file, "utf8")) as {
+    html: string
+    thumbnail_url: string
+  }
+  const src = /<iframe src="([^"]+)"/.exec(response.html)?.[1] ?? ""
+  for (const url of [src, response.thumbnail_url]) {
+    const href = sitePath(url)
+    if (!href || !resolves(href)) failures.push(`${name} embeds missing ${url}`)
   }
 }
 
