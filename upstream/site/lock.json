@@ -1,6 +1,14 @@
 {
   "commit": "98a1fe67b439324ddc857f47fbdce056600a4329",
   "files": {
+    "create/base-colors.ts": {
+      "path": "apps/v4/registry/base-colors.ts",
+      "blob": "3523db36be1064102e96b4ef63fc04dc384223e9"
+    },
+    "create/themes.ts": {
+      "path": "apps/v4/registry/themes.ts",
+      "blob": "80fdfba3a7d0dc2cb8ebe6234a608778b2ed8c07"
+    },
     "docs/accordion.mdx": {
       "path": "apps/v4/content/docs/components/base/accordion.mdx",
       "blob": "b1c6758a24a91d4820c38b13f3eee9b1c7b263cd"

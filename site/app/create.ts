@@ -8,16 +8,19 @@
 import {
   decodePreset,
   encodePreset,
-  generateRandomConfig,
   isPresetCode,
   type PresetConfig,
 } from "../../cli/generated/shadcn-preset.js"
 import { commandVariants, PACKAGE_MANAGERS } from "./lib/commands"
 import {
   DEFAULT_CONFIG,
+  isTranslucent,
   NAMED_PRESETS,
+  normalizeConfig,
   OPTIONS,
   type Param,
+  randomConfig,
+  themesFor,
 } from "./lib/create-options"
 import { CLI } from "./lib/site"
 
@@ -51,7 +54,7 @@ function read(): State {
   const params = new URLSearchParams(location.search)
   const item = params.get("item")
   return {
-    config: { ...(presetFrom(params.get("preset")) ?? DEFAULT_CONFIG) },
+    config: normalizeConfig(presetFrom(params.get("preset")) ?? DEFAULT_CONFIG),
     item: item && data.items.includes(item) ? item : defaultItem,
     rtl: params.get("rtl") === "true",
     pointer: params.get("pointer") === "true",
@@ -113,7 +116,7 @@ async function writeTheme() {
 }
 
 function post() {
-  const config = { ...state.config, ...preview }
+  const config = normalizeConfig({ ...state.config, ...preview })
   frame?.contentWindow?.postMessage(
     {
       type: "design-system",
@@ -127,7 +130,27 @@ function post() {
   )
 }
 
+/** Hides and disables the options upstream does not offer with the current choices. */
+function renderAvailability() {
+  const themes = themesFor(state.config.baseColor)
+  const dark = document.documentElement.classList.contains("dark")
+  for (const option of document.querySelectorAll<HTMLButtonElement>(
+    "[data-picker-option]"
+  )) {
+    const { param, value = "" } = option.dataset
+    option.hidden =
+      (param === "theme" || param === "chartColor") && !themes.includes(value)
+    option.disabled =
+      (param === "menuAccent" &&
+        value === "bold" &&
+        isTranslucent(state.config.menuColor)) ||
+      // Inverted menus are the dark ones: nothing to invert in dark mode.
+      (param === "menuColor" && dark && value.startsWith("inverted"))
+  }
+}
+
 function render() {
+  renderAvailability()
   const values: Record<string, string> = {
     ...(state.config as unknown as Record<string, string>),
     item: state.item,
@@ -183,6 +206,7 @@ function render() {
 
 function set(next: Partial<State>) {
   state = { ...state, ...next }
+  state.config = normalizeConfig(state.config)
   render()
 }
 
@@ -191,12 +215,8 @@ function choose(param: string, value: string) {
     set({ item: value })
     return
   }
-  const config = { ...state.config, [param]: value } as PresetConfig
-  // A base color's own theme follows the base color, as upstream's picker does.
-  if (param === "baseColor" && state.config.theme === state.config.baseColor) {
-    config.theme = value as PresetConfig["theme"]
-  }
-  set({ config })
+  // set() moves a theme the new base color does not allow to its own.
+  set({ config: { ...state.config, [param]: value } as PresetConfig })
 }
 
 document.addEventListener("click", (event) => {
@@ -209,7 +229,7 @@ document.addEventListener("click", (event) => {
     return
   }
   if (target.closest("[data-random]")) {
-    set({ config: generateRandomConfig() })
+    set({ config: randomConfig() })
   } else if (target.closest("[data-reset]")) {
     set({ config: { ...DEFAULT_CONFIG }, rtl: false, pointer: false })
   } else if (target.closest("[data-copy-preset]")) {
@@ -231,7 +251,8 @@ document.addEventListener("pointerover", (event) => {
     !option ||
     !param ||
     ["item", "style", "menuColor"].includes(param) ||
-    !option.dataset.value
+    !option.dataset.value ||
+    (option as HTMLButtonElement).disabled
   ) {
     return
   }
@@ -301,7 +322,10 @@ window.addEventListener("message", (event) => {
 })
 
 // Keep the page's dark mode and the frame's in step.
-new MutationObserver(post).observe(document.documentElement, {
+new MutationObserver(() => {
+  renderAvailability()
+  post()
+}).observe(document.documentElement, {
   attributes: true,
   attributeFilter: ["class"],
 })

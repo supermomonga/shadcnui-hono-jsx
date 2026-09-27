@@ -11,6 +11,9 @@
  *   (`apps/v4/app/(app)/(root)/cards/`).
  * - `registry/<name>.json`: the base-nova `registry:example` items the create
  *   page previews, and the `example` helper they use.
+ * - `create/themes.ts`, `create/base-colors.ts`: the themes and base colors
+ *   the create page offers (`apps/v4/registry/`), which ui.shadcn.com/init
+ *   accepts.
  *
  * The GitHub sources come from one resolved commit; a file is fetched only
  * when its blob changed. Registry examples are the same in every style apart
@@ -34,6 +37,10 @@ const REPOSITORY = "shadcn-ui/ui"
 const DOCS_DIR = "apps/v4/content/docs/components/base"
 const EXAMPLES_DIR = "apps/v4/examples/base"
 const HOME_DIR = "apps/v4/app/(app)/(root)/cards"
+const CREATE_FILES = {
+  "create/themes.ts": "apps/v4/registry/themes.ts",
+  "create/base-colors.ts": "apps/v4/registry/base-colors.ts",
+}
 const REGISTRY_STYLE = "base-nova"
 
 export interface SiteSourcesLock {
@@ -59,6 +66,8 @@ export interface SiteSourcesOptions {
   /** Components the generator translates. */
   components: readonly string[]
   registryBaseUrl: string
+  /** shadcn-ui/ui commit of the GitHub sources; main's head by default. */
+  commit?: string | undefined
   fetchImpl?: FetchLike
   githubToken?: string | undefined
 }
@@ -198,10 +207,9 @@ export async function syncSiteSources(
   }
 
   // GitHub sources, all from one commit.
-  const commit = await resolveUpstreamHead({
-    fetchImpl,
-    token: options.githubToken,
-  })
+  const commit =
+    options.commit ??
+    (await resolveUpstreamHead({ fetchImpl, token: options.githubToken }))
   let tree: Map<string, string> | null = null
   if (!commit) {
     changes.skipped = "the shadcn-ui/ui commit could not be resolved"
@@ -245,6 +253,11 @@ export async function syncSiteSources(
     for (const mdx of sources.values()) {
       for (const name of previewNames(mdx)) {
         await fetchFile(`examples/${name}.tsx`, `${EXAMPLES_DIR}/${name}.tsx`)
+      }
+    }
+    for (const [snapshot, upstream] of Object.entries(CREATE_FILES)) {
+      if (!(await fetchFile(snapshot, upstream))) {
+        throw new Error(`${upstream} is not in ${REPOSITORY}@${commit}`)
       }
     }
     for (const upstream of tree.keys()) {

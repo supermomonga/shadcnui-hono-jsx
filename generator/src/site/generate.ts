@@ -8,6 +8,7 @@
  * - `docs/<component>.mdx`: the component pages.
  * - `icons.tsx`: the icons the examples import from `@/components/icons`.
  * - `manifest.json`: which page each example belongs to.
+ * - `themes.json`: the themes and base colors the create page offers.
  */
 import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs"
 import path from "node:path"
@@ -16,6 +17,7 @@ import { REGISTRY_OVERRIDES } from "../../../site/examples/registry-overrides"
 import { formatWithBiome } from "../emit/format"
 import { ROOT } from "../paths"
 import { previewNames, SiteSourcesStore } from "../upstream/site-sources"
+import { parseCreateThemes } from "./create-themes"
 import { type DocsContext, transformDocs } from "./docs"
 import { buildIconsModule, type IconUse } from "./icons-module"
 import {
@@ -299,6 +301,20 @@ export function generateSite(): SiteOutput {
   output.files.set(
     "manifest.json",
     format(`${JSON.stringify(manifest, null, 2)}\n`, "manifest.json")
+  )
+  output.files.set(
+    "themes.json",
+    format(
+      `${JSON.stringify(
+        parseCreateThemes(
+          store.read("create/themes.ts"),
+          store.read("create/base-colors.ts")
+        ),
+        null,
+        2
+      )}\n`,
+      "themes.json"
+    )
   )
   return output
 }

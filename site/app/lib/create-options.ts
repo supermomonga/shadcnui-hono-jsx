@@ -1,12 +1,13 @@
 /**
  * The choices of the Create page: the values of the pinned `shadcn/preset`
- * (so preset codes are ui.shadcn.com's), with labels for display. Shared by
- * the server-rendered customizer and its client controller.
+ * (so preset codes are ui.shadcn.com's), with labels for display, and the
+ * themes and base colors of upstream's registry (generated/themes.json),
+ * which are the ones ui.shadcn.com/init accepts. Shared by the
+ * server-rendered customizer and its client controller.
  */
 import namedPresets from "../../../cli/generated/named-presets.json"
 import {
-  PRESET_BASE_COLORS,
-  PRESET_CHART_COLORS,
+  generateRandomConfig,
   PRESET_FONT_HEADINGS,
   PRESET_FONTS,
   PRESET_ICON_LIBRARIES,
@@ -14,9 +15,9 @@ import {
   PRESET_MENU_COLORS,
   PRESET_RADII,
   PRESET_STYLES,
-  PRESET_THEMES,
   type PresetConfig,
 } from "../../../cli/generated/shadcn-preset.js"
+import upstreamThemes from "../../generated/themes.json"
 
 export type Param = Exclude<keyof PresetConfig, "chartColor"> | "chartColor"
 
@@ -79,27 +80,23 @@ const ICON_LABELS: Record<string, string> = {
 
 const swatch = (name: string) => `var(--color-${name}-500)`
 
+const themeOptions = upstreamThemes.themes.map(({ name, title }) => ({
+  value: name,
+  label: title,
+  swatch: swatch(name),
+}))
+
 export const OPTIONS: Record<Param, Option[]> = {
   style: PRESET_STYLES.map((value) => ({
     value,
     label: label(value),
     description: STYLE_DESCRIPTIONS[value],
   })),
-  baseColor: PRESET_BASE_COLORS.map((value) => ({
-    value,
-    label: label(value),
-    swatch: swatch(value),
-  })),
-  theme: PRESET_THEMES.map((value) => ({
-    value,
-    label: label(value),
-    swatch: swatch(value),
-  })),
-  chartColor: PRESET_CHART_COLORS.map((value) => ({
-    value,
-    label: label(value),
-    swatch: swatch(value),
-  })),
+  baseColor: themeOptions.filter((option) =>
+    upstreamThemes.baseColors.includes(option.value)
+  ),
+  theme: themeOptions,
+  chartColor: themeOptions,
   fontHeading: PRESET_FONT_HEADINGS.map((value) => ({
     value,
     label: value === "inherit" ? "Same as Font" : label(value),
@@ -142,3 +139,65 @@ export const DEFAULT_CONFIG = (namedPresets as Record<string, PresetConfig>)
   .nova as PresetConfig
 
 export const NAMED_PRESETS = namedPresets as Record<string, PresetConfig>
+
+/**
+ * The themes, and chart colors, upstream allows with a base color: its own
+ * and the colored ones (getThemesForBaseColor in apps/v4/registry/config.ts).
+ * ui.shadcn.com/init rejects the others.
+ */
+export function themesFor(baseColor: string): string[] {
+  return upstreamThemes.themes
+    .map((theme) => theme.name)
+    .filter(
+      (theme) =>
+        theme === baseColor || !upstreamThemes.baseColors.includes(theme)
+    )
+}
+
+export const isTranslucent = (menuColor: string) =>
+  menuColor.endsWith("-translucent")
+
+/**
+ * The design system as upstream's Create page keeps it
+ * (normalizeDesignSystemParams): a theme or chart color the base color does
+ * not allow becomes the first allowed one (the base color's own), a bold menu
+ * accent needs an opaque menu, and a heading font equal to the body font is
+ * "inherit". A base color upstream does not offer (a code can hold one)
+ * becomes the default.
+ */
+export function normalizeConfig(config: PresetConfig): PresetConfig {
+  const baseColor = upstreamThemes.baseColors.includes(config.baseColor)
+    ? config.baseColor
+    : DEFAULT_CONFIG.baseColor
+  const available = themesFor(baseColor)
+  const fallback = available[0] as PresetConfig["theme"]
+  return {
+    ...config,
+    baseColor,
+    theme: available.includes(config.theme) ? config.theme : fallback,
+    chartColor:
+      config.chartColor && available.includes(config.chartColor)
+        ? config.chartColor
+        : fallback,
+    menuAccent:
+      config.menuAccent === "bold" && isTranslucent(config.menuColor)
+        ? "subtle"
+        : config.menuAccent,
+    fontHeading:
+      config.fontHeading === config.font ? "inherit" : config.fontHeading,
+  }
+}
+
+/** A random design system, with a theme and chart color its base color allows, as upstream's Shuffle picks. */
+export function randomConfig(): PresetConfig {
+  const pick = <T>(values: readonly T[]) =>
+    values[Math.floor(Math.random() * values.length)] as T
+  const baseColor = pick(upstreamThemes.baseColors) as PresetConfig["baseColor"]
+  const available = themesFor(baseColor) as PresetConfig["theme"][]
+  return normalizeConfig({
+    ...generateRandomConfig(),
+    baseColor,
+    theme: pick(available),
+    chartColor: pick(available),
+  })
+}

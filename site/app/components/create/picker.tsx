@@ -64,7 +64,7 @@ export function Picker({
                 data-value={option.value}
                 aria-selected={option.value === value ? "true" : "false"}
                 class={cn(
-                  "group/option relative flex w-full cursor-default items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm font-medium text-neutral-100 outline-hidden select-none hover:bg-neutral-600 focus-visible:bg-neutral-600 dark:hover:bg-neutral-700/80 dark:focus-visible:bg-neutral-700/80",
+                  "group/option relative flex w-full cursor-default items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm font-medium text-neutral-100 outline-hidden select-none hover:bg-neutral-600 focus-visible:bg-neutral-600 disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-neutral-700/80 dark:focus-visible:bg-neutral-700/80",
                   option.description && "flex-col items-start gap-0"
                 )}
               >

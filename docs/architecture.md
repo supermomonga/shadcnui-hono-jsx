@@ -340,7 +340,8 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
 ui.shadcn.com ([ADR 0033](./adr/0033-build-the-documentation-site-with-honox-as-static-pages-and-a-worker-for-presets.md)).
 
 ```text
-bun run upstream:sync   → upstream/site/          shadcn/ui's docs pages, examples, home cards, registry examples
+bun run upstream:sync   → upstream/site/          shadcn/ui's docs pages, examples, home cards, registry examples,
+                                                  the create page's themes and base colors
 bun run site:generate   → site/generated/         those translated into Hono JSX (docs/adr/0034)
 bun run site:install    → site/.installs/<id>/    CLI init with the upstream snapshot (nova, nova-rtl, rhea)
 bun run site:build      → site/dist/              HonoX SSG: pages, MDX docs, Shiki at build time,
@@ -350,11 +351,16 @@ site-deploy.yml         → Cloudflare Workers      static assets + the Worker, 
 ```
 
 The create page previews the registry examples in every style and menu
-color: `scripts/previews.ts` installs each combination (with the RTL
-components, which render both directions) and renders the examples to
-static pages. The frame applies the rest at runtime: the preset's colors,
-radius and fonts from `/api/preset`, the direction, dark mode, and the icon
-library, swapping each marked icon for the library's SVG.
+color: `scripts/previews.ts` writes each combination's components (the RTL
+templates, which render both directions, finalized with their icons marked)
+and renders the examples to static pages. The frame applies the rest at
+runtime: the preset's colors, radius and fonts from `/api/preset`, the
+direction, dark mode, and the icon library, swapping each marked icon for the
+library's SVG. The page offers the themes and base colors of upstream's
+registry (`generated/themes.json`), which ui.shadcn.com/init accepts, and
+keeps choices valid as upstream's Create page does (`normalizeConfig` in
+`site/app/lib/create-options.ts`): a theme or chart color the base color does
+not allow falls back to the base color's own.
 
 The site imports components only from its installs (`@/components/ui/*` for
 the default preset), so it shows what `init` and `add` produce. The Worker
