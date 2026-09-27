@@ -283,7 +283,7 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Freshness of generated files | `bun run generate --check` | `bun run verify`, CI |
 | CLI install into a clean Hono project (`init`, `add` for every item, `apply`, with a local stand-in for ui.shadcn.com) | `tests/install/` | `bun run test:install`, CI `cli-install` |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
-| Documentation site: unit tests (commands, the preset API against `init`'s `theme.css`), the build, and a smoke test of `site/dist/` (pages, internal links, Cloudflare limits) | `site/tests/`, `site/scripts/smoke.ts` | `bun run site:test`, `bun run site:build`, CI `site` |
+| Documentation site: unit tests (commands, the preset API against `init`'s `theme.css`), the build, and a smoke test of `site/dist/` (pages, internal links, the head's links and oEmbed frames, Cloudflare limits) | `site/tests/`, `site/scripts/smoke.ts` | `bun run site:test`, `bun run site:build`, CI `site` |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
 | Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts`, `tests/visual/tabs.spec.ts`, `tests/visual/menu.spec.ts`, `tests/visual/hover.spec.ts`, `tests/visual/slider.spec.ts`, `tests/visual/input-group.spec.ts`, `tests/visual/combobox.spec.ts`, `tests/visual/navigation-menu.spec.ts`, `tests/visual/avatar.spec.ts`, `tests/visual/scroll-area.spec.ts`, `tests/visual/drawer.spec.ts`, `tests/visual/toast.spec.ts`, `tests/visual/sidebar.spec.ts` and `tests/visual/lite.spec.ts` (step-by-step behavior against Base UI) | `bun run test:visual`, CI `visual` |
 
@@ -346,6 +346,7 @@ bun run site:generate   → site/generated/         those translated into Hono J
 bun run site:install    → site/.installs/<id>/    CLI init with the upstream snapshot (nova, nova-rtl, rhea)
 bun run site:build      → site/dist/              HonoX SSG: pages, MDX docs, Shiki at build time,
                                                   then scripts/previews.ts: the create page's previews
+bun run site:images     → site/public/            og.png (the dev-only /og-image page) and the icons, committed
 site/worker/index.ts    → /api/preset             a preset's theme.css, built by cli/src/preset-theme.ts
 site-deploy.yml         → Cloudflare Workers      static assets + the Worker, custom domain
 ```
@@ -361,6 +362,14 @@ registry (`generated/themes.json`), which ui.shadcn.com/init accepts, and
 keeps choices valid as upstream's Create page does (`normalizeConfig` in
 `site/app/lib/create-options.ts`): a theme or chart color the base color does
 not allow falls back to the base color's own.
+
+Link previews come from each page's Open Graph tags and one social image,
+`site/public/og.png`: `scripts/images.ts` takes a screenshot of the dev
+server's `/og-image` page (the home page's cards beside the site's name) with
+Playwright, and renders the icons from `favicon.svg`. Component pages with a
+demo also offer an embed ([ADR 0035](./adr/0035-offer-component-demos-as-oembed-embeds-and-share-one-committed-social-image.md)):
+`/embed/<name>` shows the demo live, and `/oembed/<name>.json`, found through
+the page's discovery link, returns it as a `rich` oEmbed frame.
 
 The site imports components only from its installs (`@/components/ui/*` for
 the default preset), so it shows what `init` and `add` produce. The Worker

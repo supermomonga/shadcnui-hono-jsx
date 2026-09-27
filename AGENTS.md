@@ -20,6 +20,7 @@ generator (transformer, adapter, or config) and regenerate.
 | `components/ui/`, `styles/shadcn/`, `public/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `shadcnui-hono-jsx.json` at the root (git-ignored) | `bun run dev:install` |
 | `site/generated/**` (translated examples, component pages, icons) | `bun run site:generate` |
 | `site/.installs/`, `site/public/shadcn/`, `site/.cache/` (git-ignored) | `bun run site:install`, `bun run site:build` |
+| `site/public/og.png`, `favicon.ico`, `apple-touch-icon.png`, `icon-*.png` (the social image from `site/app/routes/og-image.tsx`, the icons from `favicon.svg`) | `bun run site:images` |
 
 Components reach users through the `shadcnui-hono-jsx` CLI in `cli/`
 (docs/adr/0029): it builds the theme from a shadcn/ui preset and installs the
@@ -61,7 +62,9 @@ reports a function that needs React, write an override in
 `site/examples/overrides/<example>.tsx` (Hono JSX, the components' native
 behavior or client scripts instead of state) and record it with the reported
 hash in `site/examples/overrides.ts`. Hand-written component pages go to
-`site/content/docs/components/`.
+`site/content/docs/components/`. Link previews share one social image; run
+`bun run site:images` when the home page's cards or the site's name change,
+and commit the images (docs/adr/0035).
 
 ## Commands
 
@@ -79,6 +82,7 @@ hash in `site/examples/overrides.ts`. Hand-written component pages go to
 | `bun run site:generate [--check]` | Translate the site's upstream examples and pages into `site/generated/` |
 | `bun run site:dev` | Install the site's components and run its Vite dev server |
 | `bun run site:build` | Build the documentation site into `site/dist/` (`site:smoke` checks it, `site:serve` serves it) |
+| `bun run site:images` | Render the site's social image and icons into `site/public/` (needs Playwright's Chromium) |
 | `bun run site:deploy` | Build and deploy the site with wrangler (CI does this from main) |
 
 To support another upstream component, add it to `components` in

@@ -37,7 +37,8 @@
     "site:smoke": "bun site/scripts/smoke.ts",
     "site:serve": "bun site/scripts/serve.ts",
     "site:deploy": "bun run site:build && bun run site:smoke && cd site && bunx wrangler@4.141.0 deploy",
-    "site:generate": "bun generator/src/cli/generate-site.ts"
+    "site:generate": "bun generator/src/cli/generate-site.ts",
+    "site:images": "bun run site:install && bun site/scripts/images.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",

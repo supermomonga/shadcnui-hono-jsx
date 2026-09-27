@@ -27,6 +27,7 @@
     "github-slugger": "2.0.0",
     "lucide": "1.48.0",
     "mdast-util-to-string": "4.0.0",
+    "playwright-core": "1.63.0",
     "remark-frontmatter": "5.0.0",
     "remark-gfm": "4.0.1",
     "remark-mdx-frontmatter": "6.0.0",
