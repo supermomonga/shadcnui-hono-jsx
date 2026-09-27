@@ -11,6 +11,10 @@ the CLI builds, and the upstream snapshot in `upstream/` are derived from
 `tailwind.css` and `shadcn/preset` module). The components are translated to
 Hono JSX by this project's generator.
 
+The documentation site in `site/` follows the design of the shadcn/ui website
+(`apps/v4` in the same repository): its layout and page components are
+modeled on it, and `site/app/styles/typeset.css` is copied from it.
+
 The CLI installs `LICENSE-shadcnui-hono-jsx.txt` with the components, which
 carries this notice (and this project's MIT notice for its own additions and
 modifications) into the receiving project. `upstream/licenses/` holds snapshots

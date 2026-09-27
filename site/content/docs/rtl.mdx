@@ -1,0 +1,26 @@
+---
+title: RTL
+description: Right-to-left layouts for Arabic, Hebrew and other RTL languages.
+---
+
+`init --rtl` installs right-to-left versions of the components, as `shadcn init --rtl` does upstream: physical classes like `ml-2` become logical ones like `ms-2`, directional icons flip, and popups open on the logical side.
+
+```bash
+npx shadcnui-hono-jsx@latest init --preset b0 --rtl
+```
+
+Then set the direction on your document:
+
+```tsx
+<html lang="ar" dir="rtl">
+```
+
+The components follow the CSS direction and need no provider. The client scripts read the direction for arrow keys, so keyboard navigation follows the layout too.
+
+To switch an existing project, run `apply` with `--rtl` or `--no-rtl`:
+
+```bash
+npx shadcnui-hono-jsx@latest apply --rtl
+```
+
+The RTL examples on the component pages render with these components.

@@ -1,0 +1,71 @@
+---
+title: Tooltip
+description: A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+upstream: https://ui.shadcn.com/docs/components/base/tooltip
+api: https://base-ui.com/react/components/tooltip#api-reference
+---
+
+<ComponentPreview name="tooltip-demo" />
+
+## Installation
+
+<ComponentInstall name="tooltip" />
+
+## Usage
+
+```tsx showLineNumbers
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+```
+
+```tsx showLineNumbers
+<Tooltip>
+  <TooltipTrigger>Hover</TooltipTrigger>
+  <TooltipContent>
+    <p>Add to library</p>
+  </TooltipContent>
+</Tooltip>
+```
+
+## Composition
+
+Use the following composition to build a `Tooltip`:
+
+```text
+Tooltip
+├── TooltipTrigger
+└── TooltipContent
+```
+
+## Side
+
+Use the `side` prop to change the position of the tooltip.
+
+<ComponentPreview name="tooltip-sides" />
+
+## With Keyboard Shortcut
+
+<ComponentPreview name="tooltip-keyboard" />
+
+## Disabled Button
+
+Show a tooltip on a disabled button by wrapping it with a span.
+
+<ComponentPreview name="tooltip-disabled" />
+
+## RTL
+
+To enable RTL support in shadcn/ui, see the [RTL configuration guide](/docs/rtl).
+
+<ComponentPreview name="tooltip-rtl" direction="rtl" />
+
+## Notes
+
+<ComponentNotes name="tooltip" />
+
+## API Reference
+
+See the [Base UI Tooltip](https://base-ui.com/react/components/tooltip#api-reference) documentation.

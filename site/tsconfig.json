@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["vite/client", "bun"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "paths": {
+      "@/components/ui/*": ["./.installs/nova/components/ui/*"],
+      "@/ui/nova-rtl/*": ["./.installs/nova-rtl/components/ui/*"],
+      "@/ui/rhea/*": ["./.installs/rhea/components/ui/*"],
+      "@/components/icons": ["./generated/icons.tsx"],
+      "@/*": ["./app/*"],
+      "@/components/language-selector": [
+        "./app/components/language-selector.tsx"
+      ]
+    },
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "app",
+    "scripts",
+    "worker",
+    "tests",
+    "generated",
+    "examples",
+    "vite.config.ts",
+    ".installs/*/components/ui"
+  ]
+}

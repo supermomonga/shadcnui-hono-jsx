@@ -127,3 +127,22 @@ jobs:
         with:
           name: visual-parity-report-${{ matrix.name }}
           path: tests/visual/playwright-report
+
+  # The documentation site (site/): static pages from HonoX and the /api
+  # Worker. site-deploy.yml deploys it from main.
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - run: bun install --frozen-lockfile
+      - run: bun run site:install
+      - run: bun run site:generate --check
+      - run: bun run site:typecheck
+      - run: bun run site:test
+      - run: bun run site:build
+      - run: bun run site:smoke
+      - run: bunx wrangler@4.141.0 deploy --dry-run --outdir "$RUNNER_TEMP/worker"
+        working-directory: site

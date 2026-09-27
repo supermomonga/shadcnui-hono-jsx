@@ -1,0 +1,66 @@
+---
+title: Installation
+description: How to install the theme and components in your Hono project.
+---
+
+<Callout>
+
+**Recommended:** Use [Create](/create) to build your preset visually and copy the setup command.
+
+</Callout>
+
+Choose the setup that matches your project.
+
+<div class="mt-6 grid gap-4 sm:grid-cols-2 sm:gap-6">
+  <LinkedCard href="/docs/installation/hono" class="items-start gap-1 p-6 text-sm md:p-6">
+    <div class="font-medium">Hono</div>
+    <div class="leading-relaxed text-muted-foreground">
+      Plain Hono on Bun, Node.js or Cloudflare Workers, with the Tailwind CLI.
+    </div>
+  </LinkedCard>
+  <LinkedCard href="/docs/installation/honox" class="items-start gap-1 p-6 text-sm md:p-6">
+    <div class="font-medium">HonoX</div>
+    <div class="leading-relaxed text-muted-foreground">
+      HonoX with Vite and <code>@tailwindcss/vite</code>.
+    </div>
+  </LinkedCard>
+</div>
+
+## Requirements
+
+- [Hono](https://hono.dev) 4.12.34 or newer (JSX security fixes; 4.13.9 or newer is recommended), with `"jsx": "react-jsx"` and `"jsxImportSource": "hono/jsx"` in `tsconfig.json`.
+- [Tailwind CSS](https://tailwindcss.com) v4.
+- Bun or Node.js 20 or newer to run the CLI. It runs with `npx`, `pnpm dlx`, `yarn dlx` or `bunx` and is not added to your dependencies.
+
+## What `init` does
+
+Run `init` once, in the root of your project:
+
+```bash
+npx shadcnui-hono-jsx@latest init --preset b0
+```
+
+It writes:
+
+| File | Content |
+| --- | --- |
+| `shadcnui-hono-jsx.json` | The preset and the `--rtl` and `--pointer` options. |
+| `styles/shadcn/theme.css` | The preset's CSS variables, fonts and Tailwind theme. |
+| `styles/shadcn/tailwind.css` | shadcn/ui's Tailwind utilities and variants. |
+| `LICENSE-shadcnui-hono-jsx.txt` | The license notices of the installed sources and icons. |
+
+and installs `tw-animate-css` and the preset's fonts (`@fontsource-variable/*`) with your package manager. The theme comes from ui.shadcn.com, like with `shadcn init`, so `init` needs network access.
+
+Components go to `components/ui/<name>.tsx` with `add`, together with the components they import:
+
+```bash
+npx shadcnui-hono-jsx@latest add button card
+```
+
+Import them with a path alias (`"paths": { "@/*": ["./*"] }` in `tsconfig.json`) or a relative path:
+
+```tsx
+import { Button } from "@/components/ui/button"
+```
+
+Keep `LICENSE-shadcnui-hono-jsx.txt` with the installed sources when you copy or redistribute them.

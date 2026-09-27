@@ -79,6 +79,20 @@ export const valid = [
   </Combobox>,
 ]
 
+// Items are typed as Base UI types them, so upstream's render functions
+// read their fields without annotations.
+const labelled = [{ label: "Next.js", value: "next" }]
+export const untypedItems = (
+  <Combobox items={labelled}>
+    <ComboboxInput placeholder="Select a framework" />
+    <ComboboxContent>
+      <ComboboxList>
+        {(item) => <ComboboxItem value={item.value}>{item.label}</ComboboxItem>}
+      </ComboboxList>
+    </ComboboxContent>
+  </Combobox>
+)
+
 export const invalid = [
   // @ts-expect-error: React's className is not accepted
   <ComboboxInput className="w-full" />,

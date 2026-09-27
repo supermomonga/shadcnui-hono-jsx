@@ -1,0 +1,89 @@
+---
+title: Radio Group
+description: A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time.
+upstream: https://ui.shadcn.com/docs/components/base/radio-group
+api: https://base-ui.com/react/components/radio-group#api-reference
+---
+
+<ComponentPreview name="radio-group-demo" />
+
+## Installation
+
+<ComponentInstall name="radio-group" />
+
+## Usage
+
+```tsx showLineNumbers
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+```
+
+```tsx showLineNumbers
+<RadioGroup defaultValue="option-one">
+  <div class="flex items-center gap-3">
+    <RadioGroupItem value="option-one" id="option-one" />
+    <Label for="option-one">Option One</Label>
+  </div>
+  <div class="flex items-center gap-3">
+    <RadioGroupItem value="option-two" id="option-two" />
+    <Label for="option-two">Option Two</Label>
+  </div>
+</RadioGroup>
+```
+
+## Composition
+
+Use the following composition to build a `RadioGroup`:
+
+```text
+RadioGroup
+├── RadioGroupItem
+└── RadioGroupItem
+```
+
+## Description
+
+Radio group items with a description using the `Field` component.
+
+<ComponentPreview name="radio-group-description" />
+
+## Choice Card
+
+Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection.
+
+<ComponentPreview name="radio-group-choice-card" />
+
+## Fieldset
+
+Use `FieldSet` and `FieldLegend` to group radio items with a label and description.
+
+<ComponentPreview name="radio-group-fieldset" />
+
+## Disabled
+
+Use the `disabled` prop on `RadioGroup` to disable all items.
+
+<ComponentPreview name="radio-group-disabled" />
+
+## Invalid
+
+Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show validation errors.
+
+<ComponentPreview name="radio-group-invalid" />
+
+## RTL
+
+To enable RTL support in shadcn/ui, see the [RTL configuration guide](/docs/rtl).
+
+<ComponentPreview
+  name="radio-group-rtl"
+  direction="rtl"
+/>
+
+## Notes
+
+<ComponentNotes name="radio-group" />
+
+## API Reference
+
+See the [Base UI Radio Group](https://base-ui.com/react/components/radio-group#api-reference) documentation.

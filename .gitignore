@@ -16,3 +16,9 @@ tests/visual/playwright-report/
 /public/shadcn/
 /LICENSE-shadcnui-hono-jsx.txt
 /shadcnui-hono-jsx.json
+
+# Documentation site (bun run site:install, site:previews)
+/site/.installs/
+/site/.cache/
+/site/public/shadcn/
+/site/public/previews/

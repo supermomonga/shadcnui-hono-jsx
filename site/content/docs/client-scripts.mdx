@@ -1,0 +1,65 @@
+---
+title: Client Scripts
+description: The small module scripts some components use for behavior the browser does not provide.
+---
+
+Most components need no JavaScript: Dialog, Popover, Select, Accordion, Checkbox and the other form controls are built on native elements. A few need behavior the browser does not provide, for example keyboard navigation in Tabs or menus. For those, `add` installs small module scripts into `public/shadcn/`. They have no dependencies, and each component page names the script it needs.
+
+Without its script a component still renders, in its server-rendered state.
+
+## Serving the scripts
+
+Serve `public/shadcn/` at `/shadcn/` and load the scripts on the pages that use the components:
+
+```tsx
+// Hono on Bun
+import { serveStatic } from "hono/bun"
+
+app.use("/shadcn/*", serveStatic({ root: "./public" }))
+
+// in your layout's <head>
+<script type="module" src="/shadcn/tabs.js" />
+```
+
+HonoX serves `public/` already; add the script tags to `app/routes/_renderer.tsx`.
+
+The scripts listen on the document instead of on each component, and scroll areas and toasts watch for inserted markup, so content inserted later (for example by htmx) works without initialization.
+
+## Scripts
+
+| Script | Components |
+| --- | --- |
+| `avatar.js` | Avatar |
+| `collapsible.js` | Collapsible |
+| `combobox.js` | Combobox |
+| `drawer.js` | Drawer |
+| `hover.js` | Hover Card, Tooltip, Sidebar |
+| `input-group.js` | Input Group, Combobox |
+| `menu.js` | Context Menu, Dropdown Menu, Menubar |
+| `navigation-menu.js` | Navigation Menu |
+| `scroll-area.js` | Scroll Area |
+| `sidebar.js` | Sidebar |
+| `slider.js` | Slider |
+| `tabs.js` | Tabs |
+| `toast.js` | Toast |
+
+`core.js` holds shared helpers; the other scripts import it, so keep it next to them.
+
+## Toasts
+
+Toasts are the one component with a client API. Render `<Toaster />` once per page, then add toasts from your own module scripts or declaratively:
+
+```tsx
+// in the page
+<Toaster toasts={saved ? [{ title: "Saved" }] : []} />
+<button data-toast-trigger data-toast-title="Copied">Copy</button>
+```
+
+```ts
+// in a module script
+import { toast } from "/shadcn/toast.js"
+
+toast.add({ title: "Saved", description: "Your changes were saved." })
+```
+
+Toasts known on the server, for example after a form post, render with `<Toaster toasts={...}>` and show without JavaScript.

@@ -1,0 +1,75 @@
+---
+title: Progress
+description: Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
+upstream: https://ui.shadcn.com/docs/components/base/progress
+api: https://base-ui.com/react/components/progress#api-reference
+---
+
+<ComponentPreview name="progress-demo" />
+
+## Installation
+
+<ComponentInstall name="progress" />
+
+## Usage
+
+```tsx showLineNumbers
+import { Progress } from "@/components/ui/progress"
+```
+
+```tsx showLineNumbers
+<Progress value={33} />
+```
+
+## Composition
+
+### With label and value
+
+Use `ProgressLabel` and `ProgressValue` to add a label and value display.
+
+```tsx showLineNumbers
+import {
+  Progress,
+  ProgressLabel,
+  ProgressValue,
+} from "@/components/ui/progress"
+
+;<Progress value={56} class="w-full max-w-sm">
+  <ProgressLabel>Upload progress</ProgressLabel>
+  <ProgressValue />
+</Progress>
+```
+
+```text
+Progress
+├── ProgressLabel
+├── ProgressValue
+└── ProgressTrack
+    └── ProgressIndicator
+```
+
+## Label
+
+Use `ProgressLabel` and `ProgressValue` to add a label and value display.
+
+<ComponentPreview name="progress-label" />
+
+## Controlled
+
+A progress bar that can be controlled by a slider.
+
+<ComponentPreview name="progress-controlled" />
+
+## RTL
+
+To enable RTL support in shadcn/ui, see the [RTL configuration guide](/docs/rtl).
+
+<ComponentPreview name="progress-rtl" direction="rtl" />
+
+## Notes
+
+<ComponentNotes name="progress" />
+
+## API Reference
+
+See the [Base UI Progress](https://base-ui.com/react/components/progress#api-reference) documentation.

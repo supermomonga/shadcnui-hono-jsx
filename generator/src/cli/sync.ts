@@ -10,6 +10,10 @@ import { collectFacts } from "../analyzer/facts"
 import { checkUpstreamLicenses } from "../licenses"
 import { ROOT } from "../paths"
 import { type ClassificationChange, renderSyncReport } from "../upstream/report"
+import {
+  renderSiteSourcesReport,
+  syncSiteSources,
+} from "../upstream/site-sources"
 import { UpstreamStore } from "../upstream/store"
 import { syncUpstream } from "../upstream/sync"
 import {
@@ -62,6 +66,13 @@ const result = await syncUpstream({
   githubToken: process.env.GITHUB_TOKEN,
 })
 const after = classifyAll()
+// The documentation site's sources (upstream/site/, bun run site:generate).
+const siteChanges = await syncSiteSources({
+  root: ROOT,
+  components: config.components,
+  registryBaseUrl: config.registryBaseUrl,
+  githubToken: process.env.GITHUB_TOKEN,
+})
 
 const list = (label: string, names: string[]) => {
   if (names.length > 0)
@@ -90,6 +101,15 @@ console.log(
   result.lockChanged
     ? "upstream/lock.json updated"
     : "upstream snapshot is up to date"
+)
+const siteChanged =
+  siteChanges.added.length +
+  siteChanges.changed.length +
+  siteChanges.removed.length
+console.log(
+  siteChanged > 0
+    ? `upstream/site/: ${siteChanged} file(s) changed`
+    : `upstream/site/ is up to date${siteChanges.skipped ? ` (GitHub sources kept: ${siteChanges.skipped})` : ""}`
 )
 
 const licenseProblems = checkUpstreamLicenses(
@@ -126,14 +146,14 @@ if (values.report) {
   }))
   writeFileSync(
     values.report,
-    renderSyncReport({
+    `${renderSyncReport({
       style: config.style,
       styles: config.styles,
       result,
       classifications,
       generated: config.components,
       licenseProblems,
-    })
+    })}\n${renderSiteSourcesReport(siteChanges)}`
   )
   console.log(`report written to ${values.report}`)
 }

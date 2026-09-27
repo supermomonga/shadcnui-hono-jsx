@@ -1,0 +1,112 @@
+---
+title: Hono
+description: Install shadcnui-hono-jsx in a Hono project on Bun, Node.js or Cloudflare Workers.
+---
+
+<Steps>
+
+<Step>Create a project</Step>
+
+Start with a Hono project, or use your own:
+
+```bash
+npm create hono@latest my-app
+```
+
+Make sure `tsconfig.json` uses Hono JSX:
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "paths": { "@/*": ["./*"] }
+  }
+}
+```
+
+<Step>Add Tailwind CSS</Step>
+
+```bash
+npm install tailwindcss @tailwindcss/cli
+```
+
+<Step>Run the CLI</Step>
+
+Set up the theme with your preset:
+
+```bash
+npx shadcnui-hono-jsx@latest init --preset b0
+```
+
+<Step>Import the theme</Step>
+
+Import the theme after Tailwind CSS, and let Tailwind scan the components:
+
+```css title="src/style.css"
+@import "tailwindcss";
+@import "../styles/shadcn/theme.css";
+@source "../components/ui";
+```
+
+Build the stylesheet into `public/`:
+
+```bash
+npx @tailwindcss/cli -i src/style.css -o public/style.css --watch
+```
+
+<Step>Add components</Step>
+
+```bash
+npx shadcnui-hono-jsx@latest add button card
+```
+
+<Step>Use them</Step>
+
+```tsx title="src/index.tsx"
+import { Hono } from "hono"
+import { serveStatic } from "hono/bun"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
+const app = new Hono()
+
+// Serves /style.css and the client scripts in public/shadcn/.
+app.use("/*", serveStatic({ root: "./public" }))
+
+app.get("/", (c) =>
+  c.html(
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/style.css" />
+      </head>
+      <body>
+        <Card class="max-w-sm">
+          <CardHeader>
+            <CardTitle>Account</CardTitle>
+          </CardHeader>
+          <CardContent>Your account settings.</CardContent>
+          <CardFooter>
+            <Button type="submit">Save</Button>
+          </CardFooter>
+        </Card>
+      </body>
+    </html>
+  )
+)
+
+export default app
+```
+
+On Node.js, import `serveStatic` from `@hono/node-server/serve-static`. On Cloudflare Workers, serve `public/` as [static assets](https://developers.cloudflare.com/workers/static-assets/) (`"assets": { "directory": "./public" }` in `wrangler.jsonc`).
+
+</Steps>
+
+Components that need a client script list it on their page; see [Client Scripts](/docs/client-scripts).

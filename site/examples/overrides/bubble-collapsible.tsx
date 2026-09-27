@@ -1,0 +1,66 @@
+import { cn } from "cn"
+import { ChevronDownIcon } from "@/components/icons"
+import { Bubble, BubbleContent } from "@/ui/rhea/bubble"
+import { buttonVariants } from "@/ui/rhea/button"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/ui/rhea/collapsible"
+
+const text = `The accessibility review found two focus states that were visually too subtle in dark mode.
+
+I checked the dialog, menu, and drawer paths because each one renders focusable controls inside a layered surface.
+
+The dialog and drawer are fine. The menu needs the hover and focus tokens split so keyboard focus stays visible when the pointer is not involved.
+
+I also recommend keeping the change in the style file instead of the primitive so the other themes can choose their own focus treatment later.`
+
+const previewLength = 180
+
+export function BubbleCollapsible() {
+  const isLong = text.length > previewLength
+  const preview = `${text.slice(0, previewLength)}...`
+
+  return (
+    <div class="flex w-full max-w-sm flex-col gap-8 py-12">
+      <Bubble variant="muted">
+        <BubbleContent>How can I help you today?</BubbleContent>
+      </Bubble>
+
+      <Bubble variant="muted" align="end">
+        <BubbleContent class="whitespace-pre-line">
+          <Collapsible class="group/collapsible">
+            {isLong ? (
+              <>
+                <div class="group-data-open/collapsible:hidden">{preview}</div>
+                <CollapsibleContent>{text}</CollapsibleContent>
+                <CollapsibleTrigger
+                  class={cn(
+                    buttonVariants({
+                      variant: "link",
+                      class: "gap-1 p-0 text-muted-foreground",
+                    })
+                  )}
+                >
+                  <span class="group-data-panel-open/button:hidden">
+                    Show more
+                  </span>
+                  <span class="hidden group-data-panel-open/button:inline">
+                    Show less
+                  </span>
+                  <ChevronDownIcon
+                    data-icon="inline-end"
+                    class="group-data-panel-open/button:rotate-180"
+                  />
+                </CollapsibleTrigger>
+              </>
+            ) : (
+              <div>{text}</div>
+            )}
+          </Collapsible>
+        </BubbleContent>
+      </Bubble>
+    </div>
+  )
+}

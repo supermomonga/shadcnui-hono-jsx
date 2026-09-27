@@ -41,6 +41,7 @@ shadcnui-hono-jsx CLI (cli/, in the user's project)
 | `version` in `cli/package.json` | the Version Bump workflow; the Release workflow tags and publishes each new version ([ADR 0032](./adr/0032-release-the-cli-from-version-bump-pull-requests-with-npm-trusted-publishing.md)) |
 | `components/ui/`, `styles/shadcn/`, `public/shadcn/`, `LICENSE-shadcnui-hono-jsx.txt`, `shadcnui-hono-jsx.json` (git-ignored) | `dev:install` only: the default preset installed into the repository root for tests and examples |
 | `examples/` | hand-written demo apps |
+| `site/` | the documentation site ([ADR 0033](./adr/0033-build-the-documentation-site-with-honox-as-static-pages-and-a-worker-for-presets.md)): hand-written HonoX app, MDX docs and scripts; `site/.installs/` (git-ignored) is written by `site:install`, `site/dist/` by `site:build` |
 
 ## Investigation results
 
@@ -282,6 +283,7 @@ Syncs are idempotent, so an unchanged upstream produces no pull request.
 | Freshness of generated files | `bun run generate --check` | `bun run verify`, CI |
 | CLI install into a clean Hono project (`init`, `add` for every item, `apply`, with a local stand-in for ui.shadcn.com) | `tests/install/` | `bun run test:install`, CI `cli-install` |
 | Example builds and smoke tests | `examples/` | `bun run examples:*`, CI |
+| Documentation site: unit tests (commands, the preset API against `init`'s `theme.css`), the build, and a smoke test of `site/dist/` (pages, internal links, Cloudflare limits) | `site/tests/`, `site/scripts/smoke.ts` | `bun run site:test`, `bun run site:build`, CI `site` |
 | Visual parity against upstream React (Playwright screenshots, light and dark) | `tests/visual/` (separate package) | `bun run test:visual`, CI `visual` |
 | Interactive behavior (keyboard, focus, ARIA, no scripts) and open-state screenshots against upstream | `tests/visual/modals.spec.ts` (Dialog, AlertDialog, Sheet), `tests/visual/disclosure.spec.ts` (Accordion, Collapsible), `tests/visual/controls.spec.ts` (form controls), `tests/visual/popover.spec.ts`, `tests/visual/select.spec.ts`, `tests/visual/tabs.spec.ts`, `tests/visual/menu.spec.ts`, `tests/visual/hover.spec.ts`, `tests/visual/slider.spec.ts`, `tests/visual/input-group.spec.ts`, `tests/visual/combobox.spec.ts`, `tests/visual/navigation-menu.spec.ts`, `tests/visual/avatar.spec.ts`, `tests/visual/scroll-area.spec.ts`, `tests/visual/drawer.spec.ts`, `tests/visual/toast.spec.ts`, `tests/visual/sidebar.spec.ts` and `tests/visual/lite.spec.ts` (step-by-step behavior against Base UI) | `bun run test:visual`, CI `visual` |
 
@@ -331,3 +333,37 @@ See [ADR 0013](./adr/0013-ship-a-reviewed-license-notice-with-every-registry-ite
   right-to-left components
   ([ADR 0030](./adr/0030-generate-templates-for-every-base-ui-style-and-finalize-them-at-install-time.md),
   [ADR 0031](./adr/0031-inline-icons-of-every-shadcn-ui-icon-library-at-generation-time.md)).
+
+## Documentation site
+
+`site/` is the documentation site at https://shadcn-hono.omofla.sh, modeled on
+ui.shadcn.com ([ADR 0033](./adr/0033-build-the-documentation-site-with-honox-as-static-pages-and-a-worker-for-presets.md)).
+
+```text
+bun run upstream:sync   → upstream/site/          shadcn/ui's docs pages, examples, home cards, registry examples,
+                                                  the create page's themes and base colors
+bun run site:generate   → site/generated/         those translated into Hono JSX (docs/adr/0034)
+bun run site:install    → site/.installs/<id>/    CLI init with the upstream snapshot (nova, nova-rtl, rhea)
+bun run site:build      → site/dist/              HonoX SSG: pages, MDX docs, Shiki at build time,
+                                                  then scripts/previews.ts: the create page's previews
+site/worker/index.ts    → /api/preset             a preset's theme.css, built by cli/src/preset-theme.ts
+site-deploy.yml         → Cloudflare Workers      static assets + the Worker, custom domain
+```
+
+The create page previews the registry examples in every style and menu
+color: `scripts/previews.ts` writes each combination's components (the RTL
+templates, which render both directions, finalized with their icons marked)
+and renders the examples to static pages. The frame applies the rest at
+runtime: the preset's colors, radius and fonts from `/api/preset`, the
+direction, dark mode, and the icon library, swapping each marked icon for the
+library's SVG. The page offers the themes and base colors of upstream's
+registry (`generated/themes.json`), which ui.shadcn.com/init accepts, and
+keeps choices valid as upstream's Create page does (`normalizeConfig` in
+`site/app/lib/create-options.ts`): a theme or chart color the base color does
+not allow falls back to the base color's own.
+
+The site imports components only from its installs (`@/components/ui/*` for
+the default preset), so it shows what `init` and `add` produce. The Worker
+exists because the Create page needs themes from ui.shadcn.com/init, which the
+browser cannot call; everything else is static.
+

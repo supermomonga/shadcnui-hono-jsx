@@ -1,0 +1,46 @@
+---
+title: Dark Mode
+description: Adding dark mode to your Hono app.
+---
+
+The theme defines dark colors under a `.dark` class and a `dark` variant for Tailwind, so dark mode is a matter of setting that class on `<html>`.
+
+## Apply the theme before the first paint
+
+Add a small inline script to `<head>` that reads the stored choice, or the system preference, before the page renders:
+
+```tsx title="app/routes/_renderer.tsx"
+import { raw } from "hono/html"
+
+const themeScript = `try {
+  const theme = localStorage.theme
+  if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) {
+    document.documentElement.classList.add("dark")
+  }
+} catch {}`
+
+// in <head>
+<script>{raw(themeScript)}</script>
+```
+
+## Add a mode toggle
+
+Render a button with the components, and toggle the class in a module script:
+
+```tsx
+import { Button } from "@/components/ui/button"
+
+<Button variant="outline" size="icon" data-mode-toggle>
+  <span class="sr-only">Toggle theme</span>
+</Button>
+```
+
+```ts title="public/mode-toggle.js"
+document.addEventListener("click", (event) => {
+  if (!event.target.closest("[data-mode-toggle]")) return
+  const dark = document.documentElement.classList.toggle("dark")
+  localStorage.theme = dark ? "dark" : "light"
+})
+```
+
+In HonoX you can write the toggle as an [island](https://github.com/honojs/honox#interactions) instead.

@@ -1,0 +1,54 @@
+name: Deploy site
+
+# Deploys the documentation site (site/) to Cloudflare Workers at
+# https://shadcn-hono.omofla.sh when main changes what it is built from, and
+# after a release so that "Unreleased" badges disappear. CI's site job checks
+# the same build on pull requests.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "cli/**"
+      - "upstream/**"
+      - "generator/**"
+      - "compatibility.json"
+      - "generator.config.ts"
+      - "package.json"
+      - "bun.lock"
+      - "bunfig.toml"
+      - ".github/workflows/site-deploy.yml"
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://shadcn-hono.omofla.sh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - run: bun install --frozen-lockfile
+      - run: bun run site:build
+      - run: bun run site:smoke
+      - run: bunx wrangler@4.141.0 deploy
+        working-directory: site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

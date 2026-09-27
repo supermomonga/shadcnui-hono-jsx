@@ -1,0 +1,65 @@
+---
+title: Toast
+description: A succinct message that is displayed temporarily.
+upstream: https://ui.shadcn.com/docs/components/base/toast
+api: https://base-ui.com/react/components/toast#api-reference
+---
+
+<ComponentPreview name="toast-demo" />
+
+## Installation
+
+<ComponentInstall name="toast" />
+
+## Usage
+
+```tsx
+import { toast } from "@/components/ui/toast"
+```
+
+```tsx
+toast.add({
+  title: "Event created",
+  description: "Sunday, December 3 at 9:00 AM",
+})
+```
+
+## Types
+
+Set the `type` option to render a status icon. The built-in renderer recognizes
+`success`, `info`, `warning`, `error`, and `loading`.
+
+<ComponentPreview name="toast-types" />
+
+## Action
+
+Pass button props with `actionProps` to render an action.
+
+```tsx
+const id = toast.add({
+  title: "Event created",
+  actionProps: {
+    children: "Undo",
+    onClick() {
+      toast.close(id)
+    },
+  },
+})
+```
+
+## Promise
+
+Use `toast.promise` to update one toast as an asynchronous task moves through
+loading, success, and error states.
+
+<ComponentPreview name="toast-promise" />
+
+## Notes
+
+<ComponentNotes name="toast" />
+
+## API Reference
+
+See the [Base UI Toast documentation](https://base-ui.com/react/components/toast)
+for details about manager options, stacking, swipe dismissal, and the primitive
+API.

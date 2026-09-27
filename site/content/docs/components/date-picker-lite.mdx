@@ -1,0 +1,48 @@
+---
+title: Date Picker (Lite)
+description: A date picker built on the browser's date input, without JavaScript.
+---
+
+<ComponentPreview name="date-picker-lite-demo" />
+
+## About
+
+Date Picker (Lite) is a hand-written alternative to shadcn/ui's [Date Picker](https://ui.shadcn.com/docs/components/base/date-picker), a Popover with a Calendar built on the React library react-day-picker. It is upstream's Input as a native date input with a calendar icon: the browser draws the calendar, handles the keyboard and submits an ISO date (`2026-09-26`).
+
+## Installation
+
+<ComponentInstall name="date-picker-lite" />
+
+## Usage
+
+```tsx
+import { DatePickerLite } from "@/components/ui/date-picker-lite"
+```
+
+```tsx
+<DatePickerLite name="date" />
+```
+
+It takes every attribute of Input (`name`, `value`, `min`, `max`, `required`, `disabled`, `aria-*`), and `type` picks the kind of value: `date` (the default), `datetime-local`, `month` or `week`.
+
+## Date of Birth
+
+Use `min` and `max` to limit the range.
+
+<ComponentPreview name="date-picker-lite-dob" />
+
+## Date and Time
+
+<ComponentPreview name="date-picker-lite-time" />
+
+## Month
+
+<ComponentPreview name="date-picker-lite-month" />
+
+## Form
+
+<ComponentPreview name="date-picker-lite-form" />
+
+## Notes
+
+<ComponentNotes name="date-picker-lite" />

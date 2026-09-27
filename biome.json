@@ -12,7 +12,11 @@
       "!cli/generated/shadcn-preset.*",
       "!cli/generated/tailwind.css",
       "!**/dist",
-      "!examples/*/public"
+      "!examples/*/public",
+      "!site/app/styles/typeset.css",
+      "!site/public/shadcn",
+      "!site/.installs",
+      "!site/.cache"
     ]
   },
   "formatter": {
@@ -61,6 +65,35 @@
           },
           "suspicious": {
             "noDoubleEquals": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "site/generated/**",
+        "site/examples/overrides/**",
+        "site/examples/registry-overrides/**"
+      ],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "noRedundantAlt": "off",
+            "noSvgWithoutTitle": "off",
+            "useButtonType": "off",
+            "useSemanticElements": "off",
+            "useValidAnchor": "off",
+            "noAmbiguousAnchorText": "off"
+          },
+          "complexity": {
+            "noUselessFragments": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedFunctionParameters": "off"
+          },
+          "suspicious": {
+            "noShadowRestrictedNames": "off"
           }
         }
       }

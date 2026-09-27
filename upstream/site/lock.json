@@ -1,0 +1,1971 @@
+{
+  "commit": "98a1fe67b439324ddc857f47fbdce056600a4329",
+  "files": {
+    "create/base-colors.ts": {
+      "path": "apps/v4/registry/base-colors.ts",
+      "blob": "3523db36be1064102e96b4ef63fc04dc384223e9"
+    },
+    "create/themes.ts": {
+      "path": "apps/v4/registry/themes.ts",
+      "blob": "80fdfba3a7d0dc2cb8ebe6234a608778b2ed8c07"
+    },
+    "docs/accordion.mdx": {
+      "path": "apps/v4/content/docs/components/base/accordion.mdx",
+      "blob": "b1c6758a24a91d4820c38b13f3eee9b1c7b263cd"
+    },
+    "docs/alert-dialog.mdx": {
+      "path": "apps/v4/content/docs/components/base/alert-dialog.mdx",
+      "blob": "d05eb135e292e0279812c11a03f3979a057b2297"
+    },
+    "docs/alert.mdx": {
+      "path": "apps/v4/content/docs/components/base/alert.mdx",
+      "blob": "a66a415beb28db34279d6a0d80a9c47390800944"
+    },
+    "docs/aspect-ratio.mdx": {
+      "path": "apps/v4/content/docs/components/base/aspect-ratio.mdx",
+      "blob": "e3b800779e390253513569016bd2737a7e01ee30"
+    },
+    "docs/attachment.mdx": {
+      "path": "apps/v4/content/docs/components/base/attachment.mdx",
+      "blob": "34e4eefa109c8117c705d20fcc9ad54e14716727"
+    },
+    "docs/avatar.mdx": {
+      "path": "apps/v4/content/docs/components/base/avatar.mdx",
+      "blob": "78e25030ce5b5bd05954aa5e397e622b433131ec"
+    },
+    "docs/badge.mdx": {
+      "path": "apps/v4/content/docs/components/base/badge.mdx",
+      "blob": "a9844228a3116713c10c2d5f4933a0704e58fa8f"
+    },
+    "docs/breadcrumb.mdx": {
+      "path": "apps/v4/content/docs/components/base/breadcrumb.mdx",
+      "blob": "1f8a07151ac39b6ce5302d7141c174ae0f63b87d"
+    },
+    "docs/bubble.mdx": {
+      "path": "apps/v4/content/docs/components/base/bubble.mdx",
+      "blob": "8be5e0ad7856a72871680fc1ebf71d38d46da78d"
+    },
+    "docs/button-group.mdx": {
+      "path": "apps/v4/content/docs/components/base/button-group.mdx",
+      "blob": "cf41b1c3316d47abc2e94a98217fc8967cced99a"
+    },
+    "docs/button.mdx": {
+      "path": "apps/v4/content/docs/components/base/button.mdx",
+      "blob": "4c67c69f85957d8522893fcec86890a9c2f4c268"
+    },
+    "docs/card.mdx": {
+      "path": "apps/v4/content/docs/components/base/card.mdx",
+      "blob": "f39e9ca9cc8047adccc451d3a3acb18c43e83838"
+    },
+    "docs/checkbox.mdx": {
+      "path": "apps/v4/content/docs/components/base/checkbox.mdx",
+      "blob": "1f53c05e22b313842c7ebce6c5c3d4df4a288b26"
+    },
+    "docs/collapsible.mdx": {
+      "path": "apps/v4/content/docs/components/base/collapsible.mdx",
+      "blob": "8d3b8e5e0dfd55cfc7caacce9ac52e4e96b61b7d"
+    },
+    "docs/combobox.mdx": {
+      "path": "apps/v4/content/docs/components/base/combobox.mdx",
+      "blob": "ee721ca797cbb2332d615306b8c9ce095de37d5a"
+    },
+    "docs/context-menu.mdx": {
+      "path": "apps/v4/content/docs/components/base/context-menu.mdx",
+      "blob": "3acdbfa515a412a7a81e73ab2de49805c8ade305"
+    },
+    "docs/dialog.mdx": {
+      "path": "apps/v4/content/docs/components/base/dialog.mdx",
+      "blob": "0614f95b25645bceb14f3b0e3a3d9b9637c49c40"
+    },
+    "docs/direction.mdx": {
+      "path": "apps/v4/content/docs/components/base/direction.mdx",
+      "blob": "895c790e84b559965778f066378f0ef000395c2d"
+    },
+    "docs/drawer.mdx": {
+      "path": "apps/v4/content/docs/components/base/drawer.mdx",
+      "blob": "5b6e832235eff570480326c4d983c5044995b0bf"
+    },
+    "docs/dropdown-menu.mdx": {
+      "path": "apps/v4/content/docs/components/base/dropdown-menu.mdx",
+      "blob": "fd03457bb4fe87a08ab8d7dda1a3e2ced8a7b93f"
+    },
+    "docs/empty.mdx": {
+      "path": "apps/v4/content/docs/components/base/empty.mdx",
+      "blob": "07e0e629d363954ad70aba3bfb8551c3d0d79138"
+    },
+    "docs/field.mdx": {
+      "path": "apps/v4/content/docs/components/base/field.mdx",
+      "blob": "fa77feb27e91276742082b1be634fa32082883e7"
+    },
+    "docs/hover-card.mdx": {
+      "path": "apps/v4/content/docs/components/base/hover-card.mdx",
+      "blob": "2261ffca5f4a048736593d1f4e816c887a8883ad"
+    },
+    "docs/input-group.mdx": {
+      "path": "apps/v4/content/docs/components/base/input-group.mdx",
+      "blob": "b97ecbc190f547963dbfbe43a3a9607849ecc28f"
+    },
+    "docs/input.mdx": {
+      "path": "apps/v4/content/docs/components/base/input.mdx",
+      "blob": "70d848ba2f1cc14ddd7d4c235c3be2f362b4fb05"
+    },
+    "docs/item.mdx": {
+      "path": "apps/v4/content/docs/components/base/item.mdx",
+      "blob": "7ba0b4d12e002f9ac6207852ce8794bd66628a5c"
+    },
+    "docs/kbd.mdx": {
+      "path": "apps/v4/content/docs/components/base/kbd.mdx",
+      "blob": "2db9db38b442c1511bdb344aff123e606a521c85"
+    },
+    "docs/label.mdx": {
+      "path": "apps/v4/content/docs/components/base/label.mdx",
+      "blob": "dbedab2f38b9f284ff753016385a942b7d31e8f3"
+    },
+    "docs/marker.mdx": {
+      "path": "apps/v4/content/docs/components/base/marker.mdx",
+      "blob": "3ec6fecc758586abd87e57f22d4b30e8d459d2eb"
+    },
+    "docs/menubar.mdx": {
+      "path": "apps/v4/content/docs/components/base/menubar.mdx",
+      "blob": "8eb069b2a2218dd0498a554bed1a2f8200ce7e7c"
+    },
+    "docs/message.mdx": {
+      "path": "apps/v4/content/docs/components/base/message.mdx",
+      "blob": "2e47c8b00a1e293614a6a0463f27d4b29517915c"
+    },
+    "docs/native-select.mdx": {
+      "path": "apps/v4/content/docs/components/base/native-select.mdx",
+      "blob": "da6ce0047b0df4864913454b2567d659b2d2b0dc"
+    },
+    "docs/navigation-menu.mdx": {
+      "path": "apps/v4/content/docs/components/base/navigation-menu.mdx",
+      "blob": "f2a8f03d295cef3c6bb2b9c0622b27051b4f3f41"
+    },
+    "docs/pagination.mdx": {
+      "path": "apps/v4/content/docs/components/base/pagination.mdx",
+      "blob": "0462e72d25adc1f15aeec198f805e2ed0fa22224"
+    },
+    "docs/popover.mdx": {
+      "path": "apps/v4/content/docs/components/base/popover.mdx",
+      "blob": "85b0d510cdc2f4a553ff2a47d593d2cb85aa56ea"
+    },
+    "docs/progress.mdx": {
+      "path": "apps/v4/content/docs/components/base/progress.mdx",
+      "blob": "b43cdf02d2e3174750210256d7d2cb3abeebfb2a"
+    },
+    "docs/radio-group.mdx": {
+      "path": "apps/v4/content/docs/components/base/radio-group.mdx",
+      "blob": "d2037468f5e2dfc01bef361d777bfbf9fbe24247"
+    },
+    "docs/scroll-area.mdx": {
+      "path": "apps/v4/content/docs/components/base/scroll-area.mdx",
+      "blob": "2058388c029a0573ebf75e0e0cdb0b74c41d0a44"
+    },
+    "docs/select.mdx": {
+      "path": "apps/v4/content/docs/components/base/select.mdx",
+      "blob": "a62f816c3a8a6b8f7b086995e518cb8de8cb981c"
+    },
+    "docs/separator.mdx": {
+      "path": "apps/v4/content/docs/components/base/separator.mdx",
+      "blob": "6a12b90dc3fb06d703cfd85e6207a9f5828b20a5"
+    },
+    "docs/sheet.mdx": {
+      "path": "apps/v4/content/docs/components/base/sheet.mdx",
+      "blob": "367b03f28fc8066bdc6ea1ae4acabeacdb139f30"
+    },
+    "docs/sidebar.mdx": {
+      "path": "apps/v4/content/docs/components/base/sidebar.mdx",
+      "blob": "9f6f9edae0a0c42f133ab9dda802fed7f03588bb"
+    },
+    "docs/skeleton.mdx": {
+      "path": "apps/v4/content/docs/components/base/skeleton.mdx",
+      "blob": "b8119431b646549ca7d03aee9a9945ab1ee2e566"
+    },
+    "docs/slider.mdx": {
+      "path": "apps/v4/content/docs/components/base/slider.mdx",
+      "blob": "bb772337115abd51562fa3fe7320a0ae7ff4ff65"
+    },
+    "docs/spinner.mdx": {
+      "path": "apps/v4/content/docs/components/base/spinner.mdx",
+      "blob": "3d7efd0a2365a30865cc652e2e2598b4e36e90a1"
+    },
+    "docs/switch.mdx": {
+      "path": "apps/v4/content/docs/components/base/switch.mdx",
+      "blob": "664d567143333b64fb8d8fec8d806b4280785ed1"
+    },
+    "docs/table.mdx": {
+      "path": "apps/v4/content/docs/components/base/table.mdx",
+      "blob": "cc5f56f728d5e12639a1532a799268825ce709b6"
+    },
+    "docs/tabs.mdx": {
+      "path": "apps/v4/content/docs/components/base/tabs.mdx",
+      "blob": "b9842842cfa4bccb6ab1649c7c3fa1fefaeecec0"
+    },
+    "docs/textarea.mdx": {
+      "path": "apps/v4/content/docs/components/base/textarea.mdx",
+      "blob": "77379eab4c14d7d64426d26192bb6b765011035c"
+    },
+    "docs/toast.mdx": {
+      "path": "apps/v4/content/docs/components/base/toast.mdx",
+      "blob": "b0005f4c98848dce86616d1d4c1c350b53c65974"
+    },
+    "docs/toggle-group.mdx": {
+      "path": "apps/v4/content/docs/components/base/toggle-group.mdx",
+      "blob": "5552c46bdf94ef7192d333d005a60ef8a103d7c0"
+    },
+    "docs/toggle.mdx": {
+      "path": "apps/v4/content/docs/components/base/toggle.mdx",
+      "blob": "f16c5de22a85c9bce1efa56665dd9233e7c987d9"
+    },
+    "docs/tooltip.mdx": {
+      "path": "apps/v4/content/docs/components/base/tooltip.mdx",
+      "blob": "3117913fd7fbc629551d0e24e8714583de6fc496"
+    },
+    "examples/accordion-basic.tsx": {
+      "path": "apps/v4/examples/base/accordion-basic.tsx",
+      "blob": "e9c69ec3da9dce484c099513b1f03e4e5627b5e0"
+    },
+    "examples/accordion-borders.tsx": {
+      "path": "apps/v4/examples/base/accordion-borders.tsx",
+      "blob": "17b700bbee0a17ade63c233eee5e40da48b58600"
+    },
+    "examples/accordion-card.tsx": {
+      "path": "apps/v4/examples/base/accordion-card.tsx",
+      "blob": "663d57eb4f258521c25574e8f5f26ab4d161b50a"
+    },
+    "examples/accordion-demo.tsx": {
+      "path": "apps/v4/examples/base/accordion-demo.tsx",
+      "blob": "5649d267fee381b8847dde5c30cbe3356b4b33cf"
+    },
+    "examples/accordion-disabled.tsx": {
+      "path": "apps/v4/examples/base/accordion-disabled.tsx",
+      "blob": "17a3f90d8b685c7c9268c4fb4e158c64f9109f4e"
+    },
+    "examples/accordion-multiple.tsx": {
+      "path": "apps/v4/examples/base/accordion-multiple.tsx",
+      "blob": "9bd4918e2d0a375815e1de53d6faa402111e5660"
+    },
+    "examples/accordion-rtl.tsx": {
+      "path": "apps/v4/examples/base/accordion-rtl.tsx",
+      "blob": "8600990fdaad63858c45159392e9902e0dbb900f"
+    },
+    "examples/alert-action.tsx": {
+      "path": "apps/v4/examples/base/alert-action.tsx",
+      "blob": "84445921768e9c62d7cd42f046a721d55470e8c2"
+    },
+    "examples/alert-basic.tsx": {
+      "path": "apps/v4/examples/base/alert-basic.tsx",
+      "blob": "2d09927f65cd12d48811c01b85feefc79fedff15"
+    },
+    "examples/alert-colors.tsx": {
+      "path": "apps/v4/examples/base/alert-colors.tsx",
+      "blob": "6788aa0fc0cef413e0028db45a9312181fe661bc"
+    },
+    "examples/alert-demo.tsx": {
+      "path": "apps/v4/examples/base/alert-demo.tsx",
+      "blob": "2b017d056af60ba71feac40c66f82af3ce1b9686"
+    },
+    "examples/alert-destructive.tsx": {
+      "path": "apps/v4/examples/base/alert-destructive.tsx",
+      "blob": "409e9340d6f77d9a0cf299303ac9ff6df7ce6913"
+    },
+    "examples/alert-dialog-basic.tsx": {
+      "path": "apps/v4/examples/base/alert-dialog-basic.tsx",
+      "blob": "d08253cb06e0f99f16f78a4e4aa9ab238487220a"
+    },
+    "examples/alert-dialog-demo.tsx": {
+      "path": "apps/v4/examples/base/alert-dialog-demo.tsx",
+      "blob": "aa307e0008daee33093c34d09ef359c8c2f574e2"
+    },
+    "examples/alert-dialog-destructive.tsx": {
+      "path": "apps/v4/examples/base/alert-dialog-destructive.tsx",
+      "blob": "5a3d89d19bd827f9323cac7a7f12f5e6bb3f245b"
+    },
+    "examples/alert-dialog-media.tsx": {
+      "path": "apps/v4/examples/base/alert-dialog-media.tsx",
+      "blob": "1228cbc2ebac55d72c28d5882c0c6aa8de98764a"
+    },
+    "examples/alert-dialog-rtl.tsx": {
+      "path": "apps/v4/examples/base/alert-dialog-rtl.tsx",
+      "blob": "dbe7b7aad9564c96680866047654d6d7467878b1"
+    },
+    "examples/alert-dialog-small-media.tsx": {
+      "path": "apps/v4/examples/base/alert-dialog-small-media.tsx",
+      "blob": "4ac3f3e6933a694d480f41f2805c638aa88b3ac1"
+    },
+    "examples/alert-dialog-small.tsx": {
+      "path": "apps/v4/examples/base/alert-dialog-small.tsx",
+      "blob": "9b34af3bba1756b74e24c0e97f55cc5f9ff51e26"
+    },
+    "examples/alert-rtl.tsx": {
+      "path": "apps/v4/examples/base/alert-rtl.tsx",
+      "blob": "25be8abb8253866b1e18656354b903fae6483e0b"
+    },
+    "examples/aspect-ratio-demo.tsx": {
+      "path": "apps/v4/examples/base/aspect-ratio-demo.tsx",
+      "blob": "2e4623d7827eeefb1bb6234ca128acf8ce5515fd"
+    },
+    "examples/aspect-ratio-portrait.tsx": {
+      "path": "apps/v4/examples/base/aspect-ratio-portrait.tsx",
+      "blob": "93424bd141a8e225d00c99e59177d6815d550b9a"
+    },
+    "examples/aspect-ratio-rtl.tsx": {
+      "path": "apps/v4/examples/base/aspect-ratio-rtl.tsx",
+      "blob": "8356a4fed8fcb41de3075000da224014aea3449b"
+    },
+    "examples/aspect-ratio-square.tsx": {
+      "path": "apps/v4/examples/base/aspect-ratio-square.tsx",
+      "blob": "27b3700e199e879b85fd8966e66590e84a9467f3"
+    },
+    "examples/attachment-demo.tsx": {
+      "path": "apps/v4/examples/base/attachment-demo.tsx",
+      "blob": "c3d368030cdeee39267d2fef0b0c45f3edf7c7e1"
+    },
+    "examples/attachment-group.tsx": {
+      "path": "apps/v4/examples/base/attachment-group.tsx",
+      "blob": "c3de86ebbe77f9f2b8cacecc9e12115e39324ff8"
+    },
+    "examples/attachment-image.tsx": {
+      "path": "apps/v4/examples/base/attachment-image.tsx",
+      "blob": "e8117a0c8b598086735fb9c5c9861bb2257f3025"
+    },
+    "examples/attachment-sizes.tsx": {
+      "path": "apps/v4/examples/base/attachment-sizes.tsx",
+      "blob": "e8262b0a4faf99c3920408aeb25b91d506b0d5ef"
+    },
+    "examples/attachment-states.tsx": {
+      "path": "apps/v4/examples/base/attachment-states.tsx",
+      "blob": "73394fb91e4d37bc999ff53c74c2175b34a5fb9e"
+    },
+    "examples/attachment-trigger.tsx": {
+      "path": "apps/v4/examples/base/attachment-trigger.tsx",
+      "blob": "470f7c0af09e298ce9d7413e843bdee76d5d10d9"
+    },
+    "examples/avatar-badge-icon.tsx": {
+      "path": "apps/v4/examples/base/avatar-badge-icon.tsx",
+      "blob": "dbec018e6ffb738e40bfad948acc55e5b59fa6c2"
+    },
+    "examples/avatar-badge.tsx": {
+      "path": "apps/v4/examples/base/avatar-badge.tsx",
+      "blob": "60fc256b97d515134608aa2c94b8389961d1b75f"
+    },
+    "examples/avatar-basic.tsx": {
+      "path": "apps/v4/examples/base/avatar-basic.tsx",
+      "blob": "5ed3f80c99de3c22e7f8ab43de7bf92a0fadd317"
+    },
+    "examples/avatar-demo.tsx": {
+      "path": "apps/v4/examples/base/avatar-demo.tsx",
+      "blob": "9708099af00900c1e38a0e4654deb57155e2115e"
+    },
+    "examples/avatar-dropdown.tsx": {
+      "path": "apps/v4/examples/base/avatar-dropdown.tsx",
+      "blob": "034ffd46a17132ef2983a976d6493a88e7a1bc28"
+    },
+    "examples/avatar-group-count-icon.tsx": {
+      "path": "apps/v4/examples/base/avatar-group-count-icon.tsx",
+      "blob": "4d596c711b9655f19fd603ebe65a6481d56e09f5"
+    },
+    "examples/avatar-group-count.tsx": {
+      "path": "apps/v4/examples/base/avatar-group-count.tsx",
+      "blob": "aa25e2607fba7d86d2fe558b26abdbbdebdc0f6b"
+    },
+    "examples/avatar-group.tsx": {
+      "path": "apps/v4/examples/base/avatar-group.tsx",
+      "blob": "def22827f9dd34d0b401ef6d46803f2dc8a5276e"
+    },
+    "examples/avatar-rtl.tsx": {
+      "path": "apps/v4/examples/base/avatar-rtl.tsx",
+      "blob": "9905adaf402dc51eb2b1a5d872466b90d08c6b05"
+    },
+    "examples/avatar-size.tsx": {
+      "path": "apps/v4/examples/base/avatar-size.tsx",
+      "blob": "108ea23ec404938bf23e4aff12188f6b044f8511"
+    },
+    "examples/badge-colors.tsx": {
+      "path": "apps/v4/examples/base/badge-colors.tsx",
+      "blob": "020683766e985a9055ea4a6e7637cda81ac794d7"
+    },
+    "examples/badge-demo.tsx": {
+      "path": "apps/v4/examples/base/badge-demo.tsx",
+      "blob": "e73e957936d2aeae81d7c2c6d14adb32b1d928c4"
+    },
+    "examples/badge-icon.tsx": {
+      "path": "apps/v4/examples/base/badge-icon.tsx",
+      "blob": "8a66a500b42f9538e579002cac5e08d7ef633cbf"
+    },
+    "examples/badge-link.tsx": {
+      "path": "apps/v4/examples/base/badge-link.tsx",
+      "blob": "5695a56132c36f06bae945b171f2cc8f98f7837f"
+    },
+    "examples/badge-rtl.tsx": {
+      "path": "apps/v4/examples/base/badge-rtl.tsx",
+      "blob": "ceed6761d0dbc6e7ec2e0e5c1d7822c8e6957399"
+    },
+    "examples/badge-spinner.tsx": {
+      "path": "apps/v4/examples/base/badge-spinner.tsx",
+      "blob": "47cb63b9dbee8ce04d2cd13bd37172fb7aefacf9"
+    },
+    "examples/badge-variants.tsx": {
+      "path": "apps/v4/examples/base/badge-variants.tsx",
+      "blob": "862e9485c65ce4c0f91fc425380d211a2df98b74"
+    },
+    "examples/breadcrumb-basic.tsx": {
+      "path": "apps/v4/examples/base/breadcrumb-basic.tsx",
+      "blob": "86593d749d2a9f9edd9827d28a31172244da3968"
+    },
+    "examples/breadcrumb-demo.tsx": {
+      "path": "apps/v4/examples/base/breadcrumb-demo.tsx",
+      "blob": "133500504dc6dbfbd5a890c181d91d0da7e9cc26"
+    },
+    "examples/breadcrumb-dropdown.tsx": {
+      "path": "apps/v4/examples/base/breadcrumb-dropdown.tsx",
+      "blob": "5b325730d7ed069bb4876fa7279ba8aa764d4041"
+    },
+    "examples/breadcrumb-ellipsis.tsx": {
+      "path": "apps/v4/examples/base/breadcrumb-ellipsis.tsx",
+      "blob": "bd2953a37cdb1d50999df2157a9d1b5d9ba226a0"
+    },
+    "examples/breadcrumb-link.tsx": {
+      "path": "apps/v4/examples/base/breadcrumb-link.tsx",
+      "blob": "2fee29fb299675bcfb9a53a8780d80f928c6e05c"
+    },
+    "examples/breadcrumb-rtl.tsx": {
+      "path": "apps/v4/examples/base/breadcrumb-rtl.tsx",
+      "blob": "5fce1eab3b7fc704d6e0c5a86d02343e0fea2313"
+    },
+    "examples/breadcrumb-separator.tsx": {
+      "path": "apps/v4/examples/base/breadcrumb-separator.tsx",
+      "blob": "6003caf12dd601fe33e8cdb6a410a4b2180046e3"
+    },
+    "examples/bubble-alignment.tsx": {
+      "path": "apps/v4/examples/base/bubble-alignment.tsx",
+      "blob": "f85e4ad46d8624d2739be0e247beae0dc037b764"
+    },
+    "examples/bubble-collapsible.tsx": {
+      "path": "apps/v4/examples/base/bubble-collapsible.tsx",
+      "blob": "a09497f843363aa3c57ed4a8029553a1168b15a8"
+    },
+    "examples/bubble-demo.tsx": {
+      "path": "apps/v4/examples/base/bubble-demo.tsx",
+      "blob": "c939f1cfb6411202262423c08610f236ff0f9e5e"
+    },
+    "examples/bubble-group-demo.tsx": {
+      "path": "apps/v4/examples/base/bubble-group-demo.tsx",
+      "blob": "179395da469b586938a394aa6d02347ab94f5927"
+    },
+    "examples/bubble-link-button.tsx": {
+      "path": "apps/v4/examples/base/bubble-link-button.tsx",
+      "blob": "9a415c69418d8e64ffd704628a4ae2dfc9bef97e"
+    },
+    "examples/bubble-popover.tsx": {
+      "path": "apps/v4/examples/base/bubble-popover.tsx",
+      "blob": "9d16a5cbefae290436ebe2877c9ee93f237ba419"
+    },
+    "examples/bubble-reactions.tsx": {
+      "path": "apps/v4/examples/base/bubble-reactions.tsx",
+      "blob": "37eba0b4fd2c8c32551f7206363f1e44504e4f3e"
+    },
+    "examples/bubble-tooltip.tsx": {
+      "path": "apps/v4/examples/base/bubble-tooltip.tsx",
+      "blob": "ad8699099d0ce9f1b7f83480750d7be63bd14f93"
+    },
+    "examples/bubble-variants.tsx": {
+      "path": "apps/v4/examples/base/bubble-variants.tsx",
+      "blob": "7cca748a5ed46f07dab53987c1da5f918a7615e0"
+    },
+    "examples/button-default.tsx": {
+      "path": "apps/v4/examples/base/button-default.tsx",
+      "blob": "a4324e737c36d4b4c84b96421e818cbf517e930e"
+    },
+    "examples/button-demo.tsx": {
+      "path": "apps/v4/examples/base/button-demo.tsx",
+      "blob": "000174382611bc2ece747cc154b7b6f037abf967"
+    },
+    "examples/button-destructive.tsx": {
+      "path": "apps/v4/examples/base/button-destructive.tsx",
+      "blob": "50168ea59297d379629d4ec2b8c966d40ed988c3"
+    },
+    "examples/button-ghost.tsx": {
+      "path": "apps/v4/examples/base/button-ghost.tsx",
+      "blob": "e02eab4a9e08039aa37e467f11bfe07b59b5e6e4"
+    },
+    "examples/button-group-demo.tsx": {
+      "path": "apps/v4/examples/base/button-group-demo.tsx",
+      "blob": "629ef0211464079b5ae5f874d7c2cf76703982e2"
+    },
+    "examples/button-group-dropdown.tsx": {
+      "path": "apps/v4/examples/base/button-group-dropdown.tsx",
+      "blob": "824ba0c41fb7e5d871bbda02fffea7833763f42c"
+    },
+    "examples/button-group-input-group.tsx": {
+      "path": "apps/v4/examples/base/button-group-input-group.tsx",
+      "blob": "ddf5dc0d75b0fec190ee880302ed8916a8f3752e"
+    },
+    "examples/button-group-input.tsx": {
+      "path": "apps/v4/examples/base/button-group-input.tsx",
+      "blob": "d25a487d0c97fa354a2c72ff24aa1098b46cc015"
+    },
+    "examples/button-group-nested.tsx": {
+      "path": "apps/v4/examples/base/button-group-nested.tsx",
+      "blob": "39a8b122d70fb470b215dd21793257623b5bc4ee"
+    },
+    "examples/button-group-orientation.tsx": {
+      "path": "apps/v4/examples/base/button-group-orientation.tsx",
+      "blob": "122ad78d53f76ff3c9ad817359aa42d7ef5e3ead"
+    },
+    "examples/button-group-popover.tsx": {
+      "path": "apps/v4/examples/base/button-group-popover.tsx",
+      "blob": "d4817ce941759123dfdcf89d576a2c8082818980"
+    },
+    "examples/button-group-rtl.tsx": {
+      "path": "apps/v4/examples/base/button-group-rtl.tsx",
+      "blob": "b625d976afdc44e08a2497d2bedc90efdd60ea6f"
+    },
+    "examples/button-group-select.tsx": {
+      "path": "apps/v4/examples/base/button-group-select.tsx",
+      "blob": "16a97925fac6bb1a88128aaed881fb62ea5ba7de"
+    },
+    "examples/button-group-separator.tsx": {
+      "path": "apps/v4/examples/base/button-group-separator.tsx",
+      "blob": "a4e37e6d48042c0245c40d3e97e438a2723effbd"
+    },
+    "examples/button-group-size.tsx": {
+      "path": "apps/v4/examples/base/button-group-size.tsx",
+      "blob": "8289919450bc19e5d69643b796ce7a738850edde"
+    },
+    "examples/button-group-split.tsx": {
+      "path": "apps/v4/examples/base/button-group-split.tsx",
+      "blob": "a9237d7644f8b0f5bd25a8d306bb3f9e21a72600"
+    },
+    "examples/button-icon.tsx": {
+      "path": "apps/v4/examples/base/button-icon.tsx",
+      "blob": "e004712d56377af61d06283eafeb208fc7b7df74"
+    },
+    "examples/button-link.tsx": {
+      "path": "apps/v4/examples/base/button-link.tsx",
+      "blob": "c23a3995c128d409718dd374189d14acb22ac80d"
+    },
+    "examples/button-outline.tsx": {
+      "path": "apps/v4/examples/base/button-outline.tsx",
+      "blob": "b642b78c205904779ef2b562c5fbe15ff6983667"
+    },
+    "examples/button-render.tsx": {
+      "path": "apps/v4/examples/base/button-render.tsx",
+      "blob": "04590db243b6d50c7f22f490a652f65190ac635a"
+    },
+    "examples/button-rounded.tsx": {
+      "path": "apps/v4/examples/base/button-rounded.tsx",
+      "blob": "0067b2824613770804481c84978185088c0a534c"
+    },
+    "examples/button-rtl.tsx": {
+      "path": "apps/v4/examples/base/button-rtl.tsx",
+      "blob": "2f7cd3e8554f1936f9c9f8bac964524f2c08da6a"
+    },
+    "examples/button-secondary.tsx": {
+      "path": "apps/v4/examples/base/button-secondary.tsx",
+      "blob": "aa84568e211c536c556b253c2015d2272ad7492f"
+    },
+    "examples/button-size.tsx": {
+      "path": "apps/v4/examples/base/button-size.tsx",
+      "blob": "7b07c48a42e86b6bb1c791530e02c7a53cf20dec"
+    },
+    "examples/button-spinner.tsx": {
+      "path": "apps/v4/examples/base/button-spinner.tsx",
+      "blob": "96d5b6fc1822826d24e9fe2771b36b1296915b90"
+    },
+    "examples/button-with-icon.tsx": {
+      "path": "apps/v4/examples/base/button-with-icon.tsx",
+      "blob": "66d902fd58b84027b853f9bc615e21e78635399f"
+    },
+    "examples/card-demo.tsx": {
+      "path": "apps/v4/examples/base/card-demo.tsx",
+      "blob": "5080f0370f3f57241e13ea1049b085d9c525f1c3"
+    },
+    "examples/card-edge-to-edge.tsx": {
+      "path": "apps/v4/examples/base/card-edge-to-edge.tsx",
+      "blob": "15d7a3c6e2e9158592e57471d966d6d5c344c151"
+    },
+    "examples/card-image.tsx": {
+      "path": "apps/v4/examples/base/card-image.tsx",
+      "blob": "e89b487702f64eee7b99226a4c73e24034215444"
+    },
+    "examples/card-rtl.tsx": {
+      "path": "apps/v4/examples/base/card-rtl.tsx",
+      "blob": "76035b46cbda2c5492c8c1bf469c5badd82d7c0a"
+    },
+    "examples/card-small.tsx": {
+      "path": "apps/v4/examples/base/card-small.tsx",
+      "blob": "5d88905d35cfddb640c373928a3f38e19e49ecb5"
+    },
+    "examples/card-spacing.tsx": {
+      "path": "apps/v4/examples/base/card-spacing.tsx",
+      "blob": "ba07fcf02a3060aacca9408d86abea3abcd23f85"
+    },
+    "examples/checkbox-basic.tsx": {
+      "path": "apps/v4/examples/base/checkbox-basic.tsx",
+      "blob": "815776bf1d65441fd25070c6d1c835ddb348cd94"
+    },
+    "examples/checkbox-demo.tsx": {
+      "path": "apps/v4/examples/base/checkbox-demo.tsx",
+      "blob": "7c975428403d74be211f9894463a85aee7a8bcd0"
+    },
+    "examples/checkbox-description.tsx": {
+      "path": "apps/v4/examples/base/checkbox-description.tsx",
+      "blob": "5c1189425237ec7ca9329f2b8f93cfb60fe5e391"
+    },
+    "examples/checkbox-disabled.tsx": {
+      "path": "apps/v4/examples/base/checkbox-disabled.tsx",
+      "blob": "31746b4d36cacdecde9fb84b96add6ed15ad58bf"
+    },
+    "examples/checkbox-group.tsx": {
+      "path": "apps/v4/examples/base/checkbox-group.tsx",
+      "blob": "1566befd26a1d303228c44b608395ae3a85a64cd"
+    },
+    "examples/checkbox-invalid.tsx": {
+      "path": "apps/v4/examples/base/checkbox-invalid.tsx",
+      "blob": "a49cee5cfa7592dff2518dc8f5463f99e13542a7"
+    },
+    "examples/checkbox-rtl.tsx": {
+      "path": "apps/v4/examples/base/checkbox-rtl.tsx",
+      "blob": "952dab1db597299bf5cbe43d010fb8c66200f9b5"
+    },
+    "examples/checkbox-table.tsx": {
+      "path": "apps/v4/examples/base/checkbox-table.tsx",
+      "blob": "a89f37fd5dcf315c5651344bde0dc6a365d34296"
+    },
+    "examples/collapsible-basic.tsx": {
+      "path": "apps/v4/examples/base/collapsible-basic.tsx",
+      "blob": "f57ae11355114e041815d57fd59fd4915064f348"
+    },
+    "examples/collapsible-demo.tsx": {
+      "path": "apps/v4/examples/base/collapsible-demo.tsx",
+      "blob": "dd36edcb8da8a6453b61c955bd080fa6e11e6cee"
+    },
+    "examples/collapsible-file-tree.tsx": {
+      "path": "apps/v4/examples/base/collapsible-file-tree.tsx",
+      "blob": "b7306532f799422d8dc1b5c9799ef12611141bf5"
+    },
+    "examples/collapsible-rtl.tsx": {
+      "path": "apps/v4/examples/base/collapsible-rtl.tsx",
+      "blob": "53374681378c7ea49638de68b510bc552dfde959"
+    },
+    "examples/collapsible-settings.tsx": {
+      "path": "apps/v4/examples/base/collapsible-settings.tsx",
+      "blob": "6053804abe38561f416c6f96fa3402f68648e1ce"
+    },
+    "examples/combobox-auto-highlight.tsx": {
+      "path": "apps/v4/examples/base/combobox-auto-highlight.tsx",
+      "blob": "5986b891591225e857132cdea0fb3ebfd19bb010"
+    },
+    "examples/combobox-basic.tsx": {
+      "path": "apps/v4/examples/base/combobox-basic.tsx",
+      "blob": "f2ac6a8b2a83e51f093444d435d8dd66ef0d2040"
+    },
+    "examples/combobox-clear.tsx": {
+      "path": "apps/v4/examples/base/combobox-clear.tsx",
+      "blob": "cf9cefa4706221021eef4a5e7d052e4e6f4a298b"
+    },
+    "examples/combobox-custom.tsx": {
+      "path": "apps/v4/examples/base/combobox-custom.tsx",
+      "blob": "035e135dd867ce0cc53826691a1f0eb6518eaace"
+    },
+    "examples/combobox-demo.tsx": {
+      "path": "apps/v4/examples/base/combobox-demo.tsx",
+      "blob": "f2ac6a8b2a83e51f093444d435d8dd66ef0d2040"
+    },
+    "examples/combobox-disabled.tsx": {
+      "path": "apps/v4/examples/base/combobox-disabled.tsx",
+      "blob": "48cfb12a225404c5baea9f86fe088dbc9bd9c9d8"
+    },
+    "examples/combobox-groups.tsx": {
+      "path": "apps/v4/examples/base/combobox-groups.tsx",
+      "blob": "cad76ce03de78bfdb642a45bf69ab1d03dc8bc61"
+    },
+    "examples/combobox-input-group.tsx": {
+      "path": "apps/v4/examples/base/combobox-input-group.tsx",
+      "blob": "c30bee65eb80d5bea050d9445eb53674a4144f0c"
+    },
+    "examples/combobox-invalid.tsx": {
+      "path": "apps/v4/examples/base/combobox-invalid.tsx",
+      "blob": "fb0482a2ec22a677fc1161e6df47ef6eeb141aed"
+    },
+    "examples/combobox-multiple.tsx": {
+      "path": "apps/v4/examples/base/combobox-multiple.tsx",
+      "blob": "60fa9195cc27d1336936e1e29139c26bebc04c8c"
+    },
+    "examples/combobox-popup.tsx": {
+      "path": "apps/v4/examples/base/combobox-popup.tsx",
+      "blob": "a2508bd86eb9c38b4690da57d237d8d241d119ec"
+    },
+    "examples/combobox-rtl.tsx": {
+      "path": "apps/v4/examples/base/combobox-rtl.tsx",
+      "blob": "9852261b2554ca3822953c7722e58ad5317aec62"
+    },
+    "examples/context-menu-basic.tsx": {
+      "path": "apps/v4/examples/base/context-menu-basic.tsx",
+      "blob": "bd0ba4b589db2cb1ca45823e554fa4afade5d298"
+    },
+    "examples/context-menu-checkboxes.tsx": {
+      "path": "apps/v4/examples/base/context-menu-checkboxes.tsx",
+      "blob": "5f6a84911a6dcfcfbddf0a1c6935d5c41d5f0ea5"
+    },
+    "examples/context-menu-demo.tsx": {
+      "path": "apps/v4/examples/base/context-menu-demo.tsx",
+      "blob": "170b4c5dcff2951d2ad0465f491759432936c724"
+    },
+    "examples/context-menu-destructive.tsx": {
+      "path": "apps/v4/examples/base/context-menu-destructive.tsx",
+      "blob": "a2461aa85d4baeb6f6244f75e22a725a6a8f011f"
+    },
+    "examples/context-menu-groups.tsx": {
+      "path": "apps/v4/examples/base/context-menu-groups.tsx",
+      "blob": "8628c9478143b823d2bdae85c75ec5c403ba6abf"
+    },
+    "examples/context-menu-icons.tsx": {
+      "path": "apps/v4/examples/base/context-menu-icons.tsx",
+      "blob": "b03d187469fd76244637287249d7aaeb7e568ec8"
+    },
+    "examples/context-menu-radio.tsx": {
+      "path": "apps/v4/examples/base/context-menu-radio.tsx",
+      "blob": "eb8e1ab9a767ba1a9c94c7fd2169356fa8309ff4"
+    },
+    "examples/context-menu-rtl.tsx": {
+      "path": "apps/v4/examples/base/context-menu-rtl.tsx",
+      "blob": "71bdcb36f2553d1c0cd0570bfd33785d5179679d"
+    },
+    "examples/context-menu-shortcuts.tsx": {
+      "path": "apps/v4/examples/base/context-menu-shortcuts.tsx",
+      "blob": "5138c4fa9a575a665de71166c27e58319759fec5"
+    },
+    "examples/context-menu-sides.tsx": {
+      "path": "apps/v4/examples/base/context-menu-sides.tsx",
+      "blob": "504bcf0d3a357b0105d8cf9e0a6de1f8715caf65"
+    },
+    "examples/context-menu-submenu.tsx": {
+      "path": "apps/v4/examples/base/context-menu-submenu.tsx",
+      "blob": "2c489d42560fec944ea3bb786fed1b99ac717205"
+    },
+    "examples/dialog-close-button.tsx": {
+      "path": "apps/v4/examples/base/dialog-close-button.tsx",
+      "blob": "81f35c153eba67416b9fb567e4093a081b3ffa78"
+    },
+    "examples/dialog-demo.tsx": {
+      "path": "apps/v4/examples/base/dialog-demo.tsx",
+      "blob": "cad24831774d3740958eb635fe638893c2f7fa74"
+    },
+    "examples/dialog-no-close-button.tsx": {
+      "path": "apps/v4/examples/base/dialog-no-close-button.tsx",
+      "blob": "89e755e7a8ebf80b4e8b0f3c5b169d04a4e7fecb"
+    },
+    "examples/dialog-rtl.tsx": {
+      "path": "apps/v4/examples/base/dialog-rtl.tsx",
+      "blob": "d841043f6fc2e586c890e22c3f95c9dfb85ec452"
+    },
+    "examples/dialog-scrollable-content.tsx": {
+      "path": "apps/v4/examples/base/dialog-scrollable-content.tsx",
+      "blob": "6358459557c69df0000e79f8c5b06324c9a75359"
+    },
+    "examples/dialog-sticky-footer.tsx": {
+      "path": "apps/v4/examples/base/dialog-sticky-footer.tsx",
+      "blob": "dd21889a2bc77fce8b34ae716ef657db7c219761"
+    },
+    "examples/drawer-demo.tsx": {
+      "path": "apps/v4/examples/base/drawer-demo.tsx",
+      "blob": "14502278ac23a31632922a1287ce743c1d583b3a"
+    },
+    "examples/drawer-dialog.tsx": {
+      "path": "apps/v4/examples/base/drawer-dialog.tsx",
+      "blob": "2f845993a134c741f9eeecf8616e1b3cbc289ff9"
+    },
+    "examples/drawer-nested.tsx": {
+      "path": "apps/v4/examples/base/drawer-nested.tsx",
+      "blob": "034497de030131daa903fcda3c8fcabd00508b54"
+    },
+    "examples/drawer-non-modal.tsx": {
+      "path": "apps/v4/examples/base/drawer-non-modal.tsx",
+      "blob": "e1fb00c200f01a8a3fb84df73403ad45328db386"
+    },
+    "examples/drawer-sides.tsx": {
+      "path": "apps/v4/examples/base/drawer-sides.tsx",
+      "blob": "7e53743c67ccd5c9edaaa13dcbdfbbfa28ed41b3"
+    },
+    "examples/drawer-snap-points.tsx": {
+      "path": "apps/v4/examples/base/drawer-snap-points.tsx",
+      "blob": "7e2ce41d9dca1bd65eb813a02c2d6bd3fd398ea9"
+    },
+    "examples/drawer-swipe-handle.tsx": {
+      "path": "apps/v4/examples/base/drawer-swipe-handle.tsx",
+      "blob": "1047bd0ef33f8bd83624c2e3df91cecdff50723c"
+    },
+    "examples/dropdown-menu-avatar.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-avatar.tsx",
+      "blob": "20a268aef18b3478189209cc21560b840f4df1b1"
+    },
+    "examples/dropdown-menu-basic.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-basic.tsx",
+      "blob": "5a86dafebc518117471af2646ca930d7799b41b1"
+    },
+    "examples/dropdown-menu-checkboxes-icons.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-checkboxes-icons.tsx",
+      "blob": "6bbf1851354bb9317231a7e68f6f2db827abf55b"
+    },
+    "examples/dropdown-menu-checkboxes.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-checkboxes.tsx",
+      "blob": "905b0bba6c3e4a5eaa858c986644bad317515c9e"
+    },
+    "examples/dropdown-menu-complex.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-complex.tsx",
+      "blob": "2cdb33da3ce578f7c6cd01b56072c64ecb7abdcb"
+    },
+    "examples/dropdown-menu-demo.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-demo.tsx",
+      "blob": "730f771850160a739a54edec622f05e1c794c887"
+    },
+    "examples/dropdown-menu-destructive.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-destructive.tsx",
+      "blob": "63cc6387974dbe7444386f0ffb01040a7beb024c"
+    },
+    "examples/dropdown-menu-icons.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-icons.tsx",
+      "blob": "95aa4c38213048f3407416e3a3273ddcb03a97a9"
+    },
+    "examples/dropdown-menu-radio-group.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-radio-group.tsx",
+      "blob": "24e866df3b96b08137ff8e2d8a5c93c2f6317205"
+    },
+    "examples/dropdown-menu-radio-icons.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-radio-icons.tsx",
+      "blob": "f40e0a8e6920515efb90a71afeb3b72a3bcb8431"
+    },
+    "examples/dropdown-menu-rtl.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-rtl.tsx",
+      "blob": "4417de18e462756d23fa8833ab5dc8631c374c01"
+    },
+    "examples/dropdown-menu-shortcuts.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-shortcuts.tsx",
+      "blob": "531273e33dceeccad78db192cbedd37f934f02b6"
+    },
+    "examples/dropdown-menu-submenu.tsx": {
+      "path": "apps/v4/examples/base/dropdown-menu-submenu.tsx",
+      "blob": "2f211d995c1f308945ea842c6c6c09f8391c00c2"
+    },
+    "examples/empty-avatar-group.tsx": {
+      "path": "apps/v4/examples/base/empty-avatar-group.tsx",
+      "blob": "e21229024ce883d84bb22013999459c899918f44"
+    },
+    "examples/empty-avatar.tsx": {
+      "path": "apps/v4/examples/base/empty-avatar.tsx",
+      "blob": "c4b0c20f695becf27f77f328488a9588c017b693"
+    },
+    "examples/empty-background.tsx": {
+      "path": "apps/v4/examples/base/empty-background.tsx",
+      "blob": "b36eef643fd3aeee4e7fa0e02edae6ad0baa52c5"
+    },
+    "examples/empty-demo.tsx": {
+      "path": "apps/v4/examples/base/empty-demo.tsx",
+      "blob": "91104392b467ba0bdf50d4520d1eac5ab3a51e2f"
+    },
+    "examples/empty-input-group.tsx": {
+      "path": "apps/v4/examples/base/empty-input-group.tsx",
+      "blob": "7c8a811def05b827a36c77701c17b201fac16dff"
+    },
+    "examples/empty-outline.tsx": {
+      "path": "apps/v4/examples/base/empty-outline.tsx",
+      "blob": "b363bd2c95d9aceced40df05b135a852db373118"
+    },
+    "examples/empty-rtl.tsx": {
+      "path": "apps/v4/examples/base/empty-rtl.tsx",
+      "blob": "caff96b5cfc686761cbd8d4c6b65a68271573e15"
+    },
+    "examples/field-checkbox.tsx": {
+      "path": "apps/v4/examples/base/field-checkbox.tsx",
+      "blob": "ee171605e3735f62b74ea3c85655cb47f3a3b8f5"
+    },
+    "examples/field-choice-card.tsx": {
+      "path": "apps/v4/examples/base/field-choice-card.tsx",
+      "blob": "1e30e76462edd26f38c05abaead3dd0652e6e48e"
+    },
+    "examples/field-demo.tsx": {
+      "path": "apps/v4/examples/base/field-demo.tsx",
+      "blob": "448cb67b81eae4ca99055e8c3bcce0ff5f92ec0f"
+    },
+    "examples/field-fieldset.tsx": {
+      "path": "apps/v4/examples/base/field-fieldset.tsx",
+      "blob": "37b815a540606b7475099e1cfc42610b4ddbaef5"
+    },
+    "examples/field-group.tsx": {
+      "path": "apps/v4/examples/base/field-group.tsx",
+      "blob": "82ce0d3faabc0ed369b8797ec4039947e226853a"
+    },
+    "examples/field-input.tsx": {
+      "path": "apps/v4/examples/base/field-input.tsx",
+      "blob": "c39ae98664e4b695a9c8725d1d5fb3531573402b"
+    },
+    "examples/field-radio.tsx": {
+      "path": "apps/v4/examples/base/field-radio.tsx",
+      "blob": "031e1e23fa05a6623c66116cae97ad385ed45b81"
+    },
+    "examples/field-responsive.tsx": {
+      "path": "apps/v4/examples/base/field-responsive.tsx",
+      "blob": "173d04686820deec042a625524eb637e0af2a23c"
+    },
+    "examples/field-rtl.tsx": {
+      "path": "apps/v4/examples/base/field-rtl.tsx",
+      "blob": "b92bffce4e710580bd4ccb922b32a215fdbfc561"
+    },
+    "examples/field-select.tsx": {
+      "path": "apps/v4/examples/base/field-select.tsx",
+      "blob": "fa7c9a2112e1f1efb1fac13e8e08809dc834fba0"
+    },
+    "examples/field-slider.tsx": {
+      "path": "apps/v4/examples/base/field-slider.tsx",
+      "blob": "e769589b5e45e3fcf0e042aa707f7a0f21d61cec"
+    },
+    "examples/field-switch.tsx": {
+      "path": "apps/v4/examples/base/field-switch.tsx",
+      "blob": "6017f42a3c886d5cbd01e0de6f4d3042595710bc"
+    },
+    "examples/field-textarea.tsx": {
+      "path": "apps/v4/examples/base/field-textarea.tsx",
+      "blob": "ad8b62c30b05d1765fd32a64e84349f59183b142"
+    },
+    "examples/hover-card-demo.tsx": {
+      "path": "apps/v4/examples/base/hover-card-demo.tsx",
+      "blob": "c4855baca4ddd838fd8128b26e404876881a2c95"
+    },
+    "examples/hover-card-rtl.tsx": {
+      "path": "apps/v4/examples/base/hover-card-rtl.tsx",
+      "blob": "1b1426fd0f73a70a6635b960db8194bc9ab01afb"
+    },
+    "examples/hover-card-sides.tsx": {
+      "path": "apps/v4/examples/base/hover-card-sides.tsx",
+      "blob": "11c92e5868997f9ffb3691f4c87a18bf534f5198"
+    },
+    "examples/input-badge.tsx": {
+      "path": "apps/v4/examples/base/input-badge.tsx",
+      "blob": "a2bccbd575031134ec3d8bd56b5953cb9d28d1bb"
+    },
+    "examples/input-basic.tsx": {
+      "path": "apps/v4/examples/base/input-basic.tsx",
+      "blob": "4cac4b5ee609fccdc4656c0c56adda7657349480"
+    },
+    "examples/input-button-group.tsx": {
+      "path": "apps/v4/examples/base/input-button-group.tsx",
+      "blob": "fd9539b95743985e54f91bfe1e4252b4ac723b8c"
+    },
+    "examples/input-demo.tsx": {
+      "path": "apps/v4/examples/base/input-demo.tsx",
+      "blob": "a1ffac47eb0a097a6abc20de3e651e086b05e666"
+    },
+    "examples/input-disabled.tsx": {
+      "path": "apps/v4/examples/base/input-disabled.tsx",
+      "blob": "8bb78b63899a978872644920522fb225ef5c9223"
+    },
+    "examples/input-field.tsx": {
+      "path": "apps/v4/examples/base/input-field.tsx",
+      "blob": "82f7d6d0c4b797ea60bc6221818a4dd5768d2b69"
+    },
+    "examples/input-fieldgroup.tsx": {
+      "path": "apps/v4/examples/base/input-fieldgroup.tsx",
+      "blob": "98701317b639bfcb6b8e9c12b65fee7cd904e36a"
+    },
+    "examples/input-file.tsx": {
+      "path": "apps/v4/examples/base/input-file.tsx",
+      "blob": "9ceceb673a118fe0b9541f78588db22c01da940e"
+    },
+    "examples/input-form.tsx": {
+      "path": "apps/v4/examples/base/input-form.tsx",
+      "blob": "bbba3aa80c951628f5d8cb0d5607e91243a49702"
+    },
+    "examples/input-grid.tsx": {
+      "path": "apps/v4/examples/base/input-grid.tsx",
+      "blob": "a1cbc498e1758a95ce64d627e1fd6e98cced4c50"
+    },
+    "examples/input-group-block-end.tsx": {
+      "path": "apps/v4/examples/base/input-group-block-end.tsx",
+      "blob": "ad4ac4c2d2fefed694dd8ff76aa9325098f24a26"
+    },
+    "examples/input-group-block-start.tsx": {
+      "path": "apps/v4/examples/base/input-group-block-start.tsx",
+      "blob": "cab7e241769fd760ecabfa281431b29989c15626"
+    },
+    "examples/input-group-button.tsx": {
+      "path": "apps/v4/examples/base/input-group-button.tsx",
+      "blob": "33cdcdaa3d4491cdd19760c5b1ce36fed8c0591a"
+    },
+    "examples/input-group-custom.tsx": {
+      "path": "apps/v4/examples/base/input-group-custom.tsx",
+      "blob": "1990bea1814b92f8b8883a9885768c2858a64a1a"
+    },
+    "examples/input-group-demo.tsx": {
+      "path": "apps/v4/examples/base/input-group-demo.tsx",
+      "blob": "7e04f1ed4043f4328b8dc98c5dcc1a6b7ca37764"
+    },
+    "examples/input-group-dropdown.tsx": {
+      "path": "apps/v4/examples/base/input-group-dropdown.tsx",
+      "blob": "378a96870652bdae7465a1ac6e0eafac26b9cf31"
+    },
+    "examples/input-group-icon.tsx": {
+      "path": "apps/v4/examples/base/input-group-icon.tsx",
+      "blob": "75a1e6a8900bc17cd478419c1330dca9d1f69361"
+    },
+    "examples/input-group-inline-end.tsx": {
+      "path": "apps/v4/examples/base/input-group-inline-end.tsx",
+      "blob": "376fbcb2841d8de9a1f5ac671eea60d08f2f5ad8"
+    },
+    "examples/input-group-inline-start.tsx": {
+      "path": "apps/v4/examples/base/input-group-inline-start.tsx",
+      "blob": "f1de7c3dc332ffc8a327d2027fa2342da7589af8"
+    },
+    "examples/input-group-kbd.tsx": {
+      "path": "apps/v4/examples/base/input-group-kbd.tsx",
+      "blob": "b97f16654cfdb542d4e7eab00a23d9404e6b8adc"
+    },
+    "examples/input-group-rtl.tsx": {
+      "path": "apps/v4/examples/base/input-group-rtl.tsx",
+      "blob": "05f11ce2d151737a9288120afedf52d285339489"
+    },
+    "examples/input-group-spinner.tsx": {
+      "path": "apps/v4/examples/base/input-group-spinner.tsx",
+      "blob": "bf9af4f8a7aedddc199041ec04b6e5a7c09cddf1"
+    },
+    "examples/input-group-text.tsx": {
+      "path": "apps/v4/examples/base/input-group-text.tsx",
+      "blob": "a989b224de193fb64591659f4b11ae01872f101d"
+    },
+    "examples/input-group-textarea.tsx": {
+      "path": "apps/v4/examples/base/input-group-textarea.tsx",
+      "blob": "66d41f11cb991ef7ff841de23b88c9189ffec921"
+    },
+    "examples/input-inline.tsx": {
+      "path": "apps/v4/examples/base/input-inline.tsx",
+      "blob": "320ca5073844024cdcb362074458664fbc40f1cd"
+    },
+    "examples/input-input-group.tsx": {
+      "path": "apps/v4/examples/base/input-input-group.tsx",
+      "blob": "818532192c02173d6d31ede5ea6f0e0fb555689f"
+    },
+    "examples/input-invalid.tsx": {
+      "path": "apps/v4/examples/base/input-invalid.tsx",
+      "blob": "5a9cc8569163f86e6caac3dafd222021d73e4c70"
+    },
+    "examples/input-required.tsx": {
+      "path": "apps/v4/examples/base/input-required.tsx",
+      "blob": "e6cd5d35cd64485791a09801bd65f1e9493d23ca"
+    },
+    "examples/input-rtl.tsx": {
+      "path": "apps/v4/examples/base/input-rtl.tsx",
+      "blob": "6583f50ad2968ebf9bc44d5221b056b18e79f60a"
+    },
+    "examples/item-avatar.tsx": {
+      "path": "apps/v4/examples/base/item-avatar.tsx",
+      "blob": "7255ef2a62120cc3b0498d7d768a736323b2b964"
+    },
+    "examples/item-demo.tsx": {
+      "path": "apps/v4/examples/base/item-demo.tsx",
+      "blob": "00307289c6eb855205b76b9e3945f45241e770bf"
+    },
+    "examples/item-dropdown.tsx": {
+      "path": "apps/v4/examples/base/item-dropdown.tsx",
+      "blob": "9a3e0cd991843fc66086c1ff75ef78b911b8ad7b"
+    },
+    "examples/item-group.tsx": {
+      "path": "apps/v4/examples/base/item-group.tsx",
+      "blob": "8988659679fe17c9634e83d792e0a30d6eb595a2"
+    },
+    "examples/item-header.tsx": {
+      "path": "apps/v4/examples/base/item-header.tsx",
+      "blob": "3c23d0998aae63eb06a70eb23426b351ca0bee5d"
+    },
+    "examples/item-icon.tsx": {
+      "path": "apps/v4/examples/base/item-icon.tsx",
+      "blob": "4f6690533966eb2b2a6157df19ddf4f48bc58d2c"
+    },
+    "examples/item-image.tsx": {
+      "path": "apps/v4/examples/base/item-image.tsx",
+      "blob": "4508946d36ebe8b19c2eb1b39996bf0ba56334ae"
+    },
+    "examples/item-link.tsx": {
+      "path": "apps/v4/examples/base/item-link.tsx",
+      "blob": "eb27545e61359a2b47b184fd367dff733557e9e0"
+    },
+    "examples/item-rtl.tsx": {
+      "path": "apps/v4/examples/base/item-rtl.tsx",
+      "blob": "b99f2d8db98698894f9f7d06895ede6bcad68981"
+    },
+    "examples/item-size.tsx": {
+      "path": "apps/v4/examples/base/item-size.tsx",
+      "blob": "72e0db6c8cc37dc3eb1c9e0488e6bad1df68e0f1"
+    },
+    "examples/item-variant.tsx": {
+      "path": "apps/v4/examples/base/item-variant.tsx",
+      "blob": "0a4d4c17a584c0a0d92a23326f170e6ddb0817b6"
+    },
+    "examples/kbd-button.tsx": {
+      "path": "apps/v4/examples/base/kbd-button.tsx",
+      "blob": "e2d331ee27d5c575deb8a35ce92abd9e41687daa"
+    },
+    "examples/kbd-demo.tsx": {
+      "path": "apps/v4/examples/base/kbd-demo.tsx",
+      "blob": "f02b4e08fcd7c5606c9948507b2fbca746c76d00"
+    },
+    "examples/kbd-group.tsx": {
+      "path": "apps/v4/examples/base/kbd-group.tsx",
+      "blob": "3aa9482f5f88e4fbae136e2bc8afe8a24e93841c"
+    },
+    "examples/kbd-input-group.tsx": {
+      "path": "apps/v4/examples/base/kbd-input-group.tsx",
+      "blob": "9b88326003473ff7079cfca6884aeba1d3aad451"
+    },
+    "examples/kbd-rtl.tsx": {
+      "path": "apps/v4/examples/base/kbd-rtl.tsx",
+      "blob": "ae5a6ad803f88978553e9c16074582c8baffa7e8"
+    },
+    "examples/kbd-tooltip.tsx": {
+      "path": "apps/v4/examples/base/kbd-tooltip.tsx",
+      "blob": "47490c04d0bd58f80e371c58d41761b8713d182d"
+    },
+    "examples/label-demo.tsx": {
+      "path": "apps/v4/examples/base/label-demo.tsx",
+      "blob": "08977dd65f093d3cdf7b70641f97a67e90b21238"
+    },
+    "examples/label-rtl.tsx": {
+      "path": "apps/v4/examples/base/label-rtl.tsx",
+      "blob": "8d5cdf0240353dde792ae59357cc6c4ad5007a70"
+    },
+    "examples/marker-border.tsx": {
+      "path": "apps/v4/examples/base/marker-border.tsx",
+      "blob": "3cb9c624df46efecb358f21bcf53673066ddedc9"
+    },
+    "examples/marker-demo.tsx": {
+      "path": "apps/v4/examples/base/marker-demo.tsx",
+      "blob": "4a9187eb66ecdce8df6e66a651dbc5c51cc93ab6"
+    },
+    "examples/marker-icon.tsx": {
+      "path": "apps/v4/examples/base/marker-icon.tsx",
+      "blob": "1d064a8d1e9d9a943788877d1c6144a84d4029b0"
+    },
+    "examples/marker-link-button.tsx": {
+      "path": "apps/v4/examples/base/marker-link-button.tsx",
+      "blob": "5af4d4d55ac0d49340f53499789f4f295a5d9d96"
+    },
+    "examples/marker-separator.tsx": {
+      "path": "apps/v4/examples/base/marker-separator.tsx",
+      "blob": "8cd4815358239122701256e2ac17a2371205e592"
+    },
+    "examples/marker-shimmer.tsx": {
+      "path": "apps/v4/examples/base/marker-shimmer.tsx",
+      "blob": "dc276f7b97dd977d4de93ac926c7cf993e877f4a"
+    },
+    "examples/marker-status.tsx": {
+      "path": "apps/v4/examples/base/marker-status.tsx",
+      "blob": "48732188050443def9a6bbebdb43da2cf855d6c1"
+    },
+    "examples/marker-variants.tsx": {
+      "path": "apps/v4/examples/base/marker-variants.tsx",
+      "blob": "64609a002c910ac065f72f92365062bf04791ba1"
+    },
+    "examples/menubar-checkbox.tsx": {
+      "path": "apps/v4/examples/base/menubar-checkbox.tsx",
+      "blob": "8d178f90c5007405d69ef56dbe7f8c33dfc02efb"
+    },
+    "examples/menubar-demo.tsx": {
+      "path": "apps/v4/examples/base/menubar-demo.tsx",
+      "blob": "562009134545e0b0421250df7c366ecbae1bde03"
+    },
+    "examples/menubar-icons.tsx": {
+      "path": "apps/v4/examples/base/menubar-icons.tsx",
+      "blob": "341c06babb25da69dd457813a14c7eeac80132eb"
+    },
+    "examples/menubar-radio.tsx": {
+      "path": "apps/v4/examples/base/menubar-radio.tsx",
+      "blob": "3d2674fe4c1ab395deb74a8f08e402d713c6a789"
+    },
+    "examples/menubar-rtl.tsx": {
+      "path": "apps/v4/examples/base/menubar-rtl.tsx",
+      "blob": "4dae6b1ec3a8f692e35f509778bc076a059791d3"
+    },
+    "examples/menubar-submenu.tsx": {
+      "path": "apps/v4/examples/base/menubar-submenu.tsx",
+      "blob": "c1047b31c6b74f3a024122d27acf048f89efd610"
+    },
+    "examples/message-actions.tsx": {
+      "path": "apps/v4/examples/base/message-actions.tsx",
+      "blob": "e63a55b302dd286555eec3bb41895bd2b889c6a5"
+    },
+    "examples/message-attachment.tsx": {
+      "path": "apps/v4/examples/base/message-attachment.tsx",
+      "blob": "61e90d8624c65d8b96140cd6549e4747088dd804"
+    },
+    "examples/message-avatar.tsx": {
+      "path": "apps/v4/examples/base/message-avatar.tsx",
+      "blob": "39846c10e1e27bb668058bdb26f949bbc9c32ff2"
+    },
+    "examples/message-demo.tsx": {
+      "path": "apps/v4/examples/base/message-demo.tsx",
+      "blob": "2ceac4b058b6d58561f76e05faa8261881cfe8a2"
+    },
+    "examples/message-group.tsx": {
+      "path": "apps/v4/examples/base/message-group.tsx",
+      "blob": "39a4147494d7f50b2e14fd8a4b4234b6cfaf0524"
+    },
+    "examples/message-header-footer.tsx": {
+      "path": "apps/v4/examples/base/message-header-footer.tsx",
+      "blob": "6defb43182e239ca7bd302cf64f51975ad70fc51"
+    },
+    "examples/native-select-demo.tsx": {
+      "path": "apps/v4/examples/base/native-select-demo.tsx",
+      "blob": "4d00092bbc8136ba1c2a39f3389815e34397f4cb"
+    },
+    "examples/native-select-disabled.tsx": {
+      "path": "apps/v4/examples/base/native-select-disabled.tsx",
+      "blob": "34896ddabefadb3acfabff99a628d02e6a39a51f"
+    },
+    "examples/native-select-groups.tsx": {
+      "path": "apps/v4/examples/base/native-select-groups.tsx",
+      "blob": "0120cee0a8ab84b4cde0c7a9331443ddbf9eab83"
+    },
+    "examples/native-select-invalid.tsx": {
+      "path": "apps/v4/examples/base/native-select-invalid.tsx",
+      "blob": "fbd48c57f064c8afde914f7c1a933620e8cc5df0"
+    },
+    "examples/native-select-rtl.tsx": {
+      "path": "apps/v4/examples/base/native-select-rtl.tsx",
+      "blob": "4fdf73066614e52510cc4992430c37f0dd483bf1"
+    },
+    "examples/navigation-menu-demo.tsx": {
+      "path": "apps/v4/examples/base/navigation-menu-demo.tsx",
+      "blob": "202ee0a90becbb32e66984ad7d99603855107b5b"
+    },
+    "examples/navigation-menu-rtl.tsx": {
+      "path": "apps/v4/examples/base/navigation-menu-rtl.tsx",
+      "blob": "21753ce3a82bcdcec37ee697f7bea0104e2a2e7b"
+    },
+    "examples/pagination-demo.tsx": {
+      "path": "apps/v4/examples/base/pagination-demo.tsx",
+      "blob": "f091c58518c517827903095816291b250bc4f73f"
+    },
+    "examples/pagination-icons-only.tsx": {
+      "path": "apps/v4/examples/base/pagination-icons-only.tsx",
+      "blob": "2004e4e05859d7b4d014e68ec10d5e231daa678c"
+    },
+    "examples/pagination-rtl.tsx": {
+      "path": "apps/v4/examples/base/pagination-rtl.tsx",
+      "blob": "d0128ae05ceca774e87a9996f3e626275e2ab877"
+    },
+    "examples/pagination-simple.tsx": {
+      "path": "apps/v4/examples/base/pagination-simple.tsx",
+      "blob": "d68a28733ad11f8cc4cc06522782976d0ba9f287"
+    },
+    "examples/popover-alignments.tsx": {
+      "path": "apps/v4/examples/base/popover-alignments.tsx",
+      "blob": "fa0efb0ba62ce58087de715a0622a712ab16c701"
+    },
+    "examples/popover-basic.tsx": {
+      "path": "apps/v4/examples/base/popover-basic.tsx",
+      "blob": "4eb1c519067ca55bc90e96019d67e4e791b63a0a"
+    },
+    "examples/popover-demo.tsx": {
+      "path": "apps/v4/examples/base/popover-demo.tsx",
+      "blob": "f3ffa443fa1f99c731317f81b5d78d7103ae0438"
+    },
+    "examples/popover-form.tsx": {
+      "path": "apps/v4/examples/base/popover-form.tsx",
+      "blob": "1fe565af47bf7ebf94fd3949bb24e79125cf7ade"
+    },
+    "examples/popover-rtl.tsx": {
+      "path": "apps/v4/examples/base/popover-rtl.tsx",
+      "blob": "6ae256e00fe939cc5229956bf0918d8ab3a20a07"
+    },
+    "examples/progress-controlled.tsx": {
+      "path": "apps/v4/examples/base/progress-controlled.tsx",
+      "blob": "6275e36b10f05078e453e7ba88e46008ffa18227"
+    },
+    "examples/progress-demo.tsx": {
+      "path": "apps/v4/examples/base/progress-demo.tsx",
+      "blob": "b88e5b41060fa1e4db483c7fbe8d13472bc49294"
+    },
+    "examples/progress-label.tsx": {
+      "path": "apps/v4/examples/base/progress-label.tsx",
+      "blob": "4648483e52ce9dd6b288e71905cd52eb62b989fb"
+    },
+    "examples/progress-rtl.tsx": {
+      "path": "apps/v4/examples/base/progress-rtl.tsx",
+      "blob": "93169a3c93e7a7a99095b7b36a224a7e69b70d07"
+    },
+    "examples/radio-group-choice-card.tsx": {
+      "path": "apps/v4/examples/base/radio-group-choice-card.tsx",
+      "blob": "468cf730dc2f610bd29d8c2ac2527c14dffd6e45"
+    },
+    "examples/radio-group-demo.tsx": {
+      "path": "apps/v4/examples/base/radio-group-demo.tsx",
+      "blob": "9c68afe3a7e673b9b9f0ce9c96c4a42f9505d39f"
+    },
+    "examples/radio-group-description.tsx": {
+      "path": "apps/v4/examples/base/radio-group-description.tsx",
+      "blob": "f226026ba79ca124ba63a5e1fd27eb1d2b8ed7a6"
+    },
+    "examples/radio-group-disabled.tsx": {
+      "path": "apps/v4/examples/base/radio-group-disabled.tsx",
+      "blob": "2cebb9027151baa39621b924eb21d204f87ba30c"
+    },
+    "examples/radio-group-fieldset.tsx": {
+      "path": "apps/v4/examples/base/radio-group-fieldset.tsx",
+      "blob": "80b52ff56c3864101ed714e00523a3d4e719ac12"
+    },
+    "examples/radio-group-invalid.tsx": {
+      "path": "apps/v4/examples/base/radio-group-invalid.tsx",
+      "blob": "c1d9603316298e86e40eae80372a6afa16c06b04"
+    },
+    "examples/radio-group-rtl.tsx": {
+      "path": "apps/v4/examples/base/radio-group-rtl.tsx",
+      "blob": "57935ba5f37313f8b4dd231487b7adfe9f1b9f53"
+    },
+    "examples/scroll-area-demo.tsx": {
+      "path": "apps/v4/examples/base/scroll-area-demo.tsx",
+      "blob": "52c46b5d9d5370ac4c1e581476863b09f08134aa"
+    },
+    "examples/scroll-area-horizontal-demo.tsx": {
+      "path": "apps/v4/examples/base/scroll-area-horizontal-demo.tsx",
+      "blob": "73d2479685168e1942dd722f36a3792db33a658c"
+    },
+    "examples/scroll-area-rtl.tsx": {
+      "path": "apps/v4/examples/base/scroll-area-rtl.tsx",
+      "blob": "c2b19130a47a17a749156f6bddfde906434ef84d"
+    },
+    "examples/select-align-item.tsx": {
+      "path": "apps/v4/examples/base/select-align-item.tsx",
+      "blob": "1b57cee69c5503d449f09e4b2d3476401630f313"
+    },
+    "examples/select-demo.tsx": {
+      "path": "apps/v4/examples/base/select-demo.tsx",
+      "blob": "dfada41ea4ede3925e976931e4966ecbeb3e78d2"
+    },
+    "examples/select-disabled.tsx": {
+      "path": "apps/v4/examples/base/select-disabled.tsx",
+      "blob": "bd0d0e0bad64d59b378c83888d1372d4125539b6"
+    },
+    "examples/select-groups.tsx": {
+      "path": "apps/v4/examples/base/select-groups.tsx",
+      "blob": "7d9b5aadee0ba8a5f40fc34e9a8b94fcb908063c"
+    },
+    "examples/select-invalid.tsx": {
+      "path": "apps/v4/examples/base/select-invalid.tsx",
+      "blob": "0488de66cb6a6ee92feebfb2167392dec023f51a"
+    },
+    "examples/select-rtl.tsx": {
+      "path": "apps/v4/examples/base/select-rtl.tsx",
+      "blob": "0f3041fe446f09550239e2a279ee6d82bb5f3d13"
+    },
+    "examples/select-scrollable.tsx": {
+      "path": "apps/v4/examples/base/select-scrollable.tsx",
+      "blob": "2cd12fcf0a58158c0572ff902af3d5a38598e9f5"
+    },
+    "examples/separator-demo.tsx": {
+      "path": "apps/v4/examples/base/separator-demo.tsx",
+      "blob": "4b42d87cee99f29181d6debb5049c00f94c54ddb"
+    },
+    "examples/separator-list.tsx": {
+      "path": "apps/v4/examples/base/separator-list.tsx",
+      "blob": "e5e4f94860f0a4bdf3ee4cffe82cb8415defadad"
+    },
+    "examples/separator-menu.tsx": {
+      "path": "apps/v4/examples/base/separator-menu.tsx",
+      "blob": "6bda4f042c819efd0ca8d57d791cbfc9fd16e79b"
+    },
+    "examples/separator-rtl.tsx": {
+      "path": "apps/v4/examples/base/separator-rtl.tsx",
+      "blob": "4502b1c102dae47c9196052b195430cc9a08af3e"
+    },
+    "examples/separator-vertical.tsx": {
+      "path": "apps/v4/examples/base/separator-vertical.tsx",
+      "blob": "3dbde42883dda0eaf2de26f4c8195d28d85828ca"
+    },
+    "examples/sheet-demo.tsx": {
+      "path": "apps/v4/examples/base/sheet-demo.tsx",
+      "blob": "57d07a882fe5d5c0de542396262cb90033db5d72"
+    },
+    "examples/sheet-no-close-button.tsx": {
+      "path": "apps/v4/examples/base/sheet-no-close-button.tsx",
+      "blob": "de23bb5d1fe9e76d4600a85a03895881eb4766e9"
+    },
+    "examples/sheet-rtl.tsx": {
+      "path": "apps/v4/examples/base/sheet-rtl.tsx",
+      "blob": "4a1ff1cd4cf5eb655bf88f232a4779ee15818dc1"
+    },
+    "examples/sheet-side.tsx": {
+      "path": "apps/v4/examples/base/sheet-side.tsx",
+      "blob": "0a351b896d0f1a16467b14b659d05ec0cbbc4c59"
+    },
+    "examples/sidebar-demo.tsx": {
+      "path": "apps/v4/examples/base/sidebar-demo.tsx",
+      "blob": "1d12451e0f7dd93f9b583ccbe16a337ca3c801ed"
+    },
+    "examples/skeleton-avatar.tsx": {
+      "path": "apps/v4/examples/base/skeleton-avatar.tsx",
+      "blob": "15d639a4764f1feda2e74e840c3cd6d9ac66c38c"
+    },
+    "examples/skeleton-card.tsx": {
+      "path": "apps/v4/examples/base/skeleton-card.tsx",
+      "blob": "90906cf24e1ddf6dc32f8cdd3b826faebf9c6593"
+    },
+    "examples/skeleton-demo.tsx": {
+      "path": "apps/v4/examples/base/skeleton-demo.tsx",
+      "blob": "d0a00a409add8f79ca3a0d4a390f836afed21a52"
+    },
+    "examples/skeleton-form.tsx": {
+      "path": "apps/v4/examples/base/skeleton-form.tsx",
+      "blob": "90a4be56ac227f800296723b5dcb2c7bdfe7cd7a"
+    },
+    "examples/skeleton-rtl.tsx": {
+      "path": "apps/v4/examples/base/skeleton-rtl.tsx",
+      "blob": "a278081d9b1bc169b57c6369eaf76f7f18935640"
+    },
+    "examples/skeleton-table.tsx": {
+      "path": "apps/v4/examples/base/skeleton-table.tsx",
+      "blob": "28a14ab89db88628c2eb7233adafcc1ed77100a4"
+    },
+    "examples/skeleton-text.tsx": {
+      "path": "apps/v4/examples/base/skeleton-text.tsx",
+      "blob": "3b6435e25169e2490e7253cc9a6a976187a66b95"
+    },
+    "examples/slider-controlled.tsx": {
+      "path": "apps/v4/examples/base/slider-controlled.tsx",
+      "blob": "d1b7e29861a891e597f484db5d7a44328ac24b9a"
+    },
+    "examples/slider-demo.tsx": {
+      "path": "apps/v4/examples/base/slider-demo.tsx",
+      "blob": "1cfa2778538ed60a4b45e36310149c809a8f78bc"
+    },
+    "examples/slider-disabled.tsx": {
+      "path": "apps/v4/examples/base/slider-disabled.tsx",
+      "blob": "d107f9619ee51452e7e7271a5ca40249e853ca92"
+    },
+    "examples/slider-multiple.tsx": {
+      "path": "apps/v4/examples/base/slider-multiple.tsx",
+      "blob": "7bbc8f94da9796c4546b48683a5dcb3fe70c1163"
+    },
+    "examples/slider-range.tsx": {
+      "path": "apps/v4/examples/base/slider-range.tsx",
+      "blob": "6210e49789a7069e736ff646eb2225cdfc5f18f7"
+    },
+    "examples/slider-rtl.tsx": {
+      "path": "apps/v4/examples/base/slider-rtl.tsx",
+      "blob": "dd6f147315546839268af08f3bfecee365be77ec"
+    },
+    "examples/slider-vertical.tsx": {
+      "path": "apps/v4/examples/base/slider-vertical.tsx",
+      "blob": "7efd57c6364af7bdc57b9dd34fed23cc198b4104"
+    },
+    "examples/spinner-badge.tsx": {
+      "path": "apps/v4/examples/base/spinner-badge.tsx",
+      "blob": "d90960e4142f68b76ee0ed3fc93a8448eb902f32"
+    },
+    "examples/spinner-button.tsx": {
+      "path": "apps/v4/examples/base/spinner-button.tsx",
+      "blob": "c112a36214fd59e69a216a9f8d04d82a886e095c"
+    },
+    "examples/spinner-custom.tsx": {
+      "path": "apps/v4/examples/base/spinner-custom.tsx",
+      "blob": "23efe4fab83bb6db95db4f60c238641e5ab96a6a"
+    },
+    "examples/spinner-demo.tsx": {
+      "path": "apps/v4/examples/base/spinner-demo.tsx",
+      "blob": "e3eb5167cb4c5b417fc9f2bd13fc1e7656ae4261"
+    },
+    "examples/spinner-empty.tsx": {
+      "path": "apps/v4/examples/base/spinner-empty.tsx",
+      "blob": "94083383accf7e3fedc01a36d755725726380889"
+    },
+    "examples/spinner-input-group.tsx": {
+      "path": "apps/v4/examples/base/spinner-input-group.tsx",
+      "blob": "913549a6846a15ef86860fe63561542a10e7d8b8"
+    },
+    "examples/spinner-rtl.tsx": {
+      "path": "apps/v4/examples/base/spinner-rtl.tsx",
+      "blob": "c441a83c3a56f53582ea44343c4ecabec9da4673"
+    },
+    "examples/spinner-size.tsx": {
+      "path": "apps/v4/examples/base/spinner-size.tsx",
+      "blob": "be0d9d97e793760cc7bce4290dbad526e346ae8d"
+    },
+    "examples/switch-choice-card.tsx": {
+      "path": "apps/v4/examples/base/switch-choice-card.tsx",
+      "blob": "80cd529bdfffa4310ba7634d1917a27178fae083"
+    },
+    "examples/switch-demo.tsx": {
+      "path": "apps/v4/examples/base/switch-demo.tsx",
+      "blob": "fd8470c83ed6d1895c336588ceb620036f846762"
+    },
+    "examples/switch-description.tsx": {
+      "path": "apps/v4/examples/base/switch-description.tsx",
+      "blob": "9205fce1bdf26a7cd9f4f36a82214e816ee7346b"
+    },
+    "examples/switch-disabled.tsx": {
+      "path": "apps/v4/examples/base/switch-disabled.tsx",
+      "blob": "2b6141da781eee54a3cb33e9fb8e19ab625a03b4"
+    },
+    "examples/switch-invalid.tsx": {
+      "path": "apps/v4/examples/base/switch-invalid.tsx",
+      "blob": "1f38ad7a3fc5d5110779b8b15c3944061550188e"
+    },
+    "examples/switch-rtl.tsx": {
+      "path": "apps/v4/examples/base/switch-rtl.tsx",
+      "blob": "04e94b9d08d1244ccf846e052e287e05e475994f"
+    },
+    "examples/switch-sizes.tsx": {
+      "path": "apps/v4/examples/base/switch-sizes.tsx",
+      "blob": "bc5b335f872dcbc9e5987773350094568ce842f3"
+    },
+    "examples/table-actions.tsx": {
+      "path": "apps/v4/examples/base/table-actions.tsx",
+      "blob": "be6ae7fb6f47f0dd746e48f0070be8bc6e3dd126"
+    },
+    "examples/table-demo.tsx": {
+      "path": "apps/v4/examples/base/table-demo.tsx",
+      "blob": "b8e8f908eb4df57317201aed6a545869c2e41b9c"
+    },
+    "examples/table-footer.tsx": {
+      "path": "apps/v4/examples/base/table-footer.tsx",
+      "blob": "da214dac22be8a44b29b8883278063927c26d161"
+    },
+    "examples/table-rtl.tsx": {
+      "path": "apps/v4/examples/base/table-rtl.tsx",
+      "blob": "a32c40a4d6a4e42e240e8c13ec475c6d4b123a9e"
+    },
+    "examples/tabs-demo.tsx": {
+      "path": "apps/v4/examples/base/tabs-demo.tsx",
+      "blob": "db6b8461a64e79966a6cfddb736540d48af3df3e"
+    },
+    "examples/tabs-disabled.tsx": {
+      "path": "apps/v4/examples/base/tabs-disabled.tsx",
+      "blob": "0b0574547705d5efbc8a782ff7faa95e383da103"
+    },
+    "examples/tabs-icons.tsx": {
+      "path": "apps/v4/examples/base/tabs-icons.tsx",
+      "blob": "3f2ba34caaae150329362e2460d183720c894c59"
+    },
+    "examples/tabs-line.tsx": {
+      "path": "apps/v4/examples/base/tabs-line.tsx",
+      "blob": "5cb967f2bf23a4e74279908aac492cdc41d5bd37"
+    },
+    "examples/tabs-rtl.tsx": {
+      "path": "apps/v4/examples/base/tabs-rtl.tsx",
+      "blob": "13a6c708e94f38fd1afbe75793ffb88e8d6944a7"
+    },
+    "examples/tabs-vertical.tsx": {
+      "path": "apps/v4/examples/base/tabs-vertical.tsx",
+      "blob": "28ffa1699cbe1f206aa14bda2c0fdadd49a5deeb"
+    },
+    "examples/textarea-button.tsx": {
+      "path": "apps/v4/examples/base/textarea-button.tsx",
+      "blob": "ddc4fc56ac339636ebd8c17b93d6212c2549b3e9"
+    },
+    "examples/textarea-demo.tsx": {
+      "path": "apps/v4/examples/base/textarea-demo.tsx",
+      "blob": "22d7050d6ec50e77b6cb5ab379de24739bb561ef"
+    },
+    "examples/textarea-disabled.tsx": {
+      "path": "apps/v4/examples/base/textarea-disabled.tsx",
+      "blob": "1a6a1a00a13fbf0408e7889fa2fbdc6b2e37b3e7"
+    },
+    "examples/textarea-field.tsx": {
+      "path": "apps/v4/examples/base/textarea-field.tsx",
+      "blob": "27fca4e4131854415fded9278e500b24642d5678"
+    },
+    "examples/textarea-invalid.tsx": {
+      "path": "apps/v4/examples/base/textarea-invalid.tsx",
+      "blob": "b60ee256c08aabe936b43ac46d98f874dc9a5d56"
+    },
+    "examples/textarea-rtl.tsx": {
+      "path": "apps/v4/examples/base/textarea-rtl.tsx",
+      "blob": "4c82314d7604973db1e3ad1e3fa711181fa81144"
+    },
+    "examples/toast-demo.tsx": {
+      "path": "apps/v4/examples/base/toast-demo.tsx",
+      "blob": "4defe82f25d6e03cfb3e08d3f12a3bbce13ca8c3"
+    },
+    "examples/toast-promise.tsx": {
+      "path": "apps/v4/examples/base/toast-promise.tsx",
+      "blob": "8f1351571a3e635408a756bc20b11f1e1903f96c"
+    },
+    "examples/toast-types.tsx": {
+      "path": "apps/v4/examples/base/toast-types.tsx",
+      "blob": "c009d74a845d3b073f5a2e9f0716c5ab5f3cb768"
+    },
+    "examples/toggle-demo.tsx": {
+      "path": "apps/v4/examples/base/toggle-demo.tsx",
+      "blob": "128fbf62dde5e7106fbc7a9b3d9a694e9c946e83"
+    },
+    "examples/toggle-disabled.tsx": {
+      "path": "apps/v4/examples/base/toggle-disabled.tsx",
+      "blob": "10885aae26d76e1c69a3f752fa74181cbf62b219"
+    },
+    "examples/toggle-group-demo.tsx": {
+      "path": "apps/v4/examples/base/toggle-group-demo.tsx",
+      "blob": "af0ebbf075d4d32315d1a6bdca5872de6b72d818"
+    },
+    "examples/toggle-group-disabled.tsx": {
+      "path": "apps/v4/examples/base/toggle-group-disabled.tsx",
+      "blob": "f5c9685c4477955887814303adb715dec919a6b1"
+    },
+    "examples/toggle-group-font-weight-selector.tsx": {
+      "path": "apps/v4/examples/base/toggle-group-font-weight-selector.tsx",
+      "blob": "cf018cf8737bfd22e05944a9fa8306f1b9474d2b"
+    },
+    "examples/toggle-group-outline.tsx": {
+      "path": "apps/v4/examples/base/toggle-group-outline.tsx",
+      "blob": "97450630300d44c30cdfb8f9c6ac96ea279ea209"
+    },
+    "examples/toggle-group-rtl.tsx": {
+      "path": "apps/v4/examples/base/toggle-group-rtl.tsx",
+      "blob": "cbad14050f872fd0b7cabc11160e3db3a620c1b2"
+    },
+    "examples/toggle-group-sizes.tsx": {
+      "path": "apps/v4/examples/base/toggle-group-sizes.tsx",
+      "blob": "b08ae7525dad2e2e2e68b48563723ff3d9d22872"
+    },
+    "examples/toggle-group-spacing.tsx": {
+      "path": "apps/v4/examples/base/toggle-group-spacing.tsx",
+      "blob": "ab7bbd85d3734eca6723003b2b01805a6c266863"
+    },
+    "examples/toggle-group-vertical.tsx": {
+      "path": "apps/v4/examples/base/toggle-group-vertical.tsx",
+      "blob": "f048f2cfbe00920e2813915e267e4ec972dfa143"
+    },
+    "examples/toggle-outline.tsx": {
+      "path": "apps/v4/examples/base/toggle-outline.tsx",
+      "blob": "e87284fe5b007c50e0f39ab9936735f2fcc2e462"
+    },
+    "examples/toggle-rtl.tsx": {
+      "path": "apps/v4/examples/base/toggle-rtl.tsx",
+      "blob": "a0be7b680d99f5647bb07a289964dc7c8c61e625"
+    },
+    "examples/toggle-sizes.tsx": {
+      "path": "apps/v4/examples/base/toggle-sizes.tsx",
+      "blob": "cf7c92c651c230c557ffec4f40c94b79c42c2e76"
+    },
+    "examples/toggle-text.tsx": {
+      "path": "apps/v4/examples/base/toggle-text.tsx",
+      "blob": "5939f8a2400c30f38d659e2df39563e57c1410a1"
+    },
+    "examples/tooltip-demo.tsx": {
+      "path": "apps/v4/examples/base/tooltip-demo.tsx",
+      "blob": "d021d2cabe2daccef2f88f163bb2e671382ec1f5"
+    },
+    "examples/tooltip-disabled.tsx": {
+      "path": "apps/v4/examples/base/tooltip-disabled.tsx",
+      "blob": "15df922c63f6e0d40c6817def21a7f2318dc2870"
+    },
+    "examples/tooltip-keyboard.tsx": {
+      "path": "apps/v4/examples/base/tooltip-keyboard.tsx",
+      "blob": "41cf16f6a7a077da494856d1d654e3a3f882e54b"
+    },
+    "examples/tooltip-rtl.tsx": {
+      "path": "apps/v4/examples/base/tooltip-rtl.tsx",
+      "blob": "5390fbd8539626d6d4f8fe0300cd1081c8c80c53"
+    },
+    "examples/tooltip-sides.tsx": {
+      "path": "apps/v4/examples/base/tooltip-sides.tsx",
+      "blob": "91aaa9e016208980dc809ea775f3766cec0e090d"
+    },
+    "home/account-access.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/account-access.tsx",
+      "blob": "2cfebec880982682b0b75de41a5a1e716e5fbe79"
+    },
+    "home/analytics-card.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/analytics-card.tsx",
+      "blob": "68584c8b9335ffa77670626a28a64c5ec4fa1c1f"
+    },
+    "home/claimable-balance.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/claimable-balance.tsx",
+      "blob": "60bc96c61277f8338d4e504effb11009a1f208cc"
+    },
+    "home/contribution-history.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/contribution-history.tsx",
+      "blob": "63107debcff9190bf74dae5b776f63e0911b0d2a"
+    },
+    "home/dividend-income.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/dividend-income.tsx",
+      "blob": "056a00580fdc060da2f97f8cad0882d7791fd5ce"
+    },
+    "home/empty-distribute-track.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/empty-distribute-track.tsx",
+      "blob": "1f5e0ff5040e9f4860a5da2102761f5bcc5b6a47"
+    },
+    "home/index.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/index.tsx",
+      "blob": "5e55e9acc3588d3bb07f1dc62c8e1db233f953d8"
+    },
+    "home/new-milestone.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/new-milestone.tsx",
+      "blob": "d1bf86a7a619449016c70d3c190b36c2c269761a"
+    },
+    "home/notification-settings.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/notification-settings.tsx",
+      "blob": "dcff8031f0df22d9af9716828db1b53a24d04eae"
+    },
+    "home/payments.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/payments.tsx",
+      "blob": "7102f33d9abe0655d302c761cb60e3e6dfdd66d0"
+    },
+    "home/payout-threshold.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/payout-threshold.tsx",
+      "blob": "2df21ad5813efd75fff7fd8bae8fe4243e677fa2"
+    },
+    "home/power-usage.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/power-usage.tsx",
+      "blob": "7aa8e89e6c6c4f65feaa63385c9c9af94b8707aa"
+    },
+    "home/qr-connect.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/qr-connect.tsx",
+      "blob": "28e1b65c25dc2c2f30311c65ac5f5a3cb5ea4baf"
+    },
+    "home/savings-targets.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/savings-targets.tsx",
+      "blob": "1af2a3066d88d44462766a59851203d0bff6c4f3"
+    },
+    "home/sidebar-nav.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/sidebar-nav.tsx",
+      "blob": "c1d69ffccb756567c067d4653847a2fcd13e9ed1"
+    },
+    "home/transfer-funds.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/transfer-funds.tsx",
+      "blob": "0adf92f0388f6e763070525c5f4b1e271c6e6f3e"
+    },
+    "home/ui-elements.tsx": {
+      "path": "apps/v4/app/(app)/(root)/cards/ui-elements.tsx",
+      "blob": "1e48c5d2419732f7fd04a690bc7405a9709e6032"
+    }
+  },
+  "registry": {
+    "accordion-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/accordion-example.json",
+      "sha256": "bcdffac4b6c5a86ceced63de32c4ae008ab64b6dd2e6be6ad012375cc4b179f6"
+    },
+    "alert-dialog-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/alert-dialog-example.json",
+      "sha256": "74bc461606e4060d4678868f668269ad0fefc64e0b985ff97726886077960594"
+    },
+    "alert-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/alert-example.json",
+      "sha256": "073b0ae2879b57be0b5b11b59d4c7a5edf80e9c94f109ed0ad960af3089b3e2b"
+    },
+    "aspect-ratio-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/aspect-ratio-example.json",
+      "sha256": "cba0ba8e776a141c3b69ca36dbce1f1970a4b49cc5bed46f9309736515ca062e"
+    },
+    "attachment-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/attachment-example.json",
+      "sha256": "ae45c18c281063601443d0800839624969d516800bb315f1d30ec6b800008ff3"
+    },
+    "avatar-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/avatar-example.json",
+      "sha256": "8afb275434bb9e2553d0dcad32fd661ddb128891abee402a78fcd2b2d2d5d963"
+    },
+    "badge-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/badge-example.json",
+      "sha256": "c1948cd0aecb87cf4068e4a1c2a9603503ec334a7ec144f547e1162d5bce1506"
+    },
+    "breadcrumb-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/breadcrumb-example.json",
+      "sha256": "86863a64681177364a4d79edefb7d8408173dcc64782f3ee016ee887778c4cd7"
+    },
+    "bubble-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/bubble-example.json",
+      "sha256": "0e13770ab7de3da64753d06ea33b01e91277cf55b8b24bde641e1ca2054d194f"
+    },
+    "button-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/button-example.json",
+      "sha256": "0b87c81d9627c4cf6579af76ae5e1450feeccc99216fb6ce1f2a71d093edf107"
+    },
+    "button-group-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/button-group-example.json",
+      "sha256": "9114c7011f8823b552d2ec50ffa6e09dddd99855e9f199aa847f1fb5b48c88b5"
+    },
+    "card-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/card-example.json",
+      "sha256": "707457083f7927afab559bd523e71b65692f6e254aeddcde24bde1e554c97167"
+    },
+    "checkbox-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/checkbox-example.json",
+      "sha256": "31fd13a425d753e3804b95d88762472fb4fe17179f54d1b2a6326e7cd6c25615"
+    },
+    "collapsible-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/collapsible-example.json",
+      "sha256": "461e52cc603732de859096dc0742941172023b486c1953baf4bf074ae699e699"
+    },
+    "combobox-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/combobox-example.json",
+      "sha256": "5ce40d1dacfa3df4086fb947cf493f7d04ecd49674b5d0c89ec179c3b2980427"
+    },
+    "component-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/component-example.json",
+      "sha256": "1820c2a95934f687d25e1d0300e56104d749ae24891bb8638a567ead5b0d9935"
+    },
+    "context-menu-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/context-menu-example.json",
+      "sha256": "6d60aa99a790d636d0e8c392c123ee3d911df6cc611da0e5cc45632184493b8d"
+    },
+    "demo": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/demo.json",
+      "sha256": "cbac0c16a9175f96aebc05d33258007a799f03ce4cdafa1096772b94e6fb7055"
+    },
+    "dialog-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/dialog-example.json",
+      "sha256": "c543133352d51abd11ba68e92141367030670dca3f1e0139aba1b37c2e46515d"
+    },
+    "drawer-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/drawer-example.json",
+      "sha256": "baa01d285290bbbdcbe0e1f7f35a2792c83197e8b08291fcdcda84663943f4a1"
+    },
+    "dropdown-menu-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/dropdown-menu-example.json",
+      "sha256": "3bc5b9c1b7d8cfc5d21dfcada6c7b3733af0001394646053395e2265a95f4058"
+    },
+    "empty-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/empty-example.json",
+      "sha256": "6f0fc5e2c81fc7ab947e671d341d10da061fd6a8cd300b17fbff9bca7fb7578b"
+    },
+    "example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/example.json",
+      "sha256": "794aceb70c10351a33bfddd0477e9520e121d363e2ecd66b8cbe54f0c85dc61c"
+    },
+    "hover-card-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/hover-card-example.json",
+      "sha256": "8fc0685899bff389be0776bbeb940493dcb578d9e4ff22c23b6a17d6dda0e3ca"
+    },
+    "input-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/input-example.json",
+      "sha256": "5dea6f6d7b3e818d09252636f3aaf304962c9adc1b2a51afdf4f7d92432faddd"
+    },
+    "input-group-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/input-group-example.json",
+      "sha256": "066410d951447a60508076a3c39ab05b512880b787c832566df9ceffb4793fb0"
+    },
+    "item-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/item-example.json",
+      "sha256": "28e90b94ab16a1712dc15bb2e1b369e3d518a1b5995f4cf8954bdf3b06cacc64"
+    },
+    "kbd-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/kbd-example.json",
+      "sha256": "2cea53e4fafe9b6fa755bcea639b3673f046b1042731480a854aedd2b04bc77a"
+    },
+    "label-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/label-example.json",
+      "sha256": "c83ffa3148e9e548e6eb8c4248474f10dcc92e7faff6e1403d41dc3c66f4a979"
+    },
+    "marker-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/marker-example.json",
+      "sha256": "ff2cd544f32adae8eae7e5b007646981b148dd705a211237c4617fa7995de2d0"
+    },
+    "menubar-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/menubar-example.json",
+      "sha256": "66ff9255c6b3d57bc3819c51bcdc327c69dcbdac45111e619c76d33376b8c168"
+    },
+    "message-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/message-example.json",
+      "sha256": "282430344ffdc8da4dbea1859e92e46295c744b1075b536edebc66b9926407f2"
+    },
+    "native-select-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/native-select-example.json",
+      "sha256": "d13b706bb8c0d4e1717a33f4326c30fc07f82dd61a58f4c0e540a5cb69830b04"
+    },
+    "navigation-menu-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/navigation-menu-example.json",
+      "sha256": "97767770b329359fa9f48a1547d1d44e28fa072958712c25973a8eeeba59a324"
+    },
+    "pagination-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/pagination-example.json",
+      "sha256": "37f19ab2bf2f68cfc717ed2fc805ed4c0c9002b2e130e3d052ee1af8300ab219"
+    },
+    "popover-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/popover-example.json",
+      "sha256": "a387cfb15a9f54633e7897eb7f096fafb23a71213fe31a31039fd0d6af438179"
+    },
+    "progress-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/progress-example.json",
+      "sha256": "ba23d618c803e72d5750883c3e779f9b55a3d8a7ada65dcc3944d168b7201702"
+    },
+    "radio-group-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/radio-group-example.json",
+      "sha256": "34511faf0e56ecfb753729ebb30ac1e864d6ac06a96782abda783e7b35e066e4"
+    },
+    "scroll-area-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/scroll-area-example.json",
+      "sha256": "90bee4069bf352e4e26df75f9455b5f69dff29f2c0044da4ae89464432e0124a"
+    },
+    "select-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/select-example.json",
+      "sha256": "b623e3e1d6fb8be7c1d9ef5b3fda4d16ae9a6945db6c845332e4a65950d26eea"
+    },
+    "separator-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/separator-example.json",
+      "sha256": "18d87d298ed1a14ac894dc6801daa916068120e7dc86e69b205d0065922bd4d4"
+    },
+    "sheet-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/sheet-example.json",
+      "sha256": "a40727238fae560a4346a3ba699b3cc606d1cd595df0d6e9140b8410432d0381"
+    },
+    "sidebar-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/sidebar-example.json",
+      "sha256": "1145ed294e08032200608e0523417b5eec41555a24e18a0685c89ef54bb0444a"
+    },
+    "sidebar-floating-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/sidebar-floating-example.json",
+      "sha256": "46d4cadbdb037696bb4adb3cb5c28463528f23160aa05af05e6ce950729026e9"
+    },
+    "sidebar-icon-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/sidebar-icon-example.json",
+      "sha256": "b9534d371a97b9516055753c17f4c5d81f3e736ce73fb5cffaa33fc61fcf6d85"
+    },
+    "sidebar-inset-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/sidebar-inset-example.json",
+      "sha256": "018bdd73a3c67fb821047d5bedd2eaf9561e73b6a71f4c0f2fb9b43c9e356c58"
+    },
+    "skeleton-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/skeleton-example.json",
+      "sha256": "8b210d5658003fb02a670a665d3bfc267d0e728b82937617a05b7a53cb73218c"
+    },
+    "slider-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/slider-example.json",
+      "sha256": "e1c2244bb627b38c8677e87d10976c8aea846c0ce7ab136f7a03c428f3ee78e7"
+    },
+    "spinner-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/spinner-example.json",
+      "sha256": "dcea44c59d4b6be1d4669c99378baa08a2d90764d32f9f9f687d771ff9596806"
+    },
+    "switch-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/switch-example.json",
+      "sha256": "84edbb2e42d640ef76f4ab59915609933f96dd3c31b878d22b49a8b827c3fd59"
+    },
+    "table-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/table-example.json",
+      "sha256": "5a5ea76ad04e0e9e467e44f73287480fbdd4631b554eb71b9b5066c4586fc42a"
+    },
+    "tabs-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/tabs-example.json",
+      "sha256": "f1a8a55058335aada2bb16df252307dbeb2eaf9f7064b497c28c28943b80a8d4"
+    },
+    "textarea-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/textarea-example.json",
+      "sha256": "e211bdcb39fbbe5de0c90cdc16cb875ba9b91863bb4f9e2ad996cf6ee14b6459"
+    },
+    "toast-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/toast-example.json",
+      "sha256": "eb661d4a3e4305488b93f73c2b6d702eebcfffb0588ffc81ce2356e43f37ac49"
+    },
+    "toggle-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/toggle-example.json",
+      "sha256": "8429cffc1e2c363821ead633d9fbb47568989f4d994fddc054067de93241fc62"
+    },
+    "toggle-group-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/toggle-group-example.json",
+      "sha256": "8d1ab8bb155939b5569abab235a2cf37f39bac4b73b00e1ebdfe237523b0533d"
+    },
+    "tooltip-example": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/tooltip-example.json",
+      "sha256": "00861f90dd23fbfa9d09726089d9f5476ae0f88d7a46598b5c977b0ffdc03bf9"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /previews/
+
+Sitemap: https://shadcn-hono.omofla.sh/sitemap.xml
