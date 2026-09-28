@@ -57,6 +57,15 @@ describe("catalog.json", () => {
     expect(card?.dependencies).toEqual(["cn"])
   })
 
+  test("a lite alternative beside a port installs neither the port nor its script", () => {
+    const tabsLite = catalog.items.find((item) => item.name === "tabs-lite")
+    expect(tabsLite).toMatchObject({
+      kind: "lite",
+      components: ["tabs-lite"],
+      scripts: [],
+    })
+  })
+
   test("items install every transitively imported component", () => {
     for (const item of catalog.items) {
       const text = readFileSync(template(item.name), "utf8")

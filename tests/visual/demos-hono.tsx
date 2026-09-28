@@ -177,6 +177,12 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs"
+import {
+  TabsLite,
+  TabsLiteContent,
+  TabsLiteList,
+  TabsLiteTrigger,
+} from "../../components/ui/tabs-lite"
 import { Toaster } from "../../components/ui/toast"
 import {
   Tooltip,
@@ -869,6 +875,62 @@ function LiteDemo() {
   )
 }
 
+/**
+ * tabs-lite (docs/adr/0036) beside upstream's Tabs with the same values;
+ * tests/visual/lite.spec.ts. The fragment links keep the page static.
+ */
+function TabsLiteDemo() {
+  return (
+    <main class="flex flex-col items-start gap-10 p-8">
+      <TabsLite value="account" class="w-96">
+        <TabsLiteList aria-label="Default">
+          <TabsLiteTrigger value="account" href="#account">
+            Account
+          </TabsLiteTrigger>
+          <TabsLiteTrigger value="password" href="#password">
+            Password
+          </TabsLiteTrigger>
+          <TabsLiteTrigger value="billing" href="#billing" disabled>
+            Billing
+          </TabsLiteTrigger>
+          <TabsLiteTrigger value="team" href="#team">
+            Team
+          </TabsLiteTrigger>
+        </TabsLiteList>
+        <TabsLiteContent>Make changes to your account here.</TabsLiteContent>
+      </TabsLite>
+      <TabsLite value="overview" class="w-96">
+        <TabsLiteList aria-label="Line" variant="line">
+          <TabsLiteTrigger value="overview" href="#overview">
+            Overview
+          </TabsLiteTrigger>
+          <TabsLiteTrigger value="analytics" href="#analytics">
+            Analytics
+          </TabsLiteTrigger>
+          <TabsLiteTrigger value="reports" href="#reports">
+            Reports
+          </TabsLiteTrigger>
+        </TabsLiteList>
+        <TabsLiteContent>Overview of your project.</TabsLiteContent>
+      </TabsLite>
+      <TabsLite value="overview" orientation="vertical" class="w-96">
+        <TabsLiteList aria-label="Vertical" variant="line">
+          <TabsLiteTrigger value="overview" href="#overview">
+            Overview
+          </TabsLiteTrigger>
+          <TabsLiteTrigger value="analytics" href="#analytics">
+            Analytics
+          </TabsLiteTrigger>
+          <TabsLiteTrigger value="reports" href="#reports">
+            Reports
+          </TabsLiteTrigger>
+        </TabsLiteList>
+        <TabsLiteContent>Overview of your project.</TabsLiteContent>
+      </TabsLite>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main class="flex w-96 flex-col gap-6 p-8">
@@ -963,6 +1025,7 @@ export const DEMOS = {
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
   lite: () => <LiteDemo />,
+  "tabs-lite": () => <TabsLiteDemo />,
   sidebar: () => <SidebarDemo />,
   toast: () => <ToastDemo />,
   "toast-server": () => <ToastServerDemo />,

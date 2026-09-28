@@ -210,7 +210,12 @@ Components that have no port yet can get a lite alternative
 ([ADR 0028](./adr/0028-offer-hand-written-lite-alternatives-with-a-lite-suffix-for-components-without-a-port.md)):
 a hand-written approximation without JavaScript, named `<upstream>-lite`
 (item, file and `…Lite` exports) so that a later port can take the upstream
-name. The sources in `lite/` are written like upstream components (React TSX,
+name. A ported component can get one too when it serves a use the port does
+not ([ADR 0036](./adr/0036-offer-lite-alternatives-beside-ports-when-they-serve-another-use.md)):
+`tabs-lite` is tabs whose triggers are links, for multi-page apps. Such an
+alternative does not import the port and has its own `data-slot` values, so
+the port's client script never acts on it. The sources in `lite/` are written
+like upstream components (React TSX,
 `className`, `IconPlaceholder`, `@/registry/...` imports) and translated by the
 same pipeline, so they get the usual header, inlined icons, sibling
 components and registry dependencies. They are generated once per style:

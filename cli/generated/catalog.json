@@ -369,6 +369,13 @@
       "scripts": ["core", "tabs"]
     },
     {
+      "name": "tabs-lite",
+      "kind": "lite",
+      "components": ["tabs-lite"],
+      "dependencies": ["class-variance-authority", "cn"],
+      "scripts": []
+    },
+    {
       "name": "textarea",
       "kind": "port",
       "components": ["textarea"],

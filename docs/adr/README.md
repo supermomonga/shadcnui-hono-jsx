@@ -33,3 +33,4 @@
 * [33. Build the documentation site with HonoX as static pages and a Worker for presets](0033-build-the-documentation-site-with-honox-as-static-pages-and-a-worker-for-presets.md)
 * [34. Translate the shadcn/ui website's examples with the generator and hand-written overrides](0034-translate-the-shadcn-ui-website-s-examples-with-the-generator-and-hand-written-overrides.md)
 * [35. Offer component demos as oEmbed embeds and share one committed social image](0035-offer-component-demos-as-oembed-embeds-and-share-one-committed-social-image.md)
+* [36. Offer lite alternatives beside ports when they serve another use](0036-offer-lite-alternatives-beside-ports-when-they-serve-another-use.md)

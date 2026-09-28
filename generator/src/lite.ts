@@ -1,13 +1,20 @@
 /**
  * Lite alternatives (docs/adr/0028): hand-written components in `lite/`
  * that approximate an upstream component without JavaScript where no port
- * exists yet. They are written in upstream's style and translated by the
- * same pipeline as ports; each records the upstream items it is based on,
- * so an upstream change stops generation until the alternative is reviewed.
+ * exists yet, or serve another use beside a port (docs/adr/0036). They are
+ * written in upstream's style and translated by the same pipeline as ports;
+ * each records the upstream items it is based on, so an upstream change
+ * stops generation until the alternative is reviewed.
  */
 import { readFileSync } from "node:fs"
 import path from "node:path"
-import { Node, Project, SyntaxKind } from "ts-morph"
+import {
+  Node,
+  type ObjectLiteralExpression,
+  Project,
+  type StringLiteral,
+  SyntaxKind,
+} from "ts-morph"
 import { type Variant, variantDir } from "../../cli/src/variants"
 import { classify } from "./analyzer/classify"
 import { collectFacts } from "./analyzer/facts"
@@ -29,13 +36,23 @@ import type { UpstreamStore } from "./upstream/store"
 
 export const LITE_DIR = "lite"
 
+/** Base and variant class tokens of a `cva(...)` definition. */
+export interface LiteVariants {
+  base: string[]
+  /** Tokens by variant and value, e.g. `variants.variant.line`. */
+  variants: Record<string, Record<string, string[]>>
+}
+
 /** Reads classes of upstream components in the style being generated. */
 export interface LiteParts {
   /**
-   * The class tokens of the first `attribute` (a string or the first string
-   * of `cn(...)`) in the function `component` of the upstream item `item`.
+   * The class tokens of the first `attribute` in the function `component` of
+   * the upstream item `item`: a string, or every string of `cn(...)` in
+   * order, whose only other argument may be the passed-through `attribute`.
    */
   classes(item: string, component: string, attribute?: string): string[]
+  /** The tokens of `const name = cva(base, { variants })` in the upstream item `item`. */
+  variants(item: string, name: string): LiteVariants
 }
 
 export interface LiteComponent {
@@ -154,6 +171,85 @@ function datePickerClasses(parts: LiteParts): Record<string, string> {
   return { "icon-inset": `left-${inset}`, "text-inset": `pl-${inset + 5.5}` }
 }
 
+/**
+ * The state attributes TabsLite renders (data-orientation on every part, the
+ * list's data-variant, a trigger's data-active, data-disabled and
+ * aria-disabled, and an icon's data-icon) as Tailwind variants.
+ */
+const TABS_LITE_CONDITIONS = new Set([
+  "data-horizontal",
+  "data-vertical",
+  "group-data-horizontal/tabs",
+  "group-data-vertical/tabs",
+  "data-[variant=default]",
+  "data-[variant=line]",
+  "group-data-[variant=default]/tabs-list",
+  "group-data-[variant=line]/tabs-list",
+  "data-active",
+  "data-disabled",
+  "aria-disabled",
+  "has-data-[icon=inline-start]",
+  "has-data-[icon=inline-end]",
+])
+
+/** The variants of a class token that select on a data or ARIA attribute. */
+function attributeConditions(token: string): string[] {
+  const segments: string[] = []
+  let depth = 0
+  let start = 0
+  for (let i = 0; i < token.length; i++) {
+    const c = token[i]
+    if (c === "[" || c === "(") depth++
+    else if (c === "]" || c === ")") depth--
+    else if (c === ":" && depth === 0) {
+      segments.push(token.slice(start, i))
+      start = i + 1
+    }
+  }
+  return segments.filter((s) => /(^|[^a-z])(data|aria)-/.test(s))
+}
+
+/**
+ * TabsLite from upstream's Tabs, TabsList (tabsListVariants), TabsTrigger and
+ * TabsContent, whose classes apply unchanged: the lite parts render the same
+ * groups and state attributes. Generation stops when upstream selects on a
+ * state they do not render or adds a list variant.
+ */
+function tabsClasses(parts: LiteParts): Record<string, string> {
+  const root = parts.classes("tabs", "Tabs")
+  const list = parts.variants("tabs", "tabsListVariants")
+  const trigger = parts.classes("tabs", "TabsTrigger")
+  const content = parts.classes("tabs", "TabsContent")
+  const variant = list.variants.variant ?? {}
+  const { default: listDefault, line: listLine } = variant
+  if (!listDefault || !listLine || Object.keys(variant).length !== 2) {
+    throw new GenerationError(
+      `upstream tabsListVariants has the variants ${Object.keys(variant).join(", ")}; TabsLiteList offers default and line`
+    )
+  }
+  token(root, /^group\/tabs$/, "Tabs")
+  token(list.base, /^group\/tabs-list$/, "tabsListVariants")
+  token(trigger, /(^|:)data-active:/, "TabsTrigger")
+  const tokens = [root, list.base, listDefault, listLine, trigger, content]
+  for (const t of tokens.flat()) {
+    for (const condition of attributeConditions(t)) {
+      if (!TABS_LITE_CONDITIONS.has(condition)) {
+        throw new GenerationError(
+          `upstream tabs selects on ${condition} (${t}), which tabs-lite does not render`
+        )
+      }
+    }
+  }
+  return {
+    root: join(root),
+    list: join(list.base),
+    "list-default": join(listDefault),
+    "list-line": join(listLine),
+    trigger: join(trigger),
+    content: join(content),
+  }
+}
+
 export const LITE_COMPONENTS: Readonly<Record<string, LiteComponent>> = {
   "input-otp-lite": {
     basedOn: {
@@ -180,6 +276,17 @@ export const LITE_COMPONENTS: Readonly<Record<string, LiteComponent>> = {
       "The browser draws the calendar popup, which cannot be styled (it follows `color-scheme` in dark mode) and differs between browsers; the field shows the browser's date format rather than a placeholder. Date ranges and several months are not supported.",
     ],
   },
+  "tabs-lite": {
+    basedOn: {
+      tabs: "dbf0db185f928f26ebc4dca6db7cbb23588251c8df107806063426b28fa640bd",
+    },
+    classes: tabsClasses,
+    visualParity: "approximate",
+    notes: [
+      "A lite alternative to `tabs` (not a port) for multi-page apps, with no JavaScript: the triggers are links (`<a href>`) in a `<nav>`, each to its tab's page, and the server renders only the current page's content. The trigger whose `value` matches `TabsLite`'s `value` gets `aria-current=\"page\"` and upstream's active style. Use the `tabs` port to switch panels within one page.",
+      'Links rather than the ARIA tabs pattern: there are no `tablist`, `tab` or `tabpanel` roles, every link is a tab stop (the arrow keys do not move between them), and a disabled trigger renders without `href` (`role="link"` with `aria-disabled`). There is no `defaultValue` or `activateOnFocus`, and `TabsLiteContent` takes no `value`.',
+    ],
+  },
 }
 
 /**
@@ -199,21 +306,26 @@ export function liteBaseRevision(
   return sha256(styles.map((style, i) => `${style}\0${hashes[i]}\n`).join(""))
 }
 
+const tokensOf = (literal: StringLiteral) =>
+  literal.getLiteralValue().split(/\s+/).filter(Boolean)
+
 /** `LiteParts` over the snapshot of one style. */
 export function liteParts(store: UpstreamStore): LiteParts {
+  const project = new Project({ useInMemoryFileSystem: true })
+  const source = (item: string) =>
+    project.getSourceFile(`${item}.tsx`) ??
+    project.createSourceFile(
+      `${item}.tsx`,
+      store.readItem(item).files?.[0]?.content ?? ""
+    )
   return {
     classes(item, component, attribute = "className") {
-      const content = store.readItem(item).files?.[0]?.content ?? ""
-      const sf = new Project({ useInMemoryFileSystem: true }).createSourceFile(
-        `${item}.tsx`,
-        content
-      )
       const fail = (): never => {
         throw new GenerationError(
           `upstream ${store.style}/${item} has no ${attribute} in ${component}`
         )
       }
-      const fn = sf.getFunction(component) ?? fail()
+      const fn = source(item).getFunction(component) ?? fail()
       const attr =
         fn
           .getDescendantsOfKind(SyntaxKind.JsxAttribute)
@@ -222,11 +334,74 @@ export function liteParts(store: UpstreamStore): LiteParts {
       const expression = Node.isJsxExpression(init)
         ? init.getExpression()
         : init
-      const literal = Node.isCallExpression(expression)
-        ? expression.getArguments()[0]
-        : expression
-      if (!Node.isStringLiteral(literal)) return fail()
-      return literal.getLiteralValue().split(/\s+/).filter(Boolean)
+      if (Node.isStringLiteral(expression)) return tokensOf(expression)
+      if (
+        !Node.isCallExpression(expression) ||
+        expression.getExpression().getText() !== "cn"
+      ) {
+        return fail()
+      }
+      return expression.getArguments().flatMap((argument) => {
+        if (Node.isStringLiteral(argument)) return tokensOf(argument)
+        if (Node.isIdentifier(argument) && argument.getText() === attribute) {
+          return []
+        }
+        throw new GenerationError(
+          `upstream ${store.style}/${item} passes ${argument.getText()} to cn in the ${attribute} of ${component}`
+        )
+      })
+    },
+    variants(item, name) {
+      const fail = (what: string): never => {
+        throw new GenerationError(
+          `upstream ${store.style}/${item} has no ${what} in ${name}`
+        )
+      }
+      const call = source(item)
+        .getVariableDeclaration(name)
+        ?.getInitializerIfKind(SyntaxKind.CallExpression)
+      if (call?.getExpression().getText() !== "cva") return fail("cva(...)")
+      const [base, options] = call.getArguments()
+      if (!Node.isStringLiteral(base)) return fail("base string")
+      const variants = Node.isObjectLiteralExpression(options)
+        ? options
+            .getProperty("variants")
+            ?.asKind(SyntaxKind.PropertyAssignment)
+            ?.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression)
+        : undefined
+      if (!variants) return fail("variants object")
+      const entries = (object: ObjectLiteralExpression) =>
+        object.getProperties().map((property) => {
+          if (!Node.isPropertyAssignment(property)) {
+            return fail(`plain property ${property.getText()}`)
+          }
+          const key = property.getNameNode()
+          return [
+            Node.isStringLiteral(key) ? key.getLiteralValue() : key.getText(),
+            property.getInitializerOrThrow(),
+          ] as const
+        })
+      return {
+        base: tokensOf(base),
+        variants: Object.fromEntries(
+          entries(variants).map(([variant, values]) => {
+            if (!Node.isObjectLiteralExpression(values)) {
+              return fail(`values object for ${variant}`)
+            }
+            return [
+              variant,
+              Object.fromEntries(
+                entries(values).map(([value, classes]) => {
+                  if (!Node.isStringLiteral(classes)) {
+                    return fail(`string for ${variant}.${value}`)
+                  }
+                  return [value, tokensOf(classes)]
+                })
+              ),
+            ]
+          })
+        ),
+      }
     },
   }
 }
