@@ -82,9 +82,13 @@ describe("buildManifest", () => {
       })
       expect(alternative.knownDifferences[0]).toContain("not a port")
     }
-    expect(renderCompatibilityDoc(manifest)).toContain(
+    const doc = renderCompatibilityDoc(manifest)
+    expect(doc).toContain(
       "| input-otp-lite | input-otp | experimental | approximate |"
     )
+    // Beside the tabs port (docs/adr/0036).
+    expect(doc).toContain("| tabs-lite | tabs | experimental | approximate |")
+    expect(byName.get("tabs")?.conversion).toBe("generated")
   })
 
   test("unsupported items list their blocking reasons", () => {

@@ -1,0 +1,68 @@
+---
+title: Tabs (Lite)
+description: Tabs whose triggers are links to pages, without JavaScript.
+---
+
+<ComponentPreview name="tabs-lite-demo" />
+
+## About
+
+Tabs (Lite) is a hand-written alternative to shadcn/ui's [Tabs](https://ui.shadcn.com/docs/components/base/tabs) for multi-page apps: each tab is a page with its own URL, like the tabs of a repository or a settings page. The triggers are links in a navigation landmark, and the server renders only the current page's content, so it needs no JavaScript, and the back button, bookmarks and shared links work. It keeps upstream's look in every style.
+
+Use [Tabs](/docs/components/tabs) to switch panels within one page.
+
+## Installation
+
+<ComponentInstall name="tabs-lite" />
+
+## Usage
+
+```tsx
+import {
+  TabsLite,
+  TabsLiteContent,
+  TabsLiteList,
+  TabsLiteTrigger,
+} from "@/components/ui/tabs-lite"
+```
+
+```tsx
+app.get("/settings/:tab", (c) => {
+  const tab = c.req.param("tab")
+  return c.render(
+    <TabsLite value={tab}>
+      <TabsLiteList aria-label="Settings">
+        <TabsLiteTrigger value="account" href="/settings/account">
+          Account
+        </TabsLiteTrigger>
+        <TabsLiteTrigger value="password" href="/settings/password">
+          Password
+        </TabsLiteTrigger>
+      </TabsLiteList>
+      <TabsLiteContent>
+        {tab === "account" ? <AccountForm /> : <PasswordForm />}
+      </TabsLiteContent>
+    </TabsLite>
+  )
+})
+```
+
+The trigger whose `value` matches `TabsLite`'s `value` is the current page: it gets `aria-current="page"` and upstream's active style. Give the list an `aria-label`, since a page can have several navigation landmarks. Query links (`href="?tab=password"`) work as well as paths. The examples on this page link to fragments, so their current tab does not change.
+
+## Line
+
+<ComponentPreview name="tabs-lite-line" />
+
+## Vertical
+
+<ComponentPreview name="tabs-lite-vertical" />
+
+## Disabled
+
+A disabled trigger renders without its `href`, as a link that is unavailable.
+
+<ComponentPreview name="tabs-lite-disabled" />
+
+## Notes
+
+<ComponentNotes name="tabs-lite" />

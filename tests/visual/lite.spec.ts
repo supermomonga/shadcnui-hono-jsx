@@ -1,14 +1,22 @@
-import { expect, type Page, test } from "@playwright/test"
+import {
+  type Browser,
+  expect,
+  type Locator,
+  type Page,
+  type TestInfo,
+  test,
+} from "@playwright/test"
 import pixelmatch from "pixelmatch"
 import { PNG } from "pngjs"
 import { VARIANT } from "./installed"
 import { pageUrl } from "./server-url"
 
 /**
- * Lite alternatives (docs/adr/0028). input-otp-lite is compared with
- * upstream's InputOTP at a looser tolerance than ports (the characters are
- * the input's own text, spaced into the slots); both alternatives are
- * checked for the native behavior they rely on. Run `bun render.ts` first.
+ * Lite alternatives (docs/adr/0028, docs/adr/0036). input-otp-lite is
+ * compared with upstream's InputOTP at a looser tolerance than ports (the
+ * characters are the input's own text, spaced into the slots), and tabs-lite
+ * with upstream's Tabs exactly; every alternative is checked for the native behavior
+ * it relies on. Run `bun render.ts` first.
  */
 
 /**
@@ -18,17 +26,49 @@ import { pageUrl } from "./server-url"
  */
 const APPROXIMATE = 0.02
 
+/**
+ * tabs-lite renders upstream's Tabs classes on the same boxes, links instead
+ * of buttons, so its pixels match upstream's.
+ */
+const SAME_CLASSES = 0
+
 const LABELS = ["Empty", "Filled", "Partial", "Invalid", "Disabled"]
 
-/** A screenshot of the OTP labelled `label`, with room for its focus ring. */
-async function shot(page: Page, selector: string, label: string) {
-  const otp = page.locator(selector).filter({
-    has: page.locator(`input[aria-label="${label}"]`),
+/** Tabs in tabs-lite-*.html, by the aria-label of their list. */
+const TABS_LABELS = ["Default", "Line", "Vertical"]
+
+/** Opens `<name>-hono.html` and `<name>-react.html` side by side. */
+async function openPages(browser: Browser, name: string) {
+  const context = await browser.newContext({
+    viewport: { width: 600, height: 700 },
+    deviceScaleFactor: 1,
   })
-  const box = await otp.boundingBox()
+  const hono = await context.newPage()
+  const react = await context.newPage()
+  await hono.goto(pageUrl(`${name}-hono.html`))
+  await react.goto(pageUrl(`${name}-react.html`))
+  return { hono, react }
+}
+
+/** Switches the color mode of `pages`, then lets the color transitions finish. */
+async function setMode(pages: readonly Page[], dark: boolean) {
+  for (const page of pages) {
+    await page.evaluate(async (dark) => {
+      document.documentElement.classList.toggle("dark", dark)
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      await Promise.all(
+        document.getAnimations().map((a) => a.finished.catch(() => null))
+      )
+    }, dark)
+  }
+}
+
+/** A screenshot of `locator`, with room for its focus ring. */
+async function shot(locator: Locator, label: string) {
+  const box = await locator.boundingBox()
   if (!box) throw new Error(`${label} is not rendered`)
   return PNG.sync.read(
-    await page.screenshot({
+    await locator.page().screenshot({
       clip: {
         x: box.x - 6,
         y: box.y - 6,
@@ -40,60 +80,60 @@ async function shot(page: Page, selector: string, label: string) {
   )
 }
 
+/** Compares the shots at `tolerance`, attaching them when they differ. */
+async function compare(
+  testInfo: TestInfo,
+  name: string,
+  lite: PNG,
+  upstream: PNG,
+  tolerance: number
+) {
+  expect([lite.width, lite.height]).toEqual([upstream.width, upstream.height])
+  const diff = new PNG({ width: lite.width, height: lite.height })
+  const changed = pixelmatch(
+    lite.data,
+    upstream.data,
+    diff.data,
+    lite.width,
+    lite.height,
+    { threshold: 0.1 }
+  )
+  if (changed > 0) {
+    for (const [suffix, png] of [
+      ["lite", lite],
+      ["upstream", upstream],
+      ["diff", diff],
+    ] as const) {
+      await testInfo.attach(`${name}-${suffix}.png`, {
+        body: PNG.sync.write(png),
+        contentType: "image/png",
+      })
+    }
+  }
+  expect
+    .soft(changed / (lite.width * lite.height), name)
+    .toBeLessThanOrEqual(tolerance)
+}
+
 test("input-otp-lite looks like upstream's InputOTP", async ({
   browser,
 }, testInfo) => {
-  const context = await browser.newContext({
-    viewport: { width: 600, height: 700 },
-    deviceScaleFactor: 1,
-  })
-  const hono = await context.newPage()
-  const react = await context.newPage()
-  await hono.goto(pageUrl("lite-hono.html"))
-  await react.goto(pageUrl("lite-react.html"))
+  const { hono, react } = await openPages(browser, "lite")
   await react.locator("[data-input-otp-container]").first().waitFor()
   for (const [mode, label] of ["light", "dark"].flatMap((mode) =>
     LABELS.map((label) => [mode, label] as const)
   )) {
-    for (const page of [hono, react]) {
-      // Switch the mode, then let the color transitions finish.
-      await page.evaluate(async (dark) => {
-        document.documentElement.classList.toggle("dark", dark)
-        await new Promise((resolve) => requestAnimationFrame(resolve))
-        await Promise.all(
-          document.getAnimations().map((a) => a.finished.catch(() => null))
-        )
-      }, mode === "dark")
-    }
-    const lite = await shot(hono, '[data-slot="input-otp-lite"]', label)
-    const upstream = await shot(react, "[data-input-otp-container]", label)
-    expect([lite.width, lite.height]).toEqual([upstream.width, upstream.height])
-    const diff = new PNG({ width: lite.width, height: lite.height })
-    const changed = pixelmatch(
-      lite.data,
-      upstream.data,
-      diff.data,
-      lite.width,
-      lite.height,
-      { threshold: 0.1 }
+    await setMode([hono, react], mode === "dark")
+    const input = (page: Page) => page.locator(`input[aria-label="${label}"]`)
+    const lite = await shot(
+      hono.locator('[data-slot="input-otp-lite"]').filter({ has: input(hono) }),
+      label
     )
-    if (changed > 0) {
-      await testInfo.attach(`${mode}-${label}-lite.png`, {
-        body: PNG.sync.write(lite),
-        contentType: "image/png",
-      })
-      await testInfo.attach(`${mode}-${label}-upstream.png`, {
-        body: PNG.sync.write(upstream),
-        contentType: "image/png",
-      })
-      await testInfo.attach(`${mode}-${label}-diff.png`, {
-        body: PNG.sync.write(diff),
-        contentType: "image/png",
-      })
-    }
-    expect
-      .soft(changed / (lite.width * lite.height), `${mode} ${label}`)
-      .toBeLessThanOrEqual(APPROXIMATE)
+    const upstream = await shot(
+      react.locator("[data-input-otp-container]").filter({ has: input(react) }),
+      label
+    )
+    await compare(testInfo, `${mode}-${label}`, lite, upstream, APPROXIMATE)
   }
 })
 
@@ -161,4 +201,64 @@ test("date-picker-lite is a native date input", async ({ page }) => {
     ? field.x + field.width - (icon.x + icon.width)
     : icon.x - field.x
   expect(inset >= 0 && inset < 32).toBe(true)
+})
+
+test("tabs-lite looks like upstream's Tabs", async ({ browser }, testInfo) => {
+  const { hono, react } = await openPages(browser, "tabs-lite")
+  await react.locator('[data-slot="tabs"]').first().waitFor()
+  for (const [mode, label] of ["light", "dark"].flatMap((mode) =>
+    TABS_LABELS.map((label) => [mode, label] as const)
+  )) {
+    await setMode([hono, react], mode === "dark")
+    const lite = await shot(
+      hono.locator('[data-slot="tabs-lite"]').filter({
+        has: hono.locator(`nav[aria-label="${label}"]`),
+      }),
+      label
+    )
+    const upstream = await shot(
+      react.locator('[data-slot="tabs"]').filter({
+        has: react.locator(`[data-slot="tabs-list"][aria-label="${label}"]`),
+      }),
+      label
+    )
+    await compare(testInfo, `${mode}-${label}`, lite, upstream, SAME_CLASSES)
+  }
+})
+
+test("tabs-lite is a navigation of links", async ({ page }) => {
+  await page.goto(pageUrl("tabs-lite-hono.html"))
+  await expect(page.locator("script")).toHaveCount(0)
+  await expect(page.getByRole("tablist")).toHaveCount(0)
+  await expect(page.getByRole("tab")).toHaveCount(0)
+  await expect(page.getByRole("tabpanel")).toHaveCount(0)
+  const nav = page.getByRole("navigation", { name: "Default" })
+  await expect(nav.getByRole("link")).toHaveText([
+    "Account",
+    "Password",
+    "Billing",
+    "Team",
+  ])
+  const link = (name: string) => nav.getByRole("link", { name })
+  await expect(link("Account")).toHaveAttribute("aria-current", "page")
+  await expect(link("Password")).not.toHaveAttribute("aria-current")
+  // The disabled trigger is an unavailable link: no href, no pointer, and
+  // the keyboard skips it.
+  await expect(link("Billing")).toHaveAttribute("aria-disabled", "true")
+  await expect(link("Billing")).not.toHaveAttribute("href")
+  expect(
+    await link("Billing").evaluate(
+      (element) => getComputedStyle(element).pointerEvents
+    )
+  ).toBe("none")
+  await link("Account").focus()
+  await page.keyboard.press("Tab")
+  await expect(link("Password")).toBeFocused()
+  await page.keyboard.press("Tab")
+  await expect(link("Team")).toBeFocused()
+  // The arrow keys are the page's (they do not move between the links).
+  await page.keyboard.press(VARIANT.rtl ? "ArrowLeft" : "ArrowRight")
+  await expect(link("Team")).toBeFocused()
+  await link("Password").click()
+  await expect(page).toHaveURL(/#password$/)
 })

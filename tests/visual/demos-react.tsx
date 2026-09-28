@@ -918,6 +918,43 @@ function LiteDemo() {
   )
 }
 
+/** Upstream Tabs for tabs-lite's comparison (tests/visual/lite.spec.ts). */
+function TabsLiteDemo() {
+  return (
+    <main className="flex flex-col items-start gap-10 p-8">
+      <Tabs defaultValue="account" className="w-96">
+        <TabsList aria-label="Default">
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="password">Password</TabsTrigger>
+          <TabsTrigger value="billing" disabled>
+            Billing
+          </TabsTrigger>
+          <TabsTrigger value="team">Team</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          Make changes to your account here.
+        </TabsContent>
+      </Tabs>
+      <Tabs defaultValue="overview" className="w-96">
+        <TabsList aria-label="Line" variant="line">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">Overview of your project.</TabsContent>
+      </Tabs>
+      <Tabs defaultValue="overview" orientation="vertical" className="w-96">
+        <TabsList aria-label="Vertical" variant="line">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">Overview of your project.</TabsContent>
+      </Tabs>
+    </main>
+  )
+}
+
 function InputGroupDemo() {
   return (
     <main className="flex w-96 flex-col gap-6 p-8">
@@ -1017,6 +1054,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   "navigation-menu": () => <NavigationMenuDemo />,
   avatar: () => <AvatarDemo />,
   lite: () => <LiteDemo />,
+  "tabs-lite": () => <TabsLiteDemo />,
   sidebar: () => <SidebarDemo />,
   toast: () => <ToastDemo />,
   "toast-server": () => <ToastServerDemo />,

@@ -42,7 +42,9 @@ code) and installed as they are into `public/shadcn/`; see docs/adr/0025. Keep
 them dependency-free ES modules that find components by `data-slot`.
 
 Lite alternatives (`<upstream>-lite`, docs/adr/0028) are hand-written in
-`lite/` in upstream's style and generated like ports, once per style. Their
+`lite/` in upstream's style and generated like ports, once per style; beside
+a port, one serves another use and never imports the port or reuses its
+`data-slot` values (docs/adr/0036). Their
 style-dependent classes are `lite:<key>` tokens computed from upstream parts
 by the recipes in `generator/src/lite.ts` (docs/adr/0030). When `generate`
 reports that an upstream base changed, review the alternative against the new

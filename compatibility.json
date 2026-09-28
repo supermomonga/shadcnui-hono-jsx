@@ -1670,6 +1670,24 @@
         "The browser draws the calendar popup, which cannot be styled (it follows `color-scheme` in dark mode) and differs between browsers; the field shows the browser's date format rather than a placeholder. Date ranges and several months are not supported.",
         "Accepts `class` instead of `className`."
       ]
+    },
+    {
+      "name": "tabs-lite",
+      "kind": "lite",
+      "status": "experimental",
+      "basedOn": [
+        {
+          "name": "tabs",
+          "contentSha256": "dbf0db185f928f26ebc4dca6db7cbb23588251c8df107806063426b28fa640bd"
+        }
+      ],
+      "visualParity": "approximate",
+      "clientJs": "none",
+      "knownDifferences": [
+        "A lite alternative to `tabs` (not a port) for multi-page apps, with no JavaScript: the triggers are links (`<a href>`) in a `<nav>`, each to its tab's page, and the server renders only the current page's content. The trigger whose `value` matches `TabsLite`'s `value` gets `aria-current=\"page\"` and upstream's active style. Use the `tabs` port to switch panels within one page.",
+        "Links rather than the ARIA tabs pattern: there are no `tablist`, `tab` or `tabpanel` roles, every link is a tab stop (the arrow keys do not move between them), and a disabled trigger renders without `href` (`role=\"link\"` with `aria-disabled`). There is no `defaultValue` or `activateOnFocus`, and `TabsLiteContent` takes no `value`.",
+        "Accepts `class` instead of `className`."
+      ]
     }
   ]
 }

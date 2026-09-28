@@ -236,7 +236,7 @@ export function renderCompatibilityDoc(manifest: Manifest): string {
     "",
     ...(manifest.alternatives.length > 0
       ? [
-          "Lite alternatives approximate a component that has no port yet, without JavaScript. They are hand-written, not ports, and a port may later take the upstream name ([ADR 0028](adr/0028-offer-hand-written-lite-alternatives-with-a-lite-suffix-for-components-without-a-port.md)).",
+          "Lite alternatives are hand-written components without JavaScript, not ports. Most approximate a component that has no port yet, and a port may later take the upstream name ([ADR 0028](adr/0028-offer-hand-written-lite-alternatives-with-a-lite-suffix-for-components-without-a-port.md)); others serve, beside a port, a use it does not, such as tabs whose triggers are links ([ADR 0036](adr/0036-offer-lite-alternatives-beside-ports-when-they-serve-another-use.md)).",
           "",
           "| Lite alternative | Based on | Status | Visual parity | Client JS | Known differences |",
           "| --- | --- | --- | --- | --- | --- |",

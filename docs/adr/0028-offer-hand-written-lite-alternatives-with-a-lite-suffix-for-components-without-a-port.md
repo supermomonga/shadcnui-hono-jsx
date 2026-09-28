@@ -10,6 +10,8 @@ links:
   kind: amends
 - target: 30
   kind: amendedby
+- target: 36
+  kind: amendedby
 ---
 
 # Offer hand-written lite alternatives with a -lite suffix for components without a port
