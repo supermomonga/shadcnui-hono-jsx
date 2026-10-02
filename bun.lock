@@ -14,7 +14,7 @@
         "class-variance-authority": "0.7.1",
         "cn": "0.4.0",
         "diff": "9.0.0",
-        "hono": "4.13.9",
+        "hono": "4.13.11",
         "lucide": "1.48.0",
         "remixicon": "4.9.1",
         "shadcn": "4.21.0",
@@ -35,7 +35,7 @@
       "dependencies": {
         "class-variance-authority": "0.7.1",
         "cn": "0.4.0",
-        "hono": "4.13.9",
+        "hono": "4.13.11",
         "tw-animate-css": "1.4.0",
       },
       "devDependencies": {
@@ -50,7 +50,7 @@
       "dependencies": {
         "class-variance-authority": "0.7.1",
         "cn": "0.4.0",
-        "hono": "4.13.9",
+        "hono": "4.13.11",
         "honox": "0.1.61",
         "tw-animate-css": "1.4.0",
       },
@@ -70,19 +70,19 @@
         "@fontsource-variable/geist": "5.3.0",
         "class-variance-authority": "0.7.1",
         "cn": "0.4.0",
-        "hono": "4.13.9",
+        "hono": "4.13.11",
         "honox": "0.1.61",
         "tw-animate-css": "1.4.0",
       },
       "devDependencies": {
-        "@cloudflare/workers-types": "5.20260926.1",
+        "@cloudflare/workers-types": "5.20260929.1",
         "@hono/vite-ssg": "0.3.3",
         "@mdx-js/rollup": "3.1.1",
         "@tailwindcss/vite": "4.3.3",
         "@types/bun": "1.4.2",
         "@types/hast": "3.0.5",
         "@types/mdast": "4.0.4",
-        "estree-util-value-to-estree": "3.4.1",
+        "estree-util-value-to-estree": "3.5.0",
         "github-slugger": "2.0.0",
         "lucide": "1.48.0",
         "mdast-util-to-string": "4.0.0",
@@ -173,7 +173,7 @@
 
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.5.14", "", { "os": "win32", "cpu": "x64" }, "sha512-oJWmBhoHsnhUKIke+0gXDX0mltJrWHA1UyHsrTlXwX0TL64ilVZAo+TYZm97baecV0esBdpzy3k96q+09JaZUQ=="],
 
-    "@cloudflare/workers-types": ["@cloudflare/workers-types@5.20260926.1", "", {}, "sha512-jLtwSjBFtXucrEIj584vNk/k9OwgW4ij7/nK40hnCw137/0ilqfkTlYIUTWlTEbUX2V/+XVBijzZha9spdQTUw=="],
+    "@cloudflare/workers-types": ["@cloudflare/workers-types@5.20260929.1", "", {}, "sha512-VlkFyzSqv2LeMK92eyyfnNvSTW4Nu37cR8T8OM4FF2xcNCsGy8/BxcNk9Jr4ZV0PlmKsCKvS49CfRZTVKBseUw=="],
 
     "@dependents/detective-less": ["@dependents/detective-less@5.0.3", "", { "dependencies": { "gonzales-pe": "^4.3.0", "node-source-walk": "^7.0.1" } }, "sha512-v6oD9Ukp+N7V4n6p5I/+mM5fIohSfkrDSGlFm5w/pYmchvbk+sMIHsLxrFJ5Lnujewj1BzWL0K84d88lwZAMQA=="],
 
@@ -639,7 +639,7 @@
 
     "estree-util-to-js": ["estree-util-to-js@2.0.0", "", { "dependencies": { "@types/estree-jsx": "^1.0.0", "astring": "^1.8.0", "source-map": "^0.7.0" } }, "sha512-WDF+xj5rRWmD5tj6bIqRi6CkLIXbbNQUcxQHzGysQzvHmdYG2G7p/Tf0J0gpxGgkeMZNTIjT/AoSvC9Xehcgdg=="],
 
-    "estree-util-value-to-estree": ["estree-util-value-to-estree@3.4.1", "", { "dependencies": { "@types/estree": "^1.0.0" } }, "sha512-E4fEc8KLhDXnbyDa5XrbdT9PbgSMt0AGZPFUsGFok8N2Q7DTO+F6xAFJjIdw71EkidRg186I1mQCKzZ1ZbEsCw=="],
+    "estree-util-value-to-estree": ["estree-util-value-to-estree@3.5.0", "", { "dependencies": { "@types/estree": "^1.0.0" } }, "sha512-aMV56R27Gv3QmfmF1MY12GWkGzzeAezAX+UplqHVASfjc9wNzI/X6hC0S9oxq61WT4aQesLGslWP9tKk6ghRZQ=="],
 
     "estree-util-visit": ["estree-util-visit@2.0.0", "", { "dependencies": { "@types/estree-jsx": "^1.0.0", "@types/unist": "^3.0.0" } }, "sha512-m5KgiH85xAhhW8Wta0vShLcUvOsh3LLPI2YVwcbio1l7E09NTLL1EyMZFM1OyWowoH0skScNbhOPl4kcBgzTww=="],
 
@@ -735,7 +735,7 @@
 
     "hast-util-whitespace": ["hast-util-whitespace@3.0.0", "", { "dependencies": { "@types/hast": "^3.0.0" } }, "sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw=="],
 
-    "hono": ["hono@4.13.9", "", {}, "sha512-7dMkQmZoC4E6F7AtaQSPhlWAdnBti+j7rreMZl8QB4jFiEhP9TWbGWUMi8WYzBCgmgulxuvLQupKqo+Co6Omyg=="],
+    "hono": ["hono@4.13.11", "", {}, "sha512-/SMX/RQNJn7oNmFwH6DtwDqcrzZU2otm1FD6OJe2cWF6cfy/F8hq0XVBv7xW3FTJshRQwuBnXHDq2kNsdZnshg=="],
 
     "honox": ["honox@0.1.61", "", { "dependencies": { "@babel/generator": "7.29.1", "@babel/parser": "7.29.3", "@babel/traverse": "7.29.0", "@babel/types": "7.29.0", "@hono/vite-dev-server": "^0.25.1", "jsonc-parser": "3.3.1", "precinct": "12.2.0" }, "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "^4.9.6" }, "peerDependencies": { "hono": ">=4.*" } }, "sha512-HMvVTyAIJYIWjHUvdowQvnMVA3I1HKeKD71TVCAKiTdUI+xU7cYRryMK+ASmnRb7lFV6Yak4/d1VqXjJnEYSvg=="],
 
@@ -1359,6 +1359,8 @@
 
     "@modelcontextprotocol/sdk/@hono/node-server": ["@hono/node-server@2.1.1", "", { "peerDependencies": { "hono": "^4" } }, "sha512-ELuehkj5VCBdgEw9zs+ivkKwyzzUCSQuE96YmiPvn1ECBoZCczbFXJLeEGMTYjphP6gydh4pHMqEYPVMYUVgQg=="],
 
+    "@modelcontextprotocol/sdk/hono": ["hono@4.13.9", "", {}, "sha512-7dMkQmZoC4E6F7AtaQSPhlWAdnBti+j7rreMZl8QB4jFiEhP9TWbGWUMi8WYzBCgmgulxuvLQupKqo+Co6Omyg=="],
+
     "@rollup/pluginutils/estree-walker": ["estree-walker@2.0.2", "", {}, "sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w=="],
 
     "@tailwindcss/node/lightningcss": ["lightningcss@1.32.0", "", { "dependencies": { "detect-libc": "^2.0.3" }, "optionalDependencies": { "lightningcss-android-arm64": "1.32.0", "lightningcss-darwin-arm64": "1.32.0", "lightningcss-darwin-x64": "1.32.0", "lightningcss-freebsd-x64": "1.32.0", "lightningcss-linux-arm-gnueabihf": "1.32.0", "lightningcss-linux-arm64-gnu": "1.32.0", "lightningcss-linux-arm64-musl": "1.32.0", "lightningcss-linux-x64-gnu": "1.32.0", "lightningcss-linux-x64-musl": "1.32.0", "lightningcss-win32-arm64-msvc": "1.32.0", "lightningcss-win32-x64-msvc": "1.32.0" } }, "sha512-NXYBzinNrblfraPGyrbPoD19C1h9lfI/1mzgWYvXUTe414Gz/X1FD2XBZSZM7rRTrMA8JL3OtAaGifrIKhQ5yQ=="],
@@ -1428,8 +1430,6 @@
     "prompts/kleur": ["kleur@3.0.3", "", {}, "sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w=="],
 
     "recast/source-map": ["source-map@0.6.1", "", {}, "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="],
-
-    "remark-mdx-frontmatter/estree-util-value-to-estree": ["estree-util-value-to-estree@3.5.0", "", { "dependencies": { "@types/estree": "^1.0.0" } }, "sha512-aMV56R27Gv3QmfmF1MY12GWkGzzeAezAX+UplqHVASfjc9wNzI/X6hC0S9oxq61WT4aQesLGslWP9tKk6ghRZQ=="],
 
     "restore-cursor/onetime": ["onetime@7.0.0", "", { "dependencies": { "mimic-function": "^5.0.0" } }, "sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ=="],
 
