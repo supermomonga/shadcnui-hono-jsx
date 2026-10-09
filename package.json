@@ -41,7 +41,7 @@
     "site:images": "bun run site:install && bun site/scripts/images.ts"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
+    "@biomejs/biome": "2.5.15",
     "@fontsource-variable/geist": "5.3.0",
     "@hugeicons/core-free-icons": "4.3.5",
     "@phosphor-icons/core": "2.1.1",
@@ -50,7 +50,7 @@
     "class-variance-authority": "0.7.1",
     "cn": "0.4.0",
     "diff": "9.0.0",
-    "hono": "4.13.12",
+    "hono": "4.13.13",
     "lucide": "1.48.0",
     "remixicon": "4.9.1",
     "shadcn": "4.21.0",
